@@ -15,6 +15,7 @@ import berth from '@/components/statistics/berth'
 import management from '@/components/management/management'
 import personalDetails from '@/components/news/personalDetails'
 import changePassword from '@/components/news/changePassword'
+import newfile from '@/components/management/newfile'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -92,6 +93,11 @@ export default new Router({
                path: '/changePassword',
                name: 'changePassword',
                component: changePassword
+             }, 
+             {
+               path: '/newfile',
+               name: 'newfile',
+               component: newfile
              }
       ]
     }

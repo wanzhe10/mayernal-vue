@@ -142,7 +142,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 
-<style lang="less">
+<style lang="less" scoped>
 .clearfix:after {
   content: ".";
   width: 0;
@@ -243,10 +243,12 @@ export default {
 //   }
 
 .el-main {
-  background-color: #e9eef3;
+//   background-color: #e9eef3;
+  margin:16px;
+  padding:0px;
   color: #333;
-  text-align: center;
-  line-height: 160px;
+//   text-align: center;
+//   line-height: 160px;
 }
 
 body > .el-container {
