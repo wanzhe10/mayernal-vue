@@ -4,7 +4,7 @@
         <el-header class="clearfix">
             <div class="headerBox clearfix">
                 <img src="../assets/login.png" alt="围产期建档评估管理系统">
-                <span class="character">档案首页/新建档案</span>
+                <span class="characterFont">档案首页/新建档案</span>
                 <div class="headerrightBox">
                     <p class="welcome">欢迎<i class="doctorName">周晓晓</i>医生</p>
                     <div class="exitBtn">
@@ -164,7 +164,7 @@ export default {
     position: relative;
     background-color: #fff;
   }
-  .character {
+  .characterFont {
     color: #333333;
     font-size: 18px;
     margin-left: 220px;
