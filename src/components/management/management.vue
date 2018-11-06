@@ -1,79 +1,81 @@
 <template>
-	<div class="rightContant">
-		<div class="topBox clearfix">
-			<div class="btnsBOx">
-				 <router-link :to="{path: 'newfile'}">
-                                   <div class="newBtn">新建孕妇档案</div>
-                                </router-link>
-				
-			</div>
-			<div class="selectBox clearfix">
-				<div class="pdl20 fl w170">
-					<p>档案管理</p>
-					<el-select v-model="value1" placeholder="请选择" class="recordSelect">
-						<el-option size='126px' v-for="item in options1" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-				</div>
-				<div class="assess fl w180">
-					<p>风险评估</p>
-					<el-select v-model="value2" placeholder="请选择" class="assessSelect">
-						<el-option size='126px' v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
-				</div>
-				<div class="fl w154">
-					<p>就诊目的</p>
-					<el-select v-model="value3" placeholder="请选择" class="seeSelect">
-						<el-option size='126px' v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
-						</el-option>
-					</el-select>
+  <div class="rightContant">
+    <div class="topBox clearfix">
+      <div class="btnsBOx">
+        <router-link :to="{path: 'newfile'}">
+          <div class="newBtn">新建孕妇档案</div>
+        </router-link>
 
-				</div>
-				<div class="fl w224">
-					<p>搜索</p>
-					<el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="fileSearch" class="fileSearch">
-					</el-input>
+      </div>
+      <div class="selectBox clearfix">
+        <div class="pdl20 fl w170">
+          <p>档案管理</p>
+          <el-select v-model="value1" placeholder="请选择" class="recordSelect">
+            <el-option size='126px' v-for="item in options1" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="assess fl w180">
+          <p>风险评估</p>
+          <el-select v-model="value2" placeholder="请选择" class="assessSelect">
+            <el-option size='126px' v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="fl w154">
+          <p>就诊目的</p>
+          <el-select v-model="value3" placeholder="请选择" class="seeSelect">
+            <el-option size='126px' v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
 
-				</div>
-				<el-button type="primary" round class="inquireBtn">查询</el-button>
-			</div>
-		</div>
-		<div class="bottomBox">
-			<!-- <div class="tableBox"> -->
-			<el-table :data="tableData" style="width: 100%">
-				<el-table-column prop="tableNum" label="序号" width="70px" style="text-align: center;"></el-table-column>
-				<el-table-column prop="username" label="姓名" width="76px"></el-table-column>
-				<el-table-column prop="goal" label="就诊目的" width="106px"></el-table-column>
-				<el-table-column prop="idCard" label="身份证" width="184px"></el-table-column>
-				<el-table-column prop="age" label="年龄" width="60px"></el-table-column>
-				<el-table-column prop="gestational" label="孕周" width="72px"></el-table-column>
-				<el-table-column prop="pregnant" label="孕产期" width="110px"></el-table-column>
-				<el-table-column prop="blood" label="血型" width="46px"></el-table-column>
-				<el-table-column prop="grade" label="评分等级" width="96px"></el-table-column>
-				<el-table-column prop="element" label="高危因素" width="96px">
-					<template slot-scope="scope" class="elementFont">
-						<p class="greenStrip">绿色（12）项</p>
-						<p class="yellowStrip">黄色（12）项</p>
-						<p class="orangeStrip">橙色（12）项</p>
-						<p class="proponStrip">紫色（12）项</p>
-						<p class="redStrip">红色（12）项</p>
-					</template>
-				</el-table-column>
-				<el-table-column prop="address" label="操作" width="48px">
-					<template slot-scope="scope">
-						<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-						<!-- <el-button type="text" size="small">编辑</el-button> -->
-					</template>
-				</el-table-column>
-			</el-table>
-			<div class="block" style="margin-top:30px; text-align:center;">
-				<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[7, 14, 21, 28]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
-				</el-pagination>
-			</div>
-		</div>
+        </div>
+        <div class="fl w224">
+          <p>搜索</p>
+          <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="fileSearch" class="fileSearch">
+          </el-input>
 
-	</div>
+        </div>
+        <el-button type="primary" round class="inquireBtn">查询</el-button>
+      </div>
+    </div>
+    <div class="bottomBox">
+      <!-- <div class="tableBox"> -->
+      <el-table :data="tableData" style="width: 100%">
+        <el-table-column prop="tableNum" label="序号" width="70px" style="text-align: center;"></el-table-column>
+        <el-table-column prop="username" label="姓名" width="76px"></el-table-column>
+        <el-table-column prop="goal" label="就诊目的" width="106px"></el-table-column>
+        <el-table-column prop="idCard" label="身份证" width="184px"></el-table-column>
+        <el-table-column prop="age" label="年龄" width="60px"></el-table-column>
+        <el-table-column prop="gestational" label="孕周" width="72px"></el-table-column>
+        <el-table-column prop="pregnant" label="孕产期" width="110px"></el-table-column>
+        <el-table-column prop="blood" label="血型" width="46px"></el-table-column>
+        <el-table-column prop="grade" label="评分等级" width="96px"></el-table-column>
+        <el-table-column prop="element" label="高危因素" width="96px">
+          <template slot-scope="scope" class="elementFont">
+            <p class="greenStrip">绿色（12）项</p>
+            <p class="yellowStrip">黄色（12）项</p>
+            <p class="orangeStrip">橙色（12）项</p>
+            <p class="proponStrip">紫色（12）项</p>
+            <p class="redStrip">红色（12）项</p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="address" label="操作" width="48px">
+          <template slot-scope="scope">
+            <router-link :to="{path: 'personalCenter'}">
+              <el-button type="text" size="small">查看</el-button>
+            </router-link>
+            <!-- <el-button type="text" size="small">编辑</el-button> -->
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="block" style="margin-top:30px; text-align:center;">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[7, 14, 21, 28]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
+        </el-pagination>
+      </div>
+    </div>
+
+  </div>
 </template>
 <script>
 export default {
@@ -203,17 +205,17 @@ export default {
           element: "26+3"
         }
       ],
-       currentPage2: 1,
+      currentPage2: 1
     };
   },
-    methods: {
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      }
+  methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
     },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    }
+  }
 };
 </script>
 

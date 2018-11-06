@@ -59,6 +59,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
             /personalDetails        用户个人信息
             /changePassword         修改密码
 
+        /personalCenter             个人中心
+            /personalCenter.vue                  
+
             
 
 

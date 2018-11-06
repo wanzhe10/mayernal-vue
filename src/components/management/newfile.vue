@@ -1621,6 +1621,7 @@ export default {
   }
 };
 </script>
+
 <style lang="less">
 .mgl10 {
   margin-left: 10px;

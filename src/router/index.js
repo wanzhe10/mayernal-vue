@@ -16,6 +16,7 @@ import management from '@/components/management/management'
 import personalDetails from '@/components/news/personalDetails'
 import changePassword from '@/components/news/changePassword'
 import newfile from '@/components/management/newfile'
+import personalCenter from '@/components/management/personalCenter/personalCenter'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -98,6 +99,10 @@ export default new Router({
                path: '/newfile',
                name: 'newfile',
                component: newfile
+             }, {
+               path: '/personalCenter',
+               name: 'personalCenter',
+               component: personalCenter
              }
       ]
     }

@@ -220,7 +220,7 @@ export default {
   }
 }
 .el-aside {
-    margin-bottom:40px;
+    margin-bottom:74px;
   width: 190px !important;
   background-color: #fff;
   .headline {
@@ -281,6 +281,6 @@ body > .el-container {
 }
 .footerNews{
     text-align: center;
-    margin-top:40px;
+    margin-top:20px;
 }
 </style>
