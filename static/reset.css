@@ -173,3 +173,23 @@ body .noBackground {
     box-shadow: none;
     background: none;
 }
+.level0 {
+  background: green;
+}
+
+.level1 {
+  background: yellow;
+}
+
+.level2 {
+  background: orange;
+}
+
+.level3 {
+  background: red;
+}
+
+.level4 {
+  background: purple;
+}
+

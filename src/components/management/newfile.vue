@@ -1,8 +1,9 @@
 <template>
-  <el-tabs v-model="activeName">
-    <el-tab-pane label="孕妇基本信息" name="first">
+    <div class="newfileBox">
+  <el-tabs v-model="activeName" class="aaaa">
+         <el-tab-pane label="孕妇基本信息" name="first">
       <!-- 孕妇基本信息 -->
-      <div class="pregnantNewsBox ">
+      <div class="pregnantNewsBox">
         <div class="mgr70">
           <h3>孕妇姓名（必填）</h3>
           <input type="text" class="pregnantName" placeholder="请输入姓名">
@@ -200,7 +201,7 @@
         <div class="somkingBox clearfix">
           <div class="somkingFont">吸烟</div>
           <div class="somkingSelect clearfix">
-            <el-radio v-model="smoking" label="1" >是</el-radio>
+            <el-radio v-model="smoking" label="1" @change = 'handleCheckAllChange'>是</el-radio>
             <el-radio v-model="smoking" label="0">否</el-radio>
           </div>
 
@@ -284,7 +285,7 @@
           <input type="text" class="mgl30 firstCheckDate" placeholder="" id="test2" readonly="readonly" disabled="disabled">
           <p class="redFont">此项为必填项！</p>
         </div>
-        <div class="mgr76 fl">
+        <div class="mgr76 fl w260">
           <h3>末次月经</h3>
           <el-date-picker v-model="lastMenstrual" type="date" placeholder="选择日期">
           </el-date-picker>
@@ -502,6 +503,7 @@
         </div>
       </div>
     </el-tab-pane>
+    <!--  -->
     <el-tab-pane label="体格检查" name="fourth">
       <div class="healthCheckupBox">
         <h2 class="healthCheckTittle">一般检查</h2>
@@ -844,7 +846,7 @@
 
         <div class="contentBox">
           <div class="lookAtallBtnBox">
-            <h2>孕期合并发症</h2>
+            <h2>呼吸系统疾病</h2>
             <div class="positionWire2"></div>
           </div>
           <div class="partBox mgr34">
@@ -932,6 +934,7 @@
       </div>
     </el-tab-pane>
   </el-tabs>
+    </div>
 </template>
 <script>
 export default {
@@ -1617,12 +1620,15 @@ export default {
   methods: {
     modifyButton: function() {
       alert(1);
-    }
+    },
+    handleCheckAllChange() {
+      alert(1);
+      }
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .mgl10 {
   margin-left: 10px;
 }
@@ -1634,6 +1640,9 @@ export default {
 }
 .mgl16 {
   margin-left: 16px;
+}
+.mgl28 {
+  margin-left: 28px;
 }
 .mgr0 {
   margin-right: 0px !important;
@@ -1661,36 +1670,14 @@ export default {
 .mgb12 {
   margin-bottom: 12px;
 }
-
-.el-date-editor.el-input,
-.el-date-editor.el-input__inner {
+.w260{
   width: 260px;
 }
-.el-tabs__nav-scroll {
-  height: 64px;
-  line-height: 64px;
-  background-color: #fff;
-  color: #333333;
-}
-.el-tabs__item.is-active {
-  color: #68b6e7;
-}
-.el-tabs__item:hover {
-  color: #68b6e7;
-  cursor: pointer;
-}
-.el-tabs__active-bar {
-  background-color: #68b6e7;
-}
-.el-tabs__nav {
-  margin-left: 26px;
-}
-.el-tabs__content {
-  background-color: #fff;
-  padding: 14px 24px 24px 26px;
-}
+
+
 // 孕妇基本信息
 .pregnantNewsBox {
+padding: 14px 24px 24px 26px;
    .wire {
     width: 100%;
     height: 1px;
@@ -1779,14 +1766,10 @@ export default {
     color: #333333;
   }
 }
-.el-select .el-input.is-focus .el-input__inner {
-  border-color: #68b6e7;
-}
-.el-select-dropdown__item.selected {
-  color: #68b6e7;
-}
+
 // 配偶一般信息模块
 .spouseNewsBox {
+  padding: 14px 24px 24px 26px;
   div {
     display: inline-block;
     h3 {
@@ -2047,6 +2030,7 @@ export default {
 
 // 孕产信息模块
 .pregnancyNewsBox {
+  padding: 14px 24px 24px 26px;
   .dynamicTable {
     th {
       text-align: center;
@@ -2326,6 +2310,7 @@ export default {
 }
 // 体格检查模块
 .healthCheckupBox {
+  padding: 14px 24px 24px 26px;
   .healthCheckTittle {
     font-size: 16px;
     color: #333333;
@@ -2445,6 +2430,7 @@ export default {
 }
 // 高危评估模块
 .riskAssessmentBox {
+  padding: 14px 24px 24px 26px;
   div {
     display: inline-block;
     h3 {
@@ -2742,6 +2728,7 @@ export default {
 }
 // 检查确认模块
 .checkAffirmBox {
+  padding: 14px 24px 24px 26px;
   .checkAffirmBox_top {
     .assessmentInformation {
       p {
@@ -2881,18 +2868,7 @@ export default {
     background-color: #f6f6f6;
     position: absolute;
     margin-top: 20px;
-  } //  .checkAffirmBox_bottom{
-  //    margin-top:46px;
-  //     h2{
-  //         font-size: 16px;
-  //         color:#333333;
-  //         margin-bottom:20px;
-  //     }
-  //     p{
-  //         position: relative;
-  //     }
-  //
-  // }
+  } 
   .affirmBox2 {
     margin-top: 46px;
     h3 {
@@ -2978,5 +2954,75 @@ export default {
     color: #333333;
     margin-top: 30px;
   }
+}
+</style>
+<style>
+
+.el-select-dropdown__item.selected {
+  color: #68b6e7;
+}
+/* // 孕妇基本信息组件样式修改 */
+.pregnantNewsBox .el-input__inner {
+  width: 260px;
+  border-radius: 8px;
+  border-color: #ccc;
+  background-color: #f6f6f6;
+
+}
+/* // 配偶一般信息组件样式修改 */
+.spouseNewsBox .el-input__inner {
+  width: 260px;
+  border-radius: 8px;
+  border-color: #ccc;
+  background-color: #f6f6f6;
+}
+/* // 孕产信息组件样式修改 */
+.pregnancyNewsBox   .el-input__inner {
+  width: 260px;
+  border-radius: 8px;
+  border-color: #ccc;
+  background-color: #f6f6f6;
+}
+/* // 体格检查组件样式修改 */
+.healthCheckupBox .el-input__inner {
+  width: 108px;
+  border-radius: 8px;
+  border-color: #ccc;
+  background-color: #f6f6f6;
+}
+/* // 高危评估组件样式修改 */
+.riskAssessmentBox .el-input__inner {
+  width: 152px;
+  height: 30px;
+  border-radius: 8px;
+  border-color: #ccc;
+  background-color: #f6f6f6;
+}
+.riskAssessmentBox .el-input__icon{
+  line-height: 30px;
+}
+
+
+.newfileBox .el-tabs__nav-scroll {
+  height: 64px;
+  line-height: 64px;
+  background-color: #fff;
+  color: #333333;
+}
+.newfileBox .el-tabs__item.is-active {
+  color: #68b6e7;
+}
+.newfileBox .el-tabs__item:hover {
+  color: #68b6e7;
+  cursor: pointer;
+}
+.newfileBox .el-tabs__active-bar {
+  background-color: #68b6e7;
+}
+.newfileBox .el-tabs__nav {
+  margin-left: 26px;
+}
+.newfileBox .el-tabs__content {
+  background-color: #fff;
 }
 </style>

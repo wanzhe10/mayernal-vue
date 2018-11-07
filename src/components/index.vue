@@ -111,7 +111,7 @@
             <el-container>
                 <el-main>
                     <router-view />
-
+    
                 </el-main>
                 <!-- 底部 -->
                 <el-footer>
@@ -283,4 +283,28 @@ body > .el-container {
     text-align: center;
     margin-top:20px;
 }
+// .el-date-editor.el-input,
+// .el-date-editor.el-input__inner {
+//   width: 260px;
+// }
+// .el-tabs__nav-scroll {
+//   height: 64px;
+//   line-height: 64px;
+//   background-color: #fff;
+//   color: #333333;
+// }
+// .el-tabs__item.is-active {
+//   color: #68b6e7;
+// }
+// .el-tabs__item:hover {
+//   color: #68b6e7;
+//   cursor: pointer;
+// }
+// .el-tabs__active-bar {
+//   background-color: #68b6e7;
+// }
+// .el-tabs__nav {
+//   margin-left: 26px;
+// }
+
 </style>

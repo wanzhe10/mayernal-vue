@@ -1,5 +1,5 @@
 <template>
-  <div class="rightContant">
+  <div class="managementBox">
     <div class="topBox clearfix">
       <div class="btnsBOx">
         <router-link :to="{path: 'newfile'}">
@@ -63,7 +63,7 @@
         <el-table-column prop="address" label="操作" width="48px">
           <template slot-scope="scope">
             <router-link :to="{path: 'personalCenter'}">
-              <el-button type="text" size="small">查看</el-button>
+              <el-button type="text" size="small" style="text-align: center;">查看</el-button>
             </router-link>
             <!-- <el-button type="text" size="small">编辑</el-button> -->
           </template>
@@ -219,7 +219,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .mal20 {
   margin-left: 20px;
 }
@@ -282,7 +282,70 @@ export default {
 .mal20 {
   margin-left: 20px;
 }
-.rightContant {
+
+.greenStrip {
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+  }
+}
+.yellowStrip {
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: yellow;
+    border-radius: 50%;
+  }
+}
+.orangeStrip {
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: orange;
+    border-radius: 50%;
+  }
+}
+.proponStrip {
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: purple;
+    border-radius: 50%;
+  }
+}
+.redStrip {
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+  }
+}
+</style>
+<style lang="less">
+.managementBox {
   width: 100%;
   height: 100%; //右侧上面块
   .topBox {
@@ -416,64 +479,48 @@ export default {
     padding-bottom: 30px;
   }
 }
-.greenStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: green;
-    border-radius: 50%;
+  // 右侧下面块
+  .bottomBox {
+    thead {
+      th {
+        color: #333333;
+        font-weight: 100;
+        background-color: #e7f3fb;
+      }
+
+      th:nth-child(1),
+      th:nth-child(5),
+      th:nth-child(8),
+      th:nth-child(9) {
+        text-align: center;
+      }
+    }
+    tbody {
+      td {
+        padding: 0px;
+      }
+      td:nth-child(1),
+      td:nth-child(5),
+      td:nth-child(8),
+      td:nth-child(9) {
+        text-align: center;
+      }
+    }
+    p {
+      text-align: left;
+      font-size: 12px;
+      position: relative;
+      display: block;
+      height: 13px;
+      line-height: 13px;
+      padding-left: 12px;
+    }
+    div {
+      padding: 0px;
+    }
+    width: 100%;
+    background-color: #fff;
+    margin-top: 10px;
+    padding-bottom: 30px;
   }
-}
-.yellowStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: yellow;
-    border-radius: 50%;
-  }
-}
-.orangeStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: orange;
-    border-radius: 50%;
-  }
-}
-.proponStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: purple;
-    border-radius: 50%;
-  }
-}
-.redStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    border-radius: 50%;
-  }
-}
 </style>
