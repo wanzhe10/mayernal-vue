@@ -102,21 +102,14 @@
         <div class="wire"></div>
         <div class="mgr70">
           <h3>户口所在地</h3>
-          <el-select v-model="registeredModel" placeholder="请选择">
-            <el-option v-for="item in registered" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-          <input type="text" placeholder="请输入详细地址" class="mgl16">
-        </div>
+<area-cascader type='text' v-model="registeredModel" :level='1' :data="pcaa" @change="registeredModelResidence()"></area-cascader>
+        </div><br>
         <div class="mgr70">
           <h3>现住地址</h3>
-          <el-select v-model="presentAddressModel" placeholder="请选择">
-            <el-option v-for="item in presentAddress" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-
-          <input type="text" placeholder="请输入详细地址" class="presentAddress mgl16">
+<area-cascader type='text' v-model="presentAddressModel" :level='1' :data="pcaa" @change="registeredModelPresentAddressModel()"></area-cascader>
+         <input type="text" placeholder="请输入详细地址" class="presentAddress mgl16">
         </div>
+           
 
       </div>
     </el-tab-pane>
@@ -201,8 +194,8 @@
         <div class="somkingBox clearfix">
           <div class="somkingFont">吸烟</div>
           <div class="somkingSelect clearfix">
-            <el-radio v-model="smoking" label="1" @change = 'handleCheckAllChange'>是</el-radio>
-            <el-radio v-model="smoking" label="0">否</el-radio>
+            <el-radio v-model="smoking" label="1">是</el-radio>
+            <el-radio v-model="smoking" label="0"  @change = 'handleCheckAllChange'>否</el-radio>
           </div>
 
         </div>
@@ -268,11 +261,9 @@
 
         <div class="mgr76 spouseSiteBox">
           <p>现住地址</p>
-          <el-select v-model="spousePresentAddressModel" placeholder="请选择">
-            <el-option v-for="item in spousePresentAddress" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-          <input type="text" placeholder="请输入详细地址" class="mgl16">
+<area-cascader type='text' v-model="spousePresentAddressModel" :level='1' :data="pcaa" @change="spousePresentAddressModelAddressModel()"></area-cascader>
+         
+          <input type="text" placeholder="请输入详细地址" class="mgl16 spouseResidenceAddress">
         </div>
 
       </div>
@@ -937,10 +928,15 @@
     </div>
 </template>
 <script>
+import { AreaCascader } from "vue-area-linkage";
+import { pca, pcaa } from "area-data";
 export default {
   data() {
+    // return {
+   
+      // }
     return {
-      activeName: "sixth",
+      activeName: "second",
       smoking: "1",
       drink: "1",
       history1: "1",
@@ -1090,20 +1086,7 @@ export default {
           label: "北京"
         }
       ],
-      // 孕妇现住地址
-      presentAddress: [
-        {
-          value: "0",
-          label: "北京"
-        }
-      ],
-      // 配偶现住地址
-      spousePresentAddress: [
-        {
-          value: "0",
-          label: "北京"
-        }
-      ],
+     
       // 配偶婚姻状况
       spouseMarryType: [
         {
@@ -1580,15 +1563,14 @@ export default {
       educationModel: "",
       nationModel: "",
       jobModel: "",
-      registeredModel: "",
-      presentAddressModel: "",
+      presentAddressModel:[], // 孕妇基本信息现住地址数组
       spouseIdCardTypeModel: "",
       spouseMarryTypeModel: "",
       spouseMarryCheckModel: "",
       healthTypeModel: "",
       spouseEducationModel: "",
       spouseJobModel: "",
-      spousePresentAddressModel: "",
+      spousePresentAddressModel:[],// 配偶现住地址数组
       pregnanciesModel: "",
       lastMenstrual: "",
       parturitionFrontPharmacyModel: "",
@@ -1614,16 +1596,38 @@ export default {
       obstetricsPlacentalModel: "",
       projectTypeModel1: "",
       projectTypeModel2: "",
-      historyAssessModel: ""
+      historyAssessModel: "",
+      registeredModel: [], // 孕妇基本信息现户口所在地数组
+      //selected[0]省。selected[1]市。selected[2]区。
+      pca: pca,
+      pcaa: pcaa,
+      //  isshow:false,// 配偶一般信息 吸烟
+      
     };
   },
   methods: {
     modifyButton: function() {
-      alert(1);
+     
     },
+    // 配偶一般信息吸烟
     handleCheckAllChange() {
-      alert(1);
-      }
+    //  this.isshow= false;
+      },
+      	//孕妇基本信息户口所在地
+  registeredModelResidence() {
+      console.log(this.registeredModel);
+    },
+    	//孕妇基本信息现住地址
+    registeredModelPresentAddressModel() {
+      console.log(this.presentAddressModel);
+    },
+      	//匹配欧一般信息现住地址
+    spousePresentAddressModelAddressModel() {
+      console.log(this.spousePresentAddressModel);
+    },
+    
+    
+    
   }
 };
 </script>
@@ -1759,6 +1763,12 @@ padding: 14px 24px 24px 26px;
       }
     }
   }
+  .presentAddress{
+     position: absolute;
+    bottom: 25px;
+    left: 300px;
+  }
+     
 }
 .el-select {
   input {
@@ -2018,6 +2028,11 @@ padding: 14px 24px 24px 26px;
       color: #666666;
       margin-bottom: 16px;
     }
+  }
+  .spouseResidenceAddress{
+        position: absolute;
+    bottom: 25px;
+    left: 300px;
   }
 }
 .el-radio__input.is-checked .el-radio__inner {
@@ -3024,5 +3039,17 @@ padding: 14px 24px 24px 26px;
 }
 .newfileBox .el-tabs__content {
   background-color: #fff;
+}
+.area-select.large {
+    width: 260px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: #f6f6f6;
+    color: #606266;
+}
+.cascader-menu-list .cascader-menu-option.selected {
+   background-color: #f5f7fa;
+color: #68b6e7;
+    font-weight: 700;
 }
 </style>

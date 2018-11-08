@@ -631,7 +631,7 @@ export default {
     height: 500px;
     background-color: #fff;
     border: 1px solid #ccc;
-    float: left;
+    // float: left;
     h2 {
       display: inline-block;
       height: 52px;
@@ -877,7 +877,7 @@ export default {
       height: 500px;
       background-color: #fff;
       border: 1px solid #ccc;
-      float: left;
+      // float: left;
       h2 {
         display: inline-block;
         height: 52px;

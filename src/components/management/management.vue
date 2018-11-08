@@ -51,16 +51,16 @@
         <el-table-column prop="pregnant" label="孕产期" width="110px"></el-table-column>
         <el-table-column prop="blood" label="血型" width="46px"></el-table-column>
         <el-table-column prop="grade" label="评分等级" width="96px"></el-table-column>
-        <el-table-column prop="element" label="高危因素" width="96px">
+        <el-table-column prop="element" label="高危因素" width="100px">
           <template slot-scope="scope" class="elementFont">
             <p class="greenStrip">绿色（12）项</p>
             <p class="yellowStrip">黄色（12）项</p>
             <p class="orangeStrip">橙色（12）项</p>
             <p class="proponStrip">紫色（12）项</p>
-            <p class="redStrip">红色（12）项</p>
+            <!-- <p class="redStrip">红色（12）项</p> -->
           </template>
         </el-table-column>
-        <el-table-column prop="address" label="操作" width="48px">
+        <el-table-column prop="address" label="操作" width="58px">
           <template slot-scope="scope">
             <router-link :to="{path: 'personalCenter'}">
               <el-button type="text" size="small" style="text-align: center;">查看</el-button>
@@ -446,7 +446,8 @@ export default {
       th:nth-child(1),
       th:nth-child(5),
       th:nth-child(8),
-      th:nth-child(9) {
+      th:nth-child(9),
+       th:nth-child(11) {
         text-align: center;
       }
     }
@@ -457,7 +458,8 @@ export default {
       td:nth-child(1),
       td:nth-child(5),
       td:nth-child(8),
-      td:nth-child(9) {
+      td:nth-child(9),
+      td:nth-child(11),{
         text-align: center;
       }
     }

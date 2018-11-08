@@ -24,6 +24,7 @@ export default new Router({
       path: '/',
       name: 'index',
       component: index,
+      redirect: '/management',
       children: [
         {
           path: '/organization',
