@@ -43,7 +43,7 @@
             <el-tab-pane label="复检记录" name="recheck">
                 <div class="recordNumsBox">
                     <h2>产检记录（<i class="recordNum">10</i>）<i class="crossIcon"></i></h2>
-                    <ul>
+                    <ul >
                         <li class="active">
                             <p>第一次产检</p>
                             <span>2018-12-12</span>
@@ -622,7 +622,7 @@ export default {
     }
   }
   .recordNumsBox {
-    display: inline-block;
+    // display: inline-block;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -631,7 +631,7 @@ export default {
     height: 500px;
     background-color: #fff;
     border: 1px solid #ccc;
-    // float: left;
+    float: left;
     h2 {
       display: inline-block;
       height: 52px;
@@ -868,7 +868,7 @@ export default {
   // 高危评估模块
   .spouseNewsBox {
     .spouseNumsBox {
-      display: inline-block;
+      // display: inline-block;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -877,7 +877,7 @@ export default {
       height: 500px;
       background-color: #fff;
       border: 1px solid #ccc;
-      // float: left;
+      float: left;
       h2 {
         display: inline-block;
         height: 52px;

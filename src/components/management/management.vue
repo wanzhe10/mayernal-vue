@@ -345,6 +345,11 @@ export default {
 }
 </style>
 <style lang="less">
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #68b6e7;
+    color: #fff;
+}
+
 .managementBox {
   width: 100%;
   height: 100%; //右侧上面块

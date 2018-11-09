@@ -1,931 +1,936 @@
 <template>
-    <div class="newfileBox">
-  <el-tabs v-model="activeName" class="aaaa">
-         <el-tab-pane label="孕妇基本信息" name="first">
-      <!-- 孕妇基本信息 -->
-      <div class="pregnantNewsBox">
-        <div class="mgr70">
-          <h3>孕妇姓名（必填）</h3>
-          <input type="text" class="pregnantName" placeholder="请输入姓名">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70 bindingBox">
-          <h3>就诊卡号（必填）</h3>
-          <input type="text" class="pregnantFN" placeholder="请输入就诊卡号">
-          <p class="redFont">此项为必填项！</p>
-          <div class="bindingBtn">卡号绑定</div>
-        </div>
-        <div class="mgr0">
-          <h3>手机号</h3>
-          <input type="text" class="pregnantPhone" placeholder="请输入手机号">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70">
-          <h3>证件类型（必填）</h3>
-          <el-select v-model="idCardTypeModel" placeholder="请选择">
-            <el-option v-for="item in idCardSelect" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70">
-          <h3>身份证号（必填）</h3>
-          <input type="tel" class="pregnantIdCard" placeholder="请输入身份证号码">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr0 birthBox">
-          <h3>出生年月（自动获取）</h3>
-          <input type="text" class="layui-input pregnantDateBirth" placeholder="" id="test1" readonly="readonly">
-          <h5 class="birth">
-            <span class="birth_sex">女</span>
-          </h5>
-        </div>
-        <div class="mgr70">
-          <h3>结婚年龄（岁）</h3>
-          <input type="text" class="pregnantMarriageAge" placeholder="请输入结婚年龄">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70">
-          <h3>孕前体重（kg）</h3>
-          <input type="text" class="pregnantWeight" placeholder="请输入年龄">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="wire"></div>
-        <div class="mgr70">
-          <h3>婚姻状况</h3>
-          <el-select v-model="marryTypeeModel" placeholder="请选择">
-            <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr70">
-          <h3>婚检</h3>
-          <el-select v-model="marryCheckModel" placeholder="请选择">
-            <el-option v-for="item in marryCheck" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr0">
-          <h3>近半年避孕方法</h3>
-          <el-select v-model="contraceptionModel" placeholder="请选择">
-            <el-option v-for="item in contraception" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr70">
-          <h3>文化程度</h3>
-          <el-select v-model="educationModel" placeholder="请选择">
-            <el-option v-for="item in education" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr70">
-          <h3>民族</h3>
-          <el-select v-model="nationModel" placeholder="请选择">
-            <el-option v-for="item in nation" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <br />
-        <div class="mgr70">
-          <h3>职业</h3>
-          <el-select v-model="jobModel" placeholder="请选择">
-            <el-option v-for="item in job" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr70">
-          <h3>工作单位</h3>
-          <input type="text" class="work" placeholder="请输入工作单位">
-        </div>
-        <div class="wire"></div>
-        <div class="mgr70">
-          <h3>户口所在地</h3>
-<area-cascader type='text' v-model="registeredModel" :level='1' :data="pcaa" @change="registeredModelResidence()"></area-cascader>
-        </div><br>
-        <div class="mgr70">
-          <h3>现住地址</h3>
-<area-cascader type='text' v-model="presentAddressModel" :level='1' :data="pcaa" @change="registeredModelPresentAddressModel()"></area-cascader>
-         <input type="text" placeholder="请输入详细地址" class="presentAddress mgl16">
-        </div>
-           
-
-      </div>
-    </el-tab-pane>
-    <el-tab-pane label="配偶一般信息" name="second">
-      <!-- 配偶一般信息 -->
-      <div class=" spouseNewsBox  clearfix">
-        <div class="mgr70">
-          <h3>配偶姓名</h3>
-          <input type="text" class="spouseName" placeholder="请输入姓名">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70">
-          <h3>手机号</h3>
-          <input type="number" class="spousePhone" placeholder="请输入手机号">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr0">
-          <h3>结婚年龄（岁）</h3>
-          <input type="number" class="spouseMarriageAge" placeholder="请输入结婚年龄">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70">
-          <h3>证件类型</h3>
-          <el-select v-model="spouseIdCardTypeModel" placeholder="请选择">
-            <el-option v-for="item in spouseIdCardType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70">
-          <h3>身份证号</h3>
-          <input type="tel" class="spouseIdCard" placeholder="请输入身份证号码">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr0 birthBox">
-          <h3>配偶年龄</h3>
-          <input type="number" class="spouseAge">
-          <h5 class="birth">
-            <span class="birth_sex">男</span>
-          </h5>
-        </div>
-        <div class="wire"></div>
-
-        <div class="mgr70">
-          <h3>结婚状况</h3>
-          <el-select v-model="spouseMarryTypeModel" placeholder="请选择">
-            <el-option v-for="item in spouseMarryType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-
-        <div class="mgr70">
-          <h3>婚检</h3>
-          <el-select v-model="spouseMarryCheckModel" placeholder="请选择">
-            <el-option v-for="item in spouseMarryCheck" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr0">
-          <h3>健康状态</h3>
-          <el-select v-model="healthTypeModel" placeholder="请选择">
-            <el-option v-for="item in healthType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr70">
-          <h3>文化程度</h3>
-          <el-select v-model="spouseEducationModel" placeholder="请选择">
-            <el-option v-for="item in spouseEducation" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr70">
-          <h3>职业</h3>
-          <el-select v-model="spouseJobModel" placeholder="请选择">
-            <el-option v-for="item in spouseJob" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="wire"></div>
-        <div class="somkingBox clearfix">
-          <div class="somkingFont">吸烟</div>
-          <div class="somkingSelect clearfix">
-            <el-radio v-model="smoking" label="1">是</el-radio>
-            <el-radio v-model="smoking" label="0"  @change = 'handleCheckAllChange'>否</el-radio>
+  <div class="newfileBox">
+    <el-tabs v-model="activeName" class="aaaa">
+      <el-tab-pane label="孕妇基本信息" name="first">
+        <!-- 孕妇基本信息 -->
+        <div class="pregnantNewsBox">
+          <div class="mgr70">
+            <h3>孕妇姓名（必填）</h3>
+            <input type="text" class="pregnantName" placeholder="请输入姓名">
+            <p class="redFont">此项为必填项！</p>
           </div>
+          <div class="mgr70 bindingBox">
+            <h3>就诊卡号（必填）</h3>
+            <input type="text" class="pregnantFN" placeholder="请输入就诊卡号">
+            <p class="redFont">此项为必填项！</p>
+            <div class="bindingBtn">卡号绑定</div>
+          </div>
+          <div class="mgr0">
+            <h3>手机号</h3>
+            <input type="text" class="pregnantPhone" placeholder="请输入手机号">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr70">
+            <h3>证件类型（必填）</h3>
+            <el-select v-model="idCardTypeModel" placeholder="请选择">
+              <el-option v-for="item in idCardSelect" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
 
-        </div>
-
-        <div class="somkingBox clearfix">
-          <div class="somkingFont">饮酒</div>
-          <div class="somkingSelect clearfix">
-            <el-radio v-model="drink" label="1">是</el-radio>
-            <el-radio v-model="drink" label="0">否</el-radio>
+            <p class="redFont">此项为必填项！</p>
           </div>
-        </div>
-        <!-- 家族史 -->
-        <div class="somkingBox clearfix" style="margin-right:0px;">
-          <div class="somkingFont">家族史</div>
-          <div class="somkingSelect clearfix">
-            <el-radio v-model="history1" label="1">是</el-radio>
-            <el-radio v-model="history1" label="0">否</el-radio>
+          <div class="mgr70">
+            <h3>身份证号（必填）</h3>
+            <input type="tel" class="pregnantIdCard" placeholder="请输入身份证号码">
+            <p class="redFont">此项为必填项！</p>
           </div>
-        </div>
-        <!-- 吸烟隐藏显示块 -->
-        <div class="somkingCirculationBox">
-          <p>请您输入每天的支数</p>
-          <input type="text" placeholder="请输入" class="cigaretteNUm">
-          <h5 class="birth">
-            <span class="bar_day">支/日</span>
-          </h5>
-        </div>
-        <!-- 饮酒隐藏显示块 -->
-        <div class="drinkCirculationBox">
-          <p>请选择饮酒习惯</p>
-          <a href="jsvascript:;" class="drinkOccasionally">偶尔</a>
-          <a href="jsvascript:;" class="drinkOften">经常</a>
-        </div>
-        <!-- 家族史隐藏显示块 -->
-        <div class="history1CirculationBox" style="margin-right:0px;">
-          <input type="email" class="inquire" placeholder="请输入拼音首字母" onKeyUp="value=value.replace(/[\W]/g,'')">
-          <i class="seekIcon"></i>
-          <p>已选择</p>
-          <ul class="hideBox clearfix">
-            <li>糖尿病1</li>
-            <li>糖尿病2</li>
-            <li>糖尿病3</li>
-            <li>糖尿病4</li>
-            <li>糖尿病5</li>
-            <li>糖尿病6</li>
-          </ul>
-          <div class="history1Select">
-            <ul>
-              <li>选择1</li>
-              <li>选择2</li>
-              <li>选择3</li>
-              <li>选择4</li>
-              <li>选择5</li>
-              <li>选择6</li>
-              <li>选择7</li>
-              <li>选择8</li>
-              <li>选择9</li>
-              <li>选择10</li>
-            </ul>
+          <div class="mgr0 birthBox">
+            <h3>出生年月（自动获取）</h3>
+            <input type="text" class="layui-input pregnantDateBirth" placeholder="" id="test1" readonly="readonly">
+            <h5 class="birth">
+              <span class="birth_sex">女</span>
+            </h5>
           </div>
-        </div>
-        <div class="wire"></div>
-
-        <div class="mgr76 spouseSiteBox">
-          <p>现住地址</p>
-<area-cascader type='text' v-model="spousePresentAddressModel" :level='1' :data="pcaa" @change="spousePresentAddressModelAddressModel()"></area-cascader>
-         
-          <input type="text" placeholder="请输入详细地址" class="mgl16 spouseResidenceAddress">
-        </div>
-
-      </div>
-    </el-tab-pane>
-    <!-- 孕产信息 -->
-    <el-tab-pane label="孕产信息" name="third">
-      <div class="pregnancyNewsBox  clearfix">
-        <div class="mgr76 fl">
-          <h3>初诊日期</h3>
-          <input type="text" class="mgl30 firstCheckDate" placeholder="" id="test2" readonly="readonly" disabled="disabled">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr76 fl w260">
-          <h3>末次月经</h3>
-          <el-date-picker v-model="lastMenstrual" type="date" placeholder="选择日期">
-          </el-date-picker>
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr0 fl">
-          <h3>预产期</h3>
-          <input type="text" class="mgl30 dueDate" placeholder="自动计算" readonly='readonly'>
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr76 fl">
-          <h3>孕周</h3>
-          <div class="gestationalWeeksBox clearfix">
-            <div class="newAgeOfMenarche">孕周</div>
-            <div class="newAgeOfMenarcheDay">孕天</div>
+          <div class="mgr70">
+            <h3>结婚年龄（岁）</h3>
+            <input type="text" class="pregnantMarriageAge" placeholder="请输入结婚年龄">
+            <p class="redFont">此项为必填项！</p>
           </div>
-        </div>
-        <div class="mgr76 fl">
-          <h3>月经史-初潮（岁）</h3>
-          <input type="text" class="menstrualHistoryAge" placeholder="初潮">
-        </div>
-        <div class="mgr0 fl">
-          <h3>月经史—周期（天）</h3>
-          <input type="text" placeholder="周期" class="menstrualHistoryDay">
-        </div>
-        <div class="wire"></div>
-        <div class="mgr76 mgb12">
-          <h3>怀孕次数</h3>
-          <el-select v-model="pregnanciesModel" placeholder="请选择">
-            <el-option v-for="item in pregnancies" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <el-table :data="PregnancyInformation" border style="width: 100%" class="dynamicTable">
-          <el-table-column prop="number" label="胎次" width="80">
-          </el-table-column>
-          <el-table-column prop="ageOfMenarche" label="孕周" width="124">
-          </el-table-column>
-          <el-table-column prop="productionDate" label="年月日" width="150">
-          </el-table-column>
-          <el-table-column prop="productionOfAge" label="年龄" width="90">
-          </el-table-column>
-          <el-table-column prop="productionAbortion" label="分娩方式" width="120">
-          </el-table-column>
-          <el-table-column prop="babySex" label="性别" width="84">
-          </el-table-column>
-          <el-table-column prop="babyHealthType" label="健否" width="84">
-          </el-table-column>
-          <el-table-column prop="remarks" label="备注" width="114">
-          </el-table-column>
-          <el-table-column prop="modifyButton" label="操作" width="80px">
-            <template slot-scope="scope">
-              <el-button @click="modifyButton()" type="text" size="small">修改</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="wire"></div>
-        <div class="mgr76">
-          <h3>孕期用药</h3>
-          <el-select v-model="parturitionFrontPharmacyModel" placeholder="请选择">
-            <el-option v-for="item in parturitionFrontPharmacy" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr76">
-          <h3>尿酮体</h3>
-          <el-select v-model="ketosisModel" placeholder="请选择">
-            <el-option v-for="item in ketosis" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr0">
-          <h3>早孕反应程度</h3>
-          <el-select v-model="morningSicknessModel" placeholder="请选择">
-            <el-option v-for="item in morningSickness" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr76">
-          <h3>宠物接触</h3>
-          <el-select v-model="animalContactModel" placeholder="请选择">
-            <el-option v-for="item in animalContact" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr76">
-          <h3>接触放射性</h3>
-          <el-select v-model="contactRadioactiveRaysModel" placeholder="请选择">
-            <el-option v-for="item in contactRadioactiveRays" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr0">
-          <h3>接触放射性时间</h3>
-          <input type="text" class="mgl30 contactRadioactiveRaysDate" placeholder="请输入时间" id="test4" disabled="disabled" readonly="readonly" onfocus="this.blur();">
-        </div>
-        <div class="wire"></div>
-        <!--孕产信息接触毒物 -->
-        <div class="somkingBox clearfix">
-          <div class="somkingFont">接触毒物</div>
-          <div class="somkingSelect clearfix">
-            <el-radio v-model="contact" label="1">是</el-radio>
-            <el-radio v-model="contact" label="0">否</el-radio>
+          <div class="mgr70">
+            <h3>孕前体重（kg）</h3>
+            <input type="text" class="pregnantWeight" placeholder="请输入年龄">
+            <p class="redFont">此项为必填项！</p>
           </div>
-        </div>
-        <!-- 孕产信息病毒感染 -->
-        <div class="somkingBox clearfix">
-          <div class="somkingFont">病毒感染</div>
-          <div class="somkingSelect clearfix">
-            <el-radio v-model="virus" label="1">是</el-radio>
-            <el-radio v-model="virus" label="0">否</el-radio>
-          </div>
-        </div>
-
-        <!-- 孕产信息家族史 -->
-        <div class="somkingBox clearfix mgr0">
-          <div class="somkingFont">家族史</div>
-          <div class="somkingSelect clearfix">
-            <el-radio v-model="history2" label="1">是</el-radio>
-            <el-radio v-model="history2" label="0">否</el-radio>
-          </div>
-        </div>
-        <!-- 孕产信息接触毒物-隐藏显示块 -->
-        <div class="contactPoisonBox">
-          <p>请您输入每天的支数</p>
-          <input type="text" placeholder="请输入毒物名称" class="contactToxicName mgb12">
-          <input type="text" placeholder="请输入接触时间" class="contactToxicDate">
-        </div>
-        <!-- 孕产信息病毒感染-隐藏显示块 -->
-        <div class="virusInfectionBox">
-          <p>请选择感染类型</p>
-          <ul class="clearfix">
-            <li>流感</li>
-            <li>风疹</li>
-            <li>疱疹</li>
-            <li class="mgb0">肝炎</li>
-            <li class="mgb0">腮腺炎</li>
-            <li class="mgb0">其他</li>
-          </ul>
-        </div>
-        <!-- 孕产信息家族史-隐藏显示块 -->
-
-        <div class="familyHistoryBox" style="margin-right:0px;">
-          <input type="email" class="inquire" placeholder="请输入拼音首字母" onKeyUp="value=value.replace(/[\W]/g,'')">
-          <i class="seekIcon"></i>
-          <p>已选择</p>
-          <ul class="hideBox clearfix">
-            <li>糖尿病1</li>
-            <li>糖尿病2</li>
-            <li>糖尿病3</li>
-            <li>糖尿病4</li>
-            <li>糖尿病5</li>
-            <li>糖尿病6</li>
-
-          </ul>
-          <div class="familyHistorySelect">
-            <ul>
-              <li>选择1</li>
-              <li>选择2</li>
-              <li>选择3</li>
-              <li>选择4</li>
-              <li>选择5</li>
-              <li>选择6</li>
-              <li>选择7</li>
-              <li>选择8</li>
-              <li>选择9</li>
-              <li>选择10</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="modificationLayer">
-          <div class="modificationLayerNav">
-            <span class="parity">胎次一</span>
-          </div>
-          <div class="modificationLayerMain clearfix">
-            <div class="mgr30 fl">
-              <h3>孕周</h3>
-              <input type="text" class="layui-input mgl30 layerWeeks" placeholder="" id="test2" readonly="readonly" disabled="disabled">
-            </div>
-            <div class="mgr30 fl">
-              <h3>年月日</h3>
-              <input type="text" class="layui-input mgl30 layerDate" placeholder="" id="test2" readonly="readonly" disabled="disabled">
-            </div>
-            <div class="mgr0 fl">
-              <h3>年龄</h3>
-              <input type="text" class="layui-input mgl30 layerAge" placeholder="" id="test2" readonly="readonly" disabled="disabled">
-            </div>
-            <div class="mgr30">
-              <h3>分娩方式</h3>
-              <select class="layerDelivery">
-                <option value="0">自然分娩</option>
-                <option value="1">剖宫产</option>
-              </select>
-            </div>
-            <div class="mgr30">
-              <h3>性别</h3>
-              <select class="layerSex">
-                <option value="0">男</option>
-                <option value="1">女</option>
-              </select>
-            </div>
-            <div class="mgr0">
-              <h3>健否</h3>
-              <select class="layerSpleen">
-                <option value="0">健康</option>
-                <option value="1">死亡</option>
-              </select>
-            </div>
-            <h3>备注</h3>
-            <textarea class="layerRemark"></textarea>
-            <input type="button" value="取消" class="cancelBtn">
-            <input type="button" value="保存" class="saveBtn">
-          </div>
-        </div>
-      </div>
-    </el-tab-pane>
-    <!--  -->
-    <el-tab-pane label="体格检查" name="fourth">
-      <div class="healthCheckupBox">
-        <h2 class="healthCheckTittle">一般检查</h2>
-        <div class="mgr76">
-          <h3>血 压（mmHg）</h3>
-          <div class="bloodBox">
-            <input type="number" placeholder="低压" class="lowTension">
-            <input type="number" placeholder="高压" class="hyperpiesia">
-          </div>
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr76">
-          <h3>身 高（cm）</h3>
-          <input type="number" class="height" placeholder="请输入姓名">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr0">
-          <h3>体 重（kg）</h3>
-          <input type="number" class="weight" placeholder="请输入姓名">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="healthCheckupBox_firstBox">
-          <div class="mgr38">
-            <h3>心 率</h3>
-            <el-select v-model="baseHeartRateModel" placeholder="请选择">
-              <el-option v-for="item in baseHeartRate" :key="item.value" :label="item.label" :value="item.value">
+          <div class="wire"></div>
+          <div class="mgr70">
+            <h3>婚姻状况</h3>
+            <el-select v-model="marryTypeeModel" placeholder="请选择">
+              <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </div>
-          <div class="mgr77">
-            <h3>肺</h3>
-            <el-select v-model="baseLungModel" placeholder="请选择">
-              <el-option v-for="item in baseLung" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="mgr38">
-            <h3>肝</h3>
-            <el-select v-model="baseAbdomenLiverModel" placeholder="请选择">
-              <el-option v-for="item in baseAbdomenLiver" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="mgr77">
-            <h3>脾</h3>
-            <el-select v-model="baseAbdomenSpleenModel" placeholder="请选择">
-              <el-option v-for="item in baseAbdomenSpleen" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="mgr38">
-            <h3>脊 柱</h3>
-            <el-select v-model="baseSpinalLimbsDeformityModel" placeholder="请选择">
-              <el-option v-for="item in baseSpinalLimbsDeformity" :key="item.value" :label="item.label" :value="item.value">
+          <div class="mgr70">
+            <h3>婚检</h3>
+            <el-select v-model="marryCheckModel" placeholder="请选择">
+              <el-option v-for="item in marryCheck" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </div>
           <div class="mgr0">
-            <h3>四肢水肿</h3>
-            <el-select v-model="baseSpinalLimbsEdemaModel" placeholder="请选择">
-              <el-option v-for="item in baseSpinalLimbsEdema" :key="item.value" :label="item.label" :value="item.value">
+            <h3>近半年避孕方法</h3>
+            <el-select v-model="contraceptionModel" placeholder="请选择">
+              <el-option v-for="item in contraception" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </div>
-          <div class="mgr38">
-            <h3>乳 房</h3>
-            <el-select v-model="baseBreastsModel" placeholder="请选择">
-              <el-option v-for="item in baseBreasts" :key="item.value" :label="item.label" :value="item.value">
+          <div class="mgr70">
+            <h3>文化程度</h3>
+            <el-select v-model="educationModel" placeholder="请选择">
+              <el-option v-for="item in education" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </div>
-          <div class="mgr77">
-            <h3>乳 头</h3>
-            <el-select v-model="baseNippleModel" placeholder="请选择">
-              <el-option v-for="item in baseNipple" :key="item.value" :label="item.label" :value="item.value">
+          <div class="mgr70">
+            <h3>民族</h3>
+            <el-select v-model="nationModel" placeholder="请选择">
+              <el-option v-for="item in nation" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </div>
+          <br />
+          <div class="mgr70">
+            <h3>职业</h3>
+            <el-select v-model="jobModel" placeholder="请选择">
+              <el-option v-for="item in job" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr70">
+            <h3>工作单位</h3>
+            <input type="text" class="work" placeholder="请输入工作单位">
+          </div>
+          <div class="wire"></div>
+          <div class="mgr70">
+            <h3>户口所在地</h3>
+            <area-cascader type='text' v-model="registeredModel" :level='1' :data="pcaa" @change="registeredModelResidence()"></area-cascader>
+          </div><br>
+          <div class="mgr70">
+            <h3>现住地址</h3>
+            <area-cascader type='text' v-model="presentAddressModel" :level='1' :data="pcaa" @change="registeredModelPresentAddressModel()"></area-cascader>
+            <input type="text" placeholder="请输入详细地址" class="presentAddress mgl16">
+          </div>
+
         </div>
-        <div class="wire" style="margin-bottom: 16px;"></div>
-        <h2 class="healthCheckTittle">妇科检查</h2>
-        <div class="healthCheckupBox_firstBox">
-          <div class="mgr38">
-            <h3>外阴</h3>
-            <el-select v-model="obstetricsVulvaModel" placeholder="请选择">
-              <el-option v-for="item in obstetricsVulva" :key="item.value" :label="item.label" :value="item.value">
+      </el-tab-pane>
+      <el-tab-pane label="配偶一般信息" name="second">
+        <!-- 配偶一般信息 -->
+        <div class=" spouseNewsBox  clearfix">
+          <div class="mgr70">
+            <h3>配偶姓名</h3>
+            <input type="text" class="spouseName" placeholder="请输入姓名">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr70">
+            <h3>手机号</h3>
+            <input type="number" class="spousePhone" placeholder="请输入手机号">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr0">
+            <h3>结婚年龄（岁）</h3>
+            <input type="number" class="spouseMarriageAge" placeholder="请输入结婚年龄">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr70">
+            <h3>证件类型</h3>
+            <el-select v-model="spouseIdCardTypeModel" placeholder="请选择">
+              <el-option v-for="item in spouseIdCardType" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
 
+            <p class="redFont">此项为必填项！</p>
           </div>
-          <div class="mgr77">
-            <h3>阴道</h3>
-            <el-select v-model="obstetricsVaginaModel" placeholder="请选择">
-              <el-option v-for="item in obstetricsVagina" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
+          <div class="mgr70">
+            <h3>身份证号</h3>
+            <input type="tel" class="spouseIdCard" placeholder="请输入身份证号码">
+            <p class="redFont">此项为必填项！</p>
           </div>
-          <div class="mgr38">
-            <h3>宫颈</h3>
-            <el-select v-model="obstetricsCervixModel" placeholder="请选择">
-              <el-option v-for="item in obstetricsCervix" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
+          <div class="mgr0 birthBox">
+            <h3>配偶年龄</h3>
+            <input type="number" class="spouseAge">
+            <h5 class="birth">
+              <span class="birth_sex">男</span>
+            </h5>
           </div>
-          <div class="mgr77">
-            <h3>宫体</h3>
-            <el-select v-model="obstetricsCorpusModel" placeholder="请选择">
-              <el-option v-for="item in obstetricsCorpus" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="mgr0  accessory">
-            <h3>附件</h3>
-            <el-select v-model="obstetricsPairsAttachmentModel" placeholder="请选择">
-              <el-option v-for="item in obstetricsPairsAttachment" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-        </div>
-        <div class="wire" style="margin-bottom: 16px;"></div>
-        <h2 class="healthCheckTittle">化验检查</h2>
-        <div class="mgr76">
-          <h3>尿蛋白</h3>
-          <input type="number" class="assayUrineProtein">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr76">
-          <h3>血红蛋白</h3>
-          <input type="number" class="assayHemoglobin">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr0">
-          <h3>血小板</h3>
-          <input type="number" class="assayBloodPlatelet">
-        </div>
-        <div class="mgr0">
-          <h3>血型</h3>
-          <el-select v-model="assayBloodTypeModel" placeholder="请选择">
-            <el-option v-for="item in assayBloodType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="wire" style="margin-bottom: 16px;"></div>
-        <h2 class="healthCheckTittle mgt140">产科检查</h2>
-        <div class="mgr76">
-          <h3>宫高</h3>
-          <input type="number" class="obstetricsHeight">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr76">
-          <h3>腹围</h3>
-          <input type="number" class="obstetricsAbdominalGirth">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr0">
-          <h3>先露</h3>
-          <el-select v-model="obstetricsFirstDewModel" placeholder="请选择">
-            <el-option v-for="item in obstetricsFirstDew" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr76">
-          <h3>胎心率</h3>
-          <input type="number" class="obstetricsFetalHeart">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr76">
-          <h3>盆骨出口横径</h3>
-          <input type="number" class="mgl10 obstetricsTransversePelvicDiameter">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr0">
-          <h3>胎方位</h3>
-          <el-select v-model="obstetricsPlacentalModel" placeholder="请选择">
-            <el-option v-for="item in obstetricsPlacental" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="wire" style="margin-bottom: 16px;"></div>
-        <h2 class="healthCheckTittle modelBox">
-          <span class="diagnoseTittle">诊断</span>
-          <div class="primaryDiagnosisBtn" style=" float: none;">
-            <i class="fileIcon"></i>
-            <span class="templateTittle ">导入模板</span>
-          </div>
-        </h2>
-        <textarea class="primaryDiagnosis"></textarea>
+          <div class="wire"></div>
 
-        <h2 class="healthCheckTittle modelBox" style="margin-top: 16px;">
-          <span class="diagnoseTittle">处置</span>
-          <div class="disposalBtn" style=" float: none;">
-            <i class="fileIcon"></i>
-            <span class="templateTittle ">导入模板</span>
+          <div class="mgr70">
+            <h3>结婚状况</h3>
+            <el-select v-model="spouseMarryTypeModel" placeholder="请选择">
+              <el-option v-for="item in spouseMarryType" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
           </div>
-        </h2>
-        <textarea class="disposal"></textarea>
-      </div>
-    </el-tab-pane>
-    <el-tab-pane label="高危评估" name="fifth">
-      <!-- 高危评估模块 -->
-      <div class="riskAssessmentBox ">
-        <span>项目类型</span>
-        <div class="mgl10">
-          <el-select v-model="projectTypeModel1" placeholder="请选择">
-            <el-option v-for="item in projectType1" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgl24">
-          <el-select v-model="projectTypeModel2" placeholder="请选择">
-            <el-option v-for="item in projectType2" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <span class="mgl174">历史评估记录</span>
-        <div class="mgl10">
-          <el-select v-model="historyAssessModel" placeholder="请选择">
-            <el-option v-for="item in historyAssess" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <input type="button" value="套用" class="useBtn mgl16">
-        <div class="wire"></div>
-        <!-- 查看全部块 -->
-        <div class="lookAtallBtnBox">
-          <h2>基本情况</h2>
-          <div class="positionWire"></div>
-          <div class="basicLookAtallBtn">
-            <span>查看全部</span>
-            <i class="el-icon-arrow-down"></i>
-          </div>
-        </div>
-        <div class="basicInformationBox">
-          <div class="partBox mgr34">
-            <div class="partBox_top">
-              <i>5</i>
-              <span class="fen">分</span>
-              <span class="mgl28">黄色（一般风险）</span>
-            </div>
-            <div class="fivepartBox topicBox">
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-            </div>
-          </div>
-          <div class="partBox mgr34">
-            <div class="partBox_top">
-              <i>10</i>
-              <span class="fen">分</span>
-              <span class="mgl28">橙色（较高风险）</span>
-            </div>
-            <div class="tenpartBox topicBox">
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-            </div>
-          </div>
-          <div class="partBox">
-            <div class="partBox_top">
-              <i>20</i>
-              <span class="fen">分</span>
-              <span class="mgl28">红色（高风险）</span>
-            </div>
-            <div class="twentypartBox topicBox">
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-            </div>
-          </div>
-        </div>
-        <!-- 孕期合并发症块 -->
-        <div class="lookAtallBtnBox">
-          <h2>孕期合并发症</h2>
-          <div class="positionWire2"></div>
-          <div class="pregnancyAllBtn">
-            <span>查看全部</span>
-            <i class="el-icon-arrow-down"></i>
-          </div>
-        </div>
-        <ul class="pregnancySelectBox">
-          <li class="selectAllBtn">全部</li>
-          <li>心血管系统疾病</li>
-          <li>呼吸系统疾病</li>
-          <li>消化系统疾病</li>
-          <li>泌尿系统疾病</li>
-          <li>内分泌系统疾病</li>
-          <li>精神神经系统疾病</li>
-          <li>血液系统疾病</li>
-          <li>性传播疾病</li>
-          <li>免疫系统疾病</li>
-          <li>肿瘤</li>
-          <li>吸毒史</li>
-          <li>其他</li>
-        </ul>
 
-        <div class="basicInformationBox">
-          <div class="partBox mgr34">
-            <div class="partBox_top">
-              <i>5</i>
-              <span class="fen">分</span>
-              <span class="mgl28">黄色（一般风险）</span>
+          <div class="mgr70">
+            <h3>婚检</h3>
+            <el-select v-model="spouseMarryCheckModel" placeholder="请选择">
+              <el-option v-for="item in spouseMarryCheck" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr0">
+            <h3>健康状态</h3>
+            <el-select v-model="healthTypeModel" placeholder="请选择">
+              <el-option v-for="item in healthType" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr70">
+            <h3>文化程度</h3>
+            <el-select v-model="spouseEducationModel" placeholder="请选择">
+              <el-option v-for="item in spouseEducation" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr70">
+            <h3>职业</h3>
+            <el-select v-model="spouseJobModel" placeholder="请选择">
+              <el-option v-for="item in spouseJob" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="wire"></div>
+          <!-- 配偶吸烟块 -->
+          <div class="somkingBox clearfix">
+            <div class="somkingBoxTop">
+              <div class="somkingFont">吸烟</div>
+              <div class="somkingSelect clearfix">
+                <el-radio v-model="smoking" label="1">是</el-radio>
+                <el-radio v-model="smoking" label="0" @change='handleCheckAllChange'>否</el-radio>
+              </div>
             </div>
-            <div class="fivepartBox topicBox">
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+            <!-- 吸烟隐藏显示块 -->
+            <div class="somkingCirculationBox">
+              <p>请您输入每天的支数</p>
+              <input type="text" placeholder="请输入" class="cigaretteNUm">
+              <h5 class="birth">
+                <span class="bar_day">支/日</span>
+              </h5>
             </div>
           </div>
-          <div class="partBox mgr34">
-            <div class="partBox_top">
-              <i>10</i>
-              <span class="fen">分</span>
-              <span class="mgl28">橙色（较高风险）</span>
+          <!-- 配偶饮酒块 -->
+          <div class="somkingBox clearfix">
+            <div class="somkingBoxTop">
+              <div class="somkingFont">饮酒</div>
+              <div class="somkingSelect clearfix">
+                <el-radio v-model="drink" label="1">是</el-radio>
+                <el-radio v-model="drink" label="0">否</el-radio>
+              </div>
             </div>
-            <div class="tenpartBox topicBox">
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+            <!-- 饮酒隐藏块 -->
+            <div class="drinkCirculationBox">
+              <p>请选择饮酒习惯</p>
+              <a href="jsvascript:;" class="drinkOccasionally">偶尔</a>
+              <a href="jsvascript:;" class="drinkOften">经常</a>
             </div>
           </div>
-          <div class="partBox">
-            <div class="partBox_top">
-              <i>20</i>
-              <span class="fen">分</span>
-              <span class="mgl28">红色（高风险）</span>
+          <!-- 配偶家族史 -->
+          <div class="somkingBox clearfix" style="margin-right:0px;">
+            <div class="somkingBoxTop">
+              <div class="somkingFont">家族史</div>
+              <div class="somkingSelect clearfix">
+                <el-radio v-model="history1" label="1">是</el-radio>
+                <el-radio v-model="history1" label="0">否</el-radio>
+              </div>
             </div>
-            <div class="twentypartBox topicBox">
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+            <!-- 配偶家族史隐藏快 -->
+            <div class="history1CirculationBox" style="margin-right:0px;">
+              <input type="email" class="inquire" placeholder="请输入拼音首字母" onKeyUp="value=value.replace(/[\W]/g,'')">
+              <i class="seekIcon"></i>
+              <p>已选择</p>
+              <ul class="hideBox clearfix">
+                <li>糖尿病1</li>
+                <li>糖尿病2</li>
+                <li>糖尿病3</li>
+                <li>糖尿病4</li>
+                <li>糖尿病5</li>
+                <li>糖尿病6</li>
+              </ul>
+              <div class="history1Select">
+                <ul>
+                  <li>选择1</li>
+                  <li>选择2</li>
+                  <li>选择3</li>
+                  <li>选择4</li>
+                  <li>选择5</li>
+                  <li>选择6</li>
+                  <li>选择7</li>
+                  <li>选择8</li>
+                  <li>选择9</li>
+                  <li>选择10</li>
+                </ul>
+              </div>
             </div>
+          </div>
+          <div class="wire"></div>
+          <div class="mgr76 spouseSiteBox">
+            <p>现住地址</p>
+            <area-cascader type='text' v-model="spousePresentAddressModel" :level='1' :data="pcaa" @change="spousePresentAddressModelAddressModel()"></area-cascader>
+            <input type="text" placeholder="请输入详细地址" class="mgl16 spouseResidenceAddress">
           </div>
         </div>
+      </el-tab-pane>
+      <!--孕产信息 -->
+      <el-tab-pane label="孕产信息" name="third">
+        <div class="pregnancyNewsBox  clearfix">
+          <div class="mgr76 fl">
+            <h3>初诊日期</h3>
+            <input type="text" class="mgl30 firstCheckDate" placeholder="" id="test2" readonly="readonly" disabled="disabled">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr76 fl w260">
+            <h3>末次月经</h3>
+            <el-date-picker v-model="lastMenstrual" type="date" placeholder="选择日期">
+            </el-date-picker>
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr0 fl">
+            <h3>预产期</h3>
+            <input type="text" class="mgl30 dueDate" placeholder="自动计算" readonly='readonly'>
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr76 fl">
+            <h3>孕周</h3>
+            <div class="gestationalWeeksBox clearfix">
+              <div class="newAgeOfMenarche">孕周</div>
+              <div class="newAgeOfMenarcheDay">孕天</div>
+            </div>
+          </div>
+          <div class="mgr76 fl">
+            <h3>月经史-初潮（岁）</h3>
+            <input type="text" class="menstrualHistoryAge" placeholder="初潮">
+          </div>
+          <div class="mgr0 fl">
+            <h3>月经史—周期（天）</h3>
+            <input type="text" placeholder="周期" class="menstrualHistoryDay">
+          </div>
+          <div class="wire"></div>
+          <div class="mgr76 mgb12">
+            <h3>怀孕次数</h3>
+            <el-select v-model="pregnanciesModel" placeholder="请选择">
+              <el-option v-for="item in pregnancies" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <el-table :data="PregnancyInformation" border style="width: 100%" class="dynamicTable">
+            <el-table-column prop="number" label="胎次" width="80">
+            </el-table-column>
+            <el-table-column prop="ageOfMenarche" label="孕周" width="124">
+            </el-table-column>
+            <el-table-column prop="productionDate" label="年月日" width="150">
+            </el-table-column>
+            <el-table-column prop="productionOfAge" label="年龄" width="90">
+            </el-table-column>
+            <el-table-column prop="productionAbortion" label="分娩方式" width="120">
+            </el-table-column>
+            <el-table-column prop="babySex" label="性别" width="84">
+            </el-table-column>
+            <el-table-column prop="babyHealthType" label="健否" width="84">
+            </el-table-column>
+            <el-table-column prop="remarks" label="备注" width="114">
+            </el-table-column>
+            <el-table-column prop="modifyButton" label="操作" width="80px">
+              <template slot-scope="scope">
+                <el-button @click="modifyButton()" type="text" size="small">修改</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="wire"></div>
+          <div class="mgr76">
+            <h3>孕期用药</h3>
+            <el-select v-model="parturitionFrontPharmacyModel" placeholder="请选择">
+              <el-option v-for="item in parturitionFrontPharmacy" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr76">
+            <h3>尿酮体</h3>
+            <el-select v-model="ketosisModel" placeholder="请选择">
+              <el-option v-for="item in ketosis" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr0">
+            <h3>早孕反应程度</h3>
+            <el-select v-model="morningSicknessModel" placeholder="请选择">
+              <el-option v-for="item in morningSickness" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr76">
+            <h3>宠物接触</h3>
+            <el-select v-model="animalContactModel" placeholder="请选择">
+              <el-option v-for="item in animalContact" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr76">
+            <h3>接触放射性</h3>
+            <el-select v-model="contactRadioactiveRaysModel" placeholder="请选择">
+              <el-option v-for="item in contactRadioactiveRays" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr0">
+            <h3>接触放射性时间</h3>
+            <input type="text" class="mgl30 contactRadioactiveRaysDate" placeholder="请输入时间" id="test4" disabled="disabled" readonly="readonly" onfocus="this.blur();">
+          </div>
+          <div class="wire"></div>
+          <!--孕产信息接触毒物 -->
+          <div class="somkingBox clearfix">
+            <div class="somkingBoxTop">
+              <div class="somkingFont">接触毒物</div>
+              <div class="somkingSelect clearfix">
+                <el-radio v-model="contact" label="1">是</el-radio>
+                <el-radio v-model="contact" label="0">否</el-radio>
+              </div>
+            </div>
+            <!-- 孕产信息接触毒物-隐藏显示块 -->
+            <div class="contactPoisonBox">
+              <p>请您输入每天的支数</p>
+              <input type="text" placeholder="请输入毒物名称" class="contactToxicName mgb12">
+              <input type="text" placeholder="请输入接触时间" class="contactToxicDate">
+            </div>
+          </div>
+          <!-- 孕产信息病毒感染 -->
+          <div class="somkingBox clearfix">
+            <div class="somkingBoxTop">
+              <div class="somkingFont">病毒感染</div>
+              <div class="somkingSelect clearfix">
+                <el-radio v-model="virus" label="1">是</el-radio>
+                <el-radio v-model="virus" label="0">否</el-radio>
+              </div>
+            </div>
+            <!-- 孕产信息病毒感染-隐藏显示块 -->
+            <div class="virusInfectionBox">
+              <p>请选择感染类型</p>
+              <ul class="clearfix">
+                <li>流感</li>
+                <li>风疹</li>
+                <li>疱疹</li>
+                <li class="mgb0">肝炎</li>
+                <li class="mgb0">腮腺炎</li>
+                <li class="mgb0">其他</li>
+              </ul>
+            </div>
+          </div>
+          <!-- 孕产信息家族史 -->
+          <div class="somkingBox clearfix mgr0">
+            <div class="somkingBoxTop">
+              <div class="somkingFont">家族史</div>
+              <div class="somkingSelect clearfix">
+                <el-radio v-model="history2" label="1">是</el-radio>
+                <el-radio v-model="history2" label="0">否</el-radio>
+              </div>
+            </div>
+              <!-- 孕产信息家族史-隐藏显示块 -->
+              <div class="familyHistoryBox" style="margin-right:0px;">
+                <input type="email" class="inquire" placeholder="请输入拼音首字母" onKeyUp="value=value.replace(/[\W]/g,'')">
+                <i class="seekIcon"></i>
+                <p>已选择</p>
+                <ul class="hideBox clearfix">
+                  <li>糖尿病1</li>
+                  <li>糖尿病2</li>
+                  <li>糖尿病3</li>
+                  <li>糖尿病4</li>
+                  <li>糖尿病5</li>
+                  <li>糖尿病6</li>
 
-        <div class="contentBox">
+                </ul>
+                <div class="familyHistorySelect">
+                  <ul>
+                    <li>选择1</li>
+                    <li>选择2</li>
+                    <li>选择3</li>
+                    <li>选择4</li>
+                    <li>选择5</li>
+                    <li>选择6</li>
+                    <li>选择7</li>
+                    <li>选择8</li>
+                    <li>选择9</li>
+                    <li>选择10</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- 孕产史修改弹框 -->
+            <div class="modificationLayer">
+              <div class="modificationLayerNav">
+                <span class="parity">胎次一</span>
+              </div>
+              <div class="modificationLayerMain clearfix">
+                <div class="mgr30 fl">
+                  <h3>孕周</h3>
+                  <input type="text" class="layui-input mgl30 layerWeeks" placeholder="" id="test2" readonly="readonly" disabled="disabled">
+                </div>
+                <div class="mgr30 fl">
+                  <h3>年月日</h3>
+                  <input type="text" class="layui-input mgl30 layerDate" placeholder="" id="test2" readonly="readonly" disabled="disabled">
+                </div>
+                <div class="mgr0 fl">
+                  <h3>年龄</h3>
+                  <input type="text" class="layui-input mgl30 layerAge" placeholder="" id="test2" readonly="readonly" disabled="disabled">
+                </div>
+                <div class="mgr30">
+                  <h3>分娩方式</h3>
+                  <select class="layerDelivery">
+                    <option value="0">自然分娩</option>
+                    <option value="1">剖宫产</option>
+                  </select>
+                </div>
+                <div class="mgr30">
+                  <h3>性别</h3>
+                  <select class="layerSex">
+                    <option value="0">男</option>
+                    <option value="1">女</option>
+                  </select>
+                </div>
+                <div class="mgr0">
+                  <h3>健否</h3>
+                  <select class="layerSpleen">
+                    <option value="0">健康</option>
+                    <option value="1">死亡</option>
+                  </select>
+                </div>
+                <h3>备注</h3>
+                <textarea class="layerRemark"></textarea>
+                <input type="button" value="取消" class="cancelBtn">
+                <input type="button" value="保存" class="saveBtn">
+              </div>
+            </div>
+          </div>
+      </el-tab-pane>
+      <el-tab-pane label="体格检查" name="fourth">
+        <div class="healthCheckupBox">
+          <h2 class="healthCheckTittle">一般检查</h2>
+          <div class="mgr76">
+            <h3>血 压（mmHg）</h3>
+            <div class="bloodBox">
+              <input type="number" placeholder="低压" class="lowTension">
+              <input type="number" placeholder="高压" class="hyperpiesia">
+            </div>
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr76">
+            <h3>身 高（cm）</h3>
+            <input type="number" class="height" placeholder="请输入姓名">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr0">
+            <h3>体 重（kg）</h3>
+            <input type="number" class="weight" placeholder="请输入姓名">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="healthCheckupBox_firstBox">
+            <div class="mgr38">
+              <h3>心 率</h3>
+              <el-select v-model="baseHeartRateModel" placeholder="请选择">
+                <el-option v-for="item in baseHeartRate" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr77">
+              <h3>肺</h3>
+              <el-select v-model="baseLungModel" placeholder="请选择">
+                <el-option v-for="item in baseLung" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr38">
+              <h3>肝</h3>
+              <el-select v-model="baseAbdomenLiverModel" placeholder="请选择">
+                <el-option v-for="item in baseAbdomenLiver" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr77">
+              <h3>脾</h3>
+              <el-select v-model="baseAbdomenSpleenModel" placeholder="请选择">
+                <el-option v-for="item in baseAbdomenSpleen" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr38">
+              <h3>脊 柱</h3>
+              <el-select v-model="baseSpinalLimbsDeformityModel" placeholder="请选择">
+                <el-option v-for="item in baseSpinalLimbsDeformity" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr0">
+              <h3>四肢水肿</h3>
+              <el-select v-model="baseSpinalLimbsEdemaModel" placeholder="请选择">
+                <el-option v-for="item in baseSpinalLimbsEdema" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr38">
+              <h3>乳 房</h3>
+              <el-select v-model="baseBreastsModel" placeholder="请选择">
+                <el-option v-for="item in baseBreasts" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr77">
+              <h3>乳 头</h3>
+              <el-select v-model="baseNippleModel" placeholder="请选择">
+                <el-option v-for="item in baseNipple" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="wire" style="margin-bottom: 16px;"></div>
+          <h2 class="healthCheckTittle">妇科检查</h2>
+          <div class="healthCheckupBox_firstBox">
+            <div class="mgr38">
+              <h3>外阴</h3>
+              <el-select v-model="obstetricsVulvaModel" placeholder="请选择">
+                <el-option v-for="item in obstetricsVulva" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+
+            </div>
+            <div class="mgr77">
+              <h3>阴道</h3>
+              <el-select v-model="obstetricsVaginaModel" placeholder="请选择">
+                <el-option v-for="item in obstetricsVagina" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr38">
+              <h3>宫颈</h3>
+              <el-select v-model="obstetricsCervixModel" placeholder="请选择">
+                <el-option v-for="item in obstetricsCervix" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr77">
+              <h3>宫体</h3>
+              <el-select v-model="obstetricsCorpusModel" placeholder="请选择">
+                <el-option v-for="item in obstetricsCorpus" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgr0  accessory">
+              <h3>附件</h3>
+              <el-select v-model="obstetricsPairsAttachmentModel" placeholder="请选择">
+                <el-option v-for="item in obstetricsPairsAttachment" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="wire" style="margin-bottom: 16px;"></div>
+          <h2 class="healthCheckTittle">化验检查</h2>
+          <div class="mgr76">
+            <h3>尿蛋白</h3>
+            <input type="number" class="assayUrineProtein">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr76">
+            <h3>血红蛋白</h3>
+            <input type="number" class="assayHemoglobin">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr0">
+            <h3>血小板</h3>
+            <input type="number" class="assayBloodPlatelet">
+          </div>
+          <div class="mgr0">
+            <h3>血型</h3>
+            <el-select v-model="assayBloodTypeModel" placeholder="请选择">
+              <el-option v-for="item in assayBloodType" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="wire" style="margin-bottom: 16px;"></div>
+          <h2 class="healthCheckTittle mgt140">产科检查</h2>
+          <div class="mgr76">
+            <h3>宫高</h3>
+            <input type="number" class="obstetricsHeight">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr76">
+            <h3>腹围</h3>
+            <input type="number" class="obstetricsAbdominalGirth">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr0">
+            <h3>先露</h3>
+            <el-select v-model="obstetricsFirstDewModel" placeholder="请选择">
+              <el-option v-for="item in obstetricsFirstDew" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgr76">
+            <h3>胎心率</h3>
+            <input type="number" class="obstetricsFetalHeart">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr76">
+            <h3>盆骨出口横径</h3>
+            <input type="number" class="mgl10 obstetricsTransversePelvicDiameter">
+            <p class="redFont">此项为必填项！</p>
+          </div>
+          <div class="mgr0">
+            <h3>胎方位</h3>
+            <el-select v-model="obstetricsPlacentalModel" placeholder="请选择">
+              <el-option v-for="item in obstetricsPlacental" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="wire" style="margin-bottom: 16px;"></div>
+          <h2 class="healthCheckTittle modelBox">
+            <span class="diagnoseTittle">诊断</span>
+            <div class="primaryDiagnosisBtn" style=" float: none;">
+              <i class="fileIcon"></i>
+              <span class="templateTittle ">导入模板</span>
+            </div>
+          </h2>
+          <textarea class="primaryDiagnosis"></textarea>
+
+          <h2 class="healthCheckTittle modelBox" style="margin-top: 16px;">
+            <span class="diagnoseTittle">处置</span>
+            <div class="disposalBtn" style=" float: none;">
+              <i class="fileIcon"></i>
+              <span class="templateTittle ">导入模板</span>
+            </div>
+          </h2>
+          <textarea class="disposal"></textarea>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="高危评估" name="fifth">
+        <!-- 高危评估模块 -->
+        <div class="riskAssessmentBox ">
+          <span>项目类型</span>
+          <div class="mgl10">
+            <el-select v-model="projectTypeModel1" placeholder="请选择">
+              <el-option v-for="item in projectType1" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="mgl24">
+            <el-select v-model="projectTypeModel2" placeholder="请选择">
+              <el-option v-for="item in projectType2" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <span class="mgl174">历史评估记录</span>
+          <div class="mgl10">
+            <el-select v-model="historyAssessModel" placeholder="请选择">
+              <el-option v-for="item in historyAssess" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <input type="button" value="套用" class="useBtn mgl16">
+          <div class="wire"></div>
+          <!-- 查看全部块 -->
           <div class="lookAtallBtnBox">
-            <h2>呼吸系统疾病</h2>
+            <h2>基本情况</h2>
+            <div class="positionWire"></div>
+            <div class="basicLookAtallBtn">
+              <span>查看全部</span>
+              <i class="el-icon-arrow-down"></i>
+            </div>
+          </div>
+          <div class="basicInformationBox">
+            <div class="partBox mgr34">
+              <div class="partBox_top">
+                <i>5</i>
+                <span class="fen">分</span>
+                <span class="mgl28">黄色（一般风险）</span>
+              </div>
+              <div class="fivepartBox topicBox">
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+              </div>
+            </div>
+            <div class="partBox mgr34">
+              <div class="partBox_top">
+                <i>10</i>
+                <span class="fen">分</span>
+                <span class="mgl28">橙色（较高风险）</span>
+              </div>
+              <div class="tenpartBox topicBox">
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+              </div>
+            </div>
+            <div class="partBox">
+              <div class="partBox_top">
+                <i>20</i>
+                <span class="fen">分</span>
+                <span class="mgl28">红色（高风险）</span>
+              </div>
+              <div class="twentypartBox topicBox">
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+              </div>
+            </div>
+          </div>
+          <!-- 孕期合并发症块 -->
+          <div class="lookAtallBtnBox">
+            <h2>孕期合并发症</h2>
             <div class="positionWire2"></div>
-          </div>
-          <div class="partBox mgr34">
-            <div class="fivepartBox topicBox">
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+            <div class="pregnancyAllBtn">
+              <span>查看全部</span>
+              <i class="el-icon-arrow-down"></i>
             </div>
           </div>
-          <div class="partBox mgr34">
-            <div class="tenpartBox topicBox">
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-            </div>
-          </div>
-          <div class="partBox">
-            <div class="twentypartBox topicBox">
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-              <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-            </div>
-          </div>
-        </div>
-        <!-- 紫色块 -->
-        <div class="lookAtallBtnBox">
-          <h2>紫色</h2>
-          <div class="positionWire3"></div>
-          <div class="violetBtn">
-            <span>查看全部</span>
-            <i class="el-icon-arrow-down"></i>
-          </div>
-        </div>
-        <div class="violetConcealBox topicBox">
-          <a class="topicItem" href="javascript:;">所有妊娠合传染性疾病--如毒性肝炎、霉素、HIV感染及艾滋病、结核病、重症感染性肺炎、特殊病毒感染（H1N7/塞卡等）</a>
-        </div>
-        <div class="flaxBox">
-          <div class="flaxBoxPart">
-            <span class="totalPoints">65分</span>
-            <span>绿色（<i>0</i>）项</span>
-            <span>黄色（<i class="fiveLength">0</i>）项</span>
-            <span>橙色（<i class="tenLength">0</i>）项</span>
-            <span>红色（<i class="twentyLength">0</i>）项</span>
-            <span>紫色（<i class="purpleLength">0</i>）项</span>
-            <input type="button" value="完  成" class="finishBtn">
-          </div>
-        </div>
-      </div>
+          <ul class="pregnancySelectBox">
+            <li class="selectAllBtn">全部</li>
+            <li>心血管系统疾病</li>
+            <li>呼吸系统疾病</li>
+            <li>消化系统疾病</li>
+            <li>泌尿系统疾病</li>
+            <li>内分泌系统疾病</li>
+            <li>精神神经系统疾病</li>
+            <li>血液系统疾病</li>
+            <li>性传播疾病</li>
+            <li>免疫系统疾病</li>
+            <li>肿瘤</li>
+            <li>吸毒史</li>
+            <li>其他</li>
+          </ul>
 
-    </el-tab-pane>
-    <el-tab-pane label="检查确认" name="sixth">
-      <div class="checkAffirmBox">
-        <div class="checkAffirmBox_top clearfix">
-          <div class="fl assessmentInformation">
-            <p>评估信息</p>
-            <span class="greenStrip">绿色（12）项</span>
-            <span class="yellowStrip">黄色（12）项</span>
-            <span class="orangeStrip">橙色（12）项</span>
-            <span class="redStrip">红色（12）项</span>
-            <span class="proponStrip">紫色（12）项</span>
+          <div class="basicInformationBox">
+            <div class="partBox mgr34">
+              <div class="partBox_top">
+                <i>5</i>
+                <span class="fen">分</span>
+                <span class="mgl28">黄色（一般风险）</span>
+              </div>
+              <div class="fivepartBox topicBox">
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+              </div>
+            </div>
+            <div class="partBox mgr34">
+              <div class="partBox_top">
+                <i>10</i>
+                <span class="fen">分</span>
+                <span class="mgl28">橙色（较高风险）</span>
+              </div>
+              <div class="tenpartBox topicBox">
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+              </div>
+            </div>
+            <div class="partBox">
+              <div class="partBox_top">
+                <i>20</i>
+                <span class="fen">分</span>
+                <span class="mgl28">红色（高风险）</span>
+              </div>
+              <div class="twentypartBox topicBox">
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+              </div>
+            </div>
           </div>
-          <div class="fr gradeInformation">
-            <h2><span class="grade">56</span><i>分</i></h2>
-            <p>初次筛查与评分</p>
+
+          <div class="contentBox">
+            <div class="lookAtallBtnBox">
+              <h2>呼吸系统疾病</h2>
+              <div class="positionWire2"></div>
+            </div>
+            <div class="partBox mgr34">
+              <div class="fivepartBox topicBox">
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+              </div>
+            </div>
+            <div class="partBox mgr34">
+              <div class="tenpartBox topicBox">
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+              </div>
+            </div>
+            <div class="partBox">
+              <div class="twentypartBox topicBox">
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+                <a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
+              </div>
+            </div>
+          </div>
+          <!-- 紫色块 -->
+          <div class="lookAtallBtnBox">
+            <h2>紫色</h2>
+            <div class="positionWire3"></div>
+            <div class="violetBtn">
+              <span>查看全部</span>
+              <i class="el-icon-arrow-down"></i>
+            </div>
+          </div>
+          <div class="violetConcealBox topicBox">
+            <a class="topicItem" href="javascript:;">所有妊娠合传染性疾病--如毒性肝炎、霉素、HIV感染及艾滋病、结核病、重症感染性肺炎、特殊病毒感染（H1N7/塞卡等）</a>
+          </div>
+          <div class="flaxBox">
+            <div class="flaxBoxPart">
+              <span class="totalPoints">65分</span>
+              <span>绿色（<i>0</i>）项</span>
+              <span>黄色（<i class="fiveLength">0</i>）项</span>
+              <span>橙色（<i class="tenLength">0</i>）项</span>
+              <span>红色（<i class="twentyLength">0</i>）项</span>
+              <span>紫色（<i class="purpleLength">0</i>）项</span>
+              <input type="button" value="完  成" class="finishBtn">
+            </div>
           </div>
         </div>
-        <div class="wire4"></div>
-        <div class="affirmBox2">
-          <h3>评估详情</h3>
-          <span class="greenStrip">绿色(低风险)</span>
-          <div class="greenDiv"></div>
-          <span class="yellowStrip">黄色(一般风险)</span>
-          <div class="yellowDiv"></div>
-          <span class="orangeStrip">橙色(较高风险)</span>
-          <div class="orangeDiv"></div>
-          <span class="redStrip">红色(高风险)</span>
-          <div class="redDiv"></div>
-          <span class="proponStrip">紫色(传染病)</span>
-          <div class="purpleDiv"></div>
+
+      </el-tab-pane>
+      <el-tab-pane label="检查确认" name="sixth">
+        <div class="checkAffirmBox">
+          <div class="checkAffirmBox_top clearfix">
+            <div class="fl assessmentInformation">
+              <p>评估信息</p>
+              <span class="greenStrip">绿色（12）项</span>
+              <span class="yellowStrip">黄色（12）项</span>
+              <span class="orangeStrip">橙色（12）项</span>
+              <span class="redStrip">红色（12）项</span>
+              <span class="proponStrip">紫色（12）项</span>
+            </div>
+            <div class="fr gradeInformation">
+              <h2><span class="grade">56</span><i>分</i></h2>
+              <p>初次筛查与评分</p>
+            </div>
+          </div>
+          <div class="wire4"></div>
+          <div class="affirmBox2">
+            <h3>评估详情</h3>
+            <span class="greenStrip">绿色(低风险)</span>
+            <div class="greenDiv"></div>
+            <span class="yellowStrip">黄色(一般风险)</span>
+            <div class="yellowDiv"></div>
+            <span class="orangeStrip">橙色(较高风险)</span>
+            <div class="orangeDiv"></div>
+            <span class="redStrip">红色(高风险)</span>
+            <div class="redDiv"></div>
+            <span class="proponStrip">紫色(传染病)</span>
+            <div class="purpleDiv"></div>
+          </div>
+          <h1 class="operator">操作人：<span>周晓晓</span></h1>
         </div>
-        <h1 class="operator">操作人：<span>周晓晓</span></h1>
-      </div>
-    </el-tab-pane>
-  </el-tabs>
-    </div>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 <script>
 import { AreaCascader } from "vue-area-linkage";
@@ -933,16 +938,16 @@ import { pca, pcaa } from "area-data";
 export default {
   data() {
     // return {
-   
-      // }
+
+    // }
     return {
       activeName: "second",
-      smoking: "1",
-      drink: "1",
-      history1: "1",
-      contact: "1",
-      virus: "1",
-      history2: "1",
+      smoking: "0",
+      drink: "0",
+      history1: "0",
+      contact: "0",
+      virus: "0",
+      history2: "0",
       // 孕妇基本信息证件类型
       idCardSelect: [
         {
@@ -1086,7 +1091,7 @@ export default {
           label: "北京"
         }
       ],
-     
+
       // 配偶婚姻状况
       spouseMarryType: [
         {
@@ -1563,14 +1568,14 @@ export default {
       educationModel: "",
       nationModel: "",
       jobModel: "",
-      presentAddressModel:[], // 孕妇基本信息现住地址数组
+      presentAddressModel: [], // 孕妇基本信息现住地址数组
       spouseIdCardTypeModel: "",
       spouseMarryTypeModel: "",
       spouseMarryCheckModel: "",
       healthTypeModel: "",
       spouseEducationModel: "",
       spouseJobModel: "",
-      spousePresentAddressModel:[],// 配偶现住地址数组
+      spousePresentAddressModel: [], // 配偶现住地址数组
       pregnanciesModel: "",
       lastMenstrual: "",
       parturitionFrontPharmacyModel: "",
@@ -1600,34 +1605,28 @@ export default {
       registeredModel: [], // 孕妇基本信息现户口所在地数组
       //selected[0]省。selected[1]市。selected[2]区。
       pca: pca,
-      pcaa: pcaa,
+      pcaa: pcaa
       //  isshow:false,// 配偶一般信息 吸烟
-      
     };
   },
   methods: {
-    modifyButton: function() {
-     
-    },
+    modifyButton: function() {},
     // 配偶一般信息吸烟
     handleCheckAllChange() {
-    //  this.isshow= false;
-      },
-      	//孕妇基本信息户口所在地
-  registeredModelResidence() {
+      //  this.isshow= false;
+    },
+    //孕妇基本信息户口所在地
+    registeredModelResidence() {
       console.log(this.registeredModel);
     },
-    	//孕妇基本信息现住地址
+    //孕妇基本信息现住地址
     registeredModelPresentAddressModel() {
       console.log(this.presentAddressModel);
     },
-      	//匹配欧一般信息现住地址
+    //匹配欧一般信息现住地址
     spousePresentAddressModelAddressModel() {
       console.log(this.spousePresentAddressModel);
-    },
-    
-    
-    
+    }
   }
 };
 </script>
@@ -1674,20 +1673,19 @@ export default {
 .mgb12 {
   margin-bottom: 12px;
 }
-.w260{
+.w260 {
   width: 260px;
 }
 
-
 // 孕妇基本信息
 .pregnantNewsBox {
-padding: 14px 24px 24px 26px;
-   .wire {
+  padding: 14px 24px 24px 26px;
+  .wire {
     width: 100%;
     height: 1px;
     border-bottom: 1px dashed #ccc;
     margin-top: 24px;
-  } 
+  }
   // 孕妇基本信息块
   div {
     // margin-right: 70px;
@@ -1763,12 +1761,11 @@ padding: 14px 24px 24px 26px;
       }
     }
   }
-  .presentAddress{
-     position: absolute;
+  .presentAddress {
+    position: absolute;
     bottom: 25px;
     left: 300px;
   }
-     
 }
 .el-select {
   input {
@@ -1856,53 +1853,55 @@ padding: 14px 24px 24px 26px;
   .somkingBox {
     margin-top: 24px;
     margin-right: 70px;
-    width: 260px;
-    height: 52px;
-    line-height: 52px;
-    .somkingFont {
-      width: 75px;
+    float: left;
+    .somkingBoxTop {
+      display: block;
+      width: 260px;
       height: 52px;
-      background-color: #f6f6f6;
-      text-align: center;
       line-height: 52px;
-      float: left;
-    }
-    .somkingSelect {
-      padding-left: 26px;
-      width: 185px;
-      float: left;
-      .smkingYes {
-        width: 50%;
-        float: left;
-        position: relative;
-        &:before {
-          content: " ";
-          position: absolute;
-          top: 15px;
-          right: 18px;
-          width: 1px;
-          height: 20px;
-          background: #cccccc;
-        }
-      }
-      .smokingNo {
-        float: left;
-        width: 50%;
-      }
-      .layui-form-radio {
+      .somkingFont {
+        width: 75px;
+        height: 52px;
+        background-color: #f6f6f6;
+        text-align: center;
         line-height: 52px;
-        margin: 0px;
-        font-size: 0;
+        float: left;
+      }
+      .somkingSelect {
+        padding-left: 26px;
+        width: 185px;
+        float: left;
+        .smkingYes {
+          width: 50%;
+          float: left;
+          position: relative;
+          &:before {
+            content: " ";
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            width: 1px;
+            height: 20px;
+            background: #cccccc;
+          }
+        }
+        .smokingNo {
+          float: left;
+          width: 50%;
+        }
+        .layui-form-radio {
+          line-height: 52px;
+          margin: 0px;
+          font-size: 0;
+        }
       }
     }
   } // 吸烟显示隐藏等三个模块
   .somkingCirculationBox,
   .drinkCirculationBox,
   .history1CirculationBox {
-    float: left;
     margin-top: 24px;
-    margin-right: 70px;
-    width: 260px; // height: 86px;
+    width: 260px;
     position: relative;
     box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
     p {
@@ -2029,8 +2028,8 @@ padding: 14px 24px 24px 26px;
       margin-bottom: 16px;
     }
   }
-  .spouseResidenceAddress{
-        position: absolute;
+  .spouseResidenceAddress {
+    position: absolute;
     bottom: 25px;
     left: 300px;
   }
@@ -2129,12 +2128,15 @@ padding: 14px 24px 24px 26px;
     background-color: #f9f9f9;
   }
   .somkingBox {
+    float: left;
     margin-top: 24px;
     margin-right: 70px;
-    width: 260px;
-    height: 52px;
-    line-height: 52px;
-    .somkingFont {
+    .somkingBoxTop{
+        display: block;
+      width: 260px;
+      height: 52px;
+      line-height: 52px;
+       .somkingFont {
       width: 75px;
       height: 52px;
       background-color: #f6f6f6;
@@ -2170,16 +2172,17 @@ padding: 14px 24px 24px 26px;
         font-size: 0;
       }
     }
-  } // 孕产信息隐藏快
+    }
+   // 孕产信息隐藏快
   .contactPoisonBox,
   .virusInfectionBox,
   .familyHistoryBox {
-    float: left;
     margin-top: 24px;
-    margin-right: 70px;
     width: 260px;
     position: relative;
     padding: 14px 16px;
+    box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
+
     p {
       font-size: 12px;
       color: #666666;
@@ -2268,7 +2271,9 @@ padding: 14px 24px 24px 26px;
         }
       }
     }
-  } // 修改怀孕次数弹框
+  } 
+  } 
+  // 修改怀孕次数弹框
   .modificationLayer {
     position: fixed;
     top: 50%;
@@ -2883,7 +2888,7 @@ padding: 14px 24px 24px 26px;
     background-color: #f6f6f6;
     position: absolute;
     margin-top: 20px;
-  } 
+  }
   .affirmBox2 {
     margin-top: 46px;
     h3 {
@@ -2972,7 +2977,6 @@ padding: 14px 24px 24px 26px;
 }
 </style>
 <style>
-
 .el-select-dropdown__item.selected {
   color: #68b6e7;
 }
@@ -2982,7 +2986,6 @@ padding: 14px 24px 24px 26px;
   border-radius: 8px;
   border-color: #ccc;
   background-color: #f6f6f6;
-
 }
 /* // 配偶一般信息组件样式修改 */
 .spouseNewsBox .el-input__inner {
@@ -2992,7 +2995,7 @@ padding: 14px 24px 24px 26px;
   background-color: #f6f6f6;
 }
 /* // 孕产信息组件样式修改 */
-.pregnancyNewsBox   .el-input__inner {
+.pregnancyNewsBox .el-input__inner {
   width: 260px;
   border-radius: 8px;
   border-color: #ccc;
@@ -3013,10 +3016,9 @@ padding: 14px 24px 24px 26px;
   border-color: #ccc;
   background-color: #f6f6f6;
 }
-.riskAssessmentBox .el-input__icon{
+.riskAssessmentBox .el-input__icon {
   line-height: 30px;
 }
-
 
 .newfileBox .el-tabs__nav-scroll {
   height: 64px;
@@ -3041,15 +3043,15 @@ padding: 14px 24px 24px 26px;
   background-color: #fff;
 }
 .area-select.large {
-    width: 260px;
-    height: 40px;
-    border-radius: 8px;
-    background-color: #f6f6f6;
-    color: #606266;
+  width: 260px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #f6f6f6;
+  color: #606266;
 }
 .cascader-menu-list .cascader-menu-option.selected {
-   background-color: #f5f7fa;
-color: #68b6e7;
-    font-weight: 700;
+  background-color: #f5f7fa;
+  color: #68b6e7;
+  font-weight: 700;
 }
 </style>

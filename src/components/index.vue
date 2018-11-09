@@ -202,6 +202,10 @@ export default {
     color: 333333;
     font-size: 16px;
   }
+  .el-submenu__title * {
+      font-size: 16px;
+    vertical-align: middle;
+}
   .exitBtn {
     position: relative;
     display: inline-block;
