@@ -195,12 +195,17 @@
             <div class="somkingBoxTop">
               <div class="somkingFont">吸烟</div>
               <div class="somkingSelect clearfix">
-                <el-radio v-model="smoking" label="1">是</el-radio>
-                <el-radio v-model="smoking" label="0" @change='handleCheckAllChange'>否</el-radio>
+                <!-- <el-radio v-model="smoking" label="1">是</el-radio>
+                <el-radio v-model="smoking" label="0" @change='handleCheckAllChange'>否</el-radio> -->
+                    <el-radio-group v-model="smoking" @change='handleCheckAllChange'>
+    <el-radio :label="3">是</el-radio>
+    <el-radio :label="6">否</el-radio>
+  </el-radio-group>
               </div>
+           
             </div>
             <!-- 吸烟隐藏显示块 -->
-            <div class="somkingCirculationBox">
+            <div :class="['somkingCirculationBox',{displayNo : smoking == 6}]">
               <p>请您输入每天的支数</p>
               <input type="text" placeholder="请输入" class="cigaretteNUm">
               <h5 class="birth">
@@ -942,7 +947,7 @@ export default {
     // }
     return {
       activeName: "second",
-      smoking: "0",
+      smoking: 6,
       drink: "0",
       history1: "0",
       contact: "0",
@@ -1605,8 +1610,11 @@ export default {
       registeredModel: [], // 孕妇基本信息现户口所在地数组
       //selected[0]省。selected[1]市。selected[2]区。
       pca: pca,
-      pcaa: pcaa
+      pcaa: pcaa,
       //  isshow:false,// 配偶一般信息 吸烟
+      isShow: false,
+      
+
     };
   },
   methods: {
@@ -1614,6 +1622,7 @@ export default {
     // 配偶一般信息吸烟
     handleCheckAllChange() {
       //  this.isshow= false;
+      console.log(this.smoking)
     },
     //孕妇基本信息户口所在地
     registeredModelResidence() {
@@ -1632,6 +1641,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 .mgl10 {
   margin-left: 10px;
 }
@@ -1779,6 +1789,10 @@ export default {
   padding: 14px 24px 24px 26px;
   div {
     display: inline-block;
+    .displayNo{
+  display: none;
+  
+}
     h3 {
       font-size: 14px;
       color: #666666;
