@@ -197,12 +197,12 @@
               <div class="somkingSelect clearfix">
                 <!-- <el-radio v-model="smoking" label="1">是</el-radio>
                 <el-radio v-model="smoking" label="0" @change='handleCheckAllChange'>否</el-radio> -->
-                    <el-radio-group v-model="smoking" @change='handleCheckAllChange'>
-    <el-radio :label="3">是</el-radio>
-    <el-radio :label="6">否</el-radio>
-  </el-radio-group>
+                <el-radio-group v-model="smoking" @change='handleCheckAllChange'>
+                  <el-radio :label="3">是</el-radio>
+                  <el-radio :label="6">否</el-radio>
+                </el-radio-group>
               </div>
-           
+
             </div>
             <!-- 吸烟隐藏显示块 -->
             <div :class="['somkingCirculationBox',{displayNo : smoking == 6}]">
@@ -428,82 +428,82 @@
                 <el-radio v-model="history2" label="0">否</el-radio>
               </div>
             </div>
-              <!-- 孕产信息家族史-隐藏显示块 -->
-              <div class="familyHistoryBox" style="margin-right:0px;">
-                <input type="email" class="inquire" placeholder="请输入拼音首字母" onKeyUp="value=value.replace(/[\W]/g,'')">
-                <i class="seekIcon"></i>
-                <p>已选择</p>
-                <ul class="hideBox clearfix">
-                  <li>糖尿病1</li>
-                  <li>糖尿病2</li>
-                  <li>糖尿病3</li>
-                  <li>糖尿病4</li>
-                  <li>糖尿病5</li>
-                  <li>糖尿病6</li>
+            <!-- 孕产信息家族史-隐藏显示块 -->
+            <div class="familyHistoryBox" style="margin-right:0px;">
+              <input type="email" class="inquire" placeholder="请输入拼音首字母" onKeyUp="value=value.replace(/[\W]/g,'')">
+              <i class="seekIcon"></i>
+              <p>已选择</p>
+              <ul class="hideBox clearfix">
+                <li>糖尿病1</li>
+                <li>糖尿病2</li>
+                <li>糖尿病3</li>
+                <li>糖尿病4</li>
+                <li>糖尿病5</li>
+                <li>糖尿病6</li>
 
+              </ul>
+              <div class="familyHistorySelect">
+                <ul>
+                  <li>选择1</li>
+                  <li>选择2</li>
+                  <li>选择3</li>
+                  <li>选择4</li>
+                  <li>选择5</li>
+                  <li>选择6</li>
+                  <li>选择7</li>
+                  <li>选择8</li>
+                  <li>选择9</li>
+                  <li>选择10</li>
                 </ul>
-                <div class="familyHistorySelect">
-                  <ul>
-                    <li>选择1</li>
-                    <li>选择2</li>
-                    <li>选择3</li>
-                    <li>选择4</li>
-                    <li>选择5</li>
-                    <li>选择6</li>
-                    <li>选择7</li>
-                    <li>选择8</li>
-                    <li>选择9</li>
-                    <li>选择10</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <!-- 孕产史修改弹框 -->
-            <div class="modificationLayer">
-              <div class="modificationLayerNav">
-                <span class="parity">胎次一</span>
-              </div>
-              <div class="modificationLayerMain clearfix">
-                <div class="mgr30 fl">
-                  <h3>孕周</h3>
-                  <input type="text" class="layui-input mgl30 layerWeeks" placeholder="" id="test2" readonly="readonly" disabled="disabled">
-                </div>
-                <div class="mgr30 fl">
-                  <h3>年月日</h3>
-                  <input type="text" class="layui-input mgl30 layerDate" placeholder="" id="test2" readonly="readonly" disabled="disabled">
-                </div>
-                <div class="mgr0 fl">
-                  <h3>年龄</h3>
-                  <input type="text" class="layui-input mgl30 layerAge" placeholder="" id="test2" readonly="readonly" disabled="disabled">
-                </div>
-                <div class="mgr30">
-                  <h3>分娩方式</h3>
-                  <select class="layerDelivery">
-                    <option value="0">自然分娩</option>
-                    <option value="1">剖宫产</option>
-                  </select>
-                </div>
-                <div class="mgr30">
-                  <h3>性别</h3>
-                  <select class="layerSex">
-                    <option value="0">男</option>
-                    <option value="1">女</option>
-                  </select>
-                </div>
-                <div class="mgr0">
-                  <h3>健否</h3>
-                  <select class="layerSpleen">
-                    <option value="0">健康</option>
-                    <option value="1">死亡</option>
-                  </select>
-                </div>
-                <h3>备注</h3>
-                <textarea class="layerRemark"></textarea>
-                <input type="button" value="取消" class="cancelBtn">
-                <input type="button" value="保存" class="saveBtn">
               </div>
             </div>
           </div>
+          <!-- 孕产史修改弹框 -->
+          <div class="modificationLayer">
+            <div class="modificationLayerNav">
+              <span class="parity">胎次一</span>
+            </div>
+            <div class="modificationLayerMain clearfix">
+              <div class="mgr30 fl">
+                <h3>孕周</h3>
+                <input type="text" class="layui-input mgl30 layerWeeks" placeholder="" id="test2" readonly="readonly" disabled="disabled">
+              </div>
+              <div class="mgr30 fl">
+                <h3>年月日</h3>
+                <input type="text" class="layui-input mgl30 layerDate" placeholder="" id="test2" readonly="readonly" disabled="disabled">
+              </div>
+              <div class="mgr0 fl">
+                <h3>年龄</h3>
+                <input type="text" class="layui-input mgl30 layerAge" placeholder="" id="test2" readonly="readonly" disabled="disabled">
+              </div>
+              <div class="mgr30">
+                <h3>分娩方式</h3>
+                <select class="layerDelivery">
+                  <option value="0">自然分娩</option>
+                  <option value="1">剖宫产</option>
+                </select>
+              </div>
+              <div class="mgr30">
+                <h3>性别</h3>
+                <select class="layerSex">
+                  <option value="0">男</option>
+                  <option value="1">女</option>
+                </select>
+              </div>
+              <div class="mgr0">
+                <h3>健否</h3>
+                <select class="layerSpleen">
+                  <option value="0">健康</option>
+                  <option value="1">死亡</option>
+                </select>
+              </div>
+              <h3>备注</h3>
+              <textarea class="layerRemark"></textarea>
+              <input type="button" value="取消" class="cancelBtn">
+              <input type="button" value="保存" class="saveBtn">
+            </div>
+          </div>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="体格检查" name="fourth">
         <div class="healthCheckupBox">
@@ -1612,9 +1612,7 @@ export default {
       pca: pca,
       pcaa: pcaa,
       //  isshow:false,// 配偶一般信息 吸烟
-      isShow: false,
-      
-
+      isShow: false
     };
   },
   methods: {
@@ -1622,7 +1620,7 @@ export default {
     // 配偶一般信息吸烟
     handleCheckAllChange() {
       //  this.isshow= false;
-      console.log(this.smoking)
+      console.log(this.smoking);
     },
     //孕妇基本信息户口所在地
     registeredModelResidence() {
@@ -1641,7 +1639,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .mgl10 {
   margin-left: 10px;
 }
@@ -1789,10 +1786,9 @@ export default {
   padding: 14px 24px 24px 26px;
   div {
     display: inline-block;
-    .displayNo{
-  display: none;
-  
-}
+    .displayNo {
+      display: none;
+    }
     h3 {
       font-size: 14px;
       color: #666666;
@@ -2145,148 +2141,148 @@ export default {
     float: left;
     margin-top: 24px;
     margin-right: 70px;
-    .somkingBoxTop{
-        display: block;
+    .somkingBoxTop {
+      display: block;
       width: 260px;
       height: 52px;
       line-height: 52px;
-       .somkingFont {
-      width: 75px;
-      height: 52px;
-      background-color: #f6f6f6;
-      text-align: center;
-      line-height: 52px;
-      float: left;
-    }
-    .somkingSelect {
-      padding-left: 26px;
-      width: 185px;
-      float: left;
-      .smkingYes {
-        width: 50%;
-        float: left;
-        position: relative;
-        &:before {
-          content: " ";
-          position: absolute;
-          top: 15px;
-          right: 18px;
-          width: 1px;
-          height: 20px;
-          background: #cccccc;
-        }
-      }
-      .smokingNo {
-        float: left;
-        width: 50%;
-      }
-      .layui-form-radio {
+      .somkingFont {
+        width: 75px;
+        height: 52px;
+        background-color: #f6f6f6;
+        text-align: center;
         line-height: 52px;
-        margin: 0px;
-        font-size: 0;
-      }
-    }
-    }
-   // 孕产信息隐藏快
-  .contactPoisonBox,
-  .virusInfectionBox,
-  .familyHistoryBox {
-    margin-top: 24px;
-    width: 260px;
-    position: relative;
-    padding: 14px 16px;
-    box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
-
-    p {
-      font-size: 12px;
-      color: #666666;
-      margin-bottom: 12px;
-    }
-  }
-  .contactPoisonBox {
-    input {
-      width: 224px;
-      height: 32px;
-    }
-  }
-  .virusInfectionBox {
-    ul {
-      li {
         float: left;
-        width: 64px;
-        height: 30px;
-        line-height: 30px;
-        background-color: #ededed;
-        text-align: center;
-        font-size: 12px;
-        color: #999999;
-        margin-right: 12px;
-        margin-bottom: 10px;
       }
-    }
-  }
-  .familyHistoryBox {
-    padding: 10px 14px 5px 14px;
-    position: relative;
-    input {
-      width: 226px;
-      height: 32px;
-    }
-    p {
-      margin-top: 12px;
-    }
-    .seekIcon {
-      background: url("/maternal-web/images/seek.png") no-repeat 0 0;
-      width: 14px;
-      height: 14px;
-      background-size: 14px 14px;
-      position: absolute;
-      top: 20px;
-      right: 30px;
-    }
-    .hideBox {
-      li {
+      .somkingSelect {
+        padding-left: 26px;
+        width: 185px;
         float: left;
-        width: 65px;
-        height: 30px;
-        background-color: #68b6e7;
-        color: #fff;
-        text-align: center;
-        line-height: 30px;
-        border-radius: 8px;
-        margin-right: 12px;
-        margin-bottom: 8px;
+        .smkingYes {
+          width: 50%;
+          float: left;
+          position: relative;
+          &:before {
+            content: " ";
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            width: 1px;
+            height: 20px;
+            background: #cccccc;
+          }
+        }
+        .smokingNo {
+          float: left;
+          width: 50%;
+        }
+        .layui-form-radio {
+          line-height: 52px;
+          margin: 0px;
+          font-size: 0;
+        }
       }
     }
-    .familyHistorySelect {
-      // display: none;
-      width: 226px;
-      height: 200px;
+    // 孕产信息隐藏快
+    .contactPoisonBox,
+    .virusInfectionBox,
+    .familyHistoryBox {
+      margin-top: 24px;
+      width: 260px;
       position: relative;
-      overflow: hidden;
+      padding: 14px 16px;
+      box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
+
+      p {
+        font-size: 12px;
+        color: #666666;
+        margin-bottom: 12px;
+      }
+    }
+    .contactPoisonBox {
+      input {
+        width: 224px;
+        height: 32px;
+      }
+    }
+    .virusInfectionBox {
       ul {
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: -17px;
-        bottom: 0;
-        overflow-x: hidden;
-        overflow-y: scroll;
         li {
-          font-size: 14px;
-          margin: 0;
-          padding: 10px;
-          border-bottom: 1px;
-          border-bottom-style: solid;
-          border-bottom-color: #999;
-        }
-        li:hover {
-          background-color: #d4e8f5;
+          float: left;
+          width: 64px;
+          height: 30px;
+          line-height: 30px;
+          background-color: #ededed;
+          text-align: center;
+          font-size: 12px;
+          color: #999999;
+          margin-right: 12px;
+          margin-bottom: 10px;
         }
       }
     }
-  } 
-  } 
+    .familyHistoryBox {
+      padding: 10px 14px 5px 14px;
+      position: relative;
+      input {
+        width: 226px;
+        height: 32px;
+      }
+      p {
+        margin-top: 12px;
+      }
+      .seekIcon {
+        background: url("/maternal-web/images/seek.png") no-repeat 0 0;
+        width: 14px;
+        height: 14px;
+        background-size: 14px 14px;
+        position: absolute;
+        top: 20px;
+        right: 30px;
+      }
+      .hideBox {
+        li {
+          float: left;
+          width: 65px;
+          height: 30px;
+          background-color: #68b6e7;
+          color: #fff;
+          text-align: center;
+          line-height: 30px;
+          border-radius: 8px;
+          margin-right: 12px;
+          margin-bottom: 8px;
+        }
+      }
+      .familyHistorySelect {
+        // display: none;
+        width: 226px;
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+        ul {
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: -17px;
+          bottom: 0;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          li {
+            font-size: 14px;
+            margin: 0;
+            padding: 10px;
+            border-bottom: 1px;
+            border-bottom-style: solid;
+            border-bottom-color: #999;
+          }
+          li:hover {
+            background-color: #d4e8f5;
+          }
+        }
+      }
+    }
+  }
   // 修改怀孕次数弹框
   .modificationLayer {
     position: fixed;
@@ -2989,6 +2985,7 @@ export default {
     margin-top: 30px;
   }
 }
+
 </style>
 <style>
 .el-select-dropdown__item.selected {
@@ -3056,16 +3053,19 @@ export default {
 .newfileBox .el-tabs__content {
   background-color: #fff;
 }
-.area-select.large {
+
+.pregnantNewsBox .area-select.large,.spouseNewsBox .area-select.large  {
   width: 260px;
   height: 40px;
   border-radius: 8px;
   background-color: #f6f6f6;
   color: #606266;
 }
-.cascader-menu-list .cascader-menu-option.selected {
+.pregnantNewsBox  .cascader-menu-list .cascader-menu-option.selected ，
+.spouseNewsBox .cascader-menu-list .cascader-menu-option.selected{
   background-color: #f5f7fa;
   color: #68b6e7;
   font-weight: 700;
 }
+
 </style>

@@ -5,7 +5,6 @@
         <router-link :to="{path: 'newfile'}">
           <div class="newBtn">新建孕妇档案</div>
         </router-link>
-
       </div>
       <div class="selectBox clearfix">
         <div class="pdl20 fl w170">
@@ -486,48 +485,4 @@ export default {
     padding-bottom: 30px;
   }
 }
-  // 右侧下面块
-  .bottomBox {
-    thead {
-      th {
-        color: #333333;
-        font-weight: 100;
-        background-color: #e7f3fb;
-      }
-
-      th:nth-child(1),
-      th:nth-child(5),
-      th:nth-child(8),
-      th:nth-child(9) {
-        text-align: center;
-      }
-    }
-    tbody {
-      td {
-        padding: 0px;
-      }
-      td:nth-child(1),
-      td:nth-child(5),
-      td:nth-child(8),
-      td:nth-child(9) {
-        text-align: center;
-      }
-    }
-    p {
-      text-align: left;
-      font-size: 12px;
-      position: relative;
-      display: block;
-      height: 13px;
-      line-height: 13px;
-      padding-left: 12px;
-    }
-    div {
-      padding: 0px;
-    }
-    width: 100%;
-    background-color: #fff;
-    margin-top: 10px;
-    padding-bottom: 30px;
-  }
 </style>
