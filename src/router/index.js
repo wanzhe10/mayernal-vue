@@ -17,6 +17,8 @@ import personalDetails from '@/components/news/personalDetails'
 import changePassword from '@/components/news/changePassword'
 import newfile from '@/components/management/newfile'
 import personalCenter from '@/components/management/personalCenter/personalCenter'
+import recordNews from '@/components/management/personalCenter/recordNews'
+import spouseNews from '@/components/management/personalCenter/spouseNews'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -104,6 +106,16 @@ export default new Router({
                path: '/personalCenter',
                name: 'personalCenter',
                component: personalCenter
+             },
+              {
+               path: '/recordNews',
+               name: 'recordNews',
+               component: recordNews
+             },
+              {
+               path: '/spouseNews',
+               name: 'spouseNews',
+               component: spouseNews
              }
       ]
     }

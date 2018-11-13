@@ -60,7 +60,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
             /changePassword         修改密码
 
         /personalCenter             个人中心
-            /personalCenter.vue                  
+            /personalCenter.vue 
+            /recordNews.vue      新增复检记录
+            /spouseNews.vue      新增高危评估记录
 
             
 
