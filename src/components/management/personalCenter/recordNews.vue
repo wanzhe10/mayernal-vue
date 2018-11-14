@@ -1,102 +1,126 @@
 <template>
-    <div class="recordNewsBox">
-        <div class="recordNewsBox_tittle clearfix">
-            <h2>新增复检记录</h2>
-            <p class="fl fortyTwoTittle_left">
-                <span class="fake">检查日期：<i>2018-11-11</i></span>
-                <span>复健次数：<i>2次</i></span>
-            </p>
-            <p class="fr"><span>操作医生：<i class="doctorName">周晓晓</i></span></p>
-        </div>
-        <div class="pregnantNewsBox">
-            <div class="mgr70">
-                <h3>孕周（必填）</h3>
-                <div class="separateBox">
-                    <input type="text" class="" placeholder="孕周">
-                    <input type="text" class="" placeholder="孕天">
-                </div>
-                <p class="redFont">此项为必填项！</p>
-            </div>
-            <div class="mgr70">
-                <h3>当前体重（kg）</h3>
-                <input type="text" class="pregnantPhone" placeholder="请输入当前体重">
-                <p class="redFont">此项为必填项！</p>
-            </div>
-            <div class="mgr0">
-                <h3>血压（mmHg）</h3>
-                <div class="separateBox">
-                    <input type="text" class="" placeholder="低压">
-                    <input type="text" class="" placeholder="高压">
-                </div>
-                <p class="redFont">此项为必填项！</p>
-            </div>
-            <div class="mgr70">
-                <h3>宫高（cm）</h3>
-                <input type="tel" class="" placeholder="请输入宫高">
-                <p class="redFont">此项为必填项！</p>
-            </div>
-            <div class="mgr70">
-                <h3>腹围（cm）</h3>
-                <input type="tel" class="" placeholder="请输入腹围">
-                <p class="redFont">此项为必填项！</p>
-            </div>
-            <!-- </div> -->
-            <div class="wire"></div>
-            <!-- <div class="recordNewSelectBox"> -->
-            <div class="mgr70">
-                <h3>胎方位</h3>
-                <el-select v-model="marryTypeeModel" placeholder="请选择">
-                    <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-            <div class="mgr70">
-                <h3>先露</h3>
-                <el-select v-model="marryTypeeModel" placeholder="请选择">
-                    <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-            <div class="mgr0">
-                <h3>胎心率</h3>
-                <el-select v-model="marryTypeeModel" placeholder="请选择">
-                    <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-            <div class="mgr70">
-                <h3>衔接</h3>
-                <el-select v-model="marryTypeeModel" placeholder="请选择">
-                    <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-            <div class="mgr70">
-                <h3>尿蛋白</h3>
-                <el-select v-model="marryTypeeModel" placeholder="请选择">
-                    <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-            <div class="mgr0">
-                <h3>浮肿</h3>
-                <el-select v-model="marryTypeeModel" placeholder="请选择">
-                    <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
-                </el-select>
-            </div>
-            <div class="wire"></div>
-            <p style="margin-top:24px;margin-bottom:12px;"><i style='color:red;margin-right:5px;'>*</i>预约下次日期</p>
-            <div class="bindingBox">
-                
-                <input type="text" class="pregnantFN" placeholder="请输入年月日">
-                <div class="bindingBtn">预约记录</div>
-            </div>
-            <span class="recordNewsFont"><i>第二次产检</i>|<i>孕13-4周</i></span>
-        </div>
-        
-
+  <div class="recordNewsBox">
+    <div class="recordNewsBox_tittle clearfix">
+      <h2>新增复检记录</h2>
+      <p class="fl fortyTwoTittle_left">
+        <span class="fake">检查日期：<i>2018-11-11</i></span>
+        <span>复健次数：<i>2次</i></span>
+      </p>
+      <p class="fr"><span>操作医生：<i class="doctorName">周晓晓</i></span></p>
     </div>
+    <div class="pregnantNewsBox">
+      <div class="mgr70">
+        <h3>孕周（必填）</h3>
+        <div class="separateBox">
+          <input type="text" class="" placeholder="孕周">
+          <input type="text" class="" placeholder="孕天">
+        </div>
+        <p class="redFont">此项为必填项！</p>
+      </div>
+      <div class="mgr70">
+        <h3>当前体重（kg）</h3>
+        <input type="text" class="pregnantPhone" placeholder="请输入当前体重">
+        <p class="redFont">此项为必填项！</p>
+      </div>
+      <div class="mgr0">
+        <h3>血压（mmHg）</h3>
+        <div class="separateBox">
+          <input type="text" class="" placeholder="低压">
+          <input type="text" class="" placeholder="高压">
+        </div>
+        <p class="redFont">此项为必填项！</p>
+      </div>
+      <div class="mgr70">
+        <h3>宫高（cm）</h3>
+        <input type="tel" class="" placeholder="请输入宫高">
+        <p class="redFont">此项为必填项！</p>
+      </div>
+      <div class="mgr70">
+        <h3>腹围（cm）</h3>
+        <input type="tel" class="" placeholder="请输入腹围">
+        <p class="redFont">此项为必填项！</p>
+      </div>
+      <!-- </div> -->
+      <div class="wire"></div>
+      <!-- <div class="recordNewSelectBox"> -->
+      <div class="mgr70">
+        <h3>胎方位</h3>
+        <el-select v-model="marryTypeeModel" placeholder="请选择">
+          <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="mgr70">
+        <h3>先露</h3>
+        <el-select v-model="marryTypeeModel" placeholder="请选择">
+          <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="mgr0">
+        <h3>胎心率</h3>
+        <el-select v-model="marryTypeeModel" placeholder="请选择">
+          <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="mgr70">
+        <h3>衔接</h3>
+        <el-select v-model="marryTypeeModel" placeholder="请选择">
+          <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="mgr70">
+        <h3>尿蛋白</h3>
+        <el-select v-model="marryTypeeModel" placeholder="请选择">
+          <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="mgr0">
+        <h3>浮肿</h3>
+        <el-select v-model="marryTypeeModel" placeholder="请选择">
+          <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="wire"></div>
+      <p style="margin-top:24px;margin-bottom:12px;"><i style='color:red;margin-right:5px;'>*</i>预约下次日期</p>
+      <div class="bindingBox">
+
+        <input type="text" class="pregnantFN" placeholder="请输入年月日">
+        <div class="bindingBtn">预约记录</div>
+      </div>
+      <span class="recordNewsFont"><i>第二次产检</i>|<i>孕13-4周</i></span>
+    </div>
+        <div class="wire"></div>
+
+    <div>
+      <div class="importDatabase1">
+        <span>自觉不适</span>
+        <i class="joinIco"></i>
+        <span>导入模板</span>
+      </div>
+      <!-- <div class="discomfortBox"> -->
+        <input type="text" class="malaise">
+      <!-- </div> -->
+    </div>
+    <div>
+      <div class="importDatabase1">
+        <span>指导处理意见</span>
+        <i class="joinIco2"></i>
+        <span>导入模板</span>
+      </div>
+        <input type="text" class="guideTheProcessing">
+    </div>
+    <!-- 图片上传 -->
+  <div class="imageUploadBox">
+    <span>检查结果</span>
+    <i>注：请您不要上传模糊图，影响检查结果，最多上传不得超过20张</i>
+  </div>
+
+  </div>
 </template>
 <script>
 export default {
@@ -179,8 +203,8 @@ export default {
   background-color: #fff;
   box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
   padding: 20px 26px;
-  i{
-      font-style: normal;
+  i {
+    font-style: normal;
   }
   .wire {
     width: 100%;
@@ -196,14 +220,6 @@ export default {
       font-size: 18px;
       color: #333333;
       margin-bottom: 18px;
-    }
-    span {
-      font-size: 16px;
-      color: #666666;
-      i {
-        font-style: normal;
-        color: #000000;
-      }
     }
   }
   .fake {
@@ -270,9 +286,9 @@ export default {
         border: none;
       }
       .bindingBtn {
-          cursor: pointer;
-          height: 40px; 
-          width: 92px;
+        cursor: pointer;
+        height: 40px;
+        width: 92px;
         background-color: #f6f6f6;
         color: #333333;
         font-size: 14px;
@@ -282,12 +298,69 @@ export default {
       }
     }
   }
-  .recordNewsFont{
-      margin-left: 6px;
-      i{
-          margin:0 10px;
-      }
+  .recordNewsFont {
+    margin-left: 6px;
+    i {
+      margin: 0 10px;
+    }
   }
+  .importDatabase1 {
+    margin-top:24px;
+    position: relative;
+    span:nth-child(1) {
+      font-size: 16px;
+      color: #333333;
+      margin-right:40px;
+    position: relative;
+
+      &:after {
+        content: " ";
+        position: absolute;
+        top: 2px;
+        right: -16px;
+        width: 2px;
+        height: 14px;
+        background-color: #ccc;
+      }
+    }
+    span:nth-child(3) {
+      font-size: 14px;
+      color: #999999;
+    }
+    i {
+      position: absolute;
+      top: 4px;
+      left:90px;
+      font-style: normal;
+      background: url("../../../assets/file.png") no-repeat 0 0;
+      width: 12px;
+      height: 14px;
+    }
+    .joinIco2{
+      left:120px;
+  }
+  }
+  .malaise,.guideTheProcessing{
+    width: 100%;
+    margin-top:20px;
+    border-bottom: 1px solid #a7a7a7;
+  }
+
+  // 图片上传模块
+  .imageUploadBox{
+    margin-top:20px;
+    span{
+      font-size: 16px;
+      color:#333333;
+    }
+    i{
+      font-size: 12px;
+      color:#999999;
+      font-style: normal;
+      margin-left: 12px;
+    }
+  }
+  
 }
 </style>
 <style lang="less">

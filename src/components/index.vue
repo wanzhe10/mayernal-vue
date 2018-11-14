@@ -310,5 +310,15 @@ body > .el-container {
 // .el-tabs__nav {
 //   margin-left: 26px;
 // }
+.el-submenu__title {
+    font-size: 16px;
+    color: #303133;
+    padding: 0 20px;
+    cursor: pointer;
+    -webkit-transition: border-color .3s,background-color .3s,color .3s;
+    transition: border-color .3s,background-color .3s,color .3s;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
 
 </style>
