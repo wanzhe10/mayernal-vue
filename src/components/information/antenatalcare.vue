@@ -44,16 +44,13 @@
 				</li>
 			</ul>
 		</div>
-
 		<div class="newConstruction">
 			<div class="addBox">
 				<i class="addIcon"></i>
 				<p class="newConstructionBtn">新增产检</p>
 			</div>
-
 		</div>
 	</div>
-
 </template>
 <script>
 export default {

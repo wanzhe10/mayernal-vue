@@ -1,7 +1,7 @@
 <template>
-	<div class="administrativeBox">
-		<h2 class="administrativeBoxTittle">报告单解读维护</h2>
-		<div class="administrativeBoxContant clearfix">
+	<div class="reportBox">
+		<h2 class="reportBoxTittle">报告单解读维护</h2>
+		<div class="reportBoxContant clearfix">
 			<div class="Contant_left">
 				<div class="Contant_left_overflow">
 					<p>产检次数列表</p>
@@ -162,12 +162,12 @@ export default {
 .mgr18 {
   margin-right: 18px;
 }
-.administrativeBox {
+.reportBox {
   position: relative;
   width: 100%;
   min-height: 600px;
   background-color: #fff;
-  .administrativeBoxTittle {
+  .reportBoxTittle {
     display: block;
     width: 100%;
     background-color: #fbfbfb;
@@ -299,7 +299,7 @@ export default {
 }
 </style>
 <style lang='less'>
-.administrativeBox {
+.reportBox {
   .el-textarea__inner {
     border: none;
     min-height: 40px;

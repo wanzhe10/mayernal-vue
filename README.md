@@ -45,6 +45,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
         /information        基础数据维护
             /report              报告单解读维护
             /antenatalcare       产检信息维护
+            /prenatalEducation   孕期宣教
 
         /templatedata       模板数据维护
             /set                   模板信息设置

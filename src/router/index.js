@@ -7,6 +7,7 @@ import personnel from '@/components/backstage/personnel' /**vuex */
 import character from '@/components/backstage/character' /**vuex */
 import report from '@/components/information/report'
 import antenatalcare from '@/components/information/antenatalcare'
+import prenatalEducation from '@/components/information/prenatalEducation'
 import set from '@/components/templatedata/set'
 import today from '@/components/statistics/today'
 import documented from '@/components/statistics/documented'
@@ -19,6 +20,7 @@ import newfile from '@/components/management/newfile'
 import personalCenter from '@/components/management/personalCenter/personalCenter'
 import recordNews from '@/components/management/personalCenter/recordNews'
 import spouseNews from '@/components/management/personalCenter/spouseNews'
+
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -116,7 +118,12 @@ export default new Router({
                path: '/spouseNews',
                name: 'spouseNews',
                component: spouseNews
-             }
+             },
+        {
+          path: '/prenatalEducation',
+          name: 'prenatalEducation',
+          component: prenatalEducation
+        }
       ]
     }
   ]

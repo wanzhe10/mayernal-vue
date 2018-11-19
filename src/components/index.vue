@@ -57,6 +57,9 @@
                                 <router-link :to="{path: 'antenatalcare'}">
                                     <el-menu-item index="3-2">产检信息维护</el-menu-item>
                                 </router-link>
+                                   <router-link :to="{path: 'prenatalEducation'}">
+                                    <el-menu-item index="3-3">孕期宣教维护</el-menu-item>
+                                </router-link>
                             </el-menu-item-group>
                         </el-submenu>
                         <el-submenu index="4">
@@ -66,7 +69,7 @@
                             </template>
                             <el-menu-item-group>
                                 <router-link :to="{path: 'set'}">
-                                    <el-menu-item index="4-1">模板信息设置</el-menu-item>
+                                    <el-menu-item index="4-1">模板信息维护</el-menu-item>
                                 </router-link>
                             </el-menu-item-group>
                         </el-submenu>
