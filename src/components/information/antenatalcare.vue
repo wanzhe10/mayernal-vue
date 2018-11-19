@@ -12,20 +12,20 @@
 				<li style="width:100px;">操作</li>
 			</ul>
 			<ul class="tableContant">
-				<li v-for="item in tableContantData">
-					<div class="positonBox active">
+				<li v-for="(item,index) in tableContantData" :key="index">  
+					<div class="positonBox active" >
 						<span style="width:132px; padding-left:12px;">{{item.num}}</span>
 						<span style="width:134px;">{{item.gestationalWeeks}}</span>
 						<span style="width:104px;">{{item.state}}</span>
 						<span style="width:210px;">{{item.notice}}</span>
 						<span style="width:210px;">{{item.hint}}</span>
 						<span>
-							<a href="javascript:;" @click="toggle1()">查看</a>
+							<a href="javascript:;" @click="toggle1(index)">{{font}}</a>
 							<a href="javascript:;">操作</a>
 						</span>
 					</div>
 					<el-collapse-transition>
-						<div class="concealBox" v-show="isShow1">
+						<div class="concealBox" v-show="isShow1 ===index">
 							<p>
 								<span>{{item.num}}</span>|
 								<span>{{item.gestationalWeeks}}</span>|
@@ -58,7 +58,8 @@ export default {
     return {
       textarea2: "",
       textarea3: "",
-      isShow1: true,
+      isShow1: -1,
+      font:'查看',
       tableContantData: [
         {
           num: "第一次产检",
@@ -87,10 +88,16 @@ export default {
   },
   methods: {
     // 基本情况点击显示隐藏
-    toggle1: function() {
-      this.isShow1 = !this.isShow1;
-    }
-  }
+    toggle1: function(index) {
+      this.isShow1 = this.isShow1 == index ? -1 : index;
+      if(this.isShow1==-1){
+        this.font ='查看' 
+      }else{
+        this.font ='收起' 
+      }
+    },
+  },
+  props: ['item'],
 };
 </script>
 
