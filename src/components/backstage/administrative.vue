@@ -1,39 +1,39 @@
 <template>
-	<div class="administrativeBox">
-		<h2 class="administrativeBoxTittle">科室信息维护</h2>
-		<div class="administrativeBoxTop clearfix">
-			<div class="administrativeBoxTop_left">
-				<span class="mgr18">激活状态</span>
-				<el-select v-model="contactsModel" placeholder="请选择" clear="contactsModel">
-					<el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
-					</el-option>
-				</el-select>
-			</div>
-			<input type="button" value="新建科室" class="NewdepartmentBtn">
-		</div>
-		<div class="administrativeBoxContant">
-			<img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon">
-			<el-table :data="officeTableData" style="width: 100%">
-				<el-table-column prop="officeNum" label="序号" width="120px"></el-table-column>
-				<el-table-column prop="officeName" label="科室名称" width="150px"></el-table-column>
-				<el-table-column prop="officeDescribe" label="科室描述" width="366px" >
-				</el-table-column>
-				<el-table-column prop="officeState" label="状态" width="112px"></el-table-column>
-				<el-table-column prop="officeAddTime" label="添加时间" width="154px"></el-table-column>
-				<el-table-column prop="officeOperate" label="操作" width="74px">
-					<template slot-scope="scope">
-						<el-button type="text" size="small" style="text-align: center;">编辑</el-button>
-					</template>
-				</el-table-column>
-			</el-table>
-				<!-- 分页 -->
-		<div class="administrativeBoxBlock" style="margin-top:30px; text-align:center;">
-			<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPageOfice" :page-sizes="[7, 14, 21, 28]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
-			</el-pagination>
-		</div>
-		</div>
-	
-	</div>
+  <div class="administrativeBox">
+    <h2 class="administrativeBoxTittle">科室信息维护</h2>
+    <div class="administrativeBoxTop clearfix">
+      <div class="administrativeBoxTop_left">
+        <span class="mgr18">激活状态</span>
+        <el-select v-model="contactsModel" placeholder="请选择" clear="contactsModel">
+          <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
+          </el-option>
+        </el-select>
+      </div>
+      <input type="button" value="新建科室" class="NewdepartmentBtn">
+    </div>
+    <div class="administrativeBoxContant">
+      <img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon">
+      <el-table :data="officeTableData" style="width: 100%">
+        <el-table-column prop="officeNum" label="序号" width="120px"></el-table-column>
+        <el-table-column prop="officeName" label="科室名称" width="150px"></el-table-column>
+        <el-table-column prop="officeDescribe" label="科室描述" width="366px">
+        </el-table-column>
+        <el-table-column prop="officeState" label="状态" width="112px"></el-table-column>
+        <el-table-column prop="officeAddTime" label="添加时间" width="154px"></el-table-column>
+        <el-table-column prop="officeOperate" label="操作" width="74px">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" style="text-align: center;">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <div class="administrativeBoxBlock" style="margin-top:30px; text-align:center;">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPageOfice" :page-sizes="[7, 14, 21, 28]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
+        </el-pagination>
+      </div>
+    </div>
+
+  </div>
 </template>
 <script>
 export default {
@@ -56,7 +56,7 @@ export default {
           officeName: "妇产科-门诊",
           officeDescribe: "孕产妇-住院或是间距备注设大二大所我...",
           officeState: "已激活",
-		  officeAddTime: "2018-10-22",
+          officeAddTime: "2018-10-22"
         },
         {
           officeNum: "2",
