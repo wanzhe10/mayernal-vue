@@ -28,31 +28,13 @@
 					<input type="button" value="添加标签" @click="dialogVisible = true">
 				</div>
 				<ul class="category clearfix">
-					<li v-for="item in categoryItems" v-html="item" :key="item.num" @click="toggleClass($event)" :class="{'actives':isActive}"></li>
-					<!-- <li>宫高</li>
-					<li>脐带</li>
-					<li>股骨长</li>
-					<li>胎囊</li>
-					<li>胎心</li>
-					<li>胎头</li>
-					<li>胎芽</li>
-					<li style="margin-right:0px;">胎芽</li>
-					<li>宫高</li>
-					<li>脐带</li>
-					<li>股骨长</li>
-					<li>最大羊水深处</li>
-					<li>宫高</li>
-					<li>脐带</li>
-					<li>股骨长</li>
-					<li>宫高</li>
-					<li>宫双顶径高</li>
-					<li>羊水指数</li> -->
+					<li v-for="(item,index) in categoryItems" v-html="item.value"  @click="toggleClass(index)" :class="{actives:index==isActive}" :key="index"></li>
 				</ul>
 				<div class="labelContant">
 					<h2>标签内容</h2>
 					<div class="labelContant_font">
 						<div class="labelIntroduce">
-							<p>宫高介绍</p>
+							<p><span id="tittleName">{{'宫高'}}</span>介绍</p>
 							<el-input type="textarea" autosize placeholder="请输入内容" v-model="labelIntroduce">
 
 							</el-input>
@@ -88,30 +70,87 @@
 	</div>
 </template>
 <script>
+import $ from "jquery"
 export default {
   data() {
     return {
       categoryItems: [
-        "宫高",
-        "脐带",
-        "股骨长",
-        "胎囊",
-        "胎心",
-        "胎头",
-        "胎芽",
-        "胎芽",
-        "宫高",
-        "脐带",
-        "股骨长",
-        "最大羊水深处",
-        "宫高",
-        "脐带",
-        "股骨长",
-        "宫高",
-        "宫双顶径高",
-        "羊水指数"
+         {
+          value: "宫高",
+          label: "宫高"
+        },
+         {
+          value: "脐带",
+          label: "脐带"
+        },
+          {
+          value: "股骨长",
+          label: "股骨长"
+        },
+         {
+          value: "胎囊",
+          label: "胎囊"
+        },
+          {
+          value: "宫高",
+          label: "宫高"
+        },
+         {
+          value: "宫高",
+          label: "宫高"
+        },
+          {
+          value: "宫高",
+          label: "宫高"
+        },
+         {
+          value: "宫高",
+          label: "宫高"
+        },
+          {
+          value: "宫高",
+          label: "宫高"
+        },
+         {
+          value: "宫高",
+          label: "宫高"
+        },
+          {
+          value: "宫高",
+          label: "宫高"
+        },
+         {
+          value: "宫高",
+          label: "宫高"
+        },
+          {
+          value: "宫高",
+          label: "宫高"
+        },
+         {
+          value: "宫高",
+          label: "宫高"
+        },
+        // "宫高",
+        // "脐带",
+        // "股骨长",
+        // "胎囊",
+        // "胎心",
+        // "胎头",
+        // "胎芽",
+        // "胎芽",
+        // "宫高",
+        // "脐带",
+        // "股骨长",
+        // "最大羊水深处",
+        // "宫高",
+        // "脐带",
+        // "股骨长",
+        // "宫高",
+        // "宫双顶径高",
+        // "羊水指数"
       ],
-      isActive: false,
+      isActive: 0,
       labelIntroduce:
         "建立妊娠保健手册、确定孕周、推算预产期、评估妊娠高危因素，血压、体重指数、胎心率、血常规、血型（ABO和Rh）、空腹血糖、刚功能和肾功能、乙型肝炎病毒表面抗原、梅毒螺旋体、HIV筛查、心电图,）、空腹血糖、刚功能和肾功能、乙型肝炎病毒表面抗原、梅毒螺旋体、HIV筛查、心电图",
       labelExplain:
@@ -145,8 +184,12 @@ export default {
   },
   methods: {
     //切换"记住密码"样式
-    toggleClass(event) {
-      this.isActive = !this.isActive;
+    toggleClass(index) {
+      // this.isActive = !this.isActive;
+      this.isActive = this.isActive == index ? -1 : index;
+     var  tittleName=document.getElementById('tittleName');
+      tittleName.innerHTML=this.categoryItems[index].value
+      console.log($('#tittleName').html())
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -315,6 +358,9 @@ export default {
   }
   .el-select {
     width: 100%;
+  }
+  .el-dialog__header{
+    background-color: #ededed;
   }
   .dialog-footer {
     overflow: hidden;

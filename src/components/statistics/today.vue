@@ -26,31 +26,33 @@
         </div>
       </div>
       <div class="administrativeBoxContant">
-        <!-- <img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon"> -->
-        <el-table :data="officeTableData" style="width: 100%">
-          <el-table-column prop="recheckTime" label="复检时间" width="130px"></el-table-column>
-          <el-table-column prop="recheckName" label="姓名" width="140px"></el-table-column>
-          <el-table-column prop="recheckWeek" label="孕周" width="125px"></el-table-column>
-          <el-table-column prop="recheckTerm" label="预产期" width="156px"></el-table-column>
-          <el-table-column prop="recheckAge" label="年龄" width="94px"></el-table-column>
-          <el-table-column prop="recheckAssess" label="高危评估" width="126px">
-            <template slot-scope="scope">
-              <i class="clolrLump"></i>
-              <span style="margin-left: 10px">{{ scope.row.recheckAssess }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="recheckOvertime" label="超时" width="86px"></el-table-column>
-          <el-table-column prop="" label="操作" width="70px">
-            <template slot-scope="scope">
-              <el-button type="text" size="small" style="text-align: center;">编辑</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!-- 分页 -->
-        <div class="administrativeBoxBlock" style="margin-top:30px; text-align:center;">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPageOfice" :page-sizes="[10, 20, 30, 40]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
-          </el-pagination>
-        </div>
+        <img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon">
+        		<div class="TableDataBox">
+						<el-table :data="officeTableData" style="width: 100%">
+					<el-table-column prop="recheckTime" label="复检时间" width="130px"></el-table-column>
+					<el-table-column prop="recheckName" label="姓名" width="140px"></el-table-column>
+					<el-table-column prop="recheckWeek" label="孕周" width="125px"></el-table-column>
+					<el-table-column prop="recheckTerm" label="预产期" width="156px"></el-table-column>
+					<el-table-column prop="recheckAge" label="年龄" width="94px"></el-table-column>
+					<el-table-column prop="recheckAssess" label="高危评估" width="126px">
+						<template slot-scope="scope">
+							<i class="clolrLump"></i>
+							<span style="margin-left: 10px">{{ scope.row.recheckAssess }}</span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="recheckOvertime" label="超时" width="86px"></el-table-column>
+					<el-table-column prop="" label="操作" width="70px">
+						<template slot-scope="scope">
+							<el-button type="text" size="small" style="text-align: center;">查看</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<!-- 分页 -->
+				<div class="administrativeBoxBlock" style="margin-top:30px; text-align:center;">
+					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPageOfice" :page-sizes="[10, 20, 30, 40]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
+					</el-pagination>
+				</div>
+				</div>
       </div>
     </div>
 
@@ -63,6 +65,114 @@ export default {
     return {
       activeName: "first",
       officeTableData: [
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
         {
           recheckTime: "2018-10-22",
           recheckName: "小明一",
@@ -183,13 +293,13 @@ export default {
   .todayBox_bottom {
     margin-top: 6px;
     width: 100%;
-    height: 60px;
-    line-height: 60px;
     background-color: #fff;
     .todayBoxTeb {
       width: 100%;
       background-color: #fff;
       border-bottom: 1px solid #ccc;
+        height: 60px;
+    line-height: 60px;
       ul {
         float: left;
         li {
@@ -239,11 +349,24 @@ export default {
     }
   }
   .administrativeBoxContant {
+     min-height: 400px;
+  position: relative;
     padding: 0 24px;
-    background-color: #fff;
+	background-color: #fff;
+    	.noDataIcon{
+		// display: none;
+		position: absolute;
+		top:50%;
+    left: 50%;
+    z-index: 111;
+		transform:translate(-50%,-50%);
+	}
     table {
-      width: 100%;
-    }
+	  width: 100%;
+  }
+  .TableDataBox{
+    padding-bottom:26px;
+  }
   }
 }
 </style>

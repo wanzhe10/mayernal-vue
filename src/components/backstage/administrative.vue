@@ -78,6 +78,62 @@ export default {
           officeDescribe: "这里限制字数在18个之内，超出......表示",
           officeState: "已激活",
           officeAddTime: "2018-10-22"
+        },
+          {
+          officeNum: "1",
+          officeName: "妇产科-门诊",
+          officeDescribe: "孕产妇-住院或是间距备注设大二大所我...",
+          officeState: "已激活",
+          officeAddTime: "2018-10-22"
+        },
+        {
+          officeNum: "2",
+          officeName: "妇产科-门诊",
+          officeDescribe: "这里限制字数在18个之内，超出......表示",
+          officeState: "已激活",
+          officeAddTime: "2018-10-22"
+        },
+        {
+          officeNum: "3",
+          officeName: "妇产科-门诊",
+          officeDescribe: "这里限制字数在18个之内，超出......表示",
+          officeState: "已激活",
+          officeAddTime: "2018-10-22"
+        },
+        {
+          officeNum: "4",
+          officeName: "妇产科-门诊",
+          officeDescribe: "这里限制字数在18个之内，超出......表示",
+          officeState: "已激活",
+          officeAddTime: "2018-10-22"
+        },
+          {
+          officeNum: "1",
+          officeName: "妇产科-门诊",
+          officeDescribe: "孕产妇-住院或是间距备注设大二大所我...",
+          officeState: "已激活",
+          officeAddTime: "2018-10-22"
+        },
+        {
+          officeNum: "2",
+          officeName: "妇产科-门诊",
+          officeDescribe: "这里限制字数在18个之内，超出......表示",
+          officeState: "已激活",
+          officeAddTime: "2018-10-22"
+        },
+        {
+          officeNum: "3",
+          officeName: "妇产科-门诊",
+          officeDescribe: "这里限制字数在18个之内，超出......表示",
+          officeState: "已激活",
+          officeAddTime: "2018-10-22"
+        },
+        {
+          officeNum: "4",
+          officeName: "妇产科-门诊",
+          officeDescribe: "这里限制字数在18个之内，超出......表示",
+          officeState: "已激活",
+          officeAddTime: "2018-10-22"
         }
       ],
       contactsModel: "", //激活状态

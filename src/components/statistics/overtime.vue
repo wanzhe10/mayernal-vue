@@ -114,6 +114,33 @@ export default {
           recheckAge: "32",
           recheckAssess: "红色",
           recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
+        },
+        {
+          recheckTime: "2018-10-22",
+          recheckName: "小明一",
+          recheckWeek: "孕13-6周",
+          recheckTerm: "2018-10-22",
+          recheckAge: "32",
+          recheckAssess: "红色",
+          recheckOvertime: " -- "
         }
       ],
       currentPageOfice: 1,
@@ -211,7 +238,7 @@ export default {
     height: 70px;
     width: 100%;
     background-color: #fff;
-    padding: 0 26px;
+    padding: 0 24px;
     line-height: 70px;
     .higherRiskSelectBox,
     .seekBox {
@@ -238,11 +265,11 @@ export default {
   .documentedBox_bottom {
     margin-top: 6px;
     width: 100%;
-    height: 60px;
-    line-height: 60px;
     background-color: #fff;
     .documentedBoxTeb {
       width: 100%;
+       height: 60px;
+    line-height: 60px;
       background-color: #fff;
       border-bottom: 1px solid #ccc;
       ul {
@@ -295,9 +322,10 @@ export default {
     }
   }
   .administrativeBoxContant {
-	
+    min-height: 400px;
     padding: 0 24px;
-	background-color: #fff;
+  background-color: #fff;
+  position: relative;
 	.noDataIcon{
 		display: none;
 		position: absolute;
@@ -307,7 +335,10 @@ export default {
 	}
     table {
 	  width: 100%;
-	}
+  }
+   .TableDataBox{
+    padding-bottom:26px;
+  }
   }
 }
 </style>
