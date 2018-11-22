@@ -24,11 +24,15 @@ import spouseNews from '@/components/management/personalCenter/spouseNews'
 Vue.use(Router)
 export default new Router({
   routes: [
-    {
+    {         /* 首页(默认路由地址) */
       path: '/',
       name: 'index',
       component: index,
       redirect: '/management',
+       meta: {
+         title: '首页入口'
+       },
+
       children: [
         {
           path: '/organization',

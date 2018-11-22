@@ -10,7 +10,7 @@ import Qs from 'qs'
 import VueAreaLinkage from 'vue-area-linkage';
 import 'vue-area-linkage/dist/index.css';
 import '../static/reset.css' /*引入公共样式*/
-import $ from "jquery"
+// import $ from "jquery"
 
 
 Vue.use(Element);

@@ -4,7 +4,7 @@
         <el-header class="clearfix">
             <div class="headerBox clearfix">
                 <img src="../assets/login.png" alt="围产期建档评估管理系统">
-                <span class="characterFont">档案首页/新建档案</span>
+                <span class="characterFont">档案管理</span>
                 <div class="headerrightBox">
                     <p class="welcome">欢迎<i class="doctorName">周晓晓</i>医生</p>
                     <div class="exitBtn">
@@ -18,17 +18,19 @@
         <el-container>
             <el-aside>
                 <el-col :span="12">
-                    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" active-text-color="#82c1ea">
-                        <router-link :to="{path: 'management'}">
-                            <div class=" headline headline1">
-                                <img src="../assets/Archives.png" alt=" 档案管理" class="seticon">
-                                <span>档案管理</span>
-                            </div>
-                        </router-link>
+                    <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" active-text-color="#68b6e7" :unique-opened='true'>
+                        <el-menu-item index="1">
+                            <router-link :to="{path: 'management'}"> 
+                                <div class=" headline headline1"  @click="seticon()">
+                                    <img src="../assets/icon1.png" alt=" 档案管理" class="seticon">
+                                    <span @click="tittleFont($event)">档案管理</span>
+                                </div>
+                            </router-link>
+                        </el-menu-item>
                         <el-submenu index="2">
                             <template slot="title">
                                 <img src="../assets/icon2.png" alt=" 后台配置" class="seticon">
-                                <span>后台配置</span>
+                                <span @click="tittleFont($event)">后台配置</span>
                             </template>
                             <el-menu-item-group>
                                 <router-link :to="{path: 'organization'}">
@@ -48,7 +50,7 @@
                         <el-submenu index="3">
                             <template slot="title">
                                 <img src="../assets/icon3.png" alt="基础数据维护" class="managementicon  seticon">
-                                <span>基础数据维护</span>
+                                <span @click="tittleFont($event)">基础数据维护</span>
                             </template>
                             <el-menu-item-group>
                                 <router-link :to="{path: 'report'}">
@@ -57,7 +59,7 @@
                                 <router-link :to="{path: 'antenatalcare'}">
                                     <el-menu-item index="3-2">产检信息维护</el-menu-item>
                                 </router-link>
-                                   <router-link :to="{path: 'prenatalEducation'}">
+                                <router-link :to="{path: 'prenatalEducation'}">
                                     <el-menu-item index="3-3">孕期宣教维护</el-menu-item>
                                 </router-link>
                             </el-menu-item-group>
@@ -65,7 +67,7 @@
                         <el-submenu index="4">
                             <template slot="title">
                                 <img src="../assets/icon4.png" alt="模板数据维护" class="managementicon seticon">
-                                <span>模板数据维护</span>
+                                <span @click="tittleFont($event)">模板数据维护</span>
                             </template>
                             <el-menu-item-group>
                                 <router-link :to="{path: 'set'}">
@@ -76,7 +78,7 @@
                         <el-submenu index="5">
                             <template slot="title">
                                 <img src="../assets/icon5.png" alt="数据统计" class="managementicon seticon">
-                                <span>数据统计</span>
+                                <span @click="tittleFont($event)">数据统计</span>
                             </template>
                             <el-menu-item-group>
                                 <router-link :to="{path: 'today'}">
@@ -96,7 +98,7 @@
                         <el-submenu index="6">
                             <template slot="title">
                                 <img src="../assets/icon6.png" alt="信息管理" class="managementicon seticon">
-                                <span>信息管理</span>
+                                <span @click="tittleFont($event)">信息管理</span>
                             </template>
                             <el-menu-item-group>
                                 <router-link :to="{path: 'personalDetails'}">
@@ -114,11 +116,11 @@
             <el-container>
                 <el-main>
                     <router-view />
-    
+
                 </el-main>
                 <!-- 底部 -->
                 <el-footer>
-                      <p class="footerNews">Copyright © 2018 医来医往(北京)科技有限公司</p>
+                    <p class="footerNews">Copyright © 2018 医来医往(北京)科技有限公司</p>
                 </el-footer>
             </el-container>
         </el-container>
@@ -126,6 +128,7 @@
 </template>
 
 <script>
+import $ from "jquery";
 export default {
   name: "home",
   //   data() {
@@ -134,9 +137,17 @@ export default {
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
+      console.log(keyPath);
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },
+    tittleFont(event) {
+      $(".characterFont").html(event.target.innerHTML);
+    },
+    seticon(){
+        $('.seticon').attr('src')
+        console.log($('.seticon').attr('src'))
     }
   }
 };
@@ -206,9 +217,9 @@ export default {
     font-size: 16px;
   }
   .el-submenu__title * {
-      font-size: 16px;
+    font-size: 16px;
     vertical-align: middle;
-}
+  }
   .exitBtn {
     position: relative;
     display: inline-block;
@@ -227,18 +238,16 @@ export default {
   }
 }
 .el-aside {
-    margin-bottom:74px;
+  margin-bottom: 74px;
   width: 190px !important;
   background-color: #fff;
   .headline {
-    width: 190px !important;
     height: 52px;
     line-height: 52px;
     font-size: 16px;
     color: #333333;
     position: relative;
     vertical-align: middle;
-    padding-left: 20px;
   }
 }
 .el-submenu__title {
@@ -250,12 +259,12 @@ export default {
 //   }
 
 .el-main {
-//   background-color: #e9eef3;
-  margin:16px;
-  padding:0px;
+  //   background-color: #e9eef3;
+  margin: 16px;
+  padding: 0px;
   color: #333;
-//   text-align: center;
-//   line-height: 160px;
+  //   text-align: center;
+  //   line-height: 160px;
 }
 
 body > .el-container {
@@ -286,9 +295,9 @@ body > .el-container {
 .el-submenu__icon-arrow {
   right: 14px !important;
 }
-.footerNews{
-    text-align: center;
-    margin-top:20px;
+.footerNews {
+  text-align: center;
+  margin-top: 20px;
 }
 // .el-date-editor.el-input,
 // .el-date-editor.el-input__inner {
@@ -314,14 +323,20 @@ body > .el-container {
 //   margin-left: 26px;
 // }
 .el-submenu__title {
-    font-size: 16px;
-    color: #303133;
-    padding: 0 20px;
-    cursor: pointer;
-    -webkit-transition: border-color .3s,background-color .3s,color .3s;
-    transition: border-color .3s,background-color .3s,color .3s;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+  font-size: 16px;
+  color: #303133;
+  padding: 0 20px;
+  cursor: pointer;
+  -webkit-transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
-
+.el-submenu__title * {
+  font-size: 16px;
+}
+.router-link-active{
+    color:red;
+    background-color: #ccc;
+}
 </style>

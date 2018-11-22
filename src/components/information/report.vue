@@ -1,136 +1,140 @@
 <template>
-	<div class="reportBox">
-		<h2 class="reportBoxTittle">报告单解读维护</h2>
-		<div class="reportBoxContant clearfix">
-			<div class="Contant_left">
-				<div class="Contant_left_overflow">
-					<p>产检次数列表</p>
-					<ul>
-						<li class="active">第一次产检</li>
-						<li>第二次产检</li>
-						<li>第三次产检</li>
-						<li>第一次产检</li>
-						<li>第一次产检</li>
-						<li>第一次产检</li>
-						<li class="active">第一次产检</li>
-						<li>第一次产检</li>
-						<li>第一次产检</li>
-						<li>第一次产检</li>
-						<li>第一次产检</li>
-						<li class="active">第十二次产检</li>
-					</ul>
-				</div>
+  <div class="reportBox">
+    <h2 class="reportBoxTittle">报告单解读维护</h2>
+    <div class="reportBoxContant clearfix">
+      <div class="Contant_left">
+        <div class="Contant_left_overflow">
+          <p>产检次数列表</p>
+          <ul>
+            <li v-for="(item,index) in antenatalCareNums" :key="index" :label="item.label" :value="item.value" @click="antenatalCareNum(index)" :class="{active:index==showActive}">第{{item.label}}次产检</li>
+          </ul>
+        </div>
 
-			</div>
-			<div class="Contant_right clearfix">
-				<div class="Contant_tittle">
-					<span>报告单类型</span>
-					<input type="button" value="添加标签" @click="dialogVisible = true">
-				</div>
-				<ul class="category clearfix">
-					<li v-for="(item,index) in categoryItems" v-html="item.value"  @click="toggleClass(index)" :class="{actives:index==isActive}" :key="index"></li>
-				</ul>
-				<div class="labelContant">
-					<h2>标签内容</h2>
-					<div class="labelContant_font">
-						<div class="labelIntroduce">
-							<p><span id="tittleName">{{'宫高'}}</span>介绍</p>
-							<el-input type="textarea" autosize placeholder="请输入内容" v-model="labelIntroduce">
+      </div>
+      <div class="Contant_right clearfix">
+        <div class="Contant_tittle">
+          <span>报告单类型</span>
+          <input type="button" value="添加标签" @click="dialogVisible = true">
+        </div>
+        <ul class="category clearfix">
+          <li v-for="(item,index) in categoryItems" v-html="item.value" @click="toggleClass(index)"  @dblclick="modification = true" :class="{actives:index==isActive}" :key="index"></li>
+        </ul>
+        <div class="labelContant">
+          <h2>标签内容</h2>
+          <div class="labelContant_font">
+            <div class="labelIntroduce">
+              <p><span id="tittleName">{{'宫高'}}</span>介绍</p>
+              <el-input type="textarea" autosize placeholder="请输入内容" v-model="labelIntroduce">
 
-							</el-input>
-						</div>
-						<div class="wire"></div>
-						<div class="labelExplain">
-							<p>解释说明</p>
-							<el-input type="textarea" autosize placeholder="请输入内容" v-model="labelExplain">
-							</el-input>
-						</div>
-					</div>
-				</div>
-				<el-button type="primary" class="saveBtn" disabled>保 存</el-button>
-			</div>
-		</div>
-		<!-- 新增标签弹框 -->
-		<el-dialog title="添加标签" :visible.sync="dialogVisible" width="450px" :before-close="handleClose" class="newlyLayer">
-			<p>标签名称</p>
-			<el-input v-model="newlyLayerInput" placeholder="请输入报告单名称"></el-input>
-			<p>状态</p>
-			<el-select v-model="value" placeholder="请选择" size='100%'>
-				<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-				</el-option>
-			</el-select>
-			<span slot="footer" class="dialog-footer">
-				<el-button @click="dialogVisible = false">取 消</el-button>
-				<el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-			</span>
-		</el-dialog>
-		<div>
+              </el-input>
+            </div>
+            <div class="wire"></div>
+            <div class="labelExplain">
+              <p>解释说明</p>
+              <el-input type="textarea" autosize placeholder="请输入内容" v-model="labelExplain">
+              </el-input>
+            </div>
+          </div>
+        </div>
+        <el-button type="primary" class="saveBtn" disabled>保 存</el-button>
+      </div>
+    </div>
+    <!-- 新增标签弹框 -->
+    <el-dialog title="添加标签" :visible.sync="dialogVisible" width="450px" :before-close="handleClose" class="newlyLayer">
+      <p>标签名称</p>
+      <el-input v-model="newlyLayerInput" placeholder="请输入报告单名称"></el-input>
+      <p>状态</p>
+      <el-select v-model="contactsModel" placeholder="请选择" size='100%'>
+        <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 修改标签弹框 -->
+    <el-dialog title="修改标签" :visible.sync="modification" width="450px" :before-close="handleClose" class="modificationlyLayer">
+      <p>标签名称</p>
+      <el-input v-model="modificationlyLayerInput" placeholder="请输入报告单名称"></el-input>
+      <p>状态</p>
+      <el-select v-model="modificationContactsModel" placeholder="请选择" size='100%'>
+        <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="modification = false">取 消</el-button>
+        <el-button type="primary" @click="modification = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <div>
 
-		</div>
-	</div>
+    </div>
+  </div>
 </template>
 <script>
-import $ from "jquery"
+import $ from "jquery";
 export default {
   data() {
     return {
+      // 报告单类型
       categoryItems: [
-         {
+        {
           value: "宫高",
           label: "宫高"
         },
-         {
+        {
           value: "脐带",
           label: "脐带"
         },
-          {
+        {
           value: "股骨长",
           label: "股骨长"
         },
-         {
+        {
           value: "胎囊",
           label: "胎囊"
         },
-          {
+        {
           value: "宫高",
           label: "宫高"
         },
-         {
+        {
           value: "宫高",
           label: "宫高"
         },
-          {
+        {
           value: "宫高",
           label: "宫高"
         },
-         {
+        {
           value: "宫高",
           label: "宫高"
         },
-          {
+        {
           value: "宫高",
           label: "宫高"
         },
-         {
+        {
           value: "宫高",
           label: "宫高"
         },
-          {
+        {
           value: "宫高",
           label: "宫高"
         },
-         {
+        {
           value: "宫高",
           label: "宫高"
         },
-          {
+        {
           value: "宫高",
           label: "宫高"
         },
-         {
+        {
           value: "宫高",
           label: "宫高"
-        },
+        }
         // "宫高",
         // "脐带",
         // "股骨长",
@@ -156,41 +160,94 @@ export default {
       labelExplain:
         "之前没有做过婚检，孕期检查的人，还要增加地中海贫血筛查，家里养宠物的人，则要增加寄生虫检查，专家提醒：第一次产检做的检查项目相对最多，也是为了全面检查准妈妈的健康情况，要带上准爸爸一起检查，并且要了解你和他的直属亲属及家庭成员的健康情况",
       dialogVisible: false,
-      options: [
+       modification: false,
+      // 状态
+      contacts: [
         {
-          value: "选项1",
-          label: "黄金糕"
+          value: "0",
+          label: "未激活"
         },
         {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
+          value: "1",
+          label: "已激活"
         }
       ],
-      value: "",
-      newlyLayerInput: ""
+      contactsModel:'', //新增标签状态
+      modificationContactsModel:'', //修改标签状态
+      newlyLayerInput: "",
+      modificationlyLayerInput: "",
+      antenatalCareNums: [
+        {
+          value: "1",
+          label: "一"
+        },
+        {
+          value: "2",
+          label: "二"
+        },
+        {
+          value: "3",
+          label: "三"
+        },
+        {
+          value: "4",
+          label: "四"
+        },
+        {
+          value: "5",
+          label: "五"
+        },
+        {
+          value: "6",
+          label: "六"
+        },
+        {
+          value: "7",
+          label: "七"
+        },
+        {
+          value: "8",
+          label: "八"
+        },
+        {
+          value: "9",
+          label: "九"
+        },
+        {
+          value: "10",
+          label: "十"
+        },
+        {
+          value: "11",
+          label: "十一"
+        },
+        {
+          value: "12",
+          label: "十二"
+        }
+      ],
+      showActive: "0"
     };
   },
   methods: {
-    //切换"记住密码"样式
-    toggleClass(index) {
-      // this.isActive = !this.isActive;
-      this.isActive = this.isActive == index ? -1 : index;
-     var  tittleName=document.getElementById('tittleName');
-      tittleName.innerHTML=this.categoryItems[index].value
-      console.log($('#tittleName').html())
+    // 切换产检次数列表
+    antenatalCareNum(index) {
+      this.showActive = index;
     },
+    //切换"报告单类型"样式
+    toggleClass(index) {
+      this.isActive = index;
+
+      // this.isActive = this.isActive == index ? -1 : index;
+      var tittleName = document.getElementById("tittleName");
+      tittleName.innerHTML = this.categoryItems[index].value;
+    },
+    //切换"报告单类型"样式
+    storageDetail(index) {
+    
+    },
+    
+    // 弹框右上角关闭按钮
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then(_ => {
@@ -247,6 +304,12 @@ export default {
           line-height: 46px;
           color: #333333;
           padding-left: 30px;
+          cursor: pointer;
+          -moz-user-select: none; /*火狐*/
+          -webkit-user-select: none; /*webkit浏览器*/
+          -ms-user-select: none; /*IE10*/
+          -khtml-user-select: none; /*早期浏览器*/
+          user-select: none;
         }
         .active {
           background-color: #68b6e7;
@@ -290,6 +353,7 @@ export default {
         margin-bottom: 20px;
         margin-right: 18px;
         cursor: pointer;
+        user-select: none;
       }
       li:nth-child(1) {
         margin-left: 0px;
@@ -331,7 +395,8 @@ export default {
   text-align: center;
   margin-left: 260px;
 }
-.newlyLayer {
+.newlyLayer,
+.modificationlyLayer {
   p {
     margin-bottom: 12px;
     margin-top: 20px;
@@ -359,7 +424,7 @@ export default {
   .el-select {
     width: 100%;
   }
-  .el-dialog__header{
+  .el-dialog__header {
     background-color: #ededed;
   }
   .dialog-footer {
@@ -384,11 +449,11 @@ export default {
     border-color: #ccc;
     background-color: #f6f6f6;
   }
-  .el-dialog__body{
-	  padding:0px 20px;
+  .el-dialog__body {
+    padding: 0px 20px;
   }
-  .el-dialog__footer{
-	  padding:30px;
+  .el-dialog__footer {
+    padding: 30px;
   }
 }
 </style>

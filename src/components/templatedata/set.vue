@@ -22,9 +22,6 @@
               <div slot="content" style="width:300px;display:block;word-break: break-all;word-wrap:break-word;">{{ scope.row.officeDescribe }}</div>
               <span style=" width:248px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.officeDescribe }}</span>
             </el-tooltip>
-            <!-- <el-tooltip :content= scope.row.officeDescribe   placement="bottom" effect="light">
-							<div>{{ scope.row.officeDescribe }}</div>
-                     </el-tooltip> -->
           </template>
         </el-table-column>
         <el-table-column prop="officeState" label="状态" width="112px"></el-table-column>
@@ -359,7 +356,7 @@ export default {
     width: 153px;
     height: 141px;
     position: absolute;
-    top: 70%;
+    top: 50%;
     left: 50%;
     display: none;
     transform: translate(-50%, -50%);

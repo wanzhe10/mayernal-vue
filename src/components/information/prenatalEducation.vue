@@ -1,62 +1,78 @@
 <template>
-    <div class="prenatalEducationBox">
-        <h2 class="prenatalEducationBoxTittle">孕期宣教维护</h2>
-        <div class="prenatalEducationBoxContant clearfix">
-            <div class="Contant_right clearfix">
-                <div class="Contant_tittle">
-                    <span>孕期检查标签</span>
-                    <input type="button" value="添加标签" @click="dialogVisible = true">
-                </div>
-                <ul class="category clearfix">
-                    <li v-for="item in categoryItems" v-html="item" :key="item.num" @click="toggleClass($event)" :class="{'actives':isActive}"></li>
-                </ul>
-            </div>
-            <div class="prenatalEducationBottom clearfix">
-                <div class="headlineBox">
-                    <h2>孕期检查标题</h2>
-                      <el-table :data="tittledata" class="prenatalEducationTable">
-                    <el-table-column prop="name" label="">
-                        <template slot-scope="scope">
-                            <el-input v-model="tittledata[scope.$index].name" placeholder="请输入"></el-input>
-                        </template>
-                    </el-table-column>
-                    </el-table>
-                    <div class="newConstruction">
-                        <div class="addBox"  @click="add">
-                            <i class="addIcon"></i>
-                            <p class="newConstructionBtn">添加标题</p>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="matterBox">
-                    
-                </div>
-            </div>
+  <div class="prenatalEducationBox">
+    <h2 class="prenatalEducationBoxTittle">孕期宣教维护</h2>
+    <div class="prenatalEducationBoxContant clearfix">
+      <div class="Contant_right clearfix">
+        <div class="Contant_tittle">
+          <span>孕期检查标签</span>
+          <input type="button" value="添加标签" @click="dialogVisible = true">
         </div>
-        <!-- 新增标签弹框 -->
-        <el-dialog title="添加标签" :visible.sync="dialogVisible" width="450px" :before-close="handleClose" class="newlyLayer">
-            <p>标签名称</p>
-            <el-input v-model="newlyLayerInput" placeholder="请输入报告单名称"></el-input>
-            <p>状态</p>
-            <el-select v-model="value" placeholder="请选择" size='100%'>
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-            </el-select>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-        </el-dialog>
-        <div>
+        <ul class="category clearfix">
+          <!-- <li v-for="item in categoryItems" v-html="item" :key="item.num" @click="toggleClass($event)" :class="{'actives':isActive}"></li> -->
+            <li v-for="(item,index) in categoryItems" v-html="item" @click="toggleClass(index)"  @dblclick="modification = true" :class="{actives:index==isActive}" :key="index"></li>
+        </ul>
+      </div>
+      <div class="prenatalEducationBottom clearfix">
+        <div class="headlineBox">
+          <h2>孕期检查标题</h2>
+          <el-table :data="tittledata" class="prenatalEducationTable">
+            <el-table-column prop="name" label="">
+              <template slot-scope="scope">
+                <el-input v-model="tittledata[scope.$index].name" placeholder="请输入"></el-input>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="newConstruction">
+            <div class="addBox" @click="add">
+              <i class="addIcon"></i>
+              <p class="newConstructionBtn">添加标题</p>
+            </div>
+          </div>
 
         </div>
+        <div class="matterBox">
+
+        </div>
+      </div>
     </div>
+    <!-- 新增标签弹框 -->
+    <el-dialog title="添加标签" :visible.sync="dialogVisible" width="450px" :before-close="handleClose" class="newlyLayer">
+      <p>标签名称</p>
+      <el-input v-model="newlyLayerInput" placeholder="请输入报告单名称"></el-input>
+      <p>状态</p>
+      <el-select v-model="value" placeholder="请选择" size='100%'>
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+
+       <!-- 编辑标签弹框 -->
+    <el-dialog title="编辑标签" :visible.sync="modification" width="450px" :before-close="handleClose" class="newlyLayer">
+      <p>标签名称</p>
+      <el-input v-model="modificationlyLayerInput" placeholder="请输入报告单名称"></el-input>
+      <p>状态</p>
+      <el-select v-model="modificationvalue" placeholder="请选择" size='100%'>
+        <el-option v-for="item in modificationoptions" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="modification = false">取 消</el-button>
+        <el-button type="primary" @click="modification = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <div>
+    </div>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
+      // 孕期检查标签
       categoryItems: [
         "宫高",
         "脐带",
@@ -77,47 +93,47 @@ export default {
         "宫双顶径高",
         "羊水指数"
       ],
-      isActive: false,
-      labelIntroduce:
-        "建立妊娠保健手册、确定孕周、推算预产期、评估妊娠高危因素，血压、体重指数、胎心率、血常规、血型（ABO和Rh）、空腹血糖、刚功能和肾功能、乙型肝炎病毒表面抗原、梅毒螺旋体、HIV筛查、心电图,）、空腹血糖、刚功能和肾功能、乙型肝炎病毒表面抗原、梅毒螺旋体、HIV筛查、心电图",
-      labelExplain:
-        "之前没有做过婚检，孕期检查的人，还要增加地中海贫血筛查，家里养宠物的人，则要增加寄生虫检查，专家提醒：第一次产检做的检查项目相对最多，也是为了全面检查准妈妈的健康情况，要带上准爸爸一起检查，并且要了解你和他的直属亲属及家庭成员的健康情况",
-      dialogVisible: false,
+       isActive: 0,
+    dialogVisible: false,
+      modification: false,
+      // 添加标签 状态
       options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
+       {
+          value: "0",
+          label: "未激活"
         },
         {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
+          value: "1",
+          label: "已激活"
         }
       ],
-      value: "",
-      newlyLayerInput: "",
+         newlyLayerInput: "",
+        value: "",
+      // 编辑标签 状态
+        modificationoptions: [
+        {
+          value: "0",
+          label: "未激活"
+        },
+        {
+          value: "1",
+          label: "已激活"
+        }
+      ],
+      modificationlyLayerInput:'',
+      modificationvalue:'',
+     
       tittledata: [
-          {name:'11111111111'},
-          {name:'2222222222222'},
-          {name:'33333333333'},
-      ]
+        { name: "11111111111" },
+        { name: "2222222222222" },
+        { name: "33333333333" }
+      ],
     };
   },
   methods: {
     //切换"记住密码"样式
-    toggleClass(event) {
-      this.isActive = !this.isActive;
+    toggleClass(index) {
+      this.isActive = index;
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -183,6 +199,11 @@ export default {
         margin-bottom: 20px;
         margin-right: 18px;
         cursor: pointer;
+         -moz-user-select: none; /*火狐*/
+        -webkit-user-select: none; /*webkit浏览器*/
+        -ms-user-select: none; /*IE10*/
+        -khtml-user-select: none; /*早期浏览器*/
+        user-select: none;
       }
       li:nth-child(1) {
         margin-left: 0px;
@@ -203,10 +224,10 @@ export default {
       width: 260px;
       height: 500px;
       background-color: #fff;
-      .prenatalEducationTable{
-          height: 380px;
-          overflow: hidden;
-          overflow-y: auto;
+      .prenatalEducationTable {
+        height: 380px;
+        overflow: hidden;
+        overflow-y: auto;
       }
       h2 {
         width: 100%;
@@ -224,6 +245,10 @@ export default {
         height: 60px;
         line-height: 60px;
         width: 98%;
+        -moz-user-select: none; /*火狐*/
+        -webkit-user-select: none; /*webkit浏览器*/
+        -ms-user-select: none; /*IE10*/
+        -khtml-user-select: none; /*早期浏览器*/
         user-select: none;
         .addBox {
           position: relative;
@@ -299,30 +324,30 @@ export default {
     }
   }
   /* // 配偶一般信息组件样式修改 */
-//   .el-input__inner {
-//     border-radius: 8px;
-//     border-color: #ccc;
-//     background-color: #f6f6f6;
-//   }
-//   .el-dialog__body {
-//     padding: 0px 20px;
-//   }
-//   .el-dialog__footer {
-//     padding: 30px;
-//   }
+  //   .el-input__inner {
+  //     border-radius: 8px;
+  //     border-color: #ccc;
+  //     background-color: #f6f6f6;
+  //   }
+  //   .el-dialog__body {
+  //     padding: 0px 20px;
+  //   }
+  //   .el-dialog__footer {
+  //     padding: 30px;
+  //   }
 }
- .headlineBox{
-         /* // 配偶一般信息组件样式修改 */
+.headlineBox {
+  /* // 配偶一般信息组件样式修改 */
   .el-input__inner {
-      width: 100%;
+    width: 100%;
     border-color: #ccc;
     background-color: #f6f6f6;
-    border:none;
+    border: none;
   }
-  .el-table .cell{
-      padding: 0 4px;
+  .el-table .cell {
+    padding: 0 4px;
   }
-    }
+}
 </style>
 
 

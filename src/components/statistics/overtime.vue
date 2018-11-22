@@ -280,6 +280,10 @@ export default {
           line-height: 60px;
           padding: 0 10px 0 24px;
           cursor: pointer;
+            -moz-user-select: none; /*火狐*/
+        -webkit-user-select: none; /*webkit浏览器*/
+        -ms-user-select: none; /*IE10*/
+        -khtml-user-select: none; /*早期浏览器*/
           user-select: none;
           position: relative;
         }

@@ -13,7 +13,8 @@
     </div>
     <div class="administrativeBoxContant">
       <img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon">
-      <el-table :data="officeTableData" style="width: 100%">
+      <div class="hideBox">
+         <el-table :data="officeTableData" style="width: 100%">
         <el-table-column prop="officeNum" label="序号" width="120px"></el-table-column>
         <el-table-column prop="officeName" label="科室名称" width="150px"></el-table-column>
         <el-table-column prop="officeDescribe" label="科室描述" width="366px">
@@ -32,6 +33,8 @@
         </el-pagination>
       </div>
     </div>
+      </div>
+     
 
   </div>
 </template>
@@ -186,6 +189,9 @@ export default {
     cursor: pointer;
   }
   .administrativeBoxContant {
+    .hideBox{
+      // display: none;
+    }
     table {
       width: 100%;
     }
@@ -195,9 +201,10 @@ export default {
     width: 153px;
     height: 141px;
     position: absolute;
-    top: 70%;
+    top: 50%;
     left: 50%;
     display: none;
+    z-index: 111;
     transform: translate(-50%, -50%);
   }
 }
