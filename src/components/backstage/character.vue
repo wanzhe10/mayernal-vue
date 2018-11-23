@@ -42,7 +42,7 @@
 
     </div>
     <!-- 新增标签弹框 -->
-    <el-dialog title="添加标签" :visible.sync="dialogVisible" width="458px" :before-close="handleClose" class="newlyLayer">
+    <el-dialog title="添加角色" :visible.sync="dialogVisible" width="458px" :before-close="handleClose" class="newlyLayer">
       <p>标签名称</p>
       <el-input v-model="newlyLayerInput" placeholder="请输入报告单名称"></el-input>
       <p>状态</p>
@@ -61,7 +61,7 @@
       </span>
     </el-dialog>
     <!-- 编辑标签弹框 -->
-    <el-dialog title="编辑标签" :visible.sync="editdialogVisible" width="458px" :before-close="handleClose" class="newlyLayer">
+    <el-dialog title="编辑角色" :visible.sync="editdialogVisible" width="458px" :before-close="handleClose" class="newlyLayer">
       <p>标签名称</p>
       <el-input v-model="editnewlyLayerInput" placeholder="请输入报告单名称"></el-input>
       <p>状态</p>
@@ -223,19 +223,19 @@ export default {
       width: 100%;
     }
   }
-   .hideBox {
-      // display: none;
-    }
-     .noDataIcon {
-        width: 153px;
-        height: 141px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        display: none;
-        z-index: 111;
-        transform: translate(-50%, -50%);
-      }
+  .hideBox {
+    // display: none;
+  }
+  .noDataIcon {
+    width: 153px;
+    height: 141px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: none;
+    z-index: 111;
+    transform: translate(-50%, -50%);
+  }
 
   // 新增模板弹框
   .addTemplateLayer_bottom {

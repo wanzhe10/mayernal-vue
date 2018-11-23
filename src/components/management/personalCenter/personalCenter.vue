@@ -104,73 +104,80 @@
           <div class="lookAtallBtnBox">
             <h2>自觉不适</h2>
             <div class="positionWire"></div>
-            <div class="basicLookAtallBtn conscientiousAll">
+            <div class="basicLookAtallBtn conscientiousAll" @click="toggle1()">
               <span>查看全部</span>
-              <i class="el-icon-arrow-down" id="conscientiousAllIcon"></i>
+              <i class="el-icon-arrow-down" v-show="downIcon"></i>
+              <i class="el-icon-arrow-up" v-show="!downIcon"></i>
             </div>
           </div>
           <!-- 自觉不适内容 -->
-          <p class="malaise">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-            呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
-
+          <el-collapse-transition>
+            <p class="malaise" v-show="isShow1">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+              呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+          </el-collapse-transition>
           <!-- 指导处理意见查看全部 -->
-          <div class="lookAtallBtnBox">
+          <div class="lookAtallBtnBox" @click="toggle2()">
             <h2>指导处理意见</h2>
             <div class="positionWire2"></div>
             <div class="guidanceBtn">
               <span>查看全部</span>
-              <i class="el-icon-arrow-down" id="guidanceBtnIcon"></i>
+              <i class="el-icon-arrow-down" v-show="downIcon2"></i>
+              <i class="el-icon-arrow-up" v-show="!downIcon2"></i>
             </div>
           </div>
           <!-- 指导处理意见内容 -->
-          <p class="handlingSuggestion">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-            呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
-
+          <el-collapse-transition>
+            <p class="handlingSuggestion" v-show="isShow2">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+              呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+          </el-collapse-transition>
           <!-- 检查结果查看全部 -->
           <div class="lookAtallBtnBox">
             <h2>检查结果</h2>
             <div class="positionWire"></div>
-            <div class="inspectionResult">
+            <div class="inspectionResult" @click="toggle3()">
               <span>查看全部</span>
-              <i class="el-icon-arrow-down" id="inspectionResultIcon"></i>
+              <i class="el-icon-arrow-down" v-show="downIcon3"></i>
+              <i class="el-icon-arrow-up" v-show="!downIcon3"></i>
             </div>
           </div>
 
           <!-- 检查结果内容 -->
-          <div class="consequenceBox">
-            <ul class="clearfix">
-              <li>
-                <div></div>
-              </li>
-              <li>
-                <div></div>
-              </li>
-              <li>
-                <div></div>
-              </li>
-              <li>
-                <div></div>
-              </li>
-              <li>
-                <div></div>
-              </li>
-              <li>
-                <div></div>
-              </li>
-              <li>
-                <div></div>
-              </li>
-              <li>
-                <div></div>
-              </li>
-              <li>
-                <div></div>
-              </li>
-              <li>
-                <div></div>
-              </li>
-            </ul>
-          </div>
+          <el-collapse-transition>
+            <div class="consequenceBox" v-show="isShow3">
+              <ul class="clearfix">
+                <li>
+                  <div></div>
+                </li>
+                <li>
+                  <div></div>
+                </li>
+                <li>
+                  <div></div>
+                </li>
+                <li>
+                  <div></div>
+                </li>
+                <li>
+                  <div></div>
+                </li>
+                <li>
+                  <div></div>
+                </li>
+                <li>
+                  <div></div>
+                </li>
+                <li>
+                  <div></div>
+                </li>
+                <li>
+                  <div></div>
+                </li>
+                <li>
+                  <div></div>
+                </li>
+              </ul>
+            </div>
+          </el-collapse-transition>
         </div>
         <!-- 新增复检记录按钮 -->
         <div class="recordNewsNav">
@@ -229,37 +236,40 @@
             <div class="lookAtallBtnBox">
               <h2>评估信息</h2>
               <div class="positionWire"></div>
-              <div class="assessInformationBtn">
+              <div class="assessInformationBtn" @click="toggle4()">
                 <span>查看全部</span>
-                <i class="el-icon-arrow-down" id="assessInformationIcon"></i>
+                <i class="el-icon-arrow-down" v-show="downIcon4"></i>
+                <i class="el-icon-arrow-up" v-show="!downIcon4"></i>
               </div>
             </div>
             <!-- 自觉不适内容 -->
-            <div class="assessInformationBox">
-              <p class="mgb16"><i class="level0"></i> <span class="colour">绿色（低风险）</span><span class="greenNum">10项</span></p>
-              <p class="colorTxt greenText">孕妇基本情况良好，未发现妊娠合</p>
-              <p class="mgb16"><i class="level3"></i> <span class="colour">红色（高风险）</span><span class="redNum">8项</span></p>
-              <p class="colorTxt redText">孕妇基本情况良好，未发现妊娠合</p>
-              <p class="mgb16"><i class="level1"></i> <span class="colour">黄色（一般风险）</span><span class="yellowNum">6项</span></p>
-              <p class="colorTxt yellowText">孕妇基本情况良好，未发现妊娠合</p>
-              <p class="mgb16"><i class="level2"></i> <span class="colour">橙色（较高风险）</span><span class="orangeNum">4项</span></p>
-              <p class="colorTxt orangeText">孕妇基本情况良好，未发现妊娠合</p>
-              <p class="mgb16"><i class="level4"></i> <span class="colour">紫色（传染性疾病）</span><span class="purpleNum">2项</span></p>
-              <p class="colorTxt purpleText">孕妇基本情况良好，未发现妊娠合</p>
-            </div>
-
+            <el-collapse-transition>
+              <div class="assessInformationBox" v-show="isShow4">
+                <p class="mgb16"><i class="level0"></i> <span class="colour">绿色（低风险）</span><span class="greenNum">10项</span></p>
+                <p class="colorTxt greenText">孕妇基本情况良好，未发现妊娠合</p>
+                <p class="mgb16"><i class="level3"></i> <span class="colour">红色（高风险）</span><span class="redNum">8项</span></p>
+                <p class="colorTxt redText">孕妇基本情况良好，未发现妊娠合</p>
+                <p class="mgb16"><i class="level1"></i> <span class="colour">黄色（一般风险）</span><span class="yellowNum">6项</span></p>
+                <p class="colorTxt yellowText">孕妇基本情况良好，未发现妊娠合</p>
+                <p class="mgb16"><i class="level2"></i> <span class="colour">橙色（较高风险）</span><span class="orangeNum">4项</span></p>
+                <p class="colorTxt orangeText">孕妇基本情况良好，未发现妊娠合</p>
+                <p class="mgb16"><i class="level4"></i> <span class="colour">紫色（传染性疾病）</span><span class="purpleNum">2项</span></p>
+                <p class="colorTxt purpleText">孕妇基本情况良好，未发现妊娠合</p>
+              </div>
+            </el-collapse-transition>
             <div class="lookAtallBtnBox">
               <h2>备注信息</h2>
               <div class="positionWire2"></div>
-              <div class="postscriptBtn">
+              <div class="postscriptBtn" @click="toggle5()">
                 <span>查看全部</span>
-                <i class="el-icon-arrow-down" id="postscriptBtnIcon"></i>
+                <i class="el-icon-arrow-down" v-show="downIcon5"></i>
+                <i class="el-icon-arrow-up" v-show="!downIcon5"></i>
               </div>
             </div>
-
-            <p class="postscriptContent">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-              呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
-
+            <el-collapse-transition>
+              <p class="postscriptContent" v-show="isShow5">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+                呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+            </el-collapse-transition>
           </div>
         </div>
         <!-- 新增高危评估按钮 -->
@@ -319,28 +329,33 @@
         <div class="lookAtallBtnBox">
           <h2>新生儿评估</h2>
           <div class="positionWire"></div>
-          <div class="fortyTwoAtallBtn">
+          <div class="fortyTwoAtallBtn" @click="toggle6()">
             <span>查看全部</span>
-            <i class="el-icon-arrow-down" id=""></i>
+            <i class="el-icon-arrow-down" v-show="downIcon6"></i>
+            <i class="el-icon-arrow-up" v-show="!downIcon6"></i>
           </div>
         </div>
         <!-- 42天新生儿评估内容 -->
-        <p class="newbornContent">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-          呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+        <el-collapse-transition>
+          <p class="newbornContent" v-show="isShow6">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+            呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+        </el-collapse-transition>
 
         <!-- 42天指导与处理查看全部 -->
         <div class="lookAtallBtnBox">
           <h2>指导与处理</h2>
           <div class="positionWire2"></div>
-          <div class="fortyTwoGuidanceBtn">
+          <div class="fortyTwoGuidanceBtn" @click="toggle7()">
             <span>查看全部</span>
-            <i class="el-icon-arrow-down" id=""></i>
+            <i class="el-icon-arrow-down" v-show="downIcon7"></i>
+            <i class="el-icon-arrow-up" v-show="!downIcon7"></i>
           </div>
         </div>
         <!-- 42天指导与处理内容 -->
-        <p class="guidanceCantent">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-          呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
-
+        <el-collapse-transition>
+          <p class="guidanceCantent" v-show="isShow7">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+            呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+        </el-collapse-transition>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -350,7 +365,21 @@
 export default {
   data() {
     return {
-      activeName: "record"
+      activeName: "recheck",
+      isShow1: true,
+      isShow2: true,
+      isShow3: true,
+      isShow4: true,
+      isShow5: true,
+      isShow6: true,
+      isShow7: true,
+      downIcon: true,
+      downIcon2: true,
+      downIcon3: true,
+      downIcon4: true,
+      downIcon5: true,
+      downIcon6: true,
+      downIcon7: true
     };
   },
   methods: {
@@ -362,6 +391,42 @@ export default {
     },
     recordNewsBtn() {
       console.log("新增复检记录");
+    },
+    //复检记录- 自觉不适点击显示隐藏
+    toggle1: function() {
+      this.isShow1 = !this.isShow1;
+      this.downIcon = !this.downIcon;
+    },
+    //复检记录- 指导处理意见点击显示隐藏
+    toggle2: function() {
+      this.isShow2 = !this.isShow2;
+      this.downIcon2 = !this.downIcon2;
+    },
+    // 复检记录- 检查结果点击显示隐藏
+    toggle3: function() {
+      this.isShow3 = !this.isShow3;
+      this.downIcon3 = !this.downIcon3;
+    },
+    // 高危评估-评估信息点击显示隐藏
+    toggle4: function() {
+      this.isShow4 = !this.isShow4;
+      this.downIcon4 = !this.downIcon4;
+    },
+    //  高危评估-备注信息点击显示隐藏
+    toggle5: function() {
+      this.isShow5 = !this.isShow5;
+      this.downIcon5 = !this.downIcon5;
+    },
+
+    //产后42天检查记录-新生儿评估点击显示隐藏
+    toggle6: function() {
+      this.isShow6 = !this.isShow6;
+      this.downIcon6 = !this.downIcon6;
+    },
+    // /产后42天检查记录-指导与处理点击显示隐藏
+    toggle7: function() {
+      this.isShow7 = !this.isShow7;
+      this.downIcon7 = !this.downIcon7;
     }
   }
 };
@@ -396,7 +461,7 @@ export default {
           background: #68b6e7;
         }
       }
-      span:nth-last-child(1):before{
+      span:nth-last-child(1):before {
         display: none;
       }
     }
@@ -464,10 +529,10 @@ export default {
     div:nth-last-child(1) {
       border: none;
     }
-    div:nth-child(2){
-        p:nth-last-child(2):before {
-          display: none;
-        }
+    div:nth-child(2) {
+      p:nth-last-child(2):before {
+        display: none;
+      }
     }
   }
   .unit {
@@ -475,52 +540,57 @@ export default {
     margin-left: 6px;
     color: #999999;
   }
-   //  查看全部块
-    .lookAtallBtnBox {
-      width: 100%;
-      position: relative;
-      margin-top: 16px;
-      h2 {
-        font-size: 16px;
-        display: inline-block;
-        padding-right: 14px;
+  //  查看全部块
+  .lookAtallBtnBox {
+    width: 100%;
+    position: relative;
+    margin-top: 16px;
+    h2 {
+      font-size: 16px;
+      display: inline-block;
+      padding-right: 14px;
+    }
+    .positionWire {
+      position: absolute;
+      top: 50%;
+      right: 0px;
+      width: 90%;
+      height: 1px;
+      background-color: #ccc;
+    }
+    .positionWire2 {
+      width: 90%;
+      position: absolute;
+      top: 50%;
+      right: 0px;
+      height: 1px;
+      background-color: #ccc;
+    }
+    .fortyTwoAtallBtn,
+    .fortyTwoGuidanceBtn {
+      padding: 0px 5px;
+      position: absolute;
+      right: 28px;
+      top: 0px;
+      background-color: #fff;
+      cursor: pointer;
+      -moz-user-select: none; /*火狐*/
+      -webkit-user-select: none; /*webkit浏览器*/
+      -ms-user-select: none; /*IE10*/
+      -khtml-user-select: none; /*早期浏览器*/
+      user-select: none;
+      i {
+        color: #68b6e7;
       }
-      .positionWire {
-        position: absolute;
-        top: 50%;
-        right: 0px;
-        width: 90%;
-        height: 1px;
-        background-color: #ccc;
-      }
-      .positionWire2 {
-        width: 90%;
-        position: absolute;
-        top: 50%;
-        right: 0px;
-        height: 1px;
-        background-color: #ccc;
-      }
-      .fortyTwoAtallBtn,
-      .fortyTwoGuidanceBtn,
-     {
-        padding: 0px 5px;
-        position: absolute;
-        right: 28px;
-        top: 0px;
-        background-color: #fff;
-        cursor: pointer;
-        i {
-          color: #68b6e7;
-        }
-        span {
-          color: #999999;
-        }
+      span {
+        color: #999999;
       }
     }
-    .newbornContent,.guidanceCantent{
-      margin-top:18px;
-    }
+  }
+  .newbornContent,
+  .guidanceCantent {
+    margin-top: 18px;
+  }
 }
 // 新增记录按钮
 .recordNewsNav,
@@ -1102,6 +1172,11 @@ export default {
         top: 0px;
         background-color: #fff;
         cursor: pointer;
+        -moz-user-select: none; /*火狐*/
+        -webkit-user-select: none; /*webkit浏览器*/
+        -ms-user-select: none; /*IE10*/
+        -khtml-user-select: none; /*早期浏览器*/
+        user-select: none;
         i {
           color: #68b6e7;
         }
@@ -1138,7 +1213,7 @@ export default {
   }
   // 高危评估模块
   .spouseNewsBox {
-    padding-bottom:30px;
+    padding-bottom: 30px;
     .spouseNumsBox {
       // display: inline-block;
       -webkit-user-select: none;
@@ -1303,6 +1378,11 @@ export default {
           top: 0px;
           background-color: #fff;
           cursor: pointer;
+          -moz-user-select: none; /*火狐*/
+          -webkit-user-select: none; /*webkit浏览器*/
+          -ms-user-select: none; /*IE10*/
+          -khtml-user-select: none; /*早期浏览器*/
+          user-select: none;
           i {
             color: #68b6e7;
           }

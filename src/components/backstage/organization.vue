@@ -14,19 +14,19 @@
 
       <div class="newsBox">
         <span class="mgr50">医院ID</span>
-        <input type="text" class='hospitalId'>
+        <input type="text" class='hospitalId' readonly='readonly'>
       </div>
       <div class="newsBox">
         <span class="mgr20">注册时间</span>
-        <input type="text" class='hospitalId'>
+        <input type="text" class='hospitalId' readonly='readonly'>
       </div>
       <div class="newsBox">
         <span class="mgr20">机构联系人</span>
-        <input type="text" class='hospitalId' placeholder='请输入联系人名称'>
+        <input type="text" class='hospitalId' placeholder='请输入联系人名称' v-model="arr.linkman">
       </div>
       <div class="newsBox">
         <span class="mgr24">手&nbsp;机&nbsp;号</span>
-        <input type="text" class='hospitalId' placeholder="请输入手机号">
+        <input type="text" class='hospitalId' placeholder="请输入手机号" v-model="arr.phone">
       </div>
       <div class="newsBox">
         <span class="mgr36">激活状态</span>
@@ -37,7 +37,7 @@
       </div>
       <div class="newsBox">
         <span class="mgr50">邮箱</span>
-        <input type="text" class='hospitalId' placeholder="请输入邮箱号">
+        <input type="text" class='hospitalId' placeholder="请输入邮箱号" v-model="arr.mailbox">
       </div>
       <div class="lookAtallBtnBox mgt40">
         <h2>机构信息</h2>
@@ -50,11 +50,11 @@
 
       <div class="InformationBox mgr46">
         <span class="mgr36">机构名称</span>
-               <input type="text" class='hospitalId' placeholder="请输入机构名称">
+        <input type="text" class='hospitalId' placeholder="请输入机构名称" v-model="arr.organizationName">
       </div>
       <div class="InformationBox">
         <span class="mgr36">机构等级</span>
-         <el-select v-model="classModel" placeholder="请选择">
+        <el-select v-model="classModel" placeholder="请选择">
           <el-option v-for="item in classes" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
           </el-option>
         </el-select>
@@ -63,23 +63,18 @@
         <span class="mgr36">所在地区</span>
         <!-- <input type="text" class='hospitalId' placeholder="请输入详细地址"> -->
         <area-cascader type='text' v-model="locationOrganzation" :level='1' :data="pcaa" @change="registeredModelResidence()" class="locationOrganzation"></area-cascader>
-        <input type="text" class='detailedAddress' placeholder="请输入详细地址">
+        <input type="text" class='detailedAddress' placeholder="请输入详细地址" v-model="arr.detailedAddress">
       </div>
-      <div class="InformationBoxS">
-        <span class="mgr36">机构简介</span>
-        <textarea name="" id="" cols="" rows="">
-此处的是样式：林业总医院是祖国最北端的国家三级甲等综合医院，坐落在呼伦贝尔草原与大兴安岭林海交汇处的牙克石市它由
-20C世纪初俄国人创办的七十公里医院演变而来，伴随着内蒙古大兴安岭林区的开发建设而发展壮大。属事业单位。
-2002年经自治区人民政府列为内蒙古民族大学第二附属医院，2012年成为内蒙古民族大学第二临，
-束带哈速度还速度带回的大厦大会安穗还大厦大会uassaudh 回答是杀手 
-         </textarea>
+      <div class="InformationBoxS ">
+        <span class="mgr36 fl">机构简介</span>
+           <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入机构简介" v-model="arr.remnantFontContant" >        </el-input>
       </div>
       <input type="button" value="保 存" class="organizationBox_btn">
     </div>
     <!-- 保存弹出层 -->
-  <div class="organizationLayer">
+    <div class="organizationLayer">
 
-  </div>
+    </div>
   </div>
 
 </template>
@@ -116,7 +111,17 @@ export default {
       classModel: "", //机构等级
       locationOrganzation: [], // 孕妇基本信息现户口所在地数组
       pca: pca,
-      pcaa: pcaa
+      pcaa: pcaa,
+      arr: {
+        linkman: "", // 机构联系人
+        phone: "", // 手机号
+        mailbox: "", //邮箱
+        organizationName: "", //机构名称
+        detailedAddress: "", //详细地址
+        remnantFontContant:`此处的是样式：林业总医院是祖国最北端的国家三级甲等综合医院，坐落在呼伦贝尔草原与大兴安岭林海交汇处的牙克石市它由
+20世纪初俄国人创办的七十公里医院演变而来，伴随着内蒙古大兴安岭林区的开发建设而发展壮大。属事业单位。2002年经自治区人民政府列为内蒙古民族大学第二附属医院，2012年成为内蒙古民族大学第二临，束带哈速度还速度带回的大厦大会安穗还大厦大会uassaudh 回答是杀手 
+床医学院.`, //机构简介
+      }
     };
   },
   methods: {
@@ -124,11 +129,28 @@ export default {
     registeredModelResidence() {
       console.log(this.registeredModel);
     }
+  },
+  watch: {
+    arr: {
+      handler: function(obj) {
+        // 数据发生变化的时候的操作 未完成
+      },
+      deep: true
+    }
+    // linkman: function () {
+    //  console.log('数据已经修改为'+this.linkman+'是否保存')
+    // },
+    //   phone: function () {
+    //  console.log('数据已经修改为'+this.phone+'是否保存')
+    // }
   }
 };
 </script>
 
 <style lang="less" scoped>
+.fl{
+  float: left;
+}
 .mgr20 {
   margin-right: 20px;
 }
@@ -150,6 +172,9 @@ export default {
 .mgt40 {
   margin-top: 40px !important;
 }
+.mgb60{
+  padding-bottom:60px;
+}
 .organizationBox {
   width: 100%;
   min-height: 600px;
@@ -161,7 +186,6 @@ export default {
     padding: 24px 24px 24px 24px;
     font-size: 18px;
     color: #333333;
-    
   }
   .organizationBoxContant {
     padding: 26px 24px 86px 24px;
@@ -253,7 +277,6 @@ export default {
       position: relative;
       margin-top: 16px;
       width: 100%;
-      height: 46px;
       border-bottom: 1px solid #ccc;
       line-height: 46px;
       .detailedAddress {
@@ -318,6 +341,12 @@ export default {
   color: #68b6e7;
   font-weight: 700;
 }
-
+.organizationBox .el-textarea{
+  width: 90%;
+}
+ .organizationBox .el-textarea__inner{
+   border:none;
+   
+ }
 </style>
 
