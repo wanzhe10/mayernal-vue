@@ -34,9 +34,14 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
     /components
 
          /management          档案管理
-             /management
-        
-        /backstage          后台配置
+             /management.vue  档案管理首页
+            /newfile.vue      新建档案
+            /personalCenter             个人中心
+                    /personalCenter.vue  个人中心页
+                    /recordNews.vue      新增复检记录
+                    /spouseNews.vue      新增高危评估记录   
+
+        /backstage          后台配置 
             /organization       机构信息维护
             /administrative     科室信息维护
             /personnel          人员信息维护
@@ -60,10 +65,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
             /personalDetails        用户个人信息
             /changePassword         修改密码
 
-        /personalCenter             个人中心
-            /personalCenter.vue 
-            /recordNews.vue      新增复检记录
-            /spouseNews.vue      新增高危评估记录
+      
+        /preview                    预览
+            preview.vue             
+
 
             
 

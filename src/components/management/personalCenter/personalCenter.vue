@@ -4,9 +4,9 @@
     <div class="informationBox clearfix">
       <div class="informationBox_left clearfix">
         <div class="headIcon">
-          <a href="javascript:;">
+          <router-link :to="{path:'preview'}">
             <div class="preview">预&nbsp;览</div>
-          </a>
+          </router-link>
         </div>
         <p>
           <span class="name">王多余</span>
@@ -273,7 +273,6 @@
           </div>
         </div>
         <!-- 新增高危评估按钮 -->
-
         <div class="spouseNewsnav" style="display:flax;">
           <router-link :to="{path: 'spouseNews'}">
             <input type="button" value="新增高危评估" class="spouseNewsBtn" @click="spouseNewsBtn()">
@@ -356,6 +355,12 @@
           <p class="guidanceCantent" v-show="isShow7">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
             呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
         </el-collapse-transition>
+        <!-- 新增42天按钮 -->
+        <div class="recordNewsNav">
+          <router-link :to="{path:'fortyTwoDay'}">
+            <input type="button" value="新增产后42天记录" class="fortyTwoDayBtn" @click="fortyTwoDayBtn()">
+          </router-link>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -391,6 +396,9 @@ export default {
     },
     recordNewsBtn() {
       console.log("新增复检记录");
+    },
+    fortyTwoDayBtn() {
+      console.log("新增产后42天");
     },
     //复检记录- 自觉不适点击显示隐藏
     toggle1: function() {

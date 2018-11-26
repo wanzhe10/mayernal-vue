@@ -1,74 +1,78 @@
 <template>
   <div class="organizationBox">
     <h2 class="organizationBoxTittle">机构信息维护</h2>
-    <!-- 基本信息块 -->
+
     <div class="organizationBoxContant">
-      <div class="lookAtallBtnBox">
-        <h2>基本情况</h2>
-        <div class="positionWire"></div>
-        <div class="InformationBtn">
-          <i class="modificationIcon"></i>
-          <span>修改</span>
+      <!-- 基本信息块 -->
+      <div class="informationBox">
+        <div class="lookAtallBtnBox">
+          <h2>基本情况</h2>
+          <div class="positionWire"></div>
+          <div class="InformationBtn" @click='edit()'>
+            <i class="modificationIcon"></i>
+            <span>修改</span>
+          </div>
+        </div>
+        <div class="newsBox">
+          <span class="mgr50">医院ID</span>
+          <span class='hospitalId'>234234234234</span>
+        </div>
+        <div class="newsBox">
+          <span class="mgr20">注册时间</span>
+          <span class='registrationDate'>2018-11-11</span>
+        </div>
+        <div class="newsBox">
+          <span class="mgr20">机构联系人</span>
+          <input type="text" class='linkman' placeholder='请输入联系人名称' v-model="arr.linkman" readonly='readonly'>
+        </div>
+        <div class="newsBox">
+          <span class="mgr24">手&nbsp;机&nbsp;号</span>
+          <input type="text" class='pgoneNum' placeholder="请输入手机号" v-model="arr.phone" readonly='readonly'>
+        </div>
+        <div class="newsBox">
+          <span class="mgr36">激活状态</span>
+          <el-select v-model="contactsModel" placeholder="请选择" v-bind:disabled="disabledInput">
+            <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="newsBox">
+          <span class="mgr50">邮箱</span>
+          <input type="text" class='emilNum' placeholder="请输入邮箱号" v-model="arr.mailbox" readonly='readonly'>
+        </div>
+      </div>
+       <!-- 机构信息模块 -->
+      <div class="agencyInformationBox">
+        <div class="lookAtallBtnBox mgt40">
+          <h2>机构信息</h2>
+          <div class="positionWire"></div>
+          <div class="InformationBtn" @click='edit2()'>
+            <i class="modificationIcon"></i>
+            <span>修改</span>
+          </div>
+        </div>
+        <div class="InformationBox mgr46">
+          <span class="mgr36">机构名称</span>
+          <input type="text" class='organizationName' placeholder="请输入机构名称" v-model="arr.organizationName">
+        </div>
+        <div class="InformationBox">
+          <span class="mgr36">机构等级</span>
+          <el-select v-model="classModel" placeholder="请选择" v-bind:disabled="disabledInput2">
+            <el-option v-for="item in classes" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="InformationBoxS">
+          <span class="mgr36">所在地区</span>
+          <area-cascader type='text' v-model="locationOrganzation" :level='1' :data="pcaa" @change="registeredModelResidence()" class="locationOrganzation"></area-cascader>
+          <input type="text" class='detailedAddress' placeholder="请输入详细地址" v-model="arr.detailedAddress">
+        </div>
+        <div class="InformationBoxS ">
+          <span class="mgr36 fl">机构简介</span>
+          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入机构简介" v-model="arr.remnantFontContant"> </el-input>
         </div>
       </div>
 
-      <div class="newsBox">
-        <span class="mgr50">医院ID</span>
-        <input type="text" class='hospitalId' readonly='readonly'>
-      </div>
-      <div class="newsBox">
-        <span class="mgr20">注册时间</span>
-        <input type="text" class='hospitalId' readonly='readonly'>
-      </div>
-      <div class="newsBox">
-        <span class="mgr20">机构联系人</span>
-        <input type="text" class='hospitalId' placeholder='请输入联系人名称' v-model="arr.linkman">
-      </div>
-      <div class="newsBox">
-        <span class="mgr24">手&nbsp;机&nbsp;号</span>
-        <input type="text" class='hospitalId' placeholder="请输入手机号" v-model="arr.phone">
-      </div>
-      <div class="newsBox">
-        <span class="mgr36">激活状态</span>
-        <el-select v-model="contactsModel" placeholder="请选择">
-          <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="newsBox">
-        <span class="mgr50">邮箱</span>
-        <input type="text" class='hospitalId' placeholder="请输入邮箱号" v-model="arr.mailbox">
-      </div>
-      <div class="lookAtallBtnBox mgt40">
-        <h2>机构信息</h2>
-        <div class="positionWire"></div>
-        <div class="InformationBtn">
-          <i class="modificationIcon"></i>
-          <span>修改</span>
-        </div>
-      </div>
-
-      <div class="InformationBox mgr46">
-        <span class="mgr36">机构名称</span>
-        <input type="text" class='hospitalId' placeholder="请输入机构名称" v-model="arr.organizationName">
-      </div>
-      <div class="InformationBox">
-        <span class="mgr36">机构等级</span>
-        <el-select v-model="classModel" placeholder="请选择">
-          <el-option v-for="item in classes" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="InformationBoxS">
-        <span class="mgr36">所在地区</span>
-        <!-- <input type="text" class='hospitalId' placeholder="请输入详细地址"> -->
-        <area-cascader type='text' v-model="locationOrganzation" :level='1' :data="pcaa" @change="registeredModelResidence()" class="locationOrganzation"></area-cascader>
-        <input type="text" class='detailedAddress' placeholder="请输入详细地址" v-model="arr.detailedAddress">
-      </div>
-      <div class="InformationBoxS ">
-        <span class="mgr36 fl">机构简介</span>
-           <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入机构简介" v-model="arr.remnantFontContant" >        </el-input>
-      </div>
       <input type="button" value="保 存" class="organizationBox_btn">
     </div>
     <!-- 保存弹出层 -->
@@ -79,11 +83,14 @@
 
 </template>
 <script>
+import $ from "jquery";
 import { AreaCascader } from "vue-area-linkage";
 import { pca, pcaa } from "area-data";
 export default {
   data() {
     return {
+      disabledInput: true,
+      disabledInput2: true,
       // 激活状态
       contacts: [
         {
@@ -118,9 +125,9 @@ export default {
         mailbox: "", //邮箱
         organizationName: "", //机构名称
         detailedAddress: "", //详细地址
-        remnantFontContant:`此处的是样式：林业总医院是祖国最北端的国家三级甲等综合医院，坐落在呼伦贝尔草原与大兴安岭林海交汇处的牙克石市它由
+        remnantFontContant: `此处的是样式：林业总医院是祖国最北端的国家三级甲等综合医院，坐落在呼伦贝尔草原与大兴安岭林海交汇处的牙克石市它由
 20世纪初俄国人创办的七十公里医院演变而来，伴随着内蒙古大兴安岭林区的开发建设而发展壮大。属事业单位。2002年经自治区人民政府列为内蒙古民族大学第二附属医院，2012年成为内蒙古民族大学第二临，束带哈速度还速度带回的大厦大会安穗还大厦大会uassaudh 回答是杀手 
-床医学院.`, //机构简介
+床医学院.` //机构简介
       }
     };
   },
@@ -128,6 +135,19 @@ export default {
     //机构所在地
     registeredModelResidence() {
       console.log(this.registeredModel);
+    },
+    // 基本情情况修改
+    edit() {
+      this.disabledInput = false;
+      $(".linkman").focus();
+      $('.informationBox').find("input").removeAttr("readonly");
+
+    },
+    // 机构信息修改
+    edit2() {
+      $('.agencyInformationBox').children("input").removeAttr("readonly");
+      this.disabledInput2 = false;
+      $(".organizationName").focus();
     }
   },
   watch: {
@@ -137,18 +157,12 @@ export default {
       },
       deep: true
     }
-    // linkman: function () {
-    //  console.log('数据已经修改为'+this.linkman+'是否保存')
-    // },
-    //   phone: function () {
-    //  console.log('数据已经修改为'+this.phone+'是否保存')
-    // }
   }
 };
 </script>
 
 <style lang="less" scoped>
-.fl{
+.fl {
   float: left;
 }
 .mgr20 {
@@ -172,8 +186,8 @@ export default {
 .mgt40 {
   margin-top: 40px !important;
 }
-.mgb60{
-  padding-bottom:60px;
+.mgb60 {
+  padding-bottom: 60px;
 }
 .organizationBox {
   width: 100%;
@@ -341,12 +355,14 @@ export default {
   color: #68b6e7;
   font-weight: 700;
 }
-.organizationBox .el-textarea{
+.organizationBox .el-textarea {
   width: 90%;
 }
- .organizationBox .el-textarea__inner{
-   border:none;
-   
- }
+.organizationBox .el-textarea__inner {
+  border: none;
+}
+.el-input--suffix .el-input__inner {
+  height: 40px !important;
+}
 </style>
 

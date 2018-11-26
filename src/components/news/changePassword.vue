@@ -21,11 +21,14 @@
 				</el-form-item>
 			</el-form>
 		</div>
+
+
 	</div>
 </template>
 <script>
 export default {
   data() {
+   
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
@@ -56,7 +59,8 @@ export default {
         oldpassword: [{ validator: validatePass, trigger: "blur" }],
         newpassword: [{ validator: validatePass, trigger: "blur" }],
         affirmword: [{ validator: validatePass2, trigger: "blur" }]
-      }
+      },
+       flag:true,
     };
   },
   methods: {
@@ -69,7 +73,7 @@ export default {
           return false;
         }
       });
-    }
+    },
   }
 };
 </script>
