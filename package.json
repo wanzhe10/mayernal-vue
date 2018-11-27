@@ -16,6 +16,7 @@
     "admin-lte": "^3.0.0-alpha.2",
     "area-data": "^5.0.6",
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.3.7",
     "echarts": "^4.1.0",
     "element-ui": "^2.4.9",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
+    "bootstrap": ">=4.1.2",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-jest": "^21.0.2",
     "babel-loader": "^7.1.1",

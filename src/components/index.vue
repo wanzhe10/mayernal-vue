@@ -1,6 +1,7 @@
 <template>
     <el-container>
         <!-- 头部 -->
+        
         <el-header class="clearfix">
             <div class="headerBox clearfix">
                 <img src="../assets/login.png" alt="围产期建档评估管理系统">
@@ -339,4 +340,5 @@ body > .el-container {
     color:red;
     background-color: #ccc;
 }
+
 </style>

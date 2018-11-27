@@ -39,39 +39,29 @@
         </div>
       </div>
     </div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="复检记录" name="recheck">
+    <el-tabs
+      v-model="activeName"
+      @tab-click="handleClick"
+    >
+      <el-tab-pane
+        label="复检记录"
+        name="recheck"
+      >
         <div class="recordNumsBox">
           <h2>产检记录（<i class="recordNum">10</i>）<i class="crossIcon"></i></h2>
           <ul>
-            <li class="active" v-for="(item,index) in antenatalNum" :key='index'>
-              <p>第一次产检</p>
-              <span>2018-12-12</span>
+            <li
+              class=""
+              v-for="(item,index) in antenatalNum"
+              :key='index'
+              :num="item.num" :date="item.date"
+              @click="antenatalCareNum(index)"
+              :class="{active:index == showActive}"
+            >
+              <p>{{item.num}}</p>
+              <span>{{item.date}}</span>
               <div class="triangleIocn"></div>
 
-            </li>
-            <li>
-              <p>第二次产检</p>
-              <span>2018-12-12</span>
-              <div class="triangleIocn"></div>
-
-            </li>
-            <li>
-              <p>第三次产检</p>
-              <span>2018-12-12</span>
-              <div class="triangleIocn"></div>
-
-            </li>
-            <li class="">
-              <p>第四次产检</p>
-              <span>2018-12-12</span>
-              <div class="triangleIocn"></div>
-
-            </li>
-            <li>
-              <p>第五次产检</p>
-              <span>2018-12-12</span>
-              <div class="triangleIocn"></div>
             </li>
           </ul>
         </div>
@@ -104,46 +94,82 @@
           <div class="lookAtallBtnBox">
             <h2>自觉不适</h2>
             <div class="positionWire"></div>
-            <div class="basicLookAtallBtn conscientiousAll" @click="toggle1()">
+            <div
+              class="basicLookAtallBtn conscientiousAll"
+              @click="toggle1()"
+            >
               <span>查看全部</span>
-              <i class="el-icon-arrow-down" v-show="downIcon"></i>
-              <i class="el-icon-arrow-up" v-show="!downIcon"></i>
+              <i
+                class="el-icon-arrow-down"
+                v-show="downIcon"
+              ></i>
+              <i
+                class="el-icon-arrow-up"
+                v-show="!downIcon"
+              ></i>
             </div>
           </div>
           <!-- 自觉不适内容 -->
           <el-collapse-transition>
-            <p class="malaise" v-show="isShow1">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+            <p
+              class="malaise"
+              v-show="isShow1"
+            >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
               呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
           </el-collapse-transition>
           <!-- 指导处理意见查看全部 -->
-          <div class="lookAtallBtnBox" @click="toggle2()">
+          <div
+            class="lookAtallBtnBox"
+            @click="toggle2()"
+          >
             <h2>指导处理意见</h2>
             <div class="positionWire2"></div>
             <div class="guidanceBtn">
               <span>查看全部</span>
-              <i class="el-icon-arrow-down" v-show="downIcon2"></i>
-              <i class="el-icon-arrow-up" v-show="!downIcon2"></i>
+              <i
+                class="el-icon-arrow-down"
+                v-show="downIcon2"
+              ></i>
+              <i
+                class="el-icon-arrow-up"
+                v-show="!downIcon2"
+              ></i>
             </div>
           </div>
           <!-- 指导处理意见内容 -->
           <el-collapse-transition>
-            <p class="handlingSuggestion" v-show="isShow2">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+            <p
+              class="handlingSuggestion"
+              v-show="isShow2"
+            >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
               呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
           </el-collapse-transition>
           <!-- 检查结果查看全部 -->
           <div class="lookAtallBtnBox">
             <h2>检查结果</h2>
             <div class="positionWire"></div>
-            <div class="inspectionResult" @click="toggle3()">
+            <div
+              class="inspectionResult"
+              @click="toggle3()"
+            >
               <span>查看全部</span>
-              <i class="el-icon-arrow-down" v-show="downIcon3"></i>
-              <i class="el-icon-arrow-up" v-show="!downIcon3"></i>
+              <i
+                class="el-icon-arrow-down"
+                v-show="downIcon3"
+              ></i>
+              <i
+                class="el-icon-arrow-up"
+                v-show="!downIcon3"
+              ></i>
             </div>
           </div>
 
           <!-- 检查结果内容 -->
           <el-collapse-transition>
-            <div class="consequenceBox" v-show="isShow3">
+            <div
+              class="consequenceBox"
+              v-show="isShow3"
+            >
               <ul class="clearfix">
                 <li>
                   <div></div>
@@ -182,11 +208,19 @@
         <!-- 新增复检记录按钮 -->
         <div class="recordNewsNav">
           <router-link :to="{path:'recordNews'}">
-            <input type="button" value="新增复检记录" class="recordNewsBtn" @click="recordNewsBtn()">
+            <input
+              type="button"
+              value="新增复检记录"
+              class="recordNewsBtn"
+              @click="recordNewsBtn()"
+            >
           </router-link>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="高危评估记录" name="evaluate">
+      <el-tab-pane
+        label="高危评估记录"
+        name="evaluate"
+      >
 
         <!-- 高危评估块 -->
         <div class="spouseNewsBox  clearfix">
@@ -236,15 +270,27 @@
             <div class="lookAtallBtnBox">
               <h2>评估信息</h2>
               <div class="positionWire"></div>
-              <div class="assessInformationBtn" @click="toggle4()">
+              <div
+                class="assessInformationBtn"
+                @click="toggle4()"
+              >
                 <span>查看全部</span>
-                <i class="el-icon-arrow-down" v-show="downIcon4"></i>
-                <i class="el-icon-arrow-up" v-show="!downIcon4"></i>
+                <i
+                  class="el-icon-arrow-down"
+                  v-show="downIcon4"
+                ></i>
+                <i
+                  class="el-icon-arrow-up"
+                  v-show="!downIcon4"
+                ></i>
               </div>
             </div>
             <!-- 自觉不适内容 -->
             <el-collapse-transition>
-              <div class="assessInformationBox" v-show="isShow4">
+              <div
+                class="assessInformationBox"
+                v-show="isShow4"
+              >
                 <p class="mgb16"><i class="level0"></i> <span class="colour">绿色（低风险）</span><span class="greenNum">10项</span></p>
                 <p class="colorTxt greenText">孕妇基本情况良好，未发现妊娠合</p>
                 <p class="mgb16"><i class="level3"></i> <span class="colour">红色（高风险）</span><span class="redNum">8项</span></p>
@@ -260,26 +306,50 @@
             <div class="lookAtallBtnBox">
               <h2>备注信息</h2>
               <div class="positionWire2"></div>
-              <div class="postscriptBtn" @click="toggle5()">
+              <div
+                class="postscriptBtn"
+                @click="toggle5()"
+              >
                 <span>查看全部</span>
-                <i class="el-icon-arrow-down" v-show="downIcon5"></i>
-                <i class="el-icon-arrow-up" v-show="!downIcon5"></i>
+                <i
+                  class="el-icon-arrow-down"
+                  v-show="downIcon5"
+                ></i>
+                <i
+                  class="el-icon-arrow-up"
+                  v-show="!downIcon5"
+                ></i>
               </div>
             </div>
             <el-collapse-transition>
-              <p class="postscriptContent" v-show="isShow5">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+              <p
+                class="postscriptContent"
+                v-show="isShow5"
+              >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
                 呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
             </el-collapse-transition>
           </div>
         </div>
         <!-- 新增高危评估按钮 -->
-        <div class="spouseNewsnav" style="display:flax;">
+        <div
+          class="spouseNewsnav"
+          style="display:flax;"
+        >
           <router-link :to="{path: 'spouseNews'}">
-            <input type="button" value="新增高危评估" class="spouseNewsBtn" @click="spouseNewsBtn()">
+            <input
+              type="button"
+              value="新增高危评估"
+              class="spouseNewsBtn"
+              @click="spouseNewsBtn()"
+            >
           </router-link>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="产后42天检查记录" name="record" class="fortyTwoBox">
+      <el-tab-pane
+        label="产后42天检查记录"
+        name="record"
+        class="fortyTwoBox"
+      >
         <div class="fortyTwoTittle clearfix">
           <p class="fl fortyTwoTittle_left">
             <span>2018-06-20</span>
@@ -290,7 +360,10 @@
         </div>
         <div class="fortyTwoTable">
           <div>
-            <img src="../../../assets/cross.png" alt="">
+            <img
+              src="../../../assets/cross.png"
+              alt=""
+            >
             <h4>一般检查</h4>
             <h2>
               <p><i>血压：</i><span>110/120</span><i class="unit">mmHg</i></p>
@@ -301,7 +374,10 @@
             </h2>
           </div>
           <div>
-            <img src="../../../assets/cross.png" alt="">
+            <img
+              src="../../../assets/cross.png"
+              alt=""
+            >
             <h4>妇科检查</h4>
             <h2>
               <p><i>外阴：</i><span>未出现异常</span></p>
@@ -328,15 +404,27 @@
         <div class="lookAtallBtnBox">
           <h2>新生儿评估</h2>
           <div class="positionWire"></div>
-          <div class="fortyTwoAtallBtn" @click="toggle6()">
+          <div
+            class="fortyTwoAtallBtn"
+            @click="toggle6()"
+          >
             <span>查看全部</span>
-            <i class="el-icon-arrow-down" v-show="downIcon6"></i>
-            <i class="el-icon-arrow-up" v-show="!downIcon6"></i>
+            <i
+              class="el-icon-arrow-down"
+              v-show="downIcon6"
+            ></i>
+            <i
+              class="el-icon-arrow-up"
+              v-show="!downIcon6"
+            ></i>
           </div>
         </div>
         <!-- 42天新生儿评估内容 -->
         <el-collapse-transition>
-          <p class="newbornContent" v-show="isShow6">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+          <p
+            class="newbornContent"
+            v-show="isShow6"
+          >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
             呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
         </el-collapse-transition>
 
@@ -344,21 +432,38 @@
         <div class="lookAtallBtnBox">
           <h2>指导与处理</h2>
           <div class="positionWire2"></div>
-          <div class="fortyTwoGuidanceBtn" @click="toggle7()">
+          <div
+            class="fortyTwoGuidanceBtn"
+            @click="toggle7()"
+          >
             <span>查看全部</span>
-            <i class="el-icon-arrow-down" v-show="downIcon7"></i>
-            <i class="el-icon-arrow-up" v-show="!downIcon7"></i>
+            <i
+              class="el-icon-arrow-down"
+              v-show="downIcon7"
+            ></i>
+            <i
+              class="el-icon-arrow-up"
+              v-show="!downIcon7"
+            ></i>
           </div>
         </div>
         <!-- 42天指导与处理内容 -->
         <el-collapse-transition>
-          <p class="guidanceCantent" v-show="isShow7">哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
+          <p
+            class="guidanceCantent"
+            v-show="isShow7"
+          >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
             呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
         </el-collapse-transition>
         <!-- 新增42天按钮 -->
         <div class="recordNewsNav">
           <router-link :to="{path:'fortyTwoDay'}">
-            <input type="button" value="新增产后42天记录" class="fortyTwoDayBtn" @click="fortyTwoDayBtn()">
+            <input
+              type="button"
+              value="新增产后42天记录"
+              class="fortyTwoDayBtn"
+              @click="fortyTwoDayBtn()"
+            >
           </router-link>
         </div>
       </el-tab-pane>
@@ -384,7 +489,30 @@ export default {
       downIcon4: true,
       downIcon5: true,
       downIcon6: true,
-      downIcon7: true
+      downIcon7: true,
+      antenatalNum: [
+        {
+          num: "第一次产检",
+          date: "2018-11-11"
+        },
+        {
+          num: "第二次产检",
+          date: "2018-11-12"
+        },
+        {
+          num: "第三次产检",
+          date: "2018-11-13"
+        },
+        {
+          num: "第四次产检",
+          date: "2018-11-14"
+        },
+        {
+          num: "第五次产检",
+          date: "2018-11-15"
+        }
+      ],
+      showActive:0,
     };
   },
   methods: {
@@ -435,7 +563,12 @@ export default {
     toggle7: function() {
       this.isShow7 = !this.isShow7;
       this.downIcon7 = !this.downIcon7;
-    }
+    },
+    // 产检次数添加类名
+    antenatalCareNum(index){
+      this.showActive = index;
+    },
+
   }
 };
 </script>
