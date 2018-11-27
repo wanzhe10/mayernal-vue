@@ -44,7 +44,7 @@
         <div class="recordNumsBox">
           <h2>产检记录（<i class="recordNum">10</i>）<i class="crossIcon"></i></h2>
           <ul>
-            <li class="active">
+            <li class="active" v-for="(item,index) in antenatalNum" :key='index'>
               <p>第一次产检</p>
               <span>2018-12-12</span>
               <div class="triangleIocn"></div>

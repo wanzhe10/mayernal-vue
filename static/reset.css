@@ -43,6 +43,7 @@ body {
     font-family: "Microsoft YaHei";
     font-size: 14px;
     color: #101010;
+    margin:0px auto;
 }
 
 h1,
@@ -164,15 +165,10 @@ body {
     /* font-family: "Microsoft YaHei" ! important; */
     font-family: 微软雅黑;
 }
-
-body .layui-layer {
-    border-radius: 10px;
-}
-
-body .noBackground {
+/* body .noBackground {
     box-shadow: none;
     background: none;
-}
+} */
 .level0 {
   background: green;
 }
