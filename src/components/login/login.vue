@@ -43,7 +43,7 @@
           </el-form-item>
           <el-button
             type="primary"
-            @click="submitForm('ruleForm2')"
+            @click="getAjax()"
           >登 录</el-button>
           </el-form-item>
         </el-form>
@@ -83,27 +83,26 @@ export default {
       }
     };
   },
-    mounted(){
-        console.log(this.ruleForm2)
-       this.$post('v1/web/pad/login',{"username":'15093357355','password':'123456789'})
-      .then((response) => {
-        console.log(response)
-      })
- 
-  },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          this.$router.push({ path: "/management" });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    }
-  },
+    
+    getAjax: function() {
+      let self = this;
+      this.$http.post("http://www.wcqxzs.com/pregnant/v1/web/pad/login", {
+          username: "15093357355",
+          password: "123456789"
+        })
+        .then(function(response) {
+          console.log(response);
+          if(response.status == 200){
+             self.$router.push({name: 'management'})
 
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+  }
 };
 </script>
  <style lang="less" scoped>
