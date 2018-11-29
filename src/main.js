@@ -6,19 +6,24 @@ import 'element-ui/lib/theme-chalk/index.css';
 import router from './router'
 import App from './App'
 import 'babel-polyfill'
-import axios from 'axios';//通过import引入
-import Qs from 'qs'
 import VueAreaLinkage from 'vue-area-linkage';
 import 'vue-area-linkage/dist/index.css';
 import '../static/reset.css' /*引入公共样式*/
 import $ from "jquery"
+import axios from 'axios'
+import Qs from 'qs'
+import api from './components/http/index'
+Vue.use(api)
 Vue.use(Element);
 Vue.use(VueAreaLinkage);
-Vue.prototype.$http = axios;
+// Vue.prototype.$http = axios;
 Vue.prototype.qs = Qs;
+
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */
+
+
 new Vue({
   el: '#app',
   router,

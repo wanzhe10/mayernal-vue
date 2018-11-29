@@ -2,11 +2,11 @@
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
     <!-- <router-view/> -->
-     <transition name="fade">
+     <!-- <transition name="fade"> -->
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-  </transition>
+  <!-- </transition> -->
   </div>
 </template>
 

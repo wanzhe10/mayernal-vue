@@ -75,7 +75,7 @@ export default {
     return {
       ruleForm2: {
         username: "15093357355",
-        password: "123456789"
+        password: "1234562"
       },
       rules2: {
         username: [{ validator: validateUser, trigger: "blur" }],
@@ -86,21 +86,45 @@ export default {
   methods: {
     
     getAjax: function() {
-      let self = this;
-      this.$http.post("http://www.wcqxzs.com/pregnant/v1/web/pad/login", {
-          username: "15093357355",
-          password: "123456789"
-        })
-        .then(function(response) {
-          console.log(response);
-          if(response.status == 200){
-             self.$router.push({name: 'management'})
+      //  this.$post('v1/web/pad/login',this.qs.stringify(this.ruleForm2))
+      // .then((response) => {
+      //   console.log(response)
+        // Cookies.set('token', response.token, {expires: 7});//cookie保存7天
 
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      // })
+      let self = this;
+      this.$api.login({'username':'15093357355','password':'123456'}).then(res => {
+     if (res.status ==="20200" ) {
+        localStorage.setItem('token',res.token)
+       console.log(res);
+         self.$router.push({name: 'management'})
+
+      //  $router.push('/management')
+          // this.pageList = res.data.item
+      } else {
+        // this.$Message.info(res.desc);
+      }
+     })
+     .catch(error => {
+        // this.$Message.info(error);
+      })
+
+
+      // let self = this;
+      // this.$http.post("http://www.wcqxzs.com/pregnant/v1/web/pad/login", {
+      //     username: "15093357355",
+      //     password: "123456789"
+      //   })
+      //   .then(function(response) {
+      //     console.log(response);
+      //     if(response.status == 200){
+      //        self.$router.push({name: 'management'})
+
+      //     }
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   });
     }
   }
 };
