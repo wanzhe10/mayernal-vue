@@ -74,8 +74,8 @@ export default {
     };
     return {
       ruleForm2: {
-        username: "15093357355",
-        password: "1234562"
+        username: "15012345678",
+        password: "123456"
       },
       rules2: {
         username: [{ validator: validateUser, trigger: "blur" }],
@@ -93,7 +93,8 @@ export default {
 
       // })
       let self = this;
-      this.$api.login({'username':'15093357355','password':'123456'}).then(res => {
+      this.$api.login({'username':'15012345678','password':'123456'}).then(res => {
+          console.log(res);
      if (res.status ==="20200" ) {
         localStorage.setItem('token',res.token)
        console.log(res);
