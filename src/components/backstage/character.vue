@@ -1,82 +1,229 @@
 <template>
   <div class="characterBox">
-    <h2 class="characterBoxTittle">科室信息维护</h2>
+    <h2 class="characterBoxTittle">角色信息维护</h2>
     <div class="characterBoxTop clearfix">
       <div class="characterBoxTop_left">
         <span class="mgr18">激活状态</span>
-        <el-select v-model="characterModel" placeholder="请选择" clear="characterModel">
-          <el-option v-for="item in character" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
+        <el-select
+          v-model="characterModel"
+          placeholder="请选择"
+          clear="characterModel"
+        >
+          <el-option
+            v-for="item in character"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            popper-class="borderNo"
+          >
           </el-option>
         </el-select>
       </div>
-      <input type="button" value="新建角色" class="NewdepartmentBtn" @click="dialogVisible = true">
+      <input
+        type="button"
+        value="新建角色"
+        class="NewdepartmentBtn"
+        @click="dialogVisible = true"
+      >
     </div>
     <div class="characterBoxContant">
-      <img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon">
+      <img
+        src="../../assets/noDataIcon.png"
+        alt="暂无数据"
+        class="noDataIcon"
+      >
       <div class="hideBox">
-        <el-table :data="characterTableData" style="width: 100%">
-          <el-table-column prop="characterNum" label="序号" width="120px"></el-table-column>
-          <el-table-column prop="characterName" label="角色名称" width="150px"></el-table-column>
-          <el-table-column prop="characterDescribe" label="角色描述" width="366px">
+        <el-table
+          :data="characterTableData"
+          style="width: 100%"
+        >
+          <el-table-column
+            prop="id"
+            label="序号"
+            width="120px"
+            type="index"
+          ></el-table-column>
+          <el-table-column
+            prop="name"
+            label="角色名称"
+            width="150px"
+          ></el-table-column>
+          <el-table-column
+            prop="remarks"
+            label="角色描述"
+            width="366px"
+          >
             <template slot-scope="scope">
-              <el-tooltip placement="bottom-start" effect="light">
-                <div slot="content" style="width:300px;display:block;word-break: break-all;word-wrap:break-word;">{{ scope.row.characterDescribe }}</div>
-                <span style=" width:248px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.characterDescribe }}</span>
+              <el-tooltip
+                placement="bottom-start"
+                effect="light"
+              >
+                <div
+                  slot="content"
+                  style="width:300px;display:block;word-break: break-all;word-wrap:break-word;"
+                >{{ scope.row.remarks }}</div>
+                <span style=" width:248px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.remarks }}</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column prop="characterState" label="状态" width="112px"></el-table-column>
-          <el-table-column prop="characterAddTime" label="添加时间" width="154px"></el-table-column>
-          <el-table-column prop="characterOperate" label="操作" width="74px">
+          <el-table-column
+            prop="isProhibit"
+            label="状态"
+            width="112px"
+          ></el-table-column>
+          <el-table-column
+            prop="createDate"
+            label="添加时间"
+            width="154px"
+          ></el-table-column>
+          <el-table-column
+            prop="characterOperate"
+            label="操作"
+            width="74px"
+          >
             <template slot-scope="scope">
-              <el-button type="text" size="small" style="text-align: center;" @click="editdialogVisible = true">编辑</el-button>
+              <el-button
+                type="text"
+                size="small"
+                style="text-align: center;"
+               @click="handleEdit(scope.$index, scope.row)"
+              >编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
         <!-- 分页 -->
-        <div class="characterBoxBlock" style="margin-top:30px; text-align:center;">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPageOfice" :page-sizes="[7, 14, 21, 28]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
+        <div
+          class="characterBoxBlock"
+          style="margin-top:30px; text-align:center;"
+        >
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPageOfice"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size.sync="cur_page"
+            layout="sizes, prev, pager, next"
+            background
+            :page-count='pagerCount'
+          >
           </el-pagination>
         </div>
       </div>
 
     </div>
     <!-- 新增标签弹框 -->
-    <el-dialog title="添加角色" :visible.sync="dialogVisible" width="458px" :before-close="handleClose" class="newlyLayer">
-      <p>标签名称</p>
-      <el-input v-model="newlyLayerInput" placeholder="请输入报告单名称"></el-input>
-      <p>状态</p>
-      <el-select v-model="contactsModel" placeholder="请选择" size='100%'>
-        <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value">
-        </el-option>
-      </el-select>
-      <div class="addTemplateLayer_bottom">
-        <p class="clearfix">角色描述<span>(可不填)</span><span class="fr">{{remnantFont}}/100</span></p>
-        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入模板自觉不适描述......." v-model="remnantFontContant" maxlength='100' @input="descInput2">
-        </el-input>
-      </div>
-      <span slot="footer" class="dialog-footer">
+   <el-dialog
+      title="新建角色"
+      :visible.sync="dialogVisible"
+      width="458px"
+      :before-close="handleClose"
+      class="newlyLayer"
+    >
+      <el-form :model="form">
+        <el-form-item label="角色名称">
+          <el-input
+            v-model="form.name"
+            autocomplete="off"
+
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="激活状态">
+          <el-select
+            v-model="form.isProhibit"
+            placeholder="请选择"
+          >
+            <el-option
+              label="未激活"
+              value="0"
+            ></el-option>
+            <el-option
+              label="激活"
+              value="1"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <div class="addTemplateLayer_bottom">
+          <p class="clearfix">角色描述<span>(可不填)</span><span class="fr">{{form.remnantFont}}/100</span></p>
+          <el-form-item label="">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 10}"
+              v-model="form.remarks"
+              maxlength='100'
+              @input="descInput2"
+            >
+            </el-input>
+          </el-form-item>
+        </div>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
-    <!-- 编辑标签弹框 -->
-    <el-dialog title="编辑角色" :visible.sync="editdialogVisible" width="458px" :before-close="handleClose" class="newlyLayer">
-      <p>标签名称</p>
-      <el-input v-model="editnewlyLayerInput" placeholder="请输入报告单名称"></el-input>
-      <p>状态</p>
-      <el-select v-model="editcontactsModel" placeholder="请选择" size='100%'>
-        <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value">
-        </el-option>
-      </el-select>
-      <div class="addTemplateLayer_bottom">
-        <p class="clearfix">角色描述<span>(可不填)</span><span class="fr">{{editremnantFont}}/100</span></p>
-        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入模板自觉不适描述......." v-model="editremnantFontContant" maxlength='100' @input="editdescInput2">
-        </el-input>
+        <el-button
+          type="primary"
+          @click="radioEvent()"
+        >确 定</el-button>
       </div>
-      <span slot="footer" class="dialog-footer">
+    </el-dialog>
+
+
+
+      <!-- 编辑标签弹框 -->
+    <el-dialog
+      title="编辑角色"
+      :visible.sync="editdialogVisible"
+      width="458px"
+      :before-close="handleClose"
+      class="newlyLayer"
+    >
+      <el-form :model="form2">
+        <el-form-item label="角色名称">
+          <el-input
+            v-model="form2.name"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="激活状态">
+          <el-select
+            v-model="form2.isProhibit"
+            placeholder="请选择"
+          >
+            <el-option
+              label="未激活"
+              value="0"
+            ></el-option>
+            <el-option
+              label="激活"
+              value="1"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <div class="addTemplateLayer_bottom">
+          <p class="clearfix">角色描述<span>(可不填)</span><span class="fr fontNum">{{form2.editremnantFont}}/100</span></p>
+          <el-form-item label="">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 10}"
+              placeholder="输入模板自觉不适描述......."
+              v-model="form2.remarks"
+              maxlength='100'
+              @input="editdescInput2"
+            >
+            </el-input>
+          </el-form-item>
+        </div>
+      </el-form>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="editdialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editdialogVisible = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="editRadioBtn()"
+        >确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -84,6 +231,7 @@
 <script>
 export default {
   data() {
+    let token1 = window.localStorage.getItem("token");
     return {
       // 激活状态
       character: [
@@ -99,35 +247,30 @@ export default {
 
       characterTableData: [
         {
-          characterNum: "1",
-          characterName: "妇产科-门诊",
-          characterDescribe:
-            "孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我...",
-          characterState: "已激活",
-          characterAddTime: "2018-10-22"
-        },
-        {
-          characterNum: "2",
-          characterName: "妇产科-门诊",
-          characterDescribe: "这里限制字数在18个之内，超出......表示",
-          characterState: "已激活",
-          characterAddTime: "2018-10-22"
-        },
-        {
-          characterNum: "3",
-          characterName: "妇产科-门诊",
-          characterDescribe: "这里限制字数在18个之内，超出......表示",
-          characterState: "已激活",
-          characterAddTime: "2018-10-22"
-        },
-        {
-          characterNum: "4",
-          characterName: "妇产科-门诊",
-          characterDescribe: "这里限制字数在18个之内，超出......表示",
-          characterState: "已激活",
-          characterAddTime: "2018-10-22"
+          id: "",
+          name: "",
+          remarks: "",
+          isProhibit: "",
+          createDate: ""
         }
       ],
+       // 新建角色
+      form: {
+        isProhibit: "", //激活状态
+        name: "", //科室名称
+        remnantFont: "",
+        remarks: "", //角色描述
+        token: token1 //token
+      },
+       // 编辑角色
+      form2: {
+        isProhibit: "",
+        name: "",
+        editremnantFont: "",
+        remarks: "", //角色描述
+        token: token1 //token
+      },
+
       characterModel: "", //激活状态
       currentPageOfice: 1,
       // 新建角色状态
@@ -151,25 +294,40 @@ export default {
       editdialogVisible: false,
       editnewlyLayerInput: "",
       editremnantFont: 100,
-      editremnantFontContant: "" //角色描述
+      editremnantFontContant: 1, //角色描述
+      currentPageOfice: 1, //分页
+      pagerCount: 1, // 分页总页数
+      cur_page: 10 // 每页条数
     };
+  },
+  mounted() {
+    let token1 = window.localStorage.getItem("token");
+    this.getUser(token1, 1, 10);
   },
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+       let token1 = window.localStorage.getItem("token");
+      console.log(`每页 ${val} 条`);
+      this.currentPageOfice = 1;
+      this.getUser(token1, 1, `${val}`);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+       let token1 = window.localStorage.getItem("token");
+      console.log(`当前页: ${val}`);
+      this.currentPageOfice = val;
+
+      this.getUser(token1, `${val}`, this.cur_page);
     },
-    descInput2() {
-      var remnantFontVal = this.remnantFontContant.length;
-      this.remnantFont = 100 - remnantFontVal;
+   descInput2() {
+      var remnantFontVal = this.form.remarks.length;
+      this.form.remnantFont = 100 - remnantFontVal;
     },
     editdescInput2() {
-      var editremnantFontContant = this.editremnantFontContant.length;
-      this.remnantFont = 100 - editremnantFontContant;
+      var remarks2 = this.form2.remarks.length;
+      this.form2.editremnantFont = 100 - remarks2;
     },
-
     // 弹框右上角关闭按钮
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -177,6 +335,77 @@ export default {
           done();
         })
         .catch(_ => {});
+    },
+    // 查询
+    getUser(token, pageNum, pageSIze) {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .occupationFindList({
+          token: token,
+          pageNum: pageNum,
+          pageSize: pageSIze
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            this.characterTableData = res.pcOccupationBeanList;
+            console.log(this.characterTableData);
+            this.pagerCount = res.pageNum;
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    // 新建
+    radioEvent() {
+      var token = localStorage.getItem("token");
+      console.log(this.form);
+      this.$api
+        .occupationInsert(this.form)
+        .then(res => {
+          if (res.status === "20200") {
+            //  console.log('成功')
+            this.dialogVisible = false;
+            console.log(res);
+            // getUser(token, 1, pageSize);
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    // 编辑
+    handleEdit(index, row) {
+      this.editdialogVisible = true;
+      this.form2 = row;
+      console.log(this.form2);
+    },
+    // 编辑确认按钮
+    editRadioBtn() {
+       var token = localStorage.getItem("token");
+      this.$api
+        .occupationUpdate({
+          id: this.form2.id,
+          token: token,
+          isProhibit: this.form2.isProhibit,
+          remarks: this.form2.remarks,
+          name: this.form2.name
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            this.editdialogVisible = false;
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
     }
   }
 };

@@ -2,84 +2,214 @@
   <div class="personnelBox">
     <div class="personnelBox_top clearfix">
       <div class="btnsBOx">
-        <div class="newBtn" @click="dialogVisible = true">新建人员</div>
+        <div
+          class="newBtn"
+          @click="dialogVisible = true"
+        >新建人员</div>
       </div>
       <div class="selectBox clearfix">
         <div class="pdl20 fl w170">
           <p>激活状态</p>
-          <el-select v-model="contactsModel" placeholder="请选择" class="recordSelect">
-            <el-option size='126px' v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            v-model="contactsModel"
+            placeholder="请选择"
+            class="recordSelect"
+          >
+            <el-option
+              size='126px'
+              v-for="item in contacts"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
             </el-option>
           </el-select>
         </div>
         <div class="assess fl w180">
           <p>科室</p>
-          <el-select v-model="value2" placeholder="请选择" class="assessSelect">
-            <el-option size='126px' v-for="item in departments" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            v-model="value2"
+            placeholder="请选择"
+            class="assessSelect"
+          >
+            <el-option
+              size='126px'
+              v-for="item in departments"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
             </el-option>
           </el-select>
         </div>
         <div class="fl w154">
           <p>用户角色</p>
-          <el-select v-model="value3" placeholder="请选择" class="seeSelect">
-            <el-option size='126px' v-for="item in role" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            v-model="value3"
+            placeholder="请选择"
+            class="seeSelect"
+          >
+            <el-option
+              size='126px'
+              v-for="item in role"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
             </el-option>
           </el-select>
 
         </div>
         <div class="fl w224">
           <p>搜索</p>
-          <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="fileSearch" class="fileSearch">
+          <el-input
+            placeholder="请输入内容"
+            prefix-icon="el-icon-search"
+            v-model="fileSearch"
+            class="fileSearch"
+          >
           </el-input>
 
         </div>
-        <el-button type="primary" round class="inquireBtn">查询</el-button>
+        <el-button
+          type="primary"
+          round
+          class="inquireBtn"
+        >查询</el-button>
       </div>
     </div>
     <div class="personnelBox_bottom">
-      <img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon">
+      <img
+        src="../../assets/noDataIcon.png"
+        alt="暂无数据"
+        class="noDataIcon"
+      >
       <div class="hideBox">
-        <el-table :data="personnelableData" style="width: 100%">
-          <el-table-column prop="personnelNum" label="序号" width="112px"></el-table-column>
-          <el-table-column prop="personnelName" label="姓名" width="148px"></el-table-column>
-          <el-table-column prop="personnelPhone" label="手机号" width="178px"></el-table-column>
-          <el-table-column prop="personnelOffice" label="科室" width="178px"></el-table-column>
-          <el-table-column prop="personnelUser" label="用户角色" width="164px"></el-table-column>
-          <el-table-column prop="personnelState" label="状态" width="128px"></el-table-column>
-          <el-table-column prop="personnelOperate" label="操作" width="70px">
+        <el-table
+          :data="personnelableData"
+          style="width: 100%"
+        >
+          <el-table-column
+            prop="personnelNum"
+            label="序号"
+            width="112px"
+          ></el-table-column>
+          <el-table-column
+            prop="personnelName"
+            label="姓名"
+            width="148px"
+          ></el-table-column>
+          <el-table-column
+            prop="personnelPhone"
+            label="手机号"
+            width="178px"
+          ></el-table-column>
+          <el-table-column
+            prop="personnelOffice"
+            label="科室"
+            width="178px"
+          ></el-table-column>
+          <el-table-column
+            prop="personnelUser"
+            label="用户角色"
+            width="164px"
+          ></el-table-column>
+          <el-table-column
+            prop="personnelState"
+            label="状态"
+            width="128px"
+          ></el-table-column>
+          <el-table-column
+            prop="personnelOperate"
+            label="操作"
+            width="70px"
+          >
             <template slot-scope="scope">
-              <el-button type="text" size="small" style="text-align: center;" @click="editdialogVisible = true">编辑</el-button>
+              <el-button
+                type="text"
+                size="small"
+                style="text-align: center;"
+                @click="editdialogVisible = true"
+              >编辑</el-button>
             </template>
           </el-table-column>
         </el-table>
         <!-- 分页 -->
-        <div class="administrativeBoxBlock" style="margin-top:30px; text-align:center;">
-          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPagePersonnel" :page-sizes="[7, 14, 21, 28]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
+        <div
+          class="administrativeBoxBlock"
+          style="margin-top:30px; text-align:center;"
+        >
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPagePersonnel"
+            :page-sizes="[7, 14, 21, 28]"
+            :page-size="100"
+            layout="sizes, prev, pager, next"
+            :total="1000"
+            background
+          >
           </el-pagination>
         </div>
       </div>
 
     </div>
     <!-- 新增标签弹框 -->
-    <el-dialog title="新增人员" :visible.sync="dialogVisible" width="458px" :before-close="handleClose" class="newlyLayer">
+    <el-dialog
+      title="新增人员"
+      :visible.sync="dialogVisible"
+      width="458px"
+      :before-close="handleClose"
+      class="newlyLayer"
+    >
       <p>用户姓名</p>
-      <el-input v-model="userNameInput" placeholder="请输入报告单名称"></el-input>
+      <el-input
+        v-model="userNameInput"
+        placeholder="请输入报告单名称"
+      ></el-input>
       <p>手机号</p>
-      <el-input v-model="userPhoneInput" placeholder="请输入报告单名称"></el-input>
+      <el-input
+        v-model="userPhoneInput"
+        placeholder="请输入报告单名称"
+      ></el-input>
 
       <div class="addTemplateLayer_bottom clearfix">
-        <div class="fl" style="width:45%">
+        <div
+          class="fl"
+          style="width:45%"
+        >
           <p>科室</p>
-          <el-select v-model="departmentsModel" placeholder="请选择" size='100%'>
-            <el-option v-for="item in departments" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            v-model="departmentsModel"
+            placeholder="请选择"
+            size='100%'
+          >
+            <el-option
+              v-for="item in departments"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
             </el-option>
           </el-select>
         </div>
-        <div class="fr" style="width:45%">
+        <div
+          class="fr"
+          style="width:45%"
+        >
           <div>
             <p>角色名称</p>
-            <el-select v-model="roleModel" placeholder="请选择" size='100%'>
-              <el-option v-for="item in role" :key="item.value" :label="item.label" :value="item.value">
+            <el-select
+              v-model="roleModel"
+              placeholder="请选择"
+              size='100%'
+            >
+              <el-option
+                v-for="item in role"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
               </el-option>
             </el-select>
           </div>
@@ -87,38 +217,89 @@
       </div>
       <div class="addTemplateLayer_bottom_select">
         <p>激活状态</p>
-        <el-select v-model="contactsLayerModel" placeholder="请选择" size='100%'>
-          <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value">
+        <el-select
+          v-model="contactsLayerModel"
+          placeholder="请选择"
+          size='100%'
+        >
+          <el-option
+            v-for="item in contacts"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
           </el-option>
         </el-select>
       </div>
 
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="dialogVisible = false"
+        >确 定</el-button>
       </span>
     </el-dialog>
 
     <!-- 编辑标签弹框 -->
-    <el-dialog title="编辑信息" :visible.sync="editdialogVisible" width="458px" :before-close="handleClose" class="newlyLayer">
+    <el-dialog
+      title="编辑信息"
+      :visible.sync="editdialogVisible"
+      width="458px"
+      :before-close="handleClose"
+      class="newlyLayer"
+    >
       <p>用户姓名</p>
-      <el-input v-model="edituserNameInput" placeholder="请输入报告单名称"></el-input>
+      <el-input
+        v-model="edituserNameInput"
+        placeholder="请输入报告单名称"
+      ></el-input>
       <p>手机号</p>
-      <el-input v-model="edituserPhoneInput" placeholder="请输入报告单名称"></el-input>
+      <el-input
+        v-model="edituserPhoneInput"
+        placeholder="请输入报告单名称"
+      ></el-input>
 
       <div class="addTemplateLayer_bottom clearfix">
-        <div class="fl" style="width:45%">
+        <div
+          class="fl"
+          style="width:45%"
+        >
           <p>科室</p>
-          <el-select v-model="editdepartmentsModel" placeholder="请选择" size='100%'>
-            <el-option v-for="item in departments" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            v-model="editdepartmentsModel"
+            placeholder="请选择"
+            size='100%'
+          >
+            <el-option
+              v-for="item in departments"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
             </el-option>
           </el-select>
         </div>
-        <div class="fr" style="width:45%">
+        <div
+          class="fr"
+          style="width:45%"
+        >
           <div>
             <p>角色名称</p>
-            <el-select v-model="editroleModel" placeholder="请选择" size='100%'>
-              <el-option v-for="item in role" :key="item.value" :label="item.label" :value="item.value">
+            <el-select
+              v-model="editroleModel"
+              placeholder="请选择"
+              size='100%'
+            >
+              <el-option
+                v-for="item in role"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
               </el-option>
             </el-select>
           </div>
@@ -126,15 +307,30 @@
       </div>
       <div class="addTemplateLayer_bottom_select">
         <p>激活状态</p>
-        <el-select v-model="editcontactsLayerModel" placeholder="请选择" size='100%'>
-          <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value">
+        <el-select
+          v-model="editcontactsLayerModel"
+          placeholder="请选择"
+          size='100%'
+        >
+          <el-option
+            v-for="item in contacts"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
           </el-option>
         </el-select>
       </div>
 
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="editdialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editdialogVisible = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="editdialogVisible = false"
+        >确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -159,30 +355,6 @@ export default {
           personnelNum: "1",
           personnelName: "周晓晓1",
           personnelPhone: "13511111111.",
-          personnelOffice: "孕产妇-住院",
-          personnelUser: "主治医生",
-          personnelState: "已激活"
-        },
-        {
-          personnelNum: "2",
-          personnelName: "周晓晓2",
-          personnelPhone: "13511111111",
-          personnelOffice: "孕产妇-住院",
-          personnelUser: "主治医生",
-          personnelState: "已激活"
-        },
-        {
-          personnelNum: "3",
-          personnelName: "周晓晓3",
-          personnelPhone: "13511111111",
-          personnelOffice: "孕产妇-住院",
-          personnelUser: "主治医生",
-          personnelState: "已激活"
-        },
-        {
-          personnelNum: "4",
-          personnelName: "周晓晓4",
-          personnelPhone: "13511111111",
           personnelOffice: "孕产妇-住院",
           personnelUser: "主治医生",
           personnelState: "已激活"
@@ -239,18 +411,18 @@ export default {
           label: "角色5"
         }
       ],
-         userPhoneInput: "",  //新建人员弹框 用户手机号
-      userNameInput: "",  //新建人员弹框 用户名字
+      userPhoneInput: "", //新建人员弹框 用户手机号
+      userNameInput: "", //新建人员弹框 用户名字
       departmentsModel: "", //新建人员弹框 科室
       roleModel: "", //新建人员弹框角色
       dialogVisible: false, //新增人员弹框
       editdialogVisible: false, //编辑信息弹框
       edituserPhoneInput: "", // 编辑人员弹框 手机号
-      edituserNameInput: "",// 编辑人员弹框 用户姓名
+      edituserNameInput: "", // 编辑人员弹框 用户姓名
       contactsLayerModel: "", // 新建人员弹框激活状态
-      editroleModel: "",//编辑人员弹框角色
-      editdepartmentsModel: "",//编辑人员弹框 科室
-      editcontactsLayerModel:'',// 编辑人员弹框激活状态
+      editroleModel: "", //编辑人员弹框角色
+      editdepartmentsModel: "", //编辑人员弹框 科室
+      editcontactsLayerModel: "", // 编辑人员弹框激活状态
       remnantFontContant: "" //角色描述
     };
   },
@@ -276,7 +448,12 @@ export default {
           done();
         })
         .catch(_ => {});
+    },
+    //查询
+    inquire(token,pageNum,pageSize,paramDetails){
+      
     }
+
   }
 };
 </script>

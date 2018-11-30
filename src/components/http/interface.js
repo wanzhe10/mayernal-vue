@@ -55,8 +55,64 @@ export const deptSimpleUpdate = data => {
     data
   })
 }
+//  人员信息维护查询
+export const findSelfDoctorList = data => {
+  return axios({
+    url: 'v1/web/pc/patientCenter/findSelfDoctorList',
+    method: 'post',
+    data
+  })
+}
+//  角色信息维护查询
+export const occupationFindList = data => {
+  return axios({
+    url: 'v1/web/pc/occupation/findList',
+    method: 'post',
+    data
+  })
+}
+//  角色信息维护新增
+export const occupationInsert = data => {
+  return axios({
+    url: 'v1/web/pc/occupation/insert',
+    method: 'post',
+    data
+  })
+}
+//  角色信息维护修改
+export const occupationUpdate = data => {
+  return axios({
+    url: 'v1/web/pc/occupation/update',
+    method: 'post',
+    data
+  })
+}
 
+// 产检信息维护查询
+export const checkForWeekFindList = data => {
+  return axios({
+    url: 'v1/web/pc/checkForWeek/findList',
+    method: 'post',
+    data
+  })
+}
 
+// 产检信息维护新建
+export const checkForWeekInsert = data => {
+  return axios({
+    url: 'v1/web/pc/checkForWeek/insert',
+    method: 'post',
+    data
+  })
+}
+// 产检信息维护修改
+export const checkForWeekUpdate = data => {
+  return axios({
+    url: 'v1/web/pc/checkForWeek/update',
+    method: 'post',
+    data
+  })
+}
 
 // 默认全部导出
 export default {
@@ -66,4 +122,11 @@ export default {
   deptSimpleFindList,
   deptSimpleInsert,
   deptSimpleUpdate,
+  findSelfDoctorList,
+  occupationFindList,
+  occupationInsert,
+  occupationUpdate,
+  checkForWeekFindList,
+  checkForWeekInsert,
+  checkForWeekUpdate,
 }

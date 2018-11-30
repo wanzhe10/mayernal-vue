@@ -125,6 +125,7 @@
           <el-input
             v-model="form.name"
             autocomplete="off"
+
           ></el-input>
         </el-form-item>
         <el-form-item label="激活状态">
@@ -234,7 +235,6 @@ export default {
     let token1 = window.localStorage.getItem("token");
     return {
       // 激活状态
-
       contacts: [
         {
           value: "0",
@@ -265,6 +265,7 @@ export default {
         remarks: "", //角色描述
         token: token1 //token
       },
+      
       // 编辑科室
       form2: {
         isProhibit: "",
@@ -273,10 +274,11 @@ export default {
         remarks: "", //角色描述
         token: token1 //token
       },
-      currentPageOfice: 1,
-      cur_page: 10,
-      pagerCount: 3
+      currentPageOfice: 1, //分页
+      cur_page: 10,//分页
+      pagerCount: 3,//分页
     };
+     
   },
   mounted() {
     let token1 = window.localStorage.getItem("token");
@@ -341,7 +343,6 @@ export default {
     radioEvent() {
       var token = localStorage.getItem("token");
       console.log(this.form);
-      return;
       this.$api
         .deptSimpleInsert(this.form)
         .then(res => {
@@ -389,6 +390,7 @@ export default {
           // this.$Message.info(error);
         });
     }
+    
   }
 };
 </script>
