@@ -6,65 +6,171 @@
         <div class="Contant_left_overflow">
           <p>产检次数列表</p>
           <ul>
-            <li v-for="(item,index) in antenatalCareNums" :key="index" :label="item.label" :value="item.value" @click="antenatalCareNum(index)" :class="{active:index==showActive}">第{{item.label}}次产检</li>
+            <li
+              v-for="(item,index) in antenatalCareNums"
+              :key="index"
+              :id="item.id"
+              @click="antenatalCareNum(index)"
+              :class="{active:index==showActive}"
+              v-html="item.name" 
+            ></li>
           </ul>
         </div>
-
       </div>
       <div class="Contant_right clearfix">
         <div class="Contant_tittle">
           <span>报告单类型</span>
-          <input type="button" value="添加标签" @click="dialogVisible = true">
+          <!-- <input type="button" value="添加标签" @click="dialogVisible = true"> -->
+          <input
+            type="button"
+            value="添加标签"
+            @click="dialogVisible = true"
+          >
         </div>
         <ul class="category clearfix">
-          <li v-for="(item,index) in categoryItems" v-html="item.value" @click="toggleClass(index)"  @dblclick="modification = true" :class="{actives:index==isActive}" :key="index"></li>
+          <li
+            v-for="(item,index) in arr"
+            v-html="item.pcCheckCellsBean.name"
+            @click="toggleClass(index)"
+            @dblclick="modification = true"
+            :class="addclass(item.type)"
+            :id='item.pcCheckCellsBean.id'
+          ></li>
         </ul>
         <div class="labelContant">
           <h2>标签内容</h2>
-          <div class="labelContant_font">
+           <div class="labelContant_font">
             <div class="labelIntroduce">
-              <p><span id="tittleName">{{'宫高'}}</span>介绍</p>
-              <el-input type="textarea" autosize placeholder="请输入内容" v-model="labelIntroduce">
-
+              <p><span id="tittleName"></span>介绍</p>
+              <el-input
+                type="textarea"
+                autosize
+                placeholder="请输入内容"
+                v-model="labelIntroduce"
+                 :disabled="compile"
+              >
               </el-input>
             </div>
             <div class="wire"></div>
             <div class="labelExplain">
               <p>解释说明</p>
-              <el-input type="textarea" autosize placeholder="请输入内容" v-model="labelExplain">
+              <el-input
+                type="textarea"
+                autosize
+                placeholder="请输入内容"
+                v-model="labelExplain"
+                 :disabled="compile"
+              >
               </el-input>
             </div>
           </div>
+          <!-- <div class="labelContant_font"  v-for="(item,index) in arr">
+            <div class="labelIntroduce">
+              <p><span id="tittleName" v-html="item.pcCheckCellsBean.name"></span>介绍</p>
+              <el-input
+                type="textarea"
+                autosize
+                placeholder="请输入内容"
+                v-model="item.pcCheckCellsBean.checkDetail"
+                 :disabled="compile"
+              >
+              </el-input>
+            </div>
+            <div class="wire"></div>
+            <div class="labelExplain">
+              <p>解释说明</p>
+              <el-input
+                type="textarea"
+                autosize
+                placeholder="请输入内容"
+                v-model="item.pcCheckCellsBean.remarks"
+                 :disabled="compile"
+              >
+              </el-input>
+            </div>
+          </div> -->
         </div>
-        <el-button type="primary" class="saveBtn" disabled>保 存</el-button>
+        <el-button
+          type="primary"
+          class="saveBtn"
+          disabled
+        >保 存</el-button>
       </div>
     </div>
     <!-- 新增标签弹框 -->
-    <el-dialog title="添加标签" :visible.sync="dialogVisible" width="450px" :before-close="handleClose" class="newlyLayer">
+    <el-dialog
+      title="添加标签"
+      :visible.sync="dialogVisible"
+      width="450px"
+      :before-close="handleClose"
+      class="newlyLayer"
+    >
       <p>标签名称</p>
-      <el-input v-model="newlyLayerInput" placeholder="请输入报告单名称"></el-input>
+      <el-input
+        v-model="newlyLayerInput"
+        placeholder="请输入报告单名称"
+      ></el-input>
       <p>状态</p>
-      <el-select v-model="contactsModel" placeholder="请选择" size='100%'>
-        <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value">
+      <el-select
+        v-model="contactsModel"
+        placeholder="请选择"
+        size='100%'
+      >
+        <el-option
+          v-for="item in contacts"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
         </el-option>
       </el-select>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="addLable()"
+        >确 定</el-button>
       </span>
     </el-dialog>
     <!-- 修改标签弹框 -->
-    <el-dialog title="修改标签" :visible.sync="modification" width="450px" :before-close="handleClose" class="modificationlyLayer">
+    <el-dialog
+      title="修改标签"
+      :visible.sync="modification"
+      width="450px"
+      :before-close="handleClose"
+      class="modificationlyLayer"
+    >
       <p>标签名称</p>
-      <el-input v-model="modificationlyLayerInput" placeholder="请输入报告单名称"></el-input>
+      <el-input
+        v-model="modificationlyLayerInput"
+        placeholder="请输入报告单名称"
+      ></el-input>
       <p>状态</p>
-      <el-select v-model="modificationContactsModel" placeholder="请选择" size='100%'>
-        <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value">
+      <el-select
+        v-model="modificationContactsModel"
+        placeholder="请选择"
+        size='100%'
+      >
+        <el-option
+          v-for="item in contacts"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
         </el-option>
       </el-select>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="modification = false">取 消</el-button>
-        <el-button type="primary" @click="modification = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="modification = false"
+        >确 定</el-button>
       </span>
     </el-dialog>
     <div>
@@ -78,89 +184,27 @@ export default {
   data() {
     return {
       // 报告单类型
-      categoryItems: [
+    arr:[
         {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "脐带",
-          label: "脐带"
-        },
-        {
-          value: "股骨长",
-          label: "股骨长"
-        },
-        {
-          value: "胎囊",
-          label: "胎囊"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
-        },
-        {
-          value: "宫高",
-          label: "宫高"
+            "id":"",
+            "types":"",
+            pcCheckCellsBean:{
+                "id":"",
+                "name":"",
+                "title":"",
+                "checkDetail":"",
+                "number":"",
+                "remarks":""
+            }
         }
-        // "宫高",
-        // "脐带",
-        // "股骨长",
-        // "胎囊",
-        // "胎心",
-        // "胎头",
-        // "胎芽",
-        // "胎芽",
-        // "宫高",
-        // "脐带",
-        // "股骨长",
-        // "最大羊水深处",
-        // "宫高",
-        // "脐带",
-        // "股骨长",
-        // "宫高",
-        // "宫双顶径高",
-        // "羊水指数"
-      ],
+    ],
       isActive: 0,
-      labelIntroduce:
-        "建立妊娠保健手册、确定孕周、推算预产期、评估妊娠高危因素，血压、体重指数、胎心率、血常规、血型（ABO和Rh）、空腹血糖、刚功能和肾功能、乙型肝炎病毒表面抗原、梅毒螺旋体、HIV筛查、心电图,）、空腹血糖、刚功能和肾功能、乙型肝炎病毒表面抗原、梅毒螺旋体、HIV筛查、心电图",
-      labelExplain:
-        "之前没有做过婚检，孕期检查的人，还要增加地中海贫血筛查，家里养宠物的人，则要增加寄生虫检查，专家提醒：第一次产检做的检查项目相对最多，也是为了全面检查准妈妈的健康情况，要带上准爸爸一起检查，并且要了解你和他的直属亲属及家庭成员的健康情况",
-      dialogVisible: false,
-       modification: false,
+      // 标签内容介绍
+      labelIntroduce:"",
+        // 标签解释说明
+      labelExplain:"",
+      dialogVisible: false, //新建弹框
+      modification: false,  //编辑弹框
       // 状态
       contacts: [
         {
@@ -172,81 +216,54 @@ export default {
           label: "已激活"
         }
       ],
-      contactsModel:'', //新增标签状态
-      modificationContactsModel:'', //修改标签状态
+      contactsModel: "", //新增标签状态
+      modificationContactsModel: "", //修改标签状态
       newlyLayerInput: "",
       modificationlyLayerInput: "",
-      antenatalCareNums: [
-        {
-          value: "1",
-          label: "一"
-        },
-        {
-          value: "2",
-          label: "二"
-        },
-        {
-          value: "3",
-          label: "三"
-        },
-        {
-          value: "4",
-          label: "四"
-        },
-        {
-          value: "5",
-          label: "五"
-        },
-        {
-          value: "6",
-          label: "六"
-        },
-        {
-          value: "7",
-          label: "七"
-        },
-        {
-          value: "8",
-          label: "八"
-        },
-        {
-          value: "9",
-          label: "九"
-        },
-        {
-          value: "10",
-          label: "十"
-        },
-        {
-          value: "11",
-          label: "十一"
-        },
-        {
-          value: "12",
-          label: "十二"
-        }
-      ],
-      showActive: "0"
+      antenatalCareNums: [], //产检次数列表
+      showActive: "0",
+      compile:false,// 介绍和解释说明是否能编辑编辑
     };
+  },
+  mounted() {
+    let token1 = window.localStorage.getItem("token");
+    this.getUser(token1);
   },
   methods: {
     // 切换产检次数列表
     antenatalCareNum(index) {
+      let token = localStorage.getItem('token');
       this.showActive = index;
+      // console.log(this.antenatalCareNums[index].id);
+      // let weekId = 
+      this.checkForWeekAndCellFindList(token,this.antenatalCareNums[index].id)
+    },
+    // 添加标签按钮
+    addLable() {
+      this.categoryItems.push({
+        value: this.newlyLayerInput,
+        label: this.contactsModel
+      });
+      this.dialogVisible = false;
+      this.newlyLayerInput = "";
+      this.contactsModel = "";
+    },
+
+    //根据状态值判断标签页样式显示
+    addclass(i){
+     if (i == 0) {
+       return 'nonactivated';
+       this.compile = true;
+     }else if (i==1) {
+        return 'actives';
+     }
     },
     //切换"报告单类型"样式
     toggleClass(index) {
       this.isActive = index;
-
-      // this.isActive = this.isActive == index ? -1 : index;
+      this.isActive = this.isActive == index ? -1 : index;
       var tittleName = document.getElementById("tittleName");
-      tittleName.innerHTML = this.categoryItems[index].value;
     },
-    //切换"报告单类型"样式
-    storageDetail(index) {
-    
-    },
-    
     // 弹框右上角关闭按钮
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -254,6 +271,47 @@ export default {
           done();
         })
         .catch(_ => {});
+    },
+    // 左边产检次数列表查询
+    getUser(token) {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .checkForWeekFindList({
+          token: token1
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            this.antenatalCareNums = res.pcCheckForWeekBeanList;
+            // console.log(this.antenatalCareNums);
+            // this.pagerCount = res.pageNum;
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    // 报告类型查询
+    checkForWeekAndCellFindList(token,weekId){
+     let self = this;
+      this.$api.findSelfDoctorList({
+          token: token,
+          weekId:weekId
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            // console.log(res)
+            self.arr =  res.pcCheckForWeekAndCellBeanList;
+         
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
     }
   }
 };
@@ -357,6 +415,11 @@ export default {
       }
       li:nth-child(1) {
         margin-left: 0px;
+      }
+      .nonactivated{
+        border:none;
+        background-color: #f6f6f6;
+        color:#999;
       }
       .actives {
         background-color: #68b6e7;

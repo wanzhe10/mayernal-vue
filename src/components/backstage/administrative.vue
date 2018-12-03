@@ -93,7 +93,6 @@
                 style="text-align: center;"
                 @click="handleEdit(scope.$index, scope.row)"
               >编辑</el-button>
-              <!-- @click="editdialogVisible = true" -->
             </template>
           </el-table-column>
         </el-table>
@@ -291,7 +290,6 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      // this.currentPageOfice =val;
       let token1 = window.localStorage.getItem("token");
       console.log(`每页 ${val} 条`);
       this.currentPageOfice = 1;
@@ -367,7 +365,6 @@ export default {
     // 编辑
     handleEdit(index, row) {
       this.editdialogVisible = true;
-
       this.form2 = JSON.parse(JSON.stringify(row));
       console.log(this.form2);
     },
@@ -388,7 +385,6 @@ export default {
              console.log('成功')
             // console.log(res);
             this.editdialogVisible = false;
-            console.log(self.cur_page)
             this.getUser(token, 1, self.cur_page);
           } else {
             // this.$Message.info(res.desc);

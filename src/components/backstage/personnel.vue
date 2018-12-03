@@ -34,10 +34,10 @@
           >
             <el-option
               size='126px'
-              v-for="item in departments"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="(item,index) in departments"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             >
             </el-option>
           </el-select>
@@ -51,14 +51,13 @@
           >
             <el-option
               size='126px'
-              v-for="item in role"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="(item,index) in role"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             >
             </el-option>
           </el-select>
-
         </div>
         <div class="fl w224">
           <p>搜索</p>
@@ -75,6 +74,7 @@
           type="primary"
           round
           class="inquireBtn"
+          @click="inquire()"
         >查询</el-button>
       </div>
     </div>
@@ -90,35 +90,40 @@
           style="width: 100%"
         >
           <el-table-column
-            prop="personnelNum"
+            prop=""
             label="序号"
             width="112px"
+            type="index"
           ></el-table-column>
           <el-table-column
-            prop="personnelName"
+            prop="name"
             label="姓名"
             width="148px"
           ></el-table-column>
           <el-table-column
-            prop="personnelPhone"
+            prop="telephone"
             label="手机号"
             width="178px"
           ></el-table-column>
           <el-table-column
-            prop="personnelOffice"
+            prop="deptSimpleName"
             label="科室"
             width="178px"
           ></el-table-column>
           <el-table-column
-            prop="personnelUser"
+            prop="occupationName"
             label="用户角色"
             width="164px"
           ></el-table-column>
           <el-table-column
-            prop="personnelState"
+            prop="types"
             label="状态"
             width="128px"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              <div v-show="scope.row.types == 0">未激活</div>
+              <div v-show="scope.row.types == 1">激活</div>
+            </template></el-table-column>
           <el-table-column
             prop="personnelOperate"
             label="操作"
@@ -129,7 +134,7 @@
                 type="text"
                 size="small"
                 style="text-align: center;"
-                @click="editdialogVisible = true"
+                @click="handleEdit(scope.$index, scope.row)"
               >编辑</el-button>
             </template>
           </el-table-column>
@@ -142,12 +147,12 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page.sync="currentPagePersonnel"
-            :page-sizes="[7, 14, 21, 28]"
-            :page-size="100"
+            :current-page.sync="currentPageOfice"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size.sync="cur_page"
             layout="sizes, prev, pager, next"
-            :total="1000"
             background
+            :page-count='pagerCount'
           >
           </el-pagination>
         </div>
@@ -164,12 +169,12 @@
     >
       <p>用户姓名</p>
       <el-input
-        v-model="userNameInput"
+        v-model="arr.name"
         placeholder="请输入报告单名称"
       ></el-input>
       <p>手机号</p>
       <el-input
-        v-model="userPhoneInput"
+        v-model="arr.telephone"
         placeholder="请输入报告单名称"
       ></el-input>
 
@@ -180,15 +185,15 @@
         >
           <p>科室</p>
           <el-select
-            v-model="departmentsModel"
+            v-model="arr.deptId"
             placeholder="请选择"
             size='100%'
           >
             <el-option
-              v-for="item in departments"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="(item,index) in departments"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             >
             </el-option>
           </el-select>
@@ -200,15 +205,15 @@
           <div>
             <p>角色名称</p>
             <el-select
-              v-model="roleModel"
+              v-model="arr.occupationId"
               placeholder="请选择"
               size='100%'
             >
               <el-option
-                v-for="item in role"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="(item,index) in role"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
               >
               </el-option>
             </el-select>
@@ -218,7 +223,7 @@
       <div class="addTemplateLayer_bottom_select">
         <p>激活状态</p>
         <el-select
-          v-model="contactsLayerModel"
+          v-model="arr.types"
           placeholder="请选择"
           size='100%'
         >
@@ -239,7 +244,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="dialogVisible = false"
+          @click="patientCenterInsertBtn()"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -254,13 +259,13 @@
     >
       <p>用户姓名</p>
       <el-input
-        v-model="edituserNameInput"
-        placeholder="请输入报告单名称"
+        v-model="arr2.name"
+        placeholder="请输入用户姓名"
       ></el-input>
       <p>手机号</p>
       <el-input
-        v-model="edituserPhoneInput"
-        placeholder="请输入报告单名称"
+        v-model="arr2.telephone"
+        placeholder="请输入用户手机号"
       ></el-input>
 
       <div class="addTemplateLayer_bottom clearfix">
@@ -270,15 +275,15 @@
         >
           <p>科室</p>
           <el-select
-            v-model="editdepartmentsModel"
+            v-model="arr2.deptId"
             placeholder="请选择"
             size='100%'
           >
             <el-option
-              v-for="item in departments"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="(item,index) in departments"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             >
             </el-option>
           </el-select>
@@ -290,15 +295,15 @@
           <div>
             <p>角色名称</p>
             <el-select
-              v-model="editroleModel"
+              v-model="arr2.occupationId"
               placeholder="请选择"
               size='100%'
             >
               <el-option
-                v-for="item in role"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                v-for="(item,index) in role"
+                :key="index"
+                :label="item.name"
+                :value="item.id"
               >
               </el-option>
             </el-select>
@@ -308,7 +313,7 @@
       <div class="addTemplateLayer_bottom_select">
         <p>激活状态</p>
         <el-select
-          v-model="editcontactsLayerModel"
+          v-model="arr2.types"
           placeholder="请选择"
           size='100%'
         >
@@ -329,7 +334,7 @@
         <el-button @click="editdialogVisible = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="editdialogVisible = false"
+          @click="patientCenterUpdateBtn()"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -338,6 +343,7 @@
 <script>
 export default {
   data() {
+    var token = window.localStorage.getItem("token");
     return {
       // 档案管理下拉框数据
       contacts: [
@@ -352,85 +358,69 @@ export default {
       ],
       personnelableData: [
         {
-          personnelNum: "1",
-          personnelName: "周晓晓1",
-          personnelPhone: "13511111111.",
-          personnelOffice: "孕产妇-住院",
-          personnelUser: "主治医生",
-          personnelState: "已激活"
+          id: "",
+          name: "",
+          telephone: "",
+          deptSimpleId: "",
+          deptSimpleName: "",
+          occupationId: "",
+          occupationName: "",
+          types: "",
+          token: token
         }
       ],
       contactsModel: "",
       value2: "",
       value3: "",
       fileSearch: "",
-      currentPagePersonnel: 1,
       // 弹框科室
-      departments: [
-        {
-          value: "0",
-          label: "科室1"
-        },
-        {
-          value: "1",
-          label: "科室2"
-        },
-        {
-          value: "2",
-          label: "科室3"
-        },
-        {
-          value: "3",
-          label: "科室4"
-        },
-        {
-          value: "4",
-          label: "科室5"
-        }
-      ],
+      departments: [],
       // 新建人员弹框角色名称
-      role: [
-        {
-          value: "0",
-          label: "角色1"
-        },
-        {
-          value: "1",
-          label: "角色2"
-        },
-        {
-          value: "2",
-          label: "角色3"
-        },
-        {
-          value: "3",
-          label: "角色4"
-        },
-        {
-          value: "4",
-          label: "角色5"
-        }
-      ],
-      userPhoneInput: "", //新建人员弹框 用户手机号
-      userNameInput: "", //新建人员弹框 用户名字
-      departmentsModel: "", //新建人员弹框 科室
-      roleModel: "", //新建人员弹框角色
+      role: [],
+      arr: {
+        telephone: "", //新建人员弹框 用户手机号
+        name: "", //新建人员弹框 用户名字
+        deptId: "", //新建人员弹框 科室
+        occupationId: "", //新建人员弹框角色
+        types: "", // 新建人员弹框激活状态
+        token: token,
+        rolesType: "0" //角色类型
+      },
+      arr2: {
+        telephone: "", // 编辑人员弹框 手机号
+        name: "", // 编辑人员弹框 用户姓名
+        occupationId: "", //编辑人员弹框角色id
+        deptId: "", //编辑人员弹框 科室id
+        types: "", // 编辑人员弹框激活状态
+        rolesType: "0", //角色描述
+        id: "", //人员编号
+        token: token
+      },
       dialogVisible: false, //新增人员弹框
       editdialogVisible: false, //编辑信息弹框
-      edituserPhoneInput: "", // 编辑人员弹框 手机号
-      edituserNameInput: "", // 编辑人员弹框 用户姓名
-      contactsLayerModel: "", // 新建人员弹框激活状态
-      editroleModel: "", //编辑人员弹框角色
-      editdepartmentsModel: "", //编辑人员弹框 科室
-      editcontactsLayerModel: "", // 编辑人员弹框激活状态
-      remnantFontContant: "" //角色描述
+
+      currentPageOfice: 1, //分页
+      cur_page: 10, //分页
+      pagerCount: 3 //分页
     };
+  },
+  mounted() {
+    let token = window.localStorage.getItem("token");
+    this.inquire(token, 1, 10);
+    this.getUser(token, 1, 10);
+    this.getUseInquire(token, 1, 10);
   },
   methods: {
     handleSizeChange(val) {
+      let token = window.localStorage.getItem("token");
+      this.currentPageOfice = 1;
+      this.inquire(token, 1, `${val}`);
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      let token = window.localStorage.getItem("token");
+      this.currentPageOfice = val;
+      this.inquire(token, `${val}`, this.cur_page);
       console.log(`当前页: ${val}`);
     },
     descInput2() {
@@ -449,11 +439,145 @@ export default {
         })
         .catch(_ => {});
     },
-    //查询
-    inquire(token,pageNum,pageSize,paramDetails){
-      
-    }
 
+    // 科室信息查询
+    getUser(token, pageNum, pageSize) {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .deptSimpleFindList({
+          token: token1,
+          pageNum: pageNum,
+          pageSize: pageSize
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            this.departments = res.pcDeptSimpleBeanList;
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+
+    // 用户角色查询
+    getUseInquire(token, pageNum, pageSIze) {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .occupationFindList({
+          token: token,
+          pageNum: pageNum,
+          pageSize: pageSIze
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            this.role = res.pcOccupationBeanList;
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    //查询
+    inquire(
+      token,
+      pageNum,
+      pageSize,
+      paramType,
+      paramDetails,
+      types,
+      deptSimpleId,
+      occupationId
+    ) {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .patientCenterFindSelfDoctorList({
+          token: token1,
+          pageNum: pageNum,
+          pageSize: pageSize,
+          paramType: paramType,
+          paramDetails: paramDetails,
+          types: types,
+          deptSimpleId: deptSimpleId,
+          occupationId: occupationId
+        })
+        .then(res => {
+          console.log(res);
+
+          if (res.status === "20200") {
+            self.personnelableData = res.pcDoctorBeanList;
+            this.pagerCount = res.pageNum;
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+
+    // 人员信息维护新增
+    patientCenterInsertBtn() {
+      var token = localStorage.getItem("token");
+      let self = this;
+      console.log(this.arr);
+      this.$api
+        .patientCenterInsert(this.arr)
+        .then(res => {
+          if (res.status === "20200") {
+            this.dialogVisible = false;
+            this.inquire(token, 1, self.cur_page);
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+
+    // 编辑
+    handleEdit(index, row) {
+      this.editdialogVisible = true;
+      console.log(row);
+      this.arr2 = JSON.parse(JSON.stringify(row));
+      this.arr2.deptId = row.deptSimpleName;
+    },
+    // 人员信息维护编辑
+    patientCenterUpdateBtn() {
+      let token = localStorage.getItem("token");
+      let self = this;
+      console.log(this.arr2);
+      this.$api
+        .patientCenterUpdate({
+          telephone:this.arr2.telephone, // 编辑人员弹框 手机号
+          name: this.arr2.name, // 编辑人员弹框 用户姓名
+          occupationId: this.arr2.occupationId, //编辑人员弹框角色id
+          deptId: this.arr2.deptId, //编辑人员弹框 科室id
+          types:this.arr2.types, // 编辑人员弹框激活状态
+          rolesType:'0', //角色描述
+          id: this.arr2.id, //人员编号
+          token: token
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.editdialogVisible = false;
+            this.inquire(token, 1, self.cur_page);
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    }
   }
 };
 </script>
