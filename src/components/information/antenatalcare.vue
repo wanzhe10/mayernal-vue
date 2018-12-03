@@ -696,7 +696,7 @@ export default {
         .checkForWeekInsert({
           token: token,
           number: number,
-          name: self.templateName,
+          name: self.temp.lateName,
           gestationalWeekStart: self.gestationalWeekStarModel,
           gestationalWeekEnd: self.gestationalWeekEndModel,
           checkDetail: self.opinionModel,

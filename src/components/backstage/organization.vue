@@ -255,6 +255,8 @@ export default {
     clickBtn(){
       let token1 = window.localStorage.getItem("token");
        let self = this;
+       console.log(this.arr.placeholders)
+       console.log(this.arr.placeholders.length)
         for (let i = 0; i < this.arr.placeholders.length; i++) {
         const element = this.arr.placeholders[0];
         var addressProvince = this.arr.placeholders[0];
@@ -298,13 +300,19 @@ export default {
     }
   },
   watch: {
-    arr: {
-      handler: function() {
-        // 数据发生变化的时候的操作 未完成
-        console.log("变化");
-      },
-      deep: true
-    }
+    // arr: {
+    //   handler: function() {
+    //     // 数据发生变化的时候的操作 未完成
+    //     console.log("变化");
+    //   },
+    //   deep: true
+    // }
+    'arr.userName' : function (val, oldVal) {
+      // console.log(val, oldVal)
+      if (val !== oldVal) {
+        console.log(val)
+      }
+    },
   }
 };
 </script>

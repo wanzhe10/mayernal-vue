@@ -70,7 +70,12 @@
             prop="isProhibit"
             label="状态"
             width="112px"
-          ></el-table-column>
+          >
+          <template slot-scope="scope">
+            <div v-show="scope.row.isProhibit == 0">未激活</div>
+            <div v-show="scope.row.isProhibit == 1">激活</div>
+          </template>
+          </el-table-column>
           <el-table-column
             prop="createDate"
             label="添加时间"
@@ -362,12 +367,14 @@ export default {
     // 编辑
     handleEdit(index, row) {
       this.editdialogVisible = true;
-      this.form2 = row;
+
+      this.form2 = JSON.parse(JSON.stringify(row));
       console.log(this.form2);
     },
     // 编辑确认按钮
     editRadioBtn() {
        var token = localStorage.getItem("token");
+       var self = this
       this.$api
         .deptSimpleUpdate({
           id: this.form2.id,
@@ -378,10 +385,11 @@ export default {
         })
         .then(res => {
           if (res.status === "20200") {
-            //  console.log('成功')
+             console.log('成功')
             // console.log(res);
             this.editdialogVisible = false;
-            getUser(token, 1, pageSize);
+            console.log(self.cur_page)
+            this.getUser(token, 1, self.cur_page);
           } else {
             // this.$Message.info(res.desc);
           }

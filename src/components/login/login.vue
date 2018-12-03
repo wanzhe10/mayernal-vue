@@ -56,6 +56,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
@@ -84,22 +85,16 @@ export default {
     };
   },
   methods: {
-    
     getAjax: function() {
-      //  this.$post('v1/web/pad/login',this.qs.stringify(this.ruleForm2))
-      // .then((response) => {
-      //   console.log(response)
-        // Cookies.set('token', response.token, {expires: 7});//cookie保存7天
-
-      // })
       let self = this;
       this.$api.login({'username':'15012345678','password':'123456'}).then(res => {
           console.log(res);
      if (res.status ==="20200" ) {
         localStorage.setItem('token',res.token)
        console.log(res);
+       console.log(2)
          self.$router.push({name: 'management'})
-
+        console.log(1)
       //  $router.push('/management')
           // this.pageList = res.data.item
       } else {

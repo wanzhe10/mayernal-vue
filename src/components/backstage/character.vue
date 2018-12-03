@@ -382,7 +382,7 @@ export default {
     // 编辑
     handleEdit(index, row) {
       this.editdialogVisible = true;
-      this.form2 = row;
+      this.form2 = JSON.parse(JSON.stringify(row));;
       console.log(this.form2);
     },
     // 编辑确认按钮

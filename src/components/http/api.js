@@ -1,12 +1,12 @@
 import axios from 'axios';
 import config from './config';
 import qs from 'qs';
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
+import { Message } from 'element-ui';
 import router from '@/router'
  
 // 使用vuex做全局loading时使用
 // import store from '@/store'
- 
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
@@ -19,13 +19,13 @@ export default function $axios(options) {
     // request 拦截器
     instance.interceptors.request.use(
       config => {
-        // let token = Cookies.get('token')
+        // let token = localStorage.getItem('token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log(store.state.loading)
         // console.log('准备发送请求...')
         // 2. 带上token
         // if (token) {
-        //   config.headers.accessToken = token
+        //   config.headers.token = token
         // } else {
         //   // 重定向到登录页面
         //   console.log(111)
@@ -148,6 +148,11 @@ export default function $axios(options) {
           }
         }
         console.error(err)
+        Message({
+          showClose: true,
+          message: err.message,
+          type: 'error'
+        });
         return Promise.reject(err) // 返回接口返回的错误信息
       }
     )
