@@ -2,7 +2,9 @@ import axios from 'axios';
 import config from './config';
 import qs from 'qs';
 // import Cookies from "js-cookie";
-import { Message } from 'element-ui';
+import {
+  Message, Loading
+} from 'element-ui';
 import router from '@/router'
  
 // 使用vuex做全局loading时使用
@@ -19,6 +21,7 @@ export default function $axios(options) {
     // request 拦截器
     instance.interceptors.request.use(
       config => {
+
         // let token = localStorage.getItem('token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log(store.state.loading)
@@ -37,12 +40,15 @@ export default function $axios(options) {
             || config.url.endsWith('path')
             || config.url.endsWith('mark')
             || config.url.endsWith('patchs')
+
           ) {
           } else {
             config.data = qs.stringify(config.data)
+
           }
         }
         return config
+
       },
  
       error => {
@@ -70,12 +76,16 @@ export default function $axios(options) {
     // response 拦截器
     instance.interceptors.response.use(
       response => {
+      let loadingInstance = Loading.service(options);
         let data;
         // IE9时response.data是undefined，因此需要使用response.request.responseText(Stringify后的字符串)
         if (response.data == undefined) {
           data = JSON.parse(response.request.responseText)
+            loadingInstance.close();
+
         } else {
           data = response.data
+            loadingInstance.close();
         }
  
         // 根据返回的code值来做不同的处理
@@ -86,75 +96,84 @@ export default function $axios(options) {
           case 0:
             store.commit('changeState')
             // console.log('登录成功')
-          default:
+            break;
+           case 20250:
+            //  store.commit('changeState')
+           console.log('未登录')
+           default:
         }
         // 若不是正确的返回code，且已经登录，就抛出错误
         // const err = new Error(data.desc)
         // err.data = data
         // err.response = response
         // throw err
- 
- 
         return data
       },
       err => {
         if (err && err.response) {
+          if (err.response.status ==503 ) {
+            alert(1)
+          }
           switch (err.response.status) {
             case 400:
-              err.message = '请求错误'
+              err.Message = '请求错误'
               break
  
             case 401:
-              err.message = '未授权，请登录'
+              err.Message = '未授权，请登录'
               break
  
             case 403:
-              err.message = '拒绝访问'
+              err.Message = '拒绝访问'
               break
  
             case 404:
-              err.message = `请求地址出错: ${err.response.config.url}`
+              err.Message = `请求地址出错: ${err.response.config.url}`
               break
  
             case 408:
-              err.message = '请求超时'
+              err.Message = '请求超时'
               break
  
             case 500:
-              err.message = '服务器内部错误'
+              err.Message = '服务器内部错误'
               break
  
             case 501:
-              err.message = '服务未实现'
+              err.Message = '服务未实现'
               break
  
             case 502:
-              err.message = '网关错误'
+              err.Message = '网关错误'
               break
  
             case 503:
-              err.message = '服务不可用'
+              err.Message = '服务不可用'
               break
  
             case 504:
-              err.message = '网关超时'
+              err.Message = '网关超时'
               break
  
             case 505:
-              err.message = 'HTTP版本不受支持'
+              err.Message = 'HTTP版本不受支持'
               break
  
             default:
           }
+        }else{
+       err.Message = '连接服务器失败!'
         }
-        console.error(err)
+         message.error(err.Message);
         Message({
-          showClose: true,
+         showClose: true,
+         duration:0,
           message: err.message,
           type: 'error'
         });
         return Promise.reject(err) // 返回接口返回的错误信息
       }
+      
     )
  
     // 请求处理

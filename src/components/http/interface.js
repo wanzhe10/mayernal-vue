@@ -14,7 +14,8 @@ export const login = data => {
     data
   })
 }
-// 机构信息维护查询
+// 后台管理
+    // 机构信息维护查询
 export const findSelfHospital = data => {
   return axios({
     url: 'v1/web/pc/hospital/findSelfHospital',
@@ -22,7 +23,7 @@ export const findSelfHospital = data => {
     data
   })
 }
-//   机构信息维护修改
+    //   机构信息维护修改
 export const updateSelfHospital = data => {
   return axios({
     url: 'v1/web/pc/hospital/updateSelfHospital',
@@ -31,7 +32,7 @@ export const updateSelfHospital = data => {
   })
 }
 
-//  科室信息维护查询
+      //  科室信息维护查询
 export const deptSimpleFindList = data => {
   return axios({
     url: 'v1/web/pc/deptSimple/findList',
@@ -39,7 +40,7 @@ export const deptSimpleFindList = data => {
     data
   })
 }
-//  科室信息维护新建
+      //  科室信息维护新建
 export const deptSimpleInsert = data => {
   return axios({
     url: 'v1/web/pc/deptSimple/insert',
@@ -47,7 +48,7 @@ export const deptSimpleInsert = data => {
     data
   })
 }
-//  科室信息维护修改
+      //  科室信息维护修改
 export const deptSimpleUpdate = data => {
   return axios({
     url: 'v1/web/pc/deptSimple/update',
@@ -55,7 +56,7 @@ export const deptSimpleUpdate = data => {
     data
   })
 }
-//  人员信息维护查询
+      //  人员信息维护查询
 export const patientCenterFindSelfDoctorList = data => {
   return axios({
     url: 'v1/web/pc/patientCenter/findSelfDoctorList',
@@ -63,7 +64,7 @@ export const patientCenterFindSelfDoctorList = data => {
     data
   })
 }
-//  人员信息维护新增
+      //  人员信息维护新增
 export const patientCenterInsert = data => {
   return axios({
     url: 'v1/web/pc/patientCenter/insert',
@@ -71,7 +72,7 @@ export const patientCenterInsert = data => {
     data
   })
 }
-//  人员信息维护编辑
+      //  人员信息维护编辑
 export const patientCenterUpdate = data => {
   return axios({
     url: 'v1/web/pc/patientCenter/update',
@@ -79,7 +80,7 @@ export const patientCenterUpdate = data => {
     data
   })
 }
-//  角色信息维护查询
+      //  角色信息维护查询
 export const occupationFindList = data => {
   return axios({
     url: 'v1/web/pc/occupation/findList',
@@ -87,7 +88,7 @@ export const occupationFindList = data => {
     data
   })
 }
-//  角色信息维护新增
+      //  角色信息维护新增
 export const occupationInsert = data => {
   return axios({
     url: 'v1/web/pc/occupation/insert',
@@ -95,7 +96,7 @@ export const occupationInsert = data => {
     data
   })
 }
-//  角色信息维护修改
+      //  角色信息维护修改
 export const occupationUpdate = data => {
   return axios({
     url: 'v1/web/pc/occupation/update',
@@ -103,8 +104,8 @@ export const occupationUpdate = data => {
     data
   })
 }
-
-// 产检信息维护查询
+// 基础数据维护
+      // 产检信息维护查询
 export const checkForWeekFindList = data => {
   return axios({
     url: 'v1/web/pc/checkForWeek/findList',
@@ -113,7 +114,7 @@ export const checkForWeekFindList = data => {
   })
 }
 
-// 产检信息维护新建
+      // 产检信息维护新建
 export const checkForWeekInsert = data => {
   return axios({
     url: 'v1/web/pc/checkForWeek/insert',
@@ -121,7 +122,7 @@ export const checkForWeekInsert = data => {
     data
   })
 }
-// 产检信息维护修改
+      // 产检信息维护修改
 export const checkForWeekUpdate = data => {
   return axios({
     url: 'v1/web/pc/checkForWeek/update',
@@ -129,7 +130,7 @@ export const checkForWeekUpdate = data => {
     data
   })
 }
-// 报告单解读查询
+      // 报告单解读查询
 export const checkForWeekAndCellFindList = data => {
   return axios({
     url: 'v1/web/pc/checkForWeekAndCell/findList',
@@ -137,6 +138,26 @@ export const checkForWeekAndCellFindList = data => {
     data
   })
 }
+
+// 数据统计
+  // 今日复检人数
+  // 今日预约复检人数查询
+  export const countEntityWithStartDateAndEndDate = data => {
+    return axios({
+      url: 'v1/web/pc/patientCenter/countEntityWithStartDateAndEndDate',
+      method: 'post',
+      data
+    })
+  }
+   // 复检超时查询 已建孕妇档案查询
+   export const patientCenterCountEntityForOthers = data => {
+       return axios({
+         url: 'v1/web/pc/patientCenter/countEntityForOthers',
+         method: 'post',
+         data
+       })
+     }
+     
 
 // 默认全部导出
 export default {
@@ -156,4 +177,6 @@ export default {
   checkForWeekAndCellFindList,
   patientCenterInsert,
   patientCenterUpdate,
+  countEntityWithStartDateAndEndDate,
+  patientCenterCountEntityForOthers,
 }

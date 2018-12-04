@@ -12,7 +12,7 @@
               :id="item.id"
               @click="antenatalCareNum(index)"
               :class="{active:index==showActive}"
-              v-html="item.name" 
+              v-html="item.name"
             ></li>
           </ul>
         </div>
@@ -28,6 +28,7 @@
           >
         </div>
         <ul class="category clearfix">
+          <i class="noreportIcon" v-show="noreportIconShow"></i>
           <li
             v-for="(item,index) in arr"
             v-html="item.pcCheckCellsBean.name"
@@ -35,11 +36,12 @@
             @dblclick="modification = true"
             :class="addclass(item.type)"
             :id='item.pcCheckCellsBean.id'
+            v-show="typeReport"
           ></li>
         </ul>
         <div class="labelContant">
           <h2>标签内容</h2>
-           <div class="labelContant_font">
+          <!-- <div class="labelContant_font">
             <div class="labelIntroduce">
               <p><span id="tittleName"></span>介绍</p>
               <el-input
@@ -63,16 +65,23 @@
               >
               </el-input>
             </div>
-          </div>
-          <!-- <div class="labelContant_font"  v-for="(item,index) in arr">
+          </div> -->
+          <div
+            class="labelContant_font"
+            v-for="(item,index) in arr"
+            v-show="isShow1 ===index"
+          >
             <div class="labelIntroduce">
-              <p><span id="tittleName" v-html="item.pcCheckCellsBean.name"></span>介绍</p>
+              <p><span
+                  id="tittleName"
+                  v-html="item.pcCheckCellsBean.name"
+                ></span>介绍</p>
               <el-input
                 type="textarea"
-                autosize
+                :autosize="{ minRows: 5, maxRows: 10 }"
                 placeholder="请输入内容"
                 v-model="item.pcCheckCellsBean.checkDetail"
-                 :disabled="compile"
+                :disabled="compile"
               >
               </el-input>
             </div>
@@ -84,11 +93,11 @@
                 autosize
                 placeholder="请输入内容"
                 v-model="item.pcCheckCellsBean.remarks"
-                 :disabled="compile"
+                :disabled="compile"
               >
               </el-input>
             </div>
-          </div> -->
+          </div>
         </div>
         <el-button
           type="primary"
@@ -184,27 +193,29 @@ export default {
   data() {
     return {
       // 报告单类型
-    arr:[
+      arr: [
         {
-            "id":"",
-            "types":"",
-            pcCheckCellsBean:{
-                "id":"",
-                "name":"",
-                "title":"",
-                "checkDetail":"",
-                "number":"",
-                "remarks":""
-            }
+          id: "",
+          types: "",
+          pcCheckCellsBean: {
+            id: "",
+            name: "",
+            title: "",
+            checkDetail: "",
+            number: "",
+            remarks: ""
+          }
         }
-    ],
+      ],
       isActive: 0,
       // 标签内容介绍
-      labelIntroduce:"",
-        // 标签解释说明
-      labelExplain:"",
+      labelIntroduce: "",
+      // 标签解释说明
+      labelExplain: "",
       dialogVisible: false, //新建弹框
-      modification: false,  //编辑弹框
+      modification: false, //编辑弹框
+      typeReport: true, //报告单类型
+      noreportIconShow:false,// 报告单类型暂无数据
       // 状态
       contacts: [
         {
@@ -222,21 +233,22 @@ export default {
       modificationlyLayerInput: "",
       antenatalCareNums: [], //产检次数列表
       showActive: "0",
-      compile:false,// 介绍和解释说明是否能编辑编辑
+      compile: false, // 介绍和解释说明是否能编辑编辑
+      isShow1: -1
     };
   },
   mounted() {
     let token1 = window.localStorage.getItem("token");
     this.getUser(token1);
   },
+
   methods: {
     // 切换产检次数列表
     antenatalCareNum(index) {
-      let token = localStorage.getItem('token');
+      let token = localStorage.getItem("token");
       this.showActive = index;
-      // console.log(this.antenatalCareNums[index].id);
-      // let weekId = 
-      this.checkForWeekAndCellFindList(token,this.antenatalCareNums[index].id)
+      console.log(index);
+      this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
     },
     // 添加标签按钮
     addLable() {
@@ -250,19 +262,18 @@ export default {
     },
 
     //根据状态值判断标签页样式显示
-    addclass(i){
-     if (i == 0) {
-       return 'nonactivated';
-       this.compile = true;
-     }else if (i==1) {
-        return 'actives';
-     }
+    addclass(i) {
+      if (i == 0) {
+        return "nonactivated";
+        this.compile = true;
+      } else if (i == 1) {
+        return "actives";
+      }
     },
     //切换"报告单类型"样式
     toggleClass(index) {
-      this.isActive = index;
-      this.isActive = this.isActive == index ? -1 : index;
-      var tittleName = document.getElementById("tittleName");
+      console.log(index);
+      this.isShow1 = index;
     },
     // 弹框右上角关闭按钮
     handleClose(done) {
@@ -283,8 +294,8 @@ export default {
         .then(res => {
           if (res.status === "20200") {
             this.antenatalCareNums = res.pcCheckForWeekBeanList;
-            // console.log(this.antenatalCareNums);
-            // this.pagerCount = res.pageNum;
+            this.antenatalCareNum(0);
+            this.toggleClass(0);
           } else {
             // this.$Message.info(res.desc);
           }
@@ -294,19 +305,23 @@ export default {
         });
     },
     // 报告类型查询
-    checkForWeekAndCellFindList(token,weekId){
-     let self = this;
-      this.$api.findSelfDoctorList({
+    checkForWeekAndCellFindList(token, weekId) {
+      let self = this;
+      this.$api
+        .checkForWeekAndCellFindList({
           token: token,
-          weekId:weekId
+          weekId: weekId
         })
         .then(res => {
+          console.log(res);
           if (res.status === "20200") {
-            // console.log(res)
-            self.arr =  res.pcCheckForWeekAndCellBeanList;
-         
-          } else {
-            // this.$Message.info(res.desc);
+            self.arr = res.pcCheckForWeekAndCellBeanList;
+             this.typeReport =true;
+            this.noreportIconShow = false;
+          } else if (res.status === "20209") {
+            this.typeReport = false;
+            this.noreportIconShow = true;
+            
           }
         })
         .catch(error => {
@@ -335,7 +350,8 @@ export default {
   }
   .Contant_left {
     float: left;
-    height: 600px;
+    min-height: 600px;
+    height: 100%;
     width: 206px;
     border-right: 1px solid #ccc;
     position: relative;
@@ -401,7 +417,16 @@ export default {
     }
     .category {
       margin-top: 20px;
+      min-height: 186px;
       border-bottom: 1px solid #ccc;
+      position: relative;
+      .noreportIcon {
+        background: url("../../assets/noreportIcon.png") no-repeat 0 0;
+        width: 722px;
+        height: 186px;
+        background-size: 722px 186px;
+        position: absolute;
+      }
       li {
         float: left;
         padding: 10px 20px;
@@ -416,10 +441,10 @@ export default {
       li:nth-child(1) {
         margin-left: 0px;
       }
-      .nonactivated{
-        border:none;
+      .nonactivated {
+        border: none;
         background-color: #f6f6f6;
-        color:#999;
+        color: #999;
       }
       .actives {
         background-color: #68b6e7;

@@ -1,76 +1,174 @@
 <template>
-	<div class="documentedBox">
-		<h2 class="documentedBoxTittle">已建档数据统计列表</h2>
-		<div class="documentedBox_top clearfix">
-			<el-date-picker v-model="starTime" type="month" placeholder="选择月">
-			</el-date-picker>
-			<span class="mglr10">至</span>
-			<el-date-picker v-model="endTime" type="month" placeholder="选择月">
-			</el-date-picker>
-			<div class="higherRiskSelectBox">
-				<span class="mgl40 mgr10">高危风险</span>
-				<el-select v-model="higherRiskModel" placeholder="请选择" clear="higherRiskModel">
-					<el-option v-for="item in higherRiskSelect" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
-					</el-option>
-				</el-select>
-			</div>
-			<div class="seekBox">
-				<el-select v-model="seekSelectModel" placeholder="请选择" clear="seekSelectModel">
-					<el-option v-for="item in seekSelect" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
-					</el-option>
-				</el-select>
-				<el-input placeholder="请输入内容" v-model="seekContant" class="seekContant">
-					<i slot="prefix" class="el-input__icon el-icon-search"></i>
-				</el-input>
-			</div>
-			<input type="button" value="刷新/搜索" class="seekBtn">
+  <div class="documentedBox">
+    <h2 class="documentedBoxTittle">已建档数据统计列表</h2>
+    <div class="documentedBox_top clearfix">
+      <el-date-picker
+        v-model="starTime"
+        type="month"
+        placeholder="选择月"
+      >
+      </el-date-picker>
+      <span class="mglr10">至</span>
+      <el-date-picker
+        v-model="endTime"
+        type="month"
+        placeholder="选择月"
+      >
+      </el-date-picker>
+      <div class="higherRiskSelectBox">
+        <span class="mgl40 mgr10">高危风险</span>
+        <el-select
+          v-model="higherRiskModel"
+          placeholder="请选择"
+          clear="higherRiskModel"
+        >
+          <el-option
+            v-for="item in higherRiskSelect"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            popper-class="borderNo"
+          >
+          </el-option>
+        </el-select>
+      </div>
+      <div class="seekBox">
+        <el-select
+          v-model="seekSelectModel"
+          placeholder="请选择"
+          clear="seekSelectModel"
+        >
+          <el-option
+            v-for="item in seekSelect"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            popper-class="borderNo"
+          >
+          </el-option>
+        </el-select>
+        <el-input
+          placeholder="请输入内容"
+          v-model="seekContant"
+          class="seekContant"
+        >
+          <i
+            slot="prefix"
+            class="el-input__icon el-icon-search"
+          ></i>
+        </el-input>
+      </div>
+      <input
+        type="button"
+        value="刷新/搜索"
+        class="seekBtn"
+      >
 
-		</div>
-		<div class="documentedBox_bottom">
-			<div class="documentedBoxTeb clearfix">
-				<ul class="clearfix fl">
-					<li v-for="(item,index) in documentedBoxTebLi" @click="toggle1(index)" :class="{active:index==current}">
-						{{item.name}}{{item.number}}
-					</li>
-				</ul>
-				<div class="fr mgr38">
-					<el-button round>打印</el-button>
-					<el-button round>导出</el-button>
-				</div>
-			</div>
-			<div class="administrativeBoxContant">
-				<img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon">
-				<div class="TableDataBox">
-						<el-table :data="officeTableData" style="width: 100%">
-					<el-table-column prop="recheckTime" label="复检时间" width="130px"></el-table-column>
-					<el-table-column prop="recheckName" label="姓名" width="140px"></el-table-column>
-					<el-table-column prop="recheckWeek" label="孕周" width="125px"></el-table-column>
-					<el-table-column prop="recheckTerm" label="预产期" width="156px"></el-table-column>
-					<el-table-column prop="recheckAge" label="年龄" width="94px"></el-table-column>
-					<el-table-column prop="recheckAssess" label="高危评估" width="126px">
-						<template slot-scope="scope">
-							<i class="clolrLump"></i>
-							<span style="margin-left: 10px">{{ scope.row.recheckAssess }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column prop="recheckOvertime" label="超时" width="86px"></el-table-column>
-					<el-table-column prop="" label="操作" width="70px">
-						<template slot-scope="scope">
-							<el-button type="text" size="small" style="text-align: center;">查看</el-button>
-						</template>
-					</el-table-column>
-				</el-table>
-				<!-- 分页 -->
-				<div class="administrativeBoxBlock" style="margin-top:30px; text-align:center;">
-					<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPageOfice" :page-sizes="[10, 20, 30, 40]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
-					</el-pagination>
-				</div>
-				</div>
-			
-			</div>
-		</div>
+    </div>
+    <div class="documentedBox_bottom">
+      <div class="documentedBoxTeb clearfix">
+        <ul class="clearfix fl">
+          <li
+            v-for="(item,index) in documentedBoxTebLi"
+            @click="toggle1(index)"
+            :class="{active:index==current}"
+          >
+            {{item.name}}{{item.number}}
+          </li>
+        </ul>
+        <div class="fr mgr38">
+          <el-button round>打印</el-button>
+          <el-button round>导出</el-button>
+        </div>
+      </div>
+      <div class="administrativeBoxContant">
+        <img
+          src="../../assets/noDataIcon.png"
+          alt="暂无数据"
+          class="noDataIcon"
+        >
+        <div class="TableDataBox">
+          <el-table
+            :data="officeTableData"
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="recheckTime"
+              label="复检时间"
+              width="130px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckName"
+              label="姓名"
+              width="140px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckWeek"
+              label="孕周"
+              width="125px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckTerm"
+              label="预产期"
+              width="156px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckAge"
+              label="年龄"
+              width="94px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckAssess"
+              label="高危评估"
+              width="126px"
+            >
+              <template slot-scope="scope">
+                <i class="clolrLump"></i>
+                <span style="margin-left: 10px">{{ scope.row.recheckAssess }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="recheckOvertime"
+              label="超时"
+              width="86px"
+            ></el-table-column>
+            <el-table-column
+              prop=""
+              label="操作"
+              width="70px"
+            >
+              <template slot-scope="scope">
+                <el-button
+                  type="text"
+                  size="small"
+                  style="text-align: center;"
+                >查看</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- 分页 -->
+          <div
+            class="administrativeBoxBlock"
+            style="margin-top:30px; text-align:center;"
+          >
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPageOfice"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size.sync="cur_page"
+              layout="sizes, prev, pager, next"
+              background
+              :page-count='pagerCount'
+            >
+            </el-pagination>
+          </div>
+        </div>
 
-	</div>
+      </div>
+    </div>
+
+  </div>
 </template>
 
  <script>
@@ -87,90 +185,8 @@ export default {
           recheckAge: "32",
           recheckAssess: "红色",
           recheckOvertime: " -- "
-        },
-         {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-         {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-          {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-         {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-         {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-         {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
         }
       ],
-      currentPageOfice: 1,
       documentedBoxTebLi: [
         { name: "全部" },
         { name: "13周-27周" },
@@ -205,7 +221,10 @@ export default {
       ],
       seekSelectModel: "",
       //   输入框内容
-      seekContant: ""
+      seekContant: "",
+        currentPageOfice: 1, //分页
+      cur_page: 10,//分页
+      pagerCount: 3,//分页
     };
   },
   methods: {
@@ -220,6 +239,36 @@ export default {
     },
     toggle1(index) {
       this.current = index;
+      console.log(index);
+    },
+    // 查询
+    documentedInquire() {
+      let self = this;
+      this.$api
+        .deptSimpleFindList({
+          token: token,
+          startDateStr: startDateStr,
+          endDateStr: endDateStr,
+          startWeek: startWeek,
+          endWeek: endWeek,
+          countType: countType,
+          countDetail: countDetail,
+          highRiskClass: highRiskClass,
+          pageNum: pageNum,
+          pageCell: pageCell
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            this.officeTableData = res.pcDeptSimpleBeanList;
+            console.log(this.officeTableData);
+            this.pagerCount = res.pageNum;
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
     }
   }
 };
@@ -283,10 +332,10 @@ export default {
     .seekBtn {
       width: 76px;
       height: 32px;
-	  background-color: #68b6e7;
-	  border-radius: 50px;
-	  color:#fff;
-	  font-size: 12px;
+      background-color: #68b6e7;
+      border-radius: 50px;
+      color: #fff;
+      font-size: 12px;
     }
   }
   .documentedBox_bottom {
@@ -297,8 +346,8 @@ export default {
       width: 100%;
       background-color: #fff;
       border-bottom: 1px solid #ccc;
-       height: 60px;
-    line-height: 60px;
+      height: 60px;
+      line-height: 60px;
       ul {
         float: left;
         li {
@@ -307,10 +356,10 @@ export default {
           line-height: 60px;
           padding: 0 10px 0 24px;
           cursor: pointer;
-            -moz-user-select: none; /*火狐*/
-        -webkit-user-select: none; /*webkit浏览器*/
-        -ms-user-select: none; /*IE10*/
-        -khtml-user-select: none; /*早期浏览器*/
+          -moz-user-select: none; /*火狐*/
+          -webkit-user-select: none; /*webkit浏览器*/
+          -ms-user-select: none; /*IE10*/
+          -khtml-user-select: none; /*早期浏览器*/
           user-select: none;
           position: relative;
         }
@@ -319,7 +368,7 @@ export default {
           padding-left: 0px;
         }
         .active {
-			color:#68b6e7;
+          color: #68b6e7;
           border-bottom: 2px solid #68b6e7;
         }
       }
@@ -353,24 +402,24 @@ export default {
     }
   }
   .administrativeBoxContant {
-  min-height: 400px;
-  position: relative;
+    min-height: 400px;
+    position: relative;
     padding: 0 24px;
-	background-color: #fff;
-	.noDataIcon{
-		display: none;
-		position: absolute;
-		top:50%;
-		left: 50%;
-    transform:translate(-50%,-50%);
-    z-index: 111;
-	}
+    background-color: #fff;
+    .noDataIcon {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 111;
+    }
     table {
-	  width: 100%;
-  }
-   .TableDataBox{
-    padding-bottom:26px;
-  }
+      width: 100%;
+    }
+    .TableDataBox {
+      padding-bottom: 26px;
+    }
   }
 }
 </style>
@@ -462,28 +511,26 @@ export default {
     }
     .seekBox {
       .el-input {
-		width: 60px;
-		
+        width: 60px;
       }
       .el-input__inner {
-		padding: 0px;
-		padding-left:4px;
+        padding: 0px;
+        padding-left: 4px;
         font-size: 12px;
         border-radius: 20px;
         height: 30px;
         border: none;
-		background-color: #f6f6f6;
-		  border-radius: 50px 0 0 50px;
-		  border-right:1px solid #ccc;
-		
-	  }
-.el-input__inner:focus{
-		  border-color:#ccc;
-	  }
-	  .el-select .el-input .el-select__caret{
-		  font-size:12px;
-		  width: 10px;
-	  }
+        background-color: #f6f6f6;
+        border-radius: 50px 0 0 50px;
+        border-right: 1px solid #ccc;
+      }
+      .el-input__inner:focus {
+        border-color: #ccc;
+      }
+      .el-select .el-input .el-select__caret {
+        font-size: 12px;
+        width: 10px;
+      }
       .el-input__icon {
         line-height: 30px;
       }
@@ -491,9 +538,9 @@ export default {
         input {
           width: 218px;
           padding-left: 30px;
-		  background-color: #fff;
-		   border:none;
-		    border-radius: 50px;
+          background-color: #fff;
+          border: none;
+          border-radius: 50px;
         }
       }
     }
