@@ -67,13 +67,33 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          this.changrPassWold();
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
+
+    changrPassWold(){
+      let token = localStorage.getItem('token');
+         this.$api
+        .patientCenterUpdateSelfPass({
+          token:token,
+          newPassword:this.ruleForm2.newpassword,
+          oldPassword:this.ruleForm2.oldpassword
+        })
+        .then(res => {
+          console.log(res)
+          if (res.status === "20200") {
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    }
   }
 };
 </script>

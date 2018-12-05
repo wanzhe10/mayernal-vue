@@ -91,8 +91,7 @@ export default {
           console.log(res);
      if (res.status ==="20200" ) {
         localStorage.setItem('token',res.token)
-       console.log(res);
-       console.log(2)
+        localStorage.setItem('userName',res.name)
          self.$router.push({name: 'management'})
         console.log(1)
       //  $router.push('/management')

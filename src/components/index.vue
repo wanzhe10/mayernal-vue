@@ -1,140 +1,188 @@
 <template>
-    <el-container>
-        <!-- 头部 -->
-        
-        <el-header class="clearfix">
-            <div class="headerBox clearfix">
-                <img src="../assets/login.png" alt="围产期建档评估管理系统">
-                <span class="characterFont">档案管理</span>
-                <div class="headerrightBox">
-                    <p class="welcome">欢迎<i class="doctorName">周晓晓</i>医生</p>
-                    <div class="exitBtn">
-                        <i class="exitIcon"></i>
-                        <span>退出登录</span>
-                    </div>
-                </div>
-            </div>
-        </el-header>
-        <!-- 左面导航栏 -->
-        <el-container>
-            <el-aside>
-                <el-col :span="12">
-                    <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" active-text-color="#68b6e7" :unique-opened='true'>
-                        <el-menu-item index="1">
-                            <router-link :to="{path: 'management'}"> 
-                                <div class=" headline headline1"  @click="seticon()">
-                                    <img src="../assets/icon1.png" alt=" 档案管理" class="seticon">
-                                    <span @click="tittleFont($event)">档案管理</span>
-                                </div>
-                            </router-link>
-                        </el-menu-item>
-                        <el-submenu index="2">
-                            <template slot="title">
-                                <img src="../assets/icon2.png" alt=" 后台配置" class="seticon">
-                                <span @click="tittleFont($event)">后台配置</span>
-                            </template>
-                            <el-menu-item-group>
-                                <router-link :to="{path: 'organization'}">
-                                    <el-menu-item index="2-1"> 机构信息维护</el-menu-item>
-                                </router-link>
-                                <router-link :to="{path: 'administrative'}">
-                                    <el-menu-item index="2-2">科室信息维护</el-menu-item>
-                                </router-link>
-                                <router-link :to="{path: 'personnel'}">
-                                    <el-menu-item index="2-3">人员信息维护</el-menu-item>
-                                </router-link>
-                                <router-link :to="{path: 'character'}">
-                                    <el-menu-item index="2-4">角色信息维护</el-menu-item>
-                                </router-link>
-                            </el-menu-item-group>
-                        </el-submenu>
-                        <el-submenu index="3">
-                            <template slot="title">
-                                <img src="../assets/icon3.png" alt="基础数据维护" class="managementicon  seticon">
-                                <span @click="tittleFont($event)">基础数据维护</span>
-                            </template>
-                            <el-menu-item-group>
-                                <router-link :to="{path: 'report'}">
-                                    <el-menu-item index="3-1"> 报告单解读维护</el-menu-item>
-                                </router-link>
-                                <router-link :to="{path: 'antenatalcare'}">
-                                    <el-menu-item index="3-2">产检信息维护</el-menu-item>
-                                </router-link>
-                                <router-link :to="{path: 'prenatalEducation'}">
-                                    <el-menu-item index="3-3">孕期宣教维护</el-menu-item>
-                                </router-link>
-                            </el-menu-item-group>
-                        </el-submenu>
-                        <el-submenu index="4">
-                            <template slot="title">
-                                <img src="../assets/icon4.png" alt="模板数据维护" class="managementicon seticon">
-                                <span @click="tittleFont($event)">模板数据维护</span>
-                            </template>
-                            <el-menu-item-group>
-                                <router-link :to="{path: 'set'}">
-                                    <el-menu-item index="4-1">模板信息维护</el-menu-item>
-                                </router-link>
-                            </el-menu-item-group>
-                        </el-submenu>
-                        <el-submenu index="5">
-                            <template slot="title">
-                                <img src="../assets/icon5.png" alt="数据统计" class="managementicon seticon">
-                                <span @click="tittleFont($event)">数据统计</span>
-                            </template>
-                            <el-menu-item-group>
-                                <router-link :to="{path: 'today'}">
-                                    <el-menu-item index="5-1">今日复检人数</el-menu-item>
-                                </router-link>
-                                <router-link :to="{path: 'documented'}">
-                                    <el-menu-item index="5-2">已建孕妇档案</el-menu-item>
-                                </router-link>
-                                <router-link :to="{path: 'overtime'}">
-                                    <el-menu-item index="5-3">复检超时</el-menu-item>
-                                </router-link>
-                                <router-link :to="{path: 'berth'}">
-                                    <el-menu-item index="5-4"> 预分娩床位统计</el-menu-item>
-                                </router-link>
-                            </el-menu-item-group>
-                        </el-submenu>
-                        <el-submenu index="6">
-                            <template slot="title">
-                                <img src="../assets/icon6.png" alt="信息管理" class="managementicon seticon">
-                                <span @click="tittleFont($event)">信息管理</span>
-                            </template>
-                            <el-menu-item-group>
-                                <router-link :to="{path: 'personalDetails'}">
-                                    <el-menu-item index="6-1">用户个人信息</el-menu-item>
-                                </router-link>
-                                <router-link :to="{path: 'changePassword'}">
-                                    <el-menu-item index="6-2">修改密码</el-menu-item>
-                                </router-link>
-                            </el-menu-item-group>
-                        </el-submenu>
-                    </el-menu>
-                </el-col>
-            </el-aside>
-            <!-- 右部分（组件部分） -->
-            <el-container>
-                <el-main>
-                    <router-view />
+  <el-container>
+    <!-- 头部 -->
 
-                </el-main>
-                <!-- 底部 -->
-                <el-footer>
-                    <p class="footerNews">Copyright © 2018 医来医往(北京)科技有限公司</p>
-                </el-footer>
-            </el-container>
-        </el-container>
+    <el-header class="clearfix">
+      <div class="headerBox clearfix">
+        <img
+          src="../assets/login.png"
+          alt="围产期建档评估管理系统"
+        >
+        <span class="characterFont">档案管理</span>
+        <div class="headerrightBox">
+          <p class="welcome">欢迎
+            <i
+              class="doctorName"
+              v-html="userName"
+            ></i>&nbsp;医生
+          </p>
+          <div class="exitBtn" @click="logOut">
+            <i class="exitIcon"></i>
+            <span>退出登录</span>
+          </div>
+        </div>
+      </div>
+    </el-header>
+    <!-- 左面导航栏 -->
+    <el-container>
+      <el-aside>
+        <el-col :span="12">
+          <el-menu
+            default-active="1"
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            @close="handleClose"
+            active-text-color="#68b6e7"
+            :unique-opened='true'
+          >
+            <el-menu-item index="1">
+              <router-link :to="{path: 'management'}">
+                <div
+                  class=" headline headline1"
+                  @click="seticon()"
+                >
+                  <img
+                    src="../assets/icon1.png"
+                    alt=" 档案管理"
+                    class="seticon"
+                  >
+                  <span @click="tittleFont($event)">档案管理</span>
+                </div>
+              </router-link>
+            </el-menu-item>
+            <el-submenu index="2">
+              <template slot="title">
+                <img
+                  src="../assets/icon2.png"
+                  alt=" 后台配置"
+                  class="seticon"
+                >
+                <span @click="tittleFont($event)">后台配置</span>
+              </template>
+              <el-menu-item-group>
+                <router-link :to="{path: 'organization'}">
+                  <el-menu-item index="2-1"> 机构信息维护</el-menu-item>
+                </router-link>
+                <router-link :to="{path: 'administrative'}">
+                  <el-menu-item index="2-2">科室信息维护</el-menu-item>
+                </router-link>
+                <router-link :to="{path: 'personnel'}">
+                  <el-menu-item index="2-3">人员信息维护</el-menu-item>
+                </router-link>
+                <router-link :to="{path: 'character'}">
+                  <el-menu-item index="2-4">角色信息维护</el-menu-item>
+                </router-link>
+              </el-menu-item-group>
+            </el-submenu>
+            <el-submenu index="3">
+              <template slot="title">
+                <img
+                  src="../assets/icon3.png"
+                  alt="基础数据维护"
+                  class="managementicon  seticon"
+                >
+                <span @click="tittleFont($event)">基础数据维护</span>
+              </template>
+              <el-menu-item-group>
+                <router-link :to="{path: 'report'}">
+                  <el-menu-item index="3-1"> 报告单解读维护</el-menu-item>
+                </router-link>
+                <router-link :to="{path: 'antenatalcare'}">
+                  <el-menu-item index="3-2">产检信息维护</el-menu-item>
+                </router-link>
+                <router-link :to="{path: 'prenatalEducation'}">
+                  <el-menu-item index="3-3">孕期宣教维护</el-menu-item>
+                </router-link>
+              </el-menu-item-group>
+            </el-submenu>
+            <el-submenu index="4">
+              <template slot="title">
+                <img
+                  src="../assets/icon4.png"
+                  alt="模板数据维护"
+                  class="managementicon seticon"
+                >
+                <span @click="tittleFont($event)">模板数据维护</span>
+              </template>
+              <el-menu-item-group>
+                <router-link :to="{path: 'set'}">
+                  <el-menu-item index="4-1">模板信息维护</el-menu-item>
+                </router-link>
+              </el-menu-item-group>
+            </el-submenu>
+            <el-submenu index="5">
+              <template slot="title">
+                <img
+                  src="../assets/icon5.png"
+                  alt="数据统计"
+                  class="managementicon seticon"
+                >
+                <span @click="tittleFont($event)">数据统计</span>
+              </template>
+              <el-menu-item-group>
+                <router-link :to="{path: 'today'}">
+                  <el-menu-item index="5-1">今日复检人数</el-menu-item>
+                </router-link>
+                <router-link :to="{path: 'documented'}">
+                  <el-menu-item index="5-2">已建孕妇档案</el-menu-item>
+                </router-link>
+                <router-link :to="{path: 'overtime'}">
+                  <el-menu-item index="5-3">复检超时</el-menu-item>
+                </router-link>
+                <router-link :to="{path: 'berth'}">
+                  <el-menu-item index="5-4"> 预分娩床位统计</el-menu-item>
+                </router-link>
+              </el-menu-item-group>
+            </el-submenu>
+            <el-submenu index="6">
+              <template slot="title">
+                <img
+                  src="../assets/icon6.png"
+                  alt="信息管理"
+                  class="managementicon seticon"
+                >
+                <span @click="tittleFont($event)">信息管理</span>
+              </template>
+              <el-menu-item-group>
+                <router-link :to="{path: 'personalDetails'}">
+                  <el-menu-item index="6-1">用户个人信息</el-menu-item>
+                </router-link>
+                <router-link :to="{path: 'changePassword'}">
+                  <el-menu-item index="6-2">修改密码</el-menu-item>
+                </router-link>
+              </el-menu-item-group>
+            </el-submenu>
+          </el-menu>
+        </el-col>
+      </el-aside>
+      <!-- 右部分（组件部分） -->
+      <el-container>
+        <el-main>
+          <router-view />
+
+        </el-main>
+        <!-- 底部 -->
+        <el-footer>
+          <p class="footerNews">Copyright © 2018 医来医往(北京)科技有限公司</p>
+        </el-footer>
+      </el-container>
     </el-container>
+  </el-container>
 </template>
 
 <script>
 import $ from "jquery";
 export default {
   name: "home",
-  //   data() {
-
-  //   },
+  data() {
+    return {
+      userName: ""
+    };
+  },
+  mounted() {
+    let username = localStorage.getItem("userName");
+    this.userName = username;
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -146,9 +194,27 @@ export default {
     tittleFont(event) {
       $(".characterFont").html(event.target.innerHTML);
     },
-    seticon(){
-        $('.seticon').attr('src')
-        console.log($('.seticon').attr('src'))
+    seticon() {
+      $(".seticon").attr("src");
+      console.log($(".seticon").attr("src"));
+    },
+    logOut(){
+        let self = this;
+        let token = localStorage.getItem('token');
+           this.$api.signOut({
+               token:token
+           }).then(res => {
+          console.log(res);
+     if (res.status ==="20200" ) {
+          localStorage.clear();
+            self.$router.push({name: 'login'})
+      } else {
+        // this.$Message.info(res.desc);
+      }
+     })
+     .catch(error => {
+        // this.$Message.info(error);
+      })
     }
   }
 };
@@ -204,7 +270,6 @@ export default {
   }
   .welcome {
     display: inline-block;
-    width: 124px;
     border-right: 2px solid #888888;
     height: 16px;
     color: 333333;
@@ -336,9 +401,8 @@ body > .el-container {
 .el-submenu__title * {
   font-size: 16px;
 }
-.router-link-active{
-    color:red;
-    background-color: #ccc;
+.router-link-active {
+  color: red;
+  background-color: #ccc;
 }
-
 </style>

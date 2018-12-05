@@ -3,55 +3,118 @@
     <h2 class="berthBoxTittle">预分娩床位数量统计</h2>
     <div class="berthBox_top clearfix">
       <div class="monthBox">
-         <p class="mgb16">孕周范围</p>
-        <el-select v-model="starWeeksModel" placeholder="请选择">
-          <el-option v-for="item in starWeeks" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select> -
-        <el-select v-model="endWeeksModel" placeholder="请选择">
-          <el-option v-for="item in endWeeks" :key="item.value" :label="item.label" :value="item.value">
+        <p class="mgb16">孕周范围</p>
+        <el-select
+          v-model="gestationalWeeks"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in starWeeks"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
           </el-option>
         </el-select>
       </div>
       <div class="ageBox">
         <p class="mgb16">年龄范围</p>
-       <el-select v-model="starAgeModel" placeholder="请选择">
-          <el-option v-for="item in starAge" :key="item.value" :label="item.label" :value="item.value">
+        <el-select
+          v-model="starAgeModel"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in starAge"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
           </el-option>
         </el-select> -
-        <el-select v-model="endAgeModel" placeholder="请选择">
-          <el-option v-for="item in endAge" :key="item.value" :label="item.label" :value="item.value">
+        <el-select
+          v-model="endAgeModel"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in endAge"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
           </el-option>
         </el-select>
       </div>
       <div class="higherRiskSelectBox">
         <p class="mgb16">风险评估</p>
-        <el-select v-model="higherRiskModel" placeholder="请选择" clear="higherRiskModel">
-          <el-option v-for="item in higherRiskSelect" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
+        <el-select
+          v-model="higherRiskModel"
+          placeholder="请选择"
+          clear="higherRiskModel"
+        >
+          <el-option
+            v-for="item in higherRiskSelect"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            popper-class="borderNo"
+          >
           </el-option>
         </el-select>
       </div>
       <div class="seekBox">
-        <el-select v-model="seekSelectModel" placeholder="请选择" clear="seekSelectModel">
-          <el-option v-for="item in seekSelect" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
+        <el-select
+          v-model="seekSelectModel"
+          placeholder="请选择"
+          clear="seekSelectModel"
+        >
+          <el-option
+            v-for="item in seekSelect"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            popper-class="borderNo"
+          >
           </el-option>
         </el-select>
-        <el-input placeholder="请输入内容" v-model="seekContant" class="seekContant">
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        <el-input
+          placeholder="请输入内容"
+          v-model="seekContant"
+          class="seekContant"
+        >
+          <i
+            slot="prefix"
+            class="el-input__icon el-icon-search"
+          ></i>
         </el-input>
       </div>
-      <input type="button" value="刷新/搜索" class="seekBtn">
+      <input
+        type="button"
+        value="刷新/搜索"
+        class="seekBtn"
+      >
     </div>
     <div class="berthBox_bottom">
       <div class="berthBoxTeb clearfix">
         <div class="fl yearSelctBox">
-             <el-select v-model="yearSelctModel" placeholder="请选择">
-          <el-option v-for="item in yearSelct" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
+          <el-select
+            v-model="yearSelctModel"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in yearSelct"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </div>
         <ul class="clearfix fl">
-          <li v-for="(item,index) in berthBoxTebLi" @click="toggle1(index)" :class="{active:index==current}">
+          <li
+            v-for="(item,index) in berthBoxTebLi"
+            @click="toggle1(index)"
+            :class="{active:index==current}"
+          >
             {{item.name}}{{item.number}}
           </li>
         </ul>
@@ -61,30 +124,85 @@
         </div>
       </div>
       <div class="administrativeBoxContant">
-        <img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon">
+        <img
+          src="../../assets/noDataIcon.png"
+          alt="暂无数据"
+          class="noDataIcon"
+        >
         <div class="TableDataBox">
-          <el-table :data="officeTableData" style="width: 100%">
-            <el-table-column prop="recheckTime" label="复检时间" width="130px"></el-table-column>
-            <el-table-column prop="recheckName" label="姓名" width="140px"></el-table-column>
-            <el-table-column prop="recheckWeek" label="孕周" width="125px"></el-table-column>
-            <el-table-column prop="recheckTerm" label="预产期" width="156px"></el-table-column>
-            <el-table-column prop="recheckAge" label="年龄" width="94px"></el-table-column>
-            <el-table-column prop="recheckAssess" label="高危评估" width="126px">
+          <el-table
+            :data="officeTableData"
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="recheckTime"
+              label="复检时间"
+              width="130px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckName"
+              label="姓名"
+              width="140px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckWeek"
+              label="孕周"
+              width="125px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckTerm"
+              label="预产期"
+              width="156px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckAge"
+              label="年龄"
+              width="94px"
+            ></el-table-column>
+            <el-table-column
+              prop="recheckAssess"
+              label="高危评估"
+              width="126px"
+            >
               <template slot-scope="scope">
                 <i class="clolrLump"></i>
                 <span style="margin-left: 10px">{{ scope.row.recheckAssess }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="recheckOvertime" label="超时" width="86px"></el-table-column>
-            <el-table-column prop="" label="操作" width="70px">
+            <el-table-column
+              prop="recheckOvertime"
+              label="超时"
+              width="86px"
+            ></el-table-column>
+            <el-table-column
+              prop=""
+              label="操作"
+              width="70px"
+            >
               <template slot-scope="scope">
-                <el-button type="text" size="small" style="text-align: center;">查看</el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  style="text-align: center;"
+                >查看</el-button>
               </template>
             </el-table-column>
           </el-table>
           <!-- 分页 -->
-          <div class="administrativeBoxBlock" style="margin-top:30px; text-align:center;">
-            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPageOfice" :page-sizes="[10, 20, 30, 40]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
+          <div
+            class="administrativeBoxBlock"
+            style="margin-top:30px; text-align:center;"
+          >
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPageOfice"
+              :page-sizes="[10, 20, 30, 40]"
+              :page-size="100"
+              layout="sizes, prev, pager, next"
+              :total="1000"
+              background
+            >
             </el-pagination>
           </div>
         </div>
@@ -97,6 +215,7 @@
  <script>
 export default {
   data() {
+      
     return {
       activeName: "first",
       officeTableData: [
@@ -168,16 +287,16 @@ export default {
       berthBoxTebLi: [
         { name: "1月" },
         { name: "2月" },
-         { name: "3月" },
-         { name: "4月" },
-         { name: "5月" },
-         { name: "6月" },
-         { name: "7月" },
-         { name: "8月" },
-         { name: "9月" },
-         { name: "10月" },
-         { name: "11月" },
-         { name: "12月" },
+        { name: "3月" },
+        { name: "4月" },
+        { name: "5月" },
+        { name: "6月" },
+        { name: "7月" },
+        { name: "8月" },
+        { name: "9月" },
+        { name: "10月" },
+        { name: "11月" },
+        { name: "12月" }
       ],
       current: 0,
       starTime: "",
@@ -186,11 +305,23 @@ export default {
       higherRiskSelect: [
         {
           value: "0",
-          label: "未激活"
+          label: "无"
         },
         {
           value: "1",
-          label: "已激活"
+          label: "黄"
+        },
+        {
+          value: "2",
+          label: "橙"
+        },
+        {
+          value: "3",
+          label: "红"
+        },
+        {
+          value: "4",
+          label: "紫"
         }
       ],
       higherRiskModel: "",
@@ -210,57 +341,20 @@ export default {
       seekContant: "",
       starWeeks: [
         {
+          value: "0",
+          label: "13周-27周"
+        },
+        {
           value: "1",
-          label: "1"
+          label: "28周-35周"
         },
         {
           value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        },
-        {
-          value: "5",
-          label: "5"
-        },
-        {
-          value: "6",
-          label: "6"
+          label: "36周-分娩前"
         }
       ],
-      endWeeks: [
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        },
-        {
-          value: "5",
-          label: "5"
-        },
-        {
-          value: "6",
-          label: "6"
-        }
-      ],
-        starAge: [
+
+      starAge: [
         {
           value: "18",
           label: "18"
@@ -284,10 +378,118 @@ export default {
         {
           value: "23",
           label: "23"
+        },
+        {
+          value: "24",
+          label: "24"
+        },
+        {
+          value: "25",
+          label: "25"
+        },
+        {
+          value: "26",
+          label: "26"
+        },
+        {
+          value: "27",
+          label: "27"
+        },
+        {
+          value: "28",
+          label: "28"
+        },
+        {
+          value: "29",
+          label: "29"
+        },
+        {
+          value: "30",
+          label: "30"
+        },
+        {
+          value: "31",
+          label: "31"
+        },
+        {
+          value: "32",
+          label: "32"
+        },
+        {
+          value: "33",
+          label: "33"
+        },
+        {
+          value: "34",
+          label: "34"
+        },
+        {
+          value: "35",
+          label: "35"
+        },
+        {
+          value: "36",
+          label: "36"
+        },
+        {
+          value: "37",
+          label: "37"
+        },
+        {
+          value: "38",
+          label: "38"
+        },
+        {
+          value: "39",
+          label: "39"
+        },
+        {
+          value: "40",
+          label: "40"
+        },
+        {
+          value: "41",
+          label: "41"
+        },
+        {
+          value: "42",
+          label: "42"
+        },
+        {
+          value: "43",
+          label: "43"
+        },
+        {
+          value: "44",
+          label: "44"
+        },
+        {
+          value: "45",
+          label: "45"
+        },
+        {
+          value: "46",
+          label: "46"
+        },
+        {
+          value: "47",
+          label: "47"
+        },
+        {
+          value: "48",
+          label: "48"
+        },
+        {
+          value: "49",
+          label: "49"
+        },
+        {
+          value: "50",
+          label: "50"
         }
       ],
-        endAge: [
-       {
+      endAge: [
+        {
           value: "18",
           label: "18"
         },
@@ -310,10 +512,118 @@ export default {
         {
           value: "23",
           label: "23"
+        },
+        {
+          value: "24",
+          label: "24"
+        },
+        {
+          value: "25",
+          label: "25"
+        },
+        {
+          value: "26",
+          label: "26"
+        },
+        {
+          value: "27",
+          label: "27"
+        },
+        {
+          value: "28",
+          label: "28"
+        },
+        {
+          value: "29",
+          label: "29"
+        },
+        {
+          value: "30",
+          label: "30"
+        },
+        {
+          value: "31",
+          label: "31"
+        },
+        {
+          value: "32",
+          label: "32"
+        },
+        {
+          value: "33",
+          label: "33"
+        },
+        {
+          value: "34",
+          label: "34"
+        },
+        {
+          value: "35",
+          label: "35"
+        },
+        {
+          value: "36",
+          label: "36"
+        },
+        {
+          value: "37",
+          label: "37"
+        },
+        {
+          value: "38",
+          label: "38"
+        },
+        {
+          value: "39",
+          label: "39"
+        },
+        {
+          value: "40",
+          label: "40"
+        },
+        {
+          value: "41",
+          label: "41"
+        },
+        {
+          value: "42",
+          label: "42"
+        },
+        {
+          value: "43",
+          label: "43"
+        },
+        {
+          value: "44",
+          label: "44"
+        },
+        {
+          value: "45",
+          label: "45"
+        },
+        {
+          value: "46",
+          label: "46"
+        },
+        {
+          value: "47",
+          label: "47"
+        },
+        {
+          value: "48",
+          label: "48"
+        },
+        {
+          value: "49",
+          label: "49"
+        },
+        {
+          value: "50",
+          label: "50"
         }
       ],
-       yearSelct: [
-       {
+      yearSelct: [
+        {
           value: "2018",
           label: "2018"
         },
@@ -358,11 +668,10 @@ export default {
           label: "2028"
         }
       ],
-      starWeeksModel: "",
-      endWeeksModel: "",
+      gestationalWeeks: "", //孕周范围
       starAgeModel: "",
       endAgeModel: "",
-      yearSelctModel:'',
+      yearSelctModel: ""
     };
   },
   methods: {
@@ -449,10 +758,10 @@ export default {
       color: #fff;
       font-size: 12px;
     }
-    .ageBox{
+    .ageBox {
       margin-left: 40px;
     }
-    .higherRiskSelectBox{
+    .higherRiskSelectBox {
       margin-left: 40px;
     }
   }
@@ -462,11 +771,11 @@ export default {
     background-color: #fff;
     .berthBoxTeb {
       width: 100%;
-        height: 60px;
-    line-height: 60px;
+      height: 60px;
+      line-height: 60px;
       background-color: #fff;
       border-bottom: 1px solid #ccc;
-      .yearSelctBox{
+      .yearSelctBox {
         margin-left: 20px;
       }
       ul {
@@ -477,10 +786,10 @@ export default {
           line-height: 60px;
           padding: 0 10px 0 14px;
           cursor: pointer;
-            -moz-user-select: none; /*火狐*/
-        -webkit-user-select: none; /*webkit浏览器*/
-        -ms-user-select: none; /*IE10*/
-        -khtml-user-select: none; /*早期浏览器*/
+          -moz-user-select: none; /*火狐*/
+          -webkit-user-select: none; /*webkit浏览器*/
+          -ms-user-select: none; /*IE10*/
+          -khtml-user-select: none; /*早期浏览器*/
           user-select: none;
           position: relative;
         }
@@ -535,9 +844,9 @@ export default {
       transform: translate(-50%, -50%);
       z-index: 111;
     }
-    .TableDataBox{
-    padding-bottom:26px;
-  }
+    .TableDataBox {
+      padding-bottom: 26px;
+    }
   }
 }
 </style>
@@ -606,32 +915,35 @@ export default {
         border-radius: 8px;
         border: 1px solid #ccc;
         height: 30px;
-        padding:0px;
+        padding: 0px;
         padding-left: 10px;
         font-size: 12px;
-        color:#333333;
+        color: #333333;
         background-color: #f6f6f6;
       }
       .el-input__icon {
         line-height: 30px;
         width: 10px;
       }
+      .el-input {
+        width: 168px;
+      }
     }
     .el-input {
       width: 68px;
     }
     .ageBox {
-       .el-input__inner {
+      .el-input__inner {
         border-radius: 8px;
         border: 1px solid #ccc;
         height: 30px;
-        padding:0px;
+        padding: 0px;
         padding-left: 10px;
         font-size: 12px;
-        color:#333333;
+        color: #333333;
         background-color: #f6f6f6;
       }
-        .el-input__icon {
+      .el-input__icon {
         line-height: 30px;
         width: 10px;
       }
@@ -650,13 +962,13 @@ export default {
         border-radius: 8px;
         border: 1px solid #ccc;
         height: 30px;
-        padding:0px;
+        padding: 0px;
         padding-left: 10px;
         font-size: 12px;
-        color:#333333;
+        color: #333333;
         background-color: #f6f6f6;
       }
-        .el-input__icon {
+      .el-input__icon {
         line-height: 30px;
         width: 10px;
       }
@@ -675,7 +987,7 @@ export default {
         background-color: #f6f6f6;
         border-radius: 50px 0 0 50px;
         border-right: 1px solid #ccc;
-        color:#333333;
+        color: #333333;
       }
       .el-input__inner:focus {
         border-color: #ccc;
@@ -704,15 +1016,13 @@ export default {
   .el-button--text {
     color: #68b6e7;
   }
-.yearSelctBox{
-  width: 96px;
-  .el-input--suffix .el-input__inner{
-    border:none;
-    border-right:1px solid #ccc;
+  .yearSelctBox {
+    width: 96px;
+    .el-input--suffix .el-input__inner {
+      border: none;
+      border-right: 1px solid #ccc;
+    }
   }
-}
-
-
 }
 </style>
 

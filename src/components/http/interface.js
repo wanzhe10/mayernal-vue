@@ -14,6 +14,14 @@ export const login = data => {
     data
   })
 }
+ //  退出登录
+ export const signOut = data => {
+   return axios({
+     url: 'v1/web/pc/signOut',
+     method: 'post',
+     data
+   })
+ }
 // 后台管理
     // 机构信息维护查询
 export const findSelfHospital = data => {
@@ -157,7 +165,28 @@ export const checkForWeekAndCellFindList = data => {
          data
        })
      }
-     
+    //  预分娩床位统计
+       export const countEntityForOthersWithDueDate = data => {
+         return axios({
+           url: 'v1/web/pc/patientCenter/countEntityForOthersWithDueDate',
+           method: 'post',
+           data
+         })
+       }
+
+
+      //  更改自己密码
+          export const patientCenterUpdateSelfPass = data => {
+            return axios({
+              url: 'v1/web/pc/patientCenter/updateSelfPass',
+              method: 'post',
+              data
+            })
+          }
+
+           
+          
+
 
 // 默认全部导出
 export default {
@@ -179,4 +208,7 @@ export default {
   patientCenterUpdate,
   countEntityWithStartDateAndEndDate,
   patientCenterCountEntityForOthers,
+  countEntityForOthersWithDueDate,
+  patientCenterUpdateSelfPass,
+  signOut,
 }

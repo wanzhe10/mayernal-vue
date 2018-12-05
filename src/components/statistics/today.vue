@@ -304,30 +304,8 @@ export default {
   data() {
     return {
       activeName: "first",
-      officeTableData: [
-        {
-          makeAppointmentTime: "2018-10-22",
-          checkName: "小明一",
-          newAgeOfMenarche: "13",
-          newAgeOfMenarcheDay: "6",
-          parturitionDetailDueDate: "2018-10-22",
-          checkAge: "32",
-          highRiskClass: "红色", //高危等级
-          recheckOvertime: "--"
-        }
-      ],
-      officeTableData3: [
-        {
-          makeAppointmentTime: "2018-10-22",
-          checkName: "小明一",
-          newAgeOfMenarche: "13",
-          newAgeOfMenarcheDay: "6",
-          parturitionDetailDueDate: "2018-10-22",
-          checkAge: "32",
-          highRiskClass: "红色", //高危等级
-          recheckOvertime: "--"
-        }
-      ],
+      officeTableData: [ ],//今日预约数据
+      officeTableData3: [],//今日未到复检人数
       todayBoxTebLi: [
         { name: "今日总预约复检人数", number: "20人" },
         { name: "今当前挂号人数", number: "10人" },

@@ -299,7 +299,6 @@ export default {
       let token1 = window.localStorage.getItem("token");
       console.log(`当前页: ${val}`);
       this.currentPageOfice = val;
-
       this.getUser(token1, `${val}`, this.cur_page);
     },
     descInput2() {

@@ -6,6 +6,9 @@
         v-model="starTime"
         type="month"
         placeholder="选择月"
+        format="yyyy-MM"
+        value-format="yyyy-MM"
+        @change='starTimeSelect()'
       >
       </el-date-picker>
       <span class="mglr10">至</span>
@@ -13,14 +16,18 @@
         v-model="endTime"
         type="month"
         placeholder="选择月"
+        format="yyyy-MM"
+        value-format="yyyy-MM"
+        @change='endTimeSelect()'
       >
       </el-date-picker>
       <div class="higherRiskSelectBox">
         <span class="mgl40 mgr10">高危风险</span>
         <el-select
-          v-model="higherRiskModel"
+          v-model="highRiskClass"
           placeholder="请选择"
-          clear="higherRiskModel"
+          clear="highRiskClass"
+          @change='selectChange'
         >
           <el-option
             v-for="item in higherRiskSelect"
@@ -34,9 +41,9 @@
       </div>
       <div class="seekBox">
         <el-select
-          v-model="seekSelectModel"
+          v-model="countType"
           placeholder="请选择"
-          clear="seekSelectModel"
+          clear="countType"
         >
           <el-option
             v-for="item in seekSelect"
@@ -49,7 +56,7 @@
         </el-select>
         <el-input
           placeholder="请输入内容"
-          v-model="seekContant"
+          v-model="countDetail"
           class="seekContant"
         >
           <i
@@ -62,6 +69,7 @@
         type="button"
         value="刷新/搜索"
         class="seekBtn"
+        @click="searchBtn()"
       >
 
     </div>
@@ -86,52 +94,100 @@
           src="../../assets/noDataIcon.png"
           alt="暂无数据"
           class="noDataIcon"
+          v-show='imgShow'
         >
-        <div class="TableDataBox">
+        <div class="TableDataBox"  v-show='tableShow'>
           <el-table
             :data="officeTableData"
             style="width: 100%"
+            
           >
             <el-table-column
-              prop="recheckTime"
+              prop="makeAppointmentTime"
               label="复检时间"
               width="130px"
             ></el-table-column>
             <el-table-column
-              prop="recheckName"
+              prop="checkName"
               label="姓名"
               width="140px"
             ></el-table-column>
             <el-table-column
-              prop="recheckWeek"
+              prop=""
               label="孕周"
               width="125px"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <div v-html="'孕'+scope.row.newAgeOfMenarche+'-'+scope.row.newAgeOfMenarcheDay+'天'"></div>
+              </template>
+            </el-table-column>
             <el-table-column
-              prop="recheckTerm"
+              prop="parturitionDetailDueDate"
               label="预产期"
               width="156px"
             ></el-table-column>
             <el-table-column
-              prop="recheckAge"
+              prop="checkAge"
               label="年龄"
               width="94px"
             ></el-table-column>
             <el-table-column
-              prop="recheckAssess"
+              prop="highRiskClass"
               label="高危评估"
               width="126px"
             >
               <template slot-scope="scope">
-                <i class="clolrLump"></i>
-                <span style="margin-left: 10px">{{ scope.row.recheckAssess }}</span>
+                <i
+                  class="clolrLump level0"
+                  v-show=" scope.row.highRiskClass ==0"
+                ></i>
+                <i
+                  class="clolrLump level1"
+                  v-show=" scope.row.highRiskClass ==1"
+                ></i>
+                <i
+                  class="clolrLump level2"
+                  v-show=" scope.row.highRiskClass ==2"
+                ></i>
+                <i
+                  class="clolrLump level3"
+                  v-show=" scope.row.highRiskClass ==3"
+                ></i>
+                <i
+                  class="clolrLump level4"
+                  v-show=" scope.row.highRiskClass ==4"
+                ></i>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==0"
+                >绿色</span>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==1"
+                >黄色</span>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==2"
+                >橙色</span>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==3"
+                >红色</span>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==4"
+                >紫色</span>
               </template>
             </el-table-column>
             <el-table-column
               prop="recheckOvertime"
               label="超时"
               width="86px"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <div>- -</div>
+              </template>
+            </el-table-column>
             <el-table-column
               prop=""
               label="操作"
@@ -176,17 +232,7 @@ export default {
   data() {
     return {
       activeName: "first",
-      officeTableData: [
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        }
-      ],
+      officeTableData: [],
       documentedBoxTebLi: [
         { name: "全部" },
         { name: "13周-27周" },
@@ -194,76 +240,183 @@ export default {
         { name: "36周-分娩前" }
       ],
       current: 0,
-      starTime: "",
-      endTime: "",
+
       //   高危风险
       higherRiskSelect: [
         {
           value: "0",
-          label: "未激活"
+          label: "无"
         },
         {
           value: "1",
-          label: "已激活"
+          label: "黄"
+        },
+        {
+          value: "2",
+          label: "橙"
+        },
+        {
+          value: "3",
+          label: "红"
+        },
+        {
+          value: "4",
+          label: "紫"
         }
       ],
-      higherRiskModel: "",
+      highRiskClass: "", //高危风险等级
+
       //   搜索下拉框
       seekSelect: [
         {
-          value: "0",
+          value: "1",
           label: "姓名"
         },
         {
-          value: "1",
+          value: "2",
           label: "档案号"
         }
       ],
-      seekSelectModel: "",
-      //   输入框内容
-      seekContant: "",
-        currentPageOfice: 1, //分页
-      cur_page: 10,//分页
-      pagerCount: 3,//分页
+      starTime: "", //建档开始时间
+      endTime: "", //建档结束时间
+      countDetail: "", //   输入框内容 /检索内容
+      currentPageOfice: 1, //页码
+      cur_page: 10, //分页条数
+      pagerCount: 0, //总页数
+      startWeek: "", //孕周开始
+      endWeek: "", //孕周结束
+      countType: "", //检索类型countType
+      searching: "", //检索类型countType
+      tableShow:true,
+      imgShow:false,
     };
   },
+  mounted() {
+    let token1 = window.localStorage.getItem("token");
+    this.getTime();
+    // 初始近一个月的全部数据
+    this.documentedInquire();
+  },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
+    // 日期默认当前月
+    getTime() {
+      let date = new Date();
+      let y = date.getFullYear();
+      let m = date.getMonth();
+      if (m == 0) {
+        m = 12;
+        y = y - 1;
+      }
+      if (m < 10) {
+        m = "0" + m;
+      }
+      let time = y + "-" + m;
+      m++;
+      var endDay = y + "-" + m;
+      this.starTime = time;
+      this.endTime = endDay;
     },
+
+    // 刷新/搜索
+    searchBtn() {
+      if (this.countDetail == "") {
+        this.documentedInquire();
+      } else {
+        this.searching = 4;
+        this.documentedInquire();
+      }
+    },
+    // 切换每页条数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+      this.cur_page = val;
+      this.currentPageOfice = 1;
+      this.documentedInquire();
     },
+    // 切换页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.currentPageOfice = val;
+      this.documentedInquire();
     },
+    // 开始时间切换
+    starTimeSelect() {
+      if (this.starTime >this.endTime) {
+          this.$message({
+          message: '起始时间不能大于截止时间',
+          type: 'warning'
+        });
+          return false;
+      }else{
+      this.documentedInquire();
+      }
+    },
+    // 结束时间切换
+    endTimeSelect() {
+       if (this.starTime >this.endTime) {
+          this.$message({
+          message: '截止时间不能小于起始时间',
+          type: 'warning'
+        });
+          return false;
+       }else{
+      this.documentedInquire();
+       }
+    },
+    // 高危风险下拉选择切换
+    selectChange() {
+      this.documentedInquire();
+    },
+    // 孕周切换
     toggle1(index) {
       this.current = index;
-      console.log(index);
+      let token = localStorage.getItem("token");
+      if (this.current == 0) {
+        this.startWeek = "";
+        this.endWeek = "";
+        this.documentedInquire();
+      } else if (this.current == 1) {
+        this.startWeek = 13;
+        this.endWeek = 27;
+        this.documentedInquire();
+      } else if (this.current == 2) {
+        this.startWeek = 28;
+        this.endWeek = 35;
+        this.documentedInquire();
+      } else {
+        this.startWeek = 36;
+        this.endWeek = "";
+        this.documentedInquire();
+      }
     },
     // 查询
     documentedInquire() {
-      let self = this;
+      let  self = this;
+      let token = localStorage.getItem("token");
       this.$api
-        .deptSimpleFindList({
+        .patientCenterCountEntityForOthers({
           token: token,
-          startDateStr: startDateStr,
-          endDateStr: endDateStr,
-          startWeek: startWeek,
-          endWeek: endWeek,
-          countType: countType,
-          countDetail: countDetail,
-          highRiskClass: highRiskClass,
-          pageNum: pageNum,
-          pageCell: pageCell
+          startDateStr: this.starTime,
+          endDateStr: this.endTime,
+          startWeek: this.startWeek,
+          endWeek: this.endWeek,
+          countType: this.searching,
+          countDetail: this.countDetail,
+          highRiskClass: this.highRiskClass,
+          pageNum: this.currentPageOfice,
+          pageCell: this.cur_page
         })
         .then(res => {
+          console.log(res);
           if (res.status === "20200") {
-            this.officeTableData = res.pcDeptSimpleBeanList;
-            console.log(this.officeTableData);
-            this.pagerCount = res.pageNum;
-          } else {
-            // this.$Message.info(res.desc);
+            this.officeTableData = res.pcPatientCenterBeans;
+            this.pagerCount = res.pages;
+             self.imgShow = false;
+            self.tableShow = true;
+          } else if (res.status === "20209") {
+            this.officeTableData = [];
+            self.tableShow = false;
+            self.imgShow = true;
           }
         })
         .catch(error => {
@@ -407,7 +560,7 @@ export default {
     padding: 0 24px;
     background-color: #fff;
     .noDataIcon {
-      display: none;
+      // display: none;
       position: absolute;
       top: 50%;
       left: 50%;
