@@ -245,7 +245,7 @@ export default {
       higherRiskSelect: [
         {
           value: "0",
-          label: "无"
+          label: "绿"
         },
         {
           value: "1",

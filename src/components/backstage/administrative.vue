@@ -73,7 +73,7 @@
           >
           <template slot-scope="scope">
             <div v-show="scope.row.isProhibit == 0">未激活</div>
-            <div v-sv-htmlhow="scope.row.isProhibit == 1">激活</div>
+            <div v-show="scope.row.isProhibit == 1">激活</div>
           </template>
           </el-table-column>
           <el-table-column

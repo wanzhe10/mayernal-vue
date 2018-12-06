@@ -348,6 +348,7 @@ export default {
         })
         .then(res => {
           if (res.status === "20200") {
+             loadingInstance.close();
             this.characterTableData = res.pcOccupationBeanList;
             console.log(this.characterTableData);
             this.pagerCount = res.pageNum;

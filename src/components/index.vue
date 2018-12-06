@@ -10,13 +10,15 @@
         >
         <span class="characterFont">档案管理</span>
         <div class="headerrightBox">
-          <p class="welcome">欢迎
-            <i
+          <p class="welcome">欢迎<i
               class="doctorName"
               v-html="userName"
-            ></i>&nbsp;医生
+            ></i>医生
           </p>
-          <div class="exitBtn" @click="logOut">
+          <div
+            class="exitBtn"
+            @click="logOut"
+          >
             <i class="exitIcon"></i>
             <span>退出登录</span>
           </div>
@@ -198,23 +200,25 @@ export default {
       $(".seticon").attr("src");
       console.log($(".seticon").attr("src"));
     },
-    logOut(){
-        let self = this;
-        let token = localStorage.getItem('token');
-           this.$api.signOut({
-               token:token
-           }).then(res => {
+    logOut() {
+      let self = this;
+      let token = localStorage.getItem("token");
+      this.$api
+        .signOut({
+          token: token
+        })
+        .then(res => {
           console.log(res);
-     if (res.status ==="20200" ) {
-          localStorage.clear();
-            self.$router.push({name: 'login'})
-      } else {
-        // this.$Message.info(res.desc);
-      }
-     })
-     .catch(error => {
-        // this.$Message.info(error);
-      })
+          if (res.status === "20200") {
+            localStorage.clear();
+            self.$router.push({ name: "login" });
+          } else {
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
     }
   }
 };

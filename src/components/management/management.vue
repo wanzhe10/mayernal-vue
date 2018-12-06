@@ -9,67 +9,199 @@
       <div class="selectBox clearfix">
         <div class="pdl20 fl w170">
           <p>档案管理</p>
-          <el-select v-model="value1" placeholder="请选择" class="recordSelect">
-            <el-option size='126px' v-for="item in options1" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            v-model="filingType"
+            placeholder="请选择"
+            class="recordSelect"
+          >
+            <el-option
+              size='126px'
+              v-for="item in options1"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
             </el-option>
           </el-select>
         </div>
         <div class="assess fl w180">
           <p>风险评估</p>
-          <el-select v-model="value2" placeholder="请选择" class="assessSelect">
-            <el-option size='126px' v-for="item in options2" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            v-model="highClass"
+            placeholder="请选择"
+            class="assessSelect"
+          >
+            <el-option
+              size='126px'
+              v-for="item in options2"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+              <i
+                style="float: left; margin-top:12px; margin-right:10px;"
+                id="clolrLump"
+                :class="item.name"
+              ></i>
+              <!-- <span style="float: left">{{ item.value }}</span> -->
+              <span style="float: left; color: #8492a6; font-size: 13px">{{ item.label }}</span>
             </el-option>
           </el-select>
         </div>
         <div class="fl w154">
           <p>就诊目的</p>
-          <el-select v-model="value3" placeholder="请选择" class="seeSelect">
-            <el-option size='126px' v-for="item in options3" :key="item.value" :label="item.label" :value="item.value">
+          <el-select
+            v-model="secondCheckType"
+            placeholder="请选择"
+            class="seeSelect"
+          >
+            <el-option
+              size='126px'
+              v-for="item in options3"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
             </el-option>
           </el-select>
 
         </div>
         <div class="fl w224">
           <p>搜索</p>
-          <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="fileSearch" class="fileSearch">
+          <el-input
+            placeholder="请输入内容"
+            prefix-icon="el-icon-search"
+            v-model="fileSearch"
+            class="fileSearch"
+          >
           </el-input>
 
         </div>
-        <el-button type="primary" round class="inquireBtn">查询</el-button>
+        <el-button
+          type="primary"
+          round
+          class="inquireBtn"
+        >查询</el-button>
       </div>
     </div>
     <div class="bottomBox">
       <!-- <div class="tableBox"> -->
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="tableNum" label="序号" width="70px" style="text-align: center;"></el-table-column>
-        <el-table-column prop="username" label="姓名" width="76px"></el-table-column>
-        <el-table-column prop="goal" label="就诊目的" width="106px"></el-table-column>
-        <el-table-column prop="idCard" label="身份证" width="184px"></el-table-column>
-        <el-table-column prop="age" label="年龄" width="60px"></el-table-column>
-        <el-table-column prop="gestational" label="孕周" width="72px"></el-table-column>
-        <el-table-column prop="pregnant" label="孕产期" width="110px"></el-table-column>
-        <el-table-column prop="blood" label="血型" width="46px"></el-table-column>
-        <el-table-column prop="grade" label="评分等级" width="96px"></el-table-column>
-        <el-table-column prop="element" label="高危因素" width="100px">
-          <template slot-scope="scope" class="elementFont">
-            <p class="greenStrip">绿色（12）项</p>
-            <p class="yellowStrip">黄色（12）项</p>
-            <p class="orangeStrip">橙色（12）项</p>
-            <p class="proponStrip">紫色（12）项</p>
-            <!-- <p class="redStrip">红色（12）项</p> -->
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="tableNum"
+          label="序号"
+          width="70px"
+          style="text-align: center;"
+          type="index"
+          :index="indexMethod"
+        ></el-table-column>
+        <el-table-column
+          prop="checkName"
+          label="姓名"
+          width="76px"
+        ></el-table-column>
+        <el-table-column
+          prop="goal"
+          label="就诊目的"
+          width="106px"
+        ></el-table-column>
+        <el-table-column
+          prop="checkIdCard"
+          label="身份证"
+          width="184px"
+        ></el-table-column>
+        <el-table-column
+          prop="checkAge"
+          label="年龄"
+          width="60px"
+        ></el-table-column>
+        <el-table-column
+          prop="gestational"
+          label="孕周"
+          width="72px"
+        >
+          <template slot-scope="scope">
+            <div v-html="'孕'+scope.row.newAgeOfMenarche+'-'+scope.row.newAgeOfMenarcheDay+'天'"></div>
           </template>
         </el-table-column>
-        <el-table-column prop="address" label="操作" width="58px">
+        <el-table-column
+          prop="parturitionDetailDueDate"
+          label="孕产期"
+          width="110px"
+        ></el-table-column>
+        <el-table-column
+          prop="healthAssayBloodType"
+          label="血型"
+          width="46px"
+        ></el-table-column>
+        <el-table-column
+          prop="highRiskNumber"
+          label="评分等级"
+          width="96px"
+        ></el-table-column>
+        <el-table-column
+          prop="highRiskClass"
+          label="高危因素"
+          width="100px"
+        >
           <template slot-scope="scope">
-            <router-link :to="{path: 'personalCenter'}">
-              <el-button type="text" size="small" style="text-align: center;">查看</el-button>
-            </router-link>
+            <p
+              class="greenStrip"
+              v-show="scope.row.highRiskClass !=0"
+            >绿色（12）项</p>
+            <p
+              class="yellowStrip"
+              v-show="scope.row.highRiskClass !=1"
+            >黄色（12）项</p>
+            <p
+              class="orangeStrip"
+              v-show="scope.row.highRiskClass !=2"
+            >橙色（12）项</p>
+            <p
+              class="proponStrip"
+              v-show="scope.row.highRiskClass !=3"
+            >紫色（12）项</p>
+            <p
+              class="redStrip"
+              v-show="scope.row.highRiskClass !=4"
+            >红色（12）项</p>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="操作"
+          width="58px"
+        >
+          <template slot-scope="scope">
+            <!-- <router-link :to="{path: 'personalCenter'}"> -->
+              <el-button
+                type="text"
+                size="small"
+                style="text-align: center;"
+                @click="handleEdit(scope.$index, scope.row)"
+              >查看</el-button>
+            <!-- </router-link> -->
             <!-- <el-button type="text" size="small">编辑</el-button> -->
           </template>
         </el-table-column>
       </el-table>
-      <div class="block" style="margin-top:30px; text-align:center;">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage2" :page-sizes="[10, 20, 30, 40]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
+      <div
+        class="block"
+        style="margin-top:30px; text-align:center;"
+      >
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="currentPageOfice"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size.sync="cur_page"
+          layout="sizes, prev, pager, next"
+          background
+          :page-count='pagerCount'
+        >
         </el-pagination>
       </div>
     </div>
@@ -77,83 +209,65 @@
   </div>
 </template>
 <script>
+import $ from "jquery";
 export default {
   data() {
     return {
       // 档案管理下拉框数据
       options1: [
         {
-          value: "选项1",
-          label: "黄金糕"
+          value: "0",
+          label: "申请建档"
         },
         {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
+          value: "1",
+          label: "已建档"
         }
       ],
       // 风险评估下拉框数据
       options2: [
         {
-          value: "选项1",
-          label: "黄金糕"
+          value: "0",
+          label: "绿色(低风险)",
+          name: "level0"
         },
         {
-          value: "选项2",
-          label: "双皮奶"
+          value: "1",
+          label: "黄(一般风险)",
+          name: "level1"
         },
         {
-          value: "选项3",
-          label: "蚵仔煎"
+          value: "2",
+          label: "橙(较高风险)",
+          name: "level2"
         },
         {
-          value: "选项4",
-          label: "龙须面"
+          value: "3",
+          label: "红(高风险)",
+          name: "level3"
         },
         {
-          value: "选项5",
-          label: "北京烤鸭"
+          value: "4",
+          label: "紫(传染病)",
+          name: "level4"
         }
       ],
       // 就诊目的下拉框数据
       options3: [
         {
-          value: "选项1",
-          label: "黄金糕"
+          value: "0",
+          label: "正常复检"
         },
         {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
+          value: "1",
+          label: "异常复检"
         }
       ],
 
-      value1: "",
-      value2: "",
-      value3: "",
-      fileSearch: "",
+      filingType: "1", //档案管理 已建档/未建档
+      highClass: "", //高危等级
+      secondCheckType: "", //就诊目的
+      fileSearch: "", //搜索内容
       tableData: [
         {
           tableNum: "1",
@@ -165,60 +279,108 @@ export default {
           pregnant: "2017-10-03",
           blood: "O",
           grade: "10",
-          element: "26+3"
-        },
-        {
-          tableNum: "2",
-          username: "王小虎2",
-          goal: "第三次产检",
-          idCard: "1302281988092741118",
-          age: "29",
-          gestational: "26+3",
-          pregnant: "2017-10-03",
-          blood: "O",
-          grade: "10",
-          element: "26+3"
-        },
-        {
-          tableNum: "3",
-          username: "王小虎3",
-          goal: "第三次产检",
-          idCard: "1302281988092741118",
-          age: "29",
-          gestational: "26+3",
-          pregnant: "2017-10-03",
-          blood: "O",
-          grade: "10",
-          element: "26+3"
-        },
-        {
-          tableNum: "4",
-          username: "王小虎4",
-          goal: "第三次产检",
-          idCard: "1302281988092741118",
-          age: "29",
-          gestational: "26+3",
-          pregnant: "2017-10-03",
-          blood: "O",
-          grade: "10",
-          element: "26+3"
+          element: "26+3",
+          green:'',
         }
       ],
-      currentPage2: 1
+      currentPageOfice: 1, //页码
+      cur_page: 10, //分页条数
+      pagerCount: 0 //总页数
     };
   },
+  mounted() {
+    this.indexInquire();
+  },
   methods: {
+    handleEdit(index, row) {
+      console.log(row.highRiskTotalNum);
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+        this.cur_page = val;
+      this.currentPageOfice = 1;
+      this.indexInquire();
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+       this.currentPageOfice = val;
+       this.indexInquire();
+    },
+    // 查询
+    indexInquire() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .findListWithParamForFiling({
+          token: token1,
+          pageNum: this.currentPageOfice,
+          pageSize: this.cur_page,
+          filingType: this.filingType,
+          orderByType: "",
+          paramDetail: this.fileSearch,
+          paramType: "",
+          highClass: this.highClass,
+          secondCheckType: this.secondCheckType
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            this.tableData = res.pcPatientCenterBeans;
+            this.pagerCount = res.pages;
+            self.imgShow = false;
+            self.tableShow = true;
+
+            //  = eval("(" + this.tableData.highRiskTotalNum + ")");
+            console.log(this.tableData);
+          } else {
+            this.officeTableData = [];
+            self.tableShow = false;
+            self.imgShow = true;
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    indexMethod(index) {
+      return index + 1;
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@level0: green;
+@level1: yellow;
+@level2: orange;
+@level3: red;
+@level4: purple;
+#clolrLump {
+  width: 10px;
+  height: 10px;
+  border-radius: 59%;
+  display: inline-block;
+}
+.level0 {
+  background: @level0;
+}
+
+.level1 {
+  background: @level1;
+  color: #999 !important;
+}
+
+.level2 {
+  background: @level2;
+}
+
+.level3 {
+  background: @level3;
+}
+
+.level4 {
+  background: @level4;
+}
 .mal20 {
   margin-left: 20px;
 }
@@ -345,8 +507,8 @@ export default {
 </style>
 <style lang="less">
 .el-pagination.is-background .el-pager li:not(.disabled).active {
-    background-color: #68b6e7;
-    color: #fff;
+  background-color: #68b6e7;
+  color: #fff;
 }
 
 .managementBox {
@@ -451,7 +613,7 @@ export default {
       th:nth-child(5),
       th:nth-child(8),
       th:nth-child(9),
-       th:nth-child(11) {
+      th:nth-child(11) {
         text-align: center;
       }
     }
@@ -463,7 +625,7 @@ export default {
       td:nth-child(5),
       td:nth-child(8),
       td:nth-child(9),
-      td:nth-child(11),{
+      td:nth-child(11) {
         text-align: center;
       }
     }

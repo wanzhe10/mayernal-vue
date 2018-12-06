@@ -2,12 +2,41 @@ import axios from 'axios';
 import config from './config';
 import qs from 'qs';
 // import Cookies from "js-cookie";
+
+let loading
 import {
   Message, Loading
 } from 'element-ui';
 import router from '@/router'
  
 // 使用vuex做全局loading时使用
+function startLoading() { //使用Element loading-start 方法
+  loading = Loading.service({
+    lock: true,
+    text: '加载中……',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+}
+
+function endLoading() { //使用Element loading-close 方法
+  loading.close()
+}
+
+let needLoadingRequestCount = 0
+export function showFullScreenLoading() {
+  if (needLoadingRequestCount === 0) {
+    startLoading()
+  }
+  needLoadingRequestCount++
+}
+
+export function tryHideFullScreenLoading() {
+  if (needLoadingRequestCount <= 0) return
+  needLoadingRequestCount--
+  if (needLoadingRequestCount === 0) {
+    endLoading()
+  }
+}
 // import store from '@/store'
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
@@ -21,7 +50,6 @@ export default function $axios(options) {
     // request 拦截器
     instance.interceptors.request.use(
       config => {
-
         // let token = localStorage.getItem('token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log(store.state.loading)
@@ -47,6 +75,7 @@ export default function $axios(options) {
 
           }
         }
+         showFullScreenLoading()
         return config
 
       },
@@ -76,16 +105,13 @@ export default function $axios(options) {
     // response 拦截器
     instance.interceptors.response.use(
       response => {
-      let loadingInstance = Loading.service(options);
         let data;
         // IE9时response.data是undefined，因此需要使用response.request.responseText(Stringify后的字符串)
         if (response.data == undefined) {
           data = JSON.parse(response.request.responseText)
-            loadingInstance.close();
 
         } else {
           data = response.data
-            loadingInstance.close();
         }
  
         // 根据返回的code值来做不同的处理
@@ -107,6 +133,7 @@ export default function $axios(options) {
         // err.data = data
         // err.response = response
         // throw err
+         tryHideFullScreenLoading()
         return data
       },
       err => {

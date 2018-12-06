@@ -7,6 +7,7 @@
         <el-select
           v-model="gestationalWeeks"
           placeholder="请选择"
+          @change="gestationalWeeksChange()"
         >
           <el-option
             v-for="item in starWeeks"
@@ -20,8 +21,9 @@
       <div class="ageBox">
         <p class="mgb16">年龄范围</p>
         <el-select
-          v-model="starAgeModel"
+          v-model="smallAge"
           placeholder="请选择"
+          @change="smallAgeChange()"
         >
           <el-option
             v-for="item in starAge"
@@ -32,8 +34,9 @@
           </el-option>
         </el-select> -
         <el-select
-          v-model="endAgeModel"
+          v-model="bigAge"
           placeholder="请选择"
+          @change="bigAgeChange()"
         >
           <el-option
             v-for="item in endAge"
@@ -47,9 +50,10 @@
       <div class="higherRiskSelectBox">
         <p class="mgb16">风险评估</p>
         <el-select
-          v-model="higherRiskModel"
+          v-model="highRiskClass"
           placeholder="请选择"
           clear="higherRiskModel"
+          @change='selectChange'
         >
           <el-option
             v-for="item in higherRiskSelect"
@@ -78,7 +82,7 @@
         </el-select>
         <el-input
           placeholder="请输入内容"
-          v-model="seekContant"
+          v-model="countDetail"
           class="seekContant"
         >
           <i
@@ -91,6 +95,7 @@
         type="button"
         value="刷新/搜索"
         class="seekBtn"
+        @click="searchBtn()"
       >
     </div>
     <div class="berthBox_bottom">
@@ -109,13 +114,19 @@
             </el-option>
           </el-select>
         </div>
-        <ul class="clearfix fl">
+        <ul
+          class="clearfix fl"
+          v-model="mouthModel"
+        >
           <li
             v-for="(item,index) in berthBoxTebLi"
-            @click="toggle1(index)"
+            @click="toggle1(index);aaa($event)"
             :class="{active:index==current}"
+            v-html="item.label"
+            :value="item.value"
+            :key="item.value"
+            :label="item.label"
           >
-            {{item.name}}{{item.number}}
           </li>
         </ul>
         <div class="fr mgr38">
@@ -128,52 +139,102 @@
           src="../../assets/noDataIcon.png"
           alt="暂无数据"
           class="noDataIcon"
+          v-show='imgShow'
         >
-        <div class="TableDataBox">
+        <div
+          class="TableDataBox"
+          v-show='tableShow'
+        >
           <el-table
             :data="officeTableData"
             style="width: 100%"
           >
             <el-table-column
-              prop="recheckTime"
+              prop="makeAppointmentTime"
               label="复检时间"
               width="130px"
             ></el-table-column>
             <el-table-column
-              prop="recheckName"
+              prop="checkName"
               label="姓名"
               width="140px"
             ></el-table-column>
             <el-table-column
-              prop="recheckWeek"
+              prop=""
               label="孕周"
               width="125px"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <div v-html="'孕'+scope.row.newAgeOfMenarche+'-'+scope.row.newAgeOfMenarcheDay+'天'"></div>
+              </template>
+            </el-table-column>
             <el-table-column
-              prop="recheckTerm"
+              prop="parturitionDetailDueDate"
               label="预产期"
               width="156px"
             ></el-table-column>
             <el-table-column
-              prop="recheckAge"
+              prop="checkAge"
               label="年龄"
               width="94px"
             ></el-table-column>
             <el-table-column
-              prop="recheckAssess"
+              prop="highRiskClass"
               label="高危评估"
               width="126px"
             >
               <template slot-scope="scope">
-                <i class="clolrLump"></i>
-                <span style="margin-left: 10px">{{ scope.row.recheckAssess }}</span>
+                <i
+                  class="clolrLump level0"
+                  v-show=" scope.row.highRiskClass ==0"
+                ></i>
+                <i
+                  class="clolrLump level1"
+                  v-show=" scope.row.highRiskClass ==1"
+                ></i>
+                <i
+                  class="clolrLump level2"
+                  v-show=" scope.row.highRiskClass ==2"
+                ></i>
+                <i
+                  class="clolrLump level3"
+                  v-show=" scope.row.highRiskClass ==3"
+                ></i>
+                <i
+                  class="clolrLump level4"
+                  v-show=" scope.row.highRiskClass ==4"
+                ></i>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==0"
+                >绿色</span>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==1"
+                >黄色</span>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==2"
+                >橙色</span>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==3"
+                >红色</span>
+                <span
+                  style="margin-left: 10px"
+                  v-show=" scope.row.highRiskClass ==4"
+                >紫色</span>
               </template>
             </el-table-column>
             <el-table-column
-              prop="recheckOvertime"
+              prop=""
               label="超时"
               width="86px"
-            ></el-table-column>
+            >
+              <template slot-scope="scope">
+                <div>- -</div>
+              </template>
+            </el-table-column>
             <el-table-column
               prop=""
               label="操作"
@@ -198,10 +259,10 @@
               @current-change="handleCurrentChange"
               :current-page.sync="currentPageOfice"
               :page-sizes="[10, 20, 30, 40]"
-              :page-size="100"
+              :page-size.sync="cur_page"
               layout="sizes, prev, pager, next"
-              :total="1000"
               background
+              :page-count='pagerCount'
             >
             </el-pagination>
           </div>
@@ -213,91 +274,41 @@
 </template>
 
  <script>
+import $ from "jquery";
 export default {
   data() {
-      
     return {
       activeName: "first",
-      officeTableData: [
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        },
-        {
-          recheckTime: "2018-10-22",
-          recheckName: "小明一",
-          recheckWeek: "孕13-6周",
-          recheckTerm: "2018-10-22",
-          recheckAge: "32",
-          recheckAssess: "红色",
-          recheckOvertime: " -- "
-        }
-      ],
+      officeTableData: [],
       currentPageOfice: 1,
       berthBoxTebLi: [
-        { name: "1月" },
-        { name: "2月" },
-        { name: "3月" },
-        { name: "4月" },
-        { name: "5月" },
-        { name: "6月" },
-        { name: "7月" },
-        { name: "8月" },
-        { name: "9月" },
-        { name: "10月" },
-        { name: "11月" },
-        { name: "12月" }
+        { value: "01", label: "1月" },
+        { value: "02", label: "2月" },
+        { value: "03", label: "3月" },
+        { value: "04", label: "4月" },
+        { value: "05", label: "5月" },
+        { value: "06", label: "6月" },
+        { value: "07", label: "7月" },
+        { value: "08", label: "8月" },
+        { value: "09", label: "9月" },
+        { value: "10", label: "10月" },
+        { value: "11", label: "11月" },
+        { value: "12", label: "12月" }
+        // { name: "" },
+        // { name: "2月" },
+        // { name: "3月" },
+        // { name: "4月" },
+        // { name: "5月" },
+        // { name: "6月" },
+        // { name: "7月" },
+        // { name: "8月" },
+        // { name: "9月" },
+        // { name: "10月" },
+        // { name: "11月" },
+        // { name: "12月" }
       ],
+      mouthModel: "",
+
       current: 0,
       starTime: "",
       endTime: "",
@@ -305,7 +316,7 @@ export default {
       higherRiskSelect: [
         {
           value: "0",
-          label: "无"
+          label: "绿"
         },
         {
           value: "1",
@@ -324,7 +335,7 @@ export default {
           label: "紫"
         }
       ],
-      higherRiskModel: "",
+      highRiskClass: "",
       //   搜索下拉框
       seekSelect: [
         {
@@ -337,8 +348,7 @@ export default {
         }
       ],
       seekSelectModel: "",
-      //   输入框内容
-      seekContant: "",
+
       starWeeks: [
         {
           value: "0",
@@ -669,23 +679,147 @@ export default {
         }
       ],
       gestationalWeeks: "", //孕周范围
-      starAgeModel: "",
-      endAgeModel: "",
-      yearSelctModel: ""
+      startWeek: "", //孕周开始时间
+      endWeek: "", //孕周结束时间
+
+      smallAge: "", //年龄star
+      bigAge: "", //年龄end
+      yearSelctModel: "", //年分选择
+      countDetail: "", //   输入框内容
+      currentPageOfice: 1, //页码
+      cur_page: 10, //分页条数
+      pagerCount: 0, //总页数
+      startDateStr: "", //建档起始时间
+      endDateStr: "", //建档截止时间
+      tableShow: true, //表格显示隐藏
+      imgShow: false //图片显示隐藏
     };
   },
+  mounted() {
+    var myDate = new Date();
+  // 获取当前年份
+
+  let yearData =   myDate.getFullYear(); 
+  this.yearSelctModel = yearData;
+
+   let mouthData = myDate.getMonth()+1;
+    this.current =mouthData-1;
+   if (mouthData<10) {
+     mouthData = '0' +mouthData
+   }
+   console.log(mouthData)
+   this.startDateStr = yearData +'-'+mouthData
+   console.log(this.startDateStr)
+    this.bedStatistics();
+  },
   methods: {
+    // 孕周范围选择
+    gestationalWeeksChange() {
+      if (this.gestationalWeeks == 0) {
+        this.startWeek = 13;
+        this.endWeek = 27;
+      } else if (this.gestationalWeeks == 1) {
+        this.startWeek = 28;
+        this.endWeek = 35;
+      } else if (this.gestationalWeeks == 2) {
+        this.startWeek = 36;
+        this.endWeek = "";
+      }
+      this.bedStatistics();
+    },
+    // 年龄选择范围
+    // 年龄开始
+    smallAgeChange() {
+      if (this.smallAge >= this.bigAge && this.bigAge != "") {
+        this.$message({
+          message: "年龄范围不正确",
+          type: "warning"
+        });
+        return false;
+      } else {
+        this.bedStatistics();
+      }
+    },
+    // 年龄结束
+    bigAgeChange() {
+      if (this.smallAge >= this.bigAge) {
+        this.$message({
+          message: "年龄范围不正确",
+          type: "warning"
+        });
+        return false;
+      } else {
+        this.bedStatistics();
+      }
+    },
+    // 高危风险下拉选择切换
+    selectChange() {
+      this.bedStatistics();
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+      this.cur_page = val;
+      this.currentPageOfice = 1;
+      this.bedStatistics();
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.currentPageOfice = val;
+      this.bedStatistics();
     },
     toggle1(index) {
       this.current = index;
+    },
+    aaa(event) {
+      var mouthTime = event.target.getAttribute("value");
+      var yearTime = this.yearSelctModel;
+      this.startDateStr = yearTime + "-" + mouthTime;
+      console.log(this.startDateStr);
+       this.bedStatistics();
+    },
+   // 刷新/搜索
+    searchBtn() {
+        this.bedStatistics();
+    },
+    // 床位统计
+    bedStatistics() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .countEntityForOthersWithDueDate({
+          token: token1,
+          startDateStr: this.startDateStr,
+          endDateStr: "",
+          startWeek: this.startWeek,
+          endWeek: this.endWeek,
+          smallAge: this.smallAge,
+          bigAge: this.bigAge,
+          countType: 5,
+          countDetail: this.countDetail,
+          highRiskClass: this.highRiskClass,
+          pageNum: this.currentPageOfice,
+          pageCell: this.cur_page
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.officeTableData = res.pcPatientCenterBeans;
+            this.pagerCount = res.pages;
+              self.imgShow = false;
+            self.tableShow = true;
+          } else {
+             this.officeTableData = [];
+            self.tableShow = false;
+            self.imgShow = true;
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
     }
   }
 };
@@ -837,7 +971,7 @@ export default {
     background-color: #fff;
     position: relative;
     .noDataIcon {
-      display: none;
+      // display: none;
       position: absolute;
       top: 50%;
       left: 50%;
