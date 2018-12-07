@@ -186,9 +186,24 @@ export const patientCenterUpdateSelfPass = data => {
 
 // 档案管理
 // 首页-查询
+// export const findListWithParamForFiling = data => {
+//   return axios({
+//     url: 'v1/web/pc/patientCenter/findListWithParamForFiling',
+//     method: 'post',
+//     data
+//   })
+// }
 export const findListWithParamForFiling = data => {
   return axios({
-    url: 'v1/web/pc/patientCenter/findListWithParamForFiling',
+    url: 'v1/web/pc/patientCenterController/findListWithParamForFiling',
+    method: 'post',
+    data
+  })
+}
+// 复检记录查询
+export const patientSecondCheckFindListByCenterId = data => {
+  return axios({
+    url: 'v1/web/pc/patientSecondCheck/findListByCenterId',
     method: 'post',
     data
   })
@@ -220,4 +235,5 @@ export default {
   patientCenterUpdateSelfPass,
   signOut,
   findListWithParamForFiling,
+  patientSecondCheckFindListByCenterId,
 }

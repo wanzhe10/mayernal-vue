@@ -81,6 +81,7 @@
           type="primary"
           round
           class="inquireBtn"
+          @click="inquireBtn()"
         >查询</el-button>
       </div>
     </div>
@@ -176,14 +177,14 @@
           width="58px"
         >
           <template slot-scope="scope">
-            <!-- <router-link :to="{path: 'personalCenter'}"> -->
+            <router-link :to="{path: 'personalCenter'}">
               <el-button
                 type="text"
                 size="small"
                 style="text-align: center;"
                 @click="handleEdit(scope.$index, scope.row)"
               >查看</el-button>
-            <!-- </router-link> -->
+            </router-link>
             <!-- <el-button type="text" size="small">编辑</el-button> -->
           </template>
         </el-table-column>
@@ -290,10 +291,12 @@ export default {
   },
   mounted() {
     this.indexInquire();
+  
   },
   methods: {
     handleEdit(index, row) {
       console.log(row.highRiskTotalNum);
+      localStorage.setItem('tableDataParticulars',JSON.stringify(row))
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
@@ -305,6 +308,11 @@ export default {
       console.log(`当前页: ${val}`);
        this.currentPageOfice = val;
        this.indexInquire();
+    },
+    // 点击查询按钮
+    inquireBtn(){
+
+      this.indexInquire();
     },
     // 查询
     indexInquire() {
@@ -323,6 +331,7 @@ export default {
           secondCheckType: this.secondCheckType
         })
         .then(res => {
+            console.log(res);
           if (res.status === "20200") {
             this.tableData = res.pcPatientCenterBeans;
             this.pagerCount = res.pages;

@@ -9,32 +9,48 @@
           </router-link>
         </div>
         <p>
-          <span class="name">王多余</span>
-          <span class="age">25岁</span>
+          <span
+            class="name"
+            v-html="tableDataParticulars.checkName"
+          ></span>
+          <span
+            class="age"
+            v-html="tableDataParticulars.checkAge +'岁'"
+          ></span>
         </p>
         <div class="BMLValue">BMI值</div>
         <i class="crossIcon"></i>
       </div>
       <div class="informationBox_right">
         <div class="newsBoxTop">
-          <p><span>就诊卡号：</span>98054321<span></span></p>
-          <p><span>建档时间：</span>2018-09-28<span></span></p>
-          <p><span>联系方式：</span><span>16619703541</span></p>
-          <p><span>身份证号：</span><span>130184199903292018x</span></p>
-          <p><span>出生年月：</span><span>1999-03-29</span></p>
-          <p><span class="mgl24">血 型：</span><span>O型</span></p>
-          <p><span>孕前体重：</span><span>65kg</span></p>
-          <p><span class="mgl12">孕产史：</span><span>13+14周</span></p>
+          <p><span>就诊卡号：</span><span v-html="tableDataParticulars.checkNumber"></span></p>
+          <p><span>建档时间：</span><span v-html="tableDataParticulars.filingDate"></span></p>
+          <p><span>联系方式：</span><span v-html="tableDataParticulars.checkTelephone"></span></p>
+          <p><span>身份证号：</span><span v-html="tableDataParticulars.checkIdCard"></span></p>
+          <p><span>出生年月：</span><span v-html="tableDataParticulars.checkBirthdayDate"></span></p>
+          <p><span class="mgl24">血 型：</span>
+            <!-- <span> -->
+            <template>
+              <span v-show="tableDataParticulars.healthAssayBloodType ==0">O型</span>
+              <span v-show="tableDataParticulars.healthAssayBloodType ==1">A型</span>
+              <span v-show="tableDataParticulars.healthAssayBloodType ==2">B型</span>
+              <span v-show="tableDataParticulars.healthAssayBloodType ==3">AB型</span>
+              <span v-show="tableDataParticulars.healthAssayBloodType ==4">RH型</span>
+            </template>
+            <!-- </span> -->
+          </p>
+          <p><span>孕前体重：</span><span v-html="tableDataParticulars.checkLastWeight +'kg'"></span></p>
+          <p><span class="mgl12">孕产史：</span><span v-html="tableDataParticulars.parturitionDetailHistory"></span></p>
         </div>
         <div class="newsBoxBottom">
           <p class="newsBoxBottomFamily"><span>家族史：</span><span>高血压、冠心病、阑尾炎、精神病</span></p>
           <div class="assessmentInformation">
             <span class="pdl0 mgr0">高危因素：</span>
-            <span class="greenStrip">绿色（12）项</span>
-            <span class="yellowStrip">黄色（12）项</span>
-            <span class="orangeStrip">橙色（12）项</span>
-            <span class="redStrip">红色（12）项</span>
-            <span class="proponStrip">紫色（12）项</span>
+            <span class="greenStrip">绿色（{{highRiskFactor.green}}）项</span>
+            <span class="yellowStrip">黄色（{{highRiskFactor.yellow}}）项</span>
+            <span class="orangeStrip">橙色（{{highRiskFactor.orange}}）项</span>
+            <span class="redStrip">红色（{{highRiskFactor.red}}）项</span>
+            <span class="proponStrip">紫色（{{highRiskFactor.purple}}）项</span>
           </div>
         </div>
       </div>
@@ -48,46 +64,82 @@
         name="recheck"
       >
         <div class="recordNumsBox">
-          <h2>产检记录（<i class="recordNum">10</i>）<i class="crossIcon"></i></h2>
-          <ul>
-            <li
-              class=""
-              v-for="(item,index) in antenatalNum"
-              :key='index'
-              :num="item.num" :date="item.date"
-              @click="antenatalCareNum(index)"
-              :class="{active:index == showActive}"
-            >
-              <p>{{item.num}}</p>
-              <span>{{item.date}}</span>
-              <div class="triangleIocn"></div>
-
-            </li>
-          </ul>
+          <div class="Contant_left_overflow">
+            <h2>产检记录（<i
+                class="recordNum"
+                v-html="examineNum"
+              ></i>）<i class="crossIcon"></i></h2>
+            <ul>
+              <li
+                class=""
+                v-for="(item,index) in recheckRecord"
+                :key='index'
+                :date="item"
+                @click="antenatalCareNum(index)"
+                :class="{active:index == showActive}"
+              >
+                <p v-html="'第'+item.ordinalNumber +'次产检'"></p>
+                <span v-html="item.checkDate"></span>
+                <div class="triangleIocn"></div>
+              </li>
+            </ul>
+          </div>
         </div>
         <!-- 复检右边详细信息块 -->
         <div class="recheckDetailedInformation">
-          <p class="tableHeader"><span class="recheckDegree">第二次产检</span><span class="recheckWeek">5+3周</span></p>
-          <p><span class="cl666">检查日期：</span><span class="examination">2018-12-12</span><span class="cl666">预约下次日期：</span><span>2018-11-11</span></p>
+          <p class="tableHeader"><span
+              class="recheckDegree"
+              v-html="'第'+recheckRightData.ordinalNumber +'次产检'"
+            ></span><span
+              class="recheckWeek"
+              v-html="recheckRightData.gestationalWeek +'+'+recheckRightData.gestationalDay+'周'"
+            >5+3周</span></p>
+          <p><span class="cl666">检查日期：</span><span
+              class="examination"
+              v-html="recheckRightData.checkDate"
+            ></span><span class="cl666">预约下次日期：</span><span v-html="recheckRightData.makeAppointmentTime"></span></p>
           <div class="wire"></div>
           <div class="recheckTable clearfix">
             <div>
               <i class="triangleIocn1"></i>
-              <p>血压：<span>110/120</span><i>mmHg</i></p>
-              <p>体重：<span>110</span><i>kg</i></p>
-              <p>宫高：<span>15</span><i>cm</i></p>
-              <p>腹围：<span>50</span><i>cm</i></p>
+              <p>血压：<span v-html="recheckRightData.bloodPressureHigh+'/'+recheckRightData.bloodPressureLow"></span><i>mmHg</i></p>
+              <p>体重：<span v-html="recheckRightData.bodyWeight"></span><i>kg</i></p>
+              <p>宫高：<span v-html="recheckRightData.highPalace"></span><i>cm</i></p>
+              <p>腹围：<span v-html="recheckRightData.abdominalGirth"></span><i>cm</i></p>
             </div>
             <div>
               <i class="triangleIocn2"></i>
-              <p>胎方位：<span>枕左前位</span></p>
-              <p>先&nbsp;&nbsp;&nbsp;露：<span>头先露</span></p>
-              <p>衔&nbsp;&nbsp;&nbsp;接：<span>已衔接</span></p>
+              <p>胎方位：
+                <span v-show="recheckRightData.position==0 || recheckRightData.position=='' ">未填写</span>
+                <span v-show="recheckRightData.position==1">枕左前位</span>
+                <span v-show="recheckRightData.position==2">枕右横位</span>
+                <span v-show="recheckRightData.position==3">枕右前位</span>
+              </p>
+              <p>先&nbsp;&nbsp;&nbsp;露： 
+                <span v-show="recheckRightData.presentation==0 || recheckRightData.presentation=='' ">未填写</span>
+                <span v-show="recheckRightData.presentation==1">头先露</span>
+                <span v-show="recheckRightData.presentation==2">臀先露</span>
+                </p>
+              <p>衔&nbsp;&nbsp;&nbsp;接：
+                    <span v-show="recheckRightData.cohesion==0">未衔接</span>
+                <span v-show="recheckRightData.cohesion==1">已衔接  </span>
+              </p>
             </div>
             <div>
               <p>胎心率：<span>110 次/分</span></p>
-              <p>浮&nbsp;&nbsp;&nbsp;肿：<span>轻</span></p>
-              <p>腹&nbsp;&nbsp;&nbsp;围：<span>+1</span></p>
+              <p>浮&nbsp;&nbsp;&nbsp;肿：
+                <span v-show="recheckRightData.edema==0">无</span>
+                 <span v-show="recheckRightData.edema==1">轻</span>
+                <span v-show="recheckRightData.edema==2">中</span>
+                <span v-show="recheckRightData.edema==3">重</span>
+              </p>
+              </p>
+              <p>尿蛋白：
+                  <span v-show="recheckRightData.urineProtein==0">正常</span>
+                 <span v-show="recheckRightData.urineProtein==1">+1</span>
+                <span v-show="recheckRightData.urineProtein==2">+2</span>
+                <span v-show="recheckRightData.urineProtein==3">+3</span>
+              </p>
             </div>
           </div>
           <!-- 自觉不适查看全部 -->
@@ -114,8 +166,8 @@
             <p
               class="malaise"
               v-show="isShow1"
-            >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-              呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+               v-html="recheckRightData.malaise"
+            ></p>
           </el-collapse-transition>
           <!-- 指导处理意见查看全部 -->
           <div
@@ -141,8 +193,8 @@
             <p
               class="handlingSuggestion"
               v-show="isShow2"
-            >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-              呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+                 v-html="recheckRightData.guideTheProcessing"
+            ></p>
           </el-collapse-transition>
           <!-- 检查结果查看全部 -->
           <div class="lookAtallBtnBox">
@@ -171,36 +223,12 @@
               v-show="isShow3"
             >
               <ul class="clearfix">
-                <li>
-                  <div></div>
+                <li v-for="(item,index) in imageList">
+                  <div>
+                   <img  :src="'http://www.wcqxzs.com/pregnant/'+item.minImageURL" alt=""  style="width: 96px;height: 96px; cursor: pointer;" :bigSrc='item.minImageURL'>
+                   </div>
                 </li>
-                <li>
-                  <div></div>
-                </li>
-                <li>
-                  <div></div>
-                </li>
-                <li>
-                  <div></div>
-                </li>
-                <li>
-                  <div></div>
-                </li>
-                <li>
-                  <div></div>
-                </li>
-                <li>
-                  <div></div>
-                </li>
-                <li>
-                  <div></div>
-                </li>
-                <li>
-                  <div></div>
-                </li>
-                <li>
-                  <div></div>
-                </li>
+            
               </ul>
             </div>
           </el-collapse-transition>
@@ -475,6 +503,7 @@
 export default {
   data() {
     return {
+      tableDataParticulars: [], // 头部详情
       activeName: "recheck",
       isShow1: true,
       isShow2: true,
@@ -512,8 +541,25 @@ export default {
           date: "2018-11-15"
         }
       ],
-      showActive:0,
+      showActive: 0,
+      patientCenterId: "",
+      recheckRecord: [], //复检记录数据
+      examineNum: "", //检查记录条数
+      recheckRightData: [], //复检记录右边数据
+      highRiskFactor: [], //高危因素数组
+      imageList:[] //复检记录-图片数组
     };
+  },
+  mounted() {
+    var tableDataParticulars = eval(
+      "(" + localStorage.getItem("tableDataParticulars") + ")"
+    );
+    this.tableDataParticulars = tableDataParticulars;
+    this.patientCenterId = this.tableDataParticulars.id;
+    let highRiskFactor = this.tableDataParticulars.highRiskTotalNum;
+    this.highRiskFactor = eval("(" + highRiskFactor + ")");
+    console.log(this.highRiskFactor);
+    this.indexInquire();
   },
   methods: {
     handleClick(tab, event) {
@@ -565,10 +611,43 @@ export default {
       this.downIcon7 = !this.downIcon7;
     },
     // 产检次数添加类名
-    antenatalCareNum(index){
+    antenatalCareNum(index) {
       this.showActive = index;
+      console.log(this.recheckRecord[index]);
+      this.recheckRightData = this.recheckRecord[index];
+      if (this.recheckRecord[index].imageList ==null ||this.recheckRecord[index].imageList == '') {
+          return;
+      }else{
+      this.imageList = eval("(" + this.recheckRecord[index].imageList + ")")
+      }
+      console.log(this.imageList)
     },
-
+    // 复检记录查询
+    indexInquire() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .patientSecondCheckFindListByCenterId({
+          token: token1,
+          patientCenterId: this.patientCenterId
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
+            this.recheckRecord = recheckRecordData;
+            this.examineNum = res.pcPatientSecondCheckBeanList.length;
+          } else {
+            this.officeTableData = [];
+            // self.tableShow = false;
+            // self.imgShow = true;
+            // this.$Message.info(res.desc);
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    }
   }
 };
 </script>
@@ -1114,71 +1193,90 @@ export default {
     background-color: #fff;
     border: 1px solid #ccc;
     float: left;
-    h2 {
-      display: inline-block;
-      height: 52px;
-      width: 100%;
-      text-align: center;
-      line-height: 52px;
-      font-size: 14px;
-      color: #333333;
-      border-bottom: 1px solid #ccc;
-      position: relative;
-      .crossIcon {
-        background: url("../../../assets/cross.png") no-repeat 0 0;
-        width: 8px;
-        height: 8px;
-        position: absolute;
-        top: 48px;
-        right: 84px;
-        background-color: #fff;
-      }
-      i {
-        font-style: normal;
-      }
-    }
-    ul {
-      margin-top: 10px;
-      > li {
-        position: relative;
-        width: 100%;
-        padding: 8px 0px;
-        padding-left: 20px;
+    .Contant_left_overflow {
+      height: 500px;
+      overflow: hidden;
 
-        p {
-          font-size: 14px;
-          color: #333333;
-        }
-        span {
-          font-size: 12px;
-          color: #666666;
-        }
-        .triangleIocn {
-          width: 20px;
-          height: 20px;
-          border-width: 10px;
-          border-style: solid;
-          border-color: transparent;
-          border-left-color: #68b6e7;
-          display: none;
+      h2 {
+        display: inline-block;
+        height: 52px;
+        width: 168px;
+        text-align: center;
+        line-height: 52px;
+        font-size: 14px;
+        color: #333333;
+        border-bottom: 1px solid #ccc;
+        position: relative;
+        .crossIcon {
+          background: url("../../../assets/cross.png") no-repeat 0 0;
+          width: 8px;
+          height: 8px;
           position: absolute;
-          top: 15px;
-          right: -20px;
-          // transition: 0.5s all;
+          top: 48px;
+          right: 84px;
+          background-color: #fff;
+        }
+        i {
+          font-style: normal;
         }
       }
-      .active {
-        background-color: #68b6e7;
-        color: #fff !important;
-        p {
-          color: #fff;
+      ul {
+        height: 420px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: -17px;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        margin-top: 62px;
+        > li {
+          width: 168px;
+          position: relative;
+          padding: 8px 0px;
+          padding-left: 20px;
+          cursor: pointer;
+          -moz-user-select: none; /*火狐*/
+          -webkit-user-select: none; /*webkit浏览器*/
+          -ms-user-select: none; /*IE10*/
+          -khtml-user-select: none; /*早期浏览器*/
+          user-select: none;
+
+          p {
+            font-size: 14px;
+            color: #333333;
+          }
+          span {
+            font-size: 12px;
+            color: #666666;
+          }
+          .triangleIocn {
+            width: 20px;
+            height: 20px;
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent;
+            border-left-color: #68b6e7;
+            display: none;
+            position: absolute;
+            top: 15px;
+            right: -20px;
+            // transition: 0.5s all;
+          }
         }
-        span {
-          color: #fff;
-        }
-        .triangleIocn {
-          //   border-left-color: #68b6e7;
-          display: block;
+        .active {
+          background-color: #68b6e7;
+          color: #fff !important;
+          p {
+            color: #fff;
+          }
+          span {
+            color: #fff;
+          }
+          .triangleIocn {
+            //   border-left-color: #68b6e7;
+            display: block;
+          }
         }
       }
     }
