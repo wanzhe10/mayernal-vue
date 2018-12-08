@@ -4,6 +4,7 @@ import qs from 'qs';
 // import Cookies from "js-cookie";
 
 let loading
+let message
 import {
   Message, Loading
 } from 'element-ui';
@@ -137,6 +138,8 @@ export default function $axios(options) {
         return data
       },
       err => {
+        loading.close()
+        console.log(err.response.status)
         if (err && err.response) {
           if (err.response.status ==503 ) {
             alert(1)
@@ -155,7 +158,7 @@ export default function $axios(options) {
               break
  
             case 404:
-              err.Message = `请求地址出错: ${err.response.config.url}`
+              err.Message = `请求地址出错`
               break
  
             case 408:
@@ -164,6 +167,7 @@ export default function $axios(options) {
  
             case 500:
               err.Message = '服务器内部错误'
+              
               break
  
             case 501:
@@ -191,11 +195,10 @@ export default function $axios(options) {
         }else{
        err.Message = '连接服务器失败!'
         }
-         message.error(err.Message);
+        console.log(err.Message)
         Message({
          showClose: true,
-         duration:0,
-          message: err.message,
+          message: err.Message,
           type: 'error'
         });
         return Promise.reject(err) // 返回接口返回的错误信息

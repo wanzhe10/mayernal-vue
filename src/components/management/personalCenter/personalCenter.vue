@@ -543,9 +543,11 @@ export default {
       ],
       showActive: 0,
       patientCenterId: "",
-      recheckRecord: [], //复检记录数据
+      recheckRecord: [
+
+      ], //复检记录数据
       examineNum: "", //检查记录条数
-      recheckRightData: [], //复检记录右边数据
+      recheckRightData: {}, //复检记录右边数据
       highRiskFactor: [], //高危因素数组
       imageList:[] //复检记录-图片数组
     };
@@ -636,6 +638,7 @@ export default {
           if (res.status === "20200") {
             let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
             this.recheckRecord = recheckRecordData;
+            this.recheckRightData = res.pcPatientSecondCheckBeanList[0];  
             this.examineNum = res.pcPatientSecondCheckBeanList.length;
           } else {
             this.officeTableData = [];

@@ -152,7 +152,8 @@
             <p
               class="greenStrip"
               v-show="scope.row.highRiskClass !=0"
-            >绿色（12）项</p>
+            >
+            </p>
             <p
               class="yellowStrip"
               v-show="scope.row.highRiskClass !=1"
