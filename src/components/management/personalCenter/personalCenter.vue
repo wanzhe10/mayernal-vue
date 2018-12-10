@@ -64,177 +64,199 @@
         name="recheck"
       >
         <div class="recordNumsBox">
-          <div class="Contant_left_overflow">
-            <h2>产检记录（<i
-                class="recordNum"
-                v-html="examineNum"
-              ></i>）<i class="crossIcon"></i></h2>
-            <ul>
-              <li
-                class=""
-                v-for="(item,index) in recheckRecord"
-                :key='index'
-                :date="item"
-                @click="antenatalCareNum(index)"
-                :class="{active:index == showActive}"
-              >
-                <p v-html="'第'+item.ordinalNumber +'次产检'"></p>
-                <span v-html="item.checkDate"></span>
-                <div class="triangleIocn"></div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- 复检右边详细信息块 -->
-        <div class="recheckDetailedInformation">
-          <p class="tableHeader"><span
-              class="recheckDegree"
-              v-html="'第'+recheckRightData.ordinalNumber +'次产检'"
-            ></span><span
-              class="recheckWeek"
-              v-html="recheckRightData.gestationalWeek +'+'+recheckRightData.gestationalDay+'周'"
-            >5+3周</span></p>
-          <p><span class="cl666">检查日期：</span><span
-              class="examination"
-              v-html="recheckRightData.checkDate"
-            ></span><span class="cl666">预约下次日期：</span><span v-html="recheckRightData.makeAppointmentTime"></span></p>
-          <div class="wire"></div>
-          <div class="recheckTable clearfix">
-            <div>
-              <i class="triangleIocn1"></i>
-              <p>血压：<span v-html="recheckRightData.bloodPressureHigh+'/'+recheckRightData.bloodPressureLow"></span><i>mmHg</i></p>
-              <p>体重：<span v-html="recheckRightData.bodyWeight"></span><i>kg</i></p>
-              <p>宫高：<span v-html="recheckRightData.highPalace"></span><i>cm</i></p>
-              <p>腹围：<span v-html="recheckRightData.abdominalGirth"></span><i>cm</i></p>
-            </div>
-            <div>
-              <i class="triangleIocn2"></i>
-              <p>胎方位：
-                <span v-show="recheckRightData.position==0 || recheckRightData.position=='' ">未填写</span>
-                <span v-show="recheckRightData.position==1">枕左前位</span>
-                <span v-show="recheckRightData.position==2">枕右横位</span>
-                <span v-show="recheckRightData.position==3">枕右前位</span>
-              </p>
-              <p>先&nbsp;&nbsp;&nbsp;露： 
-                <span v-show="recheckRightData.presentation==0 || recheckRightData.presentation=='' ">未填写</span>
-                <span v-show="recheckRightData.presentation==1">头先露</span>
-                <span v-show="recheckRightData.presentation==2">臀先露</span>
-                </p>
-              <p>衔&nbsp;&nbsp;&nbsp;接：
-                    <span v-show="recheckRightData.cohesion==0">未衔接</span>
-                <span v-show="recheckRightData.cohesion==1">已衔接  </span>
-              </p>
-            </div>
-            <div>
-              <p>胎心率：<span>110 次/分</span></p>
-              <p>浮&nbsp;&nbsp;&nbsp;肿：
-                <span v-show="recheckRightData.edema==0">无</span>
-                 <span v-show="recheckRightData.edema==1">轻</span>
-                <span v-show="recheckRightData.edema==2">中</span>
-                <span v-show="recheckRightData.edema==3">重</span>
-              </p>
-              </p>
-              <p>尿蛋白：
-                  <span v-show="recheckRightData.urineProtein==0">正常</span>
-                 <span v-show="recheckRightData.urineProtein==1">+1</span>
-                <span v-show="recheckRightData.urineProtein==2">+2</span>
-                <span v-show="recheckRightData.urineProtein==3">+3</span>
-              </p>
-            </div>
-          </div>
-          <!-- 自觉不适查看全部 -->
-          <div class="lookAtallBtnBox">
-            <h2>自觉不适</h2>
-            <div class="positionWire"></div>
-            <div
-              class="basicLookAtallBtn conscientiousAll"
-              @click="toggle1()"
-            >
-              <span>查看全部</span>
-              <i
-                class="el-icon-arrow-down"
-                v-show="downIcon"
-              ></i>
-              <i
-                class="el-icon-arrow-up"
-                v-show="!downIcon"
-              ></i>
-            </div>
-          </div>
-          <!-- 自觉不适内容 -->
-          <el-collapse-transition>
-            <p
-              class="malaise"
-              v-show="isShow1"
-               v-html="recheckRightData.malaise"
-            ></p>
-          </el-collapse-transition>
-          <!-- 指导处理意见查看全部 -->
           <div
-            class="lookAtallBtnBox"
-            @click="toggle2()"
+            class="imgSkow"
+            v-show="imgShowHide"
           >
-            <h2>指导处理意见</h2>
-            <div class="positionWire2"></div>
-            <div class="guidanceBtn">
-              <span>查看全部</span>
-              <i
-                class="el-icon-arrow-down"
-                v-show="downIcon2"
-              ></i>
-              <i
-                class="el-icon-arrow-up"
-                v-show="!downIcon2"
-              ></i>
-            </div>
+            <div class="noDataImg"></div>
+            <p>暂无记录...</p>
           </div>
-          <!-- 指导处理意见内容 -->
-          <el-collapse-transition>
-            <p
-              class="handlingSuggestion"
-              v-show="isShow2"
-                 v-html="recheckRightData.guideTheProcessing"
-            ></p>
-          </el-collapse-transition>
-          <!-- 检查结果查看全部 -->
-          <div class="lookAtallBtnBox">
-            <h2>检查结果</h2>
-            <div class="positionWire"></div>
-            <div
-              class="inspectionResult"
-              @click="toggle3()"
-            >
-              <span>查看全部</span>
-              <i
-                class="el-icon-arrow-down"
-                v-show="downIcon3"
-              ></i>
-              <i
-                class="el-icon-arrow-up"
-                v-show="!downIcon3"
-              ></i>
+          <div
+            class="recordNumsBoxData"
+            v-show="recordNumsDataShow"
+          >
+            <div class="Contant_left_overflow">
+              <h2>产检记录（<i
+                  class="recordNum"
+                  v-html="examineNum"
+                ></i>）<i class="crossIcon"></i></h2>
+              <ul>
+                <li
+                  class=""
+                  v-for="(item,index) in recheckRecord"
+                  :key='index'
+                  :date="item"
+                  @click="antenatalCareNum(index)"
+                  :class="{active:index == showActive}"
+                >
+                  <p v-html="'第'+item.ordinalNumber +'次产检'"></p>
+                  <span v-html="item.checkDate"></span>
+                  <div class="triangleIocn"></div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- 复检右边详细信息块 -->
+            <div class="recheckDetailedInformation">
+              <p class="tableHeader"><span
+                  class="recheckDegree"
+                  v-html="'第'+recheckRightData.ordinalNumber +'次产检'"
+                ></span><span
+                  class="recheckWeek"
+                  v-html="recheckRightData.gestationalWeek +'+'+recheckRightData.gestationalDay+'周'"
+                >5+3周</span></p>
+              <p><span class="cl666">检查日期：</span><span
+                  class="examination"
+                  v-html="recheckRightData.checkDate"
+                ></span><span class="cl666">预约下次日期：</span><span v-html="recheckRightData.makeAppointmentTime"></span></p>
+              <div class="wire"></div>
+              <div class="recheckTable clearfix">
+                <div>
+                  <i class="triangleIocn1"></i>
+                  <p>血压：<span v-html="recheckRightData.bloodPressureHigh+'/'+recheckRightData.bloodPressureLow"></span><i>mmHg</i></p>
+                  <p>体重：<span v-html="recheckRightData.bodyWeight"></span><i>kg</i></p>
+                  <p>宫高：<span v-html="recheckRightData.highPalace"></span><i>cm</i></p>
+                  <p>腹围：<span v-html="recheckRightData.abdominalGirth"></span><i>cm</i></p>
+                </div>
+                <div>
+                  <i class="triangleIocn2"></i>
+                  <p>胎方位：
+                    <span v-show="recheckRightData.position==0 || recheckRightData.position=='' ">未填写</span>
+                    <span v-show="recheckRightData.position==1">枕左前位</span>
+                    <span v-show="recheckRightData.position==2">枕右横位</span>
+                    <span v-show="recheckRightData.position==3">枕右前位</span>
+                  </p>
+                  <p>先&nbsp;&nbsp;&nbsp;露：
+                    <span v-show="recheckRightData.presentation==0 || recheckRightData.presentation=='' ">未填写</span>
+                    <span v-show="recheckRightData.presentation==1">头先露</span>
+                    <span v-show="recheckRightData.presentation==2">臀先露</span>
+                  </p>
+                  <p>衔&nbsp;&nbsp;&nbsp;接：
+                    <span v-show="recheckRightData.cohesion==0">未衔接</span>
+                    <span v-show="recheckRightData.cohesion==1">已衔接 </span>
+                  </p>
+                </div>
+                <div>
+                  <p>胎心率：
+                    <span v-show="recheckRightData.cardiac==0 ">未填写</span>
+                    <span v-show="recheckRightData.cardiac==1">正常</span>
+                    <span v-show="recheckRightData.cardiac==2">异常</span>
+                  </p>
+                  <p>浮&nbsp;&nbsp;&nbsp;肿：
+                    <span v-show="recheckRightData.edema==0">无</span>
+                    <span v-show="recheckRightData.edema==1">轻</span>
+                    <span v-show="recheckRightData.edema==2">中</span>
+                    <span v-show="recheckRightData.edema==3">重</span>
+                  </p>
+                  </p>
+                  <p>尿蛋白：
+                    <span v-show="recheckRightData.urineProtein==0">正常</span>
+                    <span v-show="recheckRightData.urineProtein==1">+1</span>
+                    <span v-show="recheckRightData.urineProtein==2">+2</span>
+                    <span v-show="recheckRightData.urineProtein==3">+3</span>
+                  </p>
+                </div>
+              </div>
+              <!-- 自觉不适查看全部 -->
+              <div class="lookAtallBtnBox">
+                <h2>自觉不适</h2>
+                <div class="positionWire"></div>
+                <div
+                  class="basicLookAtallBtn conscientiousAll"
+                  @click="toggle1()"
+                >
+                  <span>查看全部</span>
+                  <i
+                    class="el-icon-arrow-down"
+                    v-show="downIcon"
+                  ></i>
+                  <i
+                    class="el-icon-arrow-up"
+                    v-show="!downIcon"
+                  ></i>
+                </div>
+              </div>
+              <!-- 自觉不适内容 -->
+              <el-collapse-transition>
+                <p
+                  class="malaise"
+                  v-show="isShow1"
+                  v-html="recheckRightData.malaise"
+                ></p>
+              </el-collapse-transition>
+              <!-- 指导处理意见查看全部 -->
+              <div
+                class="lookAtallBtnBox"
+                @click="toggle2()"
+              >
+                <h2>指导处理意见</h2>
+                <div class="positionWire2"></div>
+                <div class="guidanceBtn">
+                  <span>查看全部</span>
+                  <i
+                    class="el-icon-arrow-down"
+                    v-show="downIcon2"
+                  ></i>
+                  <i
+                    class="el-icon-arrow-up"
+                    v-show="!downIcon2"
+                  ></i>
+                </div>
+              </div>
+              <!-- 指导处理意见内容 -->
+              <el-collapse-transition>
+                <p
+                  class="handlingSuggestion"
+                  v-show="isShow2"
+                  v-html="recheckRightData.guideTheProcessing"
+                ></p>
+              </el-collapse-transition>
+              <!-- 检查结果查看全部 -->
+              <div class="lookAtallBtnBox">
+                <h2>检查结果</h2>
+                <div class="positionWire"></div>
+                <div
+                  class="inspectionResult"
+                  @click="toggle3()"
+                >
+                  <span>查看全部</span>
+                  <i
+                    class="el-icon-arrow-down"
+                    v-show="downIcon3"
+                  ></i>
+                  <i
+                    class="el-icon-arrow-up"
+                    v-show="!downIcon3"
+                  ></i>
+                </div>
+              </div>
+
+              <!-- 检查结果内容 -->
+              <el-collapse-transition>
+                <div
+                  class="consequenceBox"
+                  v-show="isShow3"
+                >
+                  <ul class="clearfix">
+                    <li v-for="(item,index) in imageList">
+                      <div>
+                        <img
+                          :src="'http://www.wcqxzs.com/pregnant/'+item.minImageURL"
+                          alt=""
+                          :bigSrc='item.minImageURL'
+                        >
+                      </div>
+                    </li>
+
+                  </ul>
+                </div>
+              </el-collapse-transition>
             </div>
           </div>
 
-          <!-- 检查结果内容 -->
-          <el-collapse-transition>
-            <div
-              class="consequenceBox"
-              v-show="isShow3"
-            >
-              <ul class="clearfix">
-                <li v-for="(item,index) in imageList">
-                  <div>
-                   <img  :src="'http://www.wcqxzs.com/pregnant/'+item.minImageURL" alt=""  style="width: 96px;height: 96px; cursor: pointer;" :bigSrc='item.minImageURL'>
-                   </div>
-                </li>
-            
-              </ul>
-            </div>
-          </el-collapse-transition>
         </div>
         <!-- 新增复检记录按钮 -->
-        <div class="recordNewsNav">
+        <!-- <div class="recordNewsNav">
           <router-link :to="{path:'recordNews'}">
             <input
               type="button"
@@ -243,7 +265,7 @@
               @click="recordNewsBtn()"
             >
           </router-link>
-        </div>
+        </div> -->
       </el-tab-pane>
       <el-tab-pane
         label="高危评估记录"
@@ -253,45 +275,47 @@
         <!-- 高危评估块 -->
         <div class="spouseNewsBox  clearfix">
           <div class="spouseNumsBox">
-            <h2>评估记录（<i class="spouseNum">10</i>）<i class="crossIcon"></i></h2>
+            <h2>评估记录（<i
+                class="spouseNum"
+                v-html="spouseNewsNum"
+              ></i>）<i class="crossIcon"></i></h2>
             <ul>
-              <li class="active">
-                <i class="colorLump level1"></i>
-                <p>第二次评估</p>
-                <span>2018-12-12</span>
+              <li
+                v-for="(item,index) in spouseNewsData"
+                :key='index'
+                :date="item"
+                @click="spouseNewsCareNum(index)"
+                :class="{active:index == spouseNewshowActive}"
+              >
+                  <i
+                    class="colorLump level0"
+                    v-show="item.gradeType == 0"
+                  ></i>
+                  <i
+                    class="colorLump level1"
+                    v-show="item.gradeType == 1"
+                  ></i>
+                  <i
+                    class="colorLump level2"
+                    v-show="item.gradeType == 2"
+                  ></i>
+                  <i
+                    class="colorLump level3"
+                    v-show="item.gradeType == 3"
+                  ></i>
+                  <i
+                    class="colorLump level4"
+                    v-show="item.gradeType == 4"
+                  ></i>
+                <p v-html="'第'+item.checkNumber +'次评估'"></p>
+                <span  v-html="item.createDate"></span>
                 <div class="triangleIocn"></div>
               </li>
-              <li>
-                <i class="colorLump level3"></i>
-                <p>第二次评估</p>
-                <span>2018-12-12</span>
-                <div class="triangleIocn"></div>
 
-              </li>
-              <li>
-                <i class="colorLump level4"></i>
-                <p>第三次评估</p>
-                <span>2018-12-12</span>
-                <div class="triangleIocn"></div>
-
-              </li>
-              <li class="">
-                <i class="colorLump level0"></i>
-                <p>第四次评估</p>
-                <span>2018-12-12</span>
-                <div class="triangleIocn"></div>
-
-              </li>
-              <li>
-                <i class="colorLump level2"></i>
-                <p>第五次评估</p>
-                <span>2018-12-12</span>
-                <div class="triangleIocn"></div>
-              </li>
             </ul>
           </div>
           <div class="assessDetailedInformation">
-            <p class="tableHeader"><span class="assessDegree">第二次评估</span><span class="assessexamination">2018-12-12</span><span class="assessWeek">5+3周</span></p>
+            <p class="tableHeader"><span class="assessDegree">{{'第'+spouseNewsRrightData.checkNumber +'次产检'}}</span><span class="assessexamination">{{spouseNewsRrightData.createDate}}</span><span class="assessWeek">{{spouseNewsRrightData.newAgeOfMenarche+'+'+spouseNewsRrightData.newAgeOfMenarcheDay+'周'}}</span></p>
             <div class="wire"></div>
 
             <!-- 自觉不适查看全部 -->
@@ -319,16 +343,16 @@
                 class="assessInformationBox"
                 v-show="isShow4"
               >
-                <p class="mgb16"><i class="level0"></i> <span class="colour">绿色（低风险）</span><span class="greenNum">10项</span></p>
-                <p class="colorTxt greenText">孕妇基本情况良好，未发现妊娠合</p>
-                <p class="mgb16"><i class="level3"></i> <span class="colour">红色（高风险）</span><span class="redNum">8项</span></p>
-                <p class="colorTxt redText">孕妇基本情况良好，未发现妊娠合</p>
-                <p class="mgb16"><i class="level1"></i> <span class="colour">黄色（一般风险）</span><span class="yellowNum">6项</span></p>
-                <p class="colorTxt yellowText">孕妇基本情况良好，未发现妊娠合</p>
-                <p class="mgb16"><i class="level2"></i> <span class="colour">橙色（较高风险）</span><span class="orangeNum">4项</span></p>
-                <p class="colorTxt orangeText">孕妇基本情况良好，未发现妊娠合</p>
-                <p class="mgb16"><i class="level4"></i> <span class="colour">紫色（传染性疾病）</span><span class="purpleNum">2项</span></p>
-                <p class="colorTxt purpleText">孕妇基本情况良好，未发现妊娠合</p>
+                <p class="mgb16"  v-if="spouseNewsRrightData.green !=undefined"><i class="level0"></i> <span class="colour">绿色（低风险）</span><span class="greenNum" >{{spouseNewsRrightData.green.length+'项'}}</span></p>
+                <div class="colorTxt greenText"><p  v-for="(item,index) in spouseNewsRrightData.green">{{item}}</p></div>
+                <p class="mgb16"   v-if="spouseNewsRrightData.red !=undefined"><i class="level3" ></i> <span class="colour">红色（高风险）</span><span class="redNum">{{spouseNewsRrightData.red.length+'项'}}</span></p>
+                <div class="colorTxt redText" ><p v-for="item in spouseNewsRrightData.red">{{item}}</p></div>
+                <p class="mgb16"  v-if="spouseNewsRrightData.yellow !=undefined"><i class="level1"></i> <span class="colour">黄色（一般风险）</span><span class="yellowNum" >{{spouseNewsRrightData.yellow.length+'项'}}</span></p>
+                <div class="colorTxt yellowText"><p v-for="item in spouseNewsRrightData.yellow">{{item}}</p></div>
+                <p class="mgb16" v-if="spouseNewsRrightData.orange !=undefined"><i class="level2"></i> <span class="colour">橙色（较高风险）</span><span class="orangeNum" >{{spouseNewsRrightData.orange.length+'项'}}</span></p>
+                <div class="colorTxt orangeText"><p v-for="item in spouseNewsRrightData.orange">{{item}}</p></div>
+                <p class="mgb16"  v-if="spouseNewsRrightData.purple !=undefined"><i class="level4"></i> <span class="colour">紫色（传染性疾病）</span><span class="purpleNum" >{{spouseNewsRrightData.purple.length+'项'}}</span></p>
+                <div class="colorTxt purpleText"><p v-for="item in spouseNewsRrightData.purple">{{item}}</p></div>
               </div>
             </el-collapse-transition>
             <div class="lookAtallBtnBox">
@@ -353,13 +377,15 @@
               <p
                 class="postscriptContent"
                 v-show="isShow5"
-              >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-                呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+              > 
+              <span v-show="spouseNewsRrightData.remarks == ''">无</span>
+              <span v-show="spouseNewsRrightData.remarks !== ''">{{spouseNewsRrightData.remarks}}</span>
+              </p>
             </el-collapse-transition>
           </div>
         </div>
         <!-- 新增高危评估按钮 -->
-        <div
+        <!-- <div
           class="spouseNewsnav"
           style="display:flax;"
         >
@@ -371,7 +397,7 @@
               @click="spouseNewsBtn()"
             >
           </router-link>
-        </div>
+        </div> -->
       </el-tab-pane>
       <el-tab-pane
         label="产后42天检查记录"
@@ -484,7 +510,7 @@
             呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
         </el-collapse-transition>
         <!-- 新增42天按钮 -->
-        <div class="recordNewsNav">
+        <!-- <div class="recordNewsNav">
           <router-link :to="{path:'fortyTwoDay'}">
             <input
               type="button"
@@ -493,7 +519,7 @@
               @click="fortyTwoDayBtn()"
             >
           </router-link>
-        </div>
+        </div> -->
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -504,7 +530,7 @@ export default {
   data() {
     return {
       tableDataParticulars: [], // 头部详情
-      activeName: "recheck",
+      activeName: "evaluate",
       isShow1: true,
       isShow2: true,
       isShow3: true,
@@ -519,37 +545,21 @@ export default {
       downIcon5: true,
       downIcon6: true,
       downIcon7: true,
-      antenatalNum: [
-        {
-          num: "第一次产检",
-          date: "2018-11-11"
-        },
-        {
-          num: "第二次产检",
-          date: "2018-11-12"
-        },
-        {
-          num: "第三次产检",
-          date: "2018-11-13"
-        },
-        {
-          num: "第四次产检",
-          date: "2018-11-14"
-        },
-        {
-          num: "第五次产检",
-          date: "2018-11-15"
-        }
-      ],
-      showActive: 0,
+      showActive: 0, //附件记录添加类名的下标
+      spouseNewshowActive: 0, //高危评估记录添加类名的下标
       patientCenterId: "",
-      recheckRecord: [
-
-      ], //复检记录数据
+      recheckRecord: [], //复检记录数据
       examineNum: "", //检查记录条数
       recheckRightData: {}, //复检记录右边数据
       highRiskFactor: [], //高危因素数组
-      imageList:[] //复检记录-图片数组
+      imageList: [], //复检记录-图片数组
+      imgShowHide: false, //复检暂无数据
+      recordNumsDataShow: false, //复检数据显示隐藏
+
+      spouseNewsData: [], //高危评估数据
+      spouseNewsNum: "" ,//高危评估数据条数
+      spouseNewsRrightData: {}, //高危评估右边数据
+
     };
   },
   mounted() {
@@ -560,12 +570,12 @@ export default {
     this.patientCenterId = this.tableDataParticulars.id;
     let highRiskFactor = this.tableDataParticulars.highRiskTotalNum;
     this.highRiskFactor = eval("(" + highRiskFactor + ")");
-    console.log(this.highRiskFactor);
     this.indexInquire();
+    this.assessInquire();
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event);
+      // console.log(tab, event);
     },
     spouseNewsBtn() {
       console.log("新增高危记录");
@@ -615,14 +625,23 @@ export default {
     // 产检次数添加类名
     antenatalCareNum(index) {
       this.showActive = index;
-      console.log(this.recheckRecord[index]);
+      // console.log(this.recheckRecord[index]);
       this.recheckRightData = this.recheckRecord[index];
-      if (this.recheckRecord[index].imageList ==null ||this.recheckRecord[index].imageList == '') {
-          return;
-      }else{
-      this.imageList = eval("(" + this.recheckRecord[index].imageList + ")")
+      if (
+        this.recheckRecord[index].imageList == null ||
+        this.recheckRecord[index].imageList == ""
+      ) {
+        return;
+        this.imageList = [];
+      } else {
+        this.imageList = eval("(" + this.recheckRecord[index].imageList + ")");
       }
-      console.log(this.imageList)
+      // console.log(this.imageList);
+    },
+    // 高危次数添加类名
+    spouseNewsCareNum(index) {
+      this.spouseNewshowActive = index;
+      this.spouseNewsRrightData = this.spouseNewsData[index];
     },
     // 复检记录查询
     indexInquire() {
@@ -634,17 +653,58 @@ export default {
           patientCenterId: this.patientCenterId
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
             this.recheckRecord = recheckRecordData;
-            this.recheckRightData = res.pcPatientSecondCheckBeanList[0];  
+            this.recheckRightData = res.pcPatientSecondCheckBeanList[0];
+            this.imageList = eval("(" + this.recheckRecord[0].imageList + ")");
             this.examineNum = res.pcPatientSecondCheckBeanList.length;
-          } else {
-            this.officeTableData = [];
-            // self.tableShow = false;
-            // self.imgShow = true;
-            // this.$Message.info(res.desc);
+            this.recordNumsDataShow = true;
+            this.imgShowHide = false;
+          } else if (res.status === "20209") {
+            this.recheckRecord = [];
+            this.imgShowHide = true;
+            this.recordNumsDataShow = false;
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    // 高危评估查询
+    assessInquire() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .patientHighRiskGradeFindList({
+          token: token1,
+          patientCenterId: this.patientCenterId
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            let spouseNews = res.pcPatientHighRiskGradeBeanList.reverse();
+            this.spouseNewsRrightData = res.pcPatientHighRiskGradeBeanList[0];
+            this.spouseNewsNum = res.pcPatientHighRiskGradeBeanList.length;
+            // this.recordNumsDataShow = true;
+            // this.imgShowHide = false;
+              var aaa = res.pcPatientHighRiskGradeBeanList;
+            for (let i = 0; i < aaa.length; i++) {
+              const HighRiskGradeBeanList = aaa[i];
+                var HighRiskparticulars = JSON.parse(HighRiskGradeBeanList.details);
+              //  console.log(HighRiskparticulars)
+               HighRiskGradeBeanList.green = HighRiskparticulars.green;
+               HighRiskGradeBeanList.orange = HighRiskparticulars.orange;
+               HighRiskGradeBeanList.purple = HighRiskparticulars.purple;
+               HighRiskGradeBeanList.red = HighRiskparticulars.red;
+               HighRiskGradeBeanList.yellow = HighRiskparticulars.yellow;
+            }
+            this.spouseNewsData = spouseNews;
+          } else if (res.status === "20209") {
+            // this.recheckRecord = [];
+            // this.imgShowHide = true;
+            // this.recordNumsDataShow = false;
           }
         })
         .catch(error => {
@@ -1186,276 +1246,306 @@ export default {
     }
   }
   .recordNumsBox {
-    // display: inline-block;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    width: 168px;
     height: 500px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    float: left;
-    .Contant_left_overflow {
-      height: 500px;
-      overflow: hidden;
-
-      h2 {
-        display: inline-block;
-        height: 52px;
-        width: 168px;
-        text-align: center;
-        line-height: 52px;
-        font-size: 14px;
-        color: #333333;
-        border-bottom: 1px solid #ccc;
-        position: relative;
-        .crossIcon {
-          background: url("../../../assets/cross.png") no-repeat 0 0;
-          width: 8px;
-          height: 8px;
-          position: absolute;
-          top: 48px;
-          right: 84px;
-          background-color: #fff;
-        }
-        i {
-          font-style: normal;
-        }
+    position: relative;
+    .imgSkow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      .noDataImg {
+        margin: 0px auto;
+        background: url("../../../assets/fujianNoData.png") no-repeat -1px -22px;
+        width: 180px;
+        height: 98px;
       }
-      ul {
-        height: 420px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: -17px;
-        bottom: 0;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        margin-top: 62px;
-        > li {
-          width: 168px;
-          position: relative;
-          padding: 8px 0px;
-          padding-left: 20px;
-          cursor: pointer;
-          -moz-user-select: none; /*火狐*/
-          -webkit-user-select: none; /*webkit浏览器*/
-          -ms-user-select: none; /*IE10*/
-          -khtml-user-select: none; /*早期浏览器*/
-          user-select: none;
-
-          p {
-            font-size: 14px;
-            color: #333333;
-          }
-          span {
-            font-size: 12px;
-            color: #666666;
-          }
-          .triangleIocn {
-            width: 20px;
-            height: 20px;
-            border-width: 10px;
-            border-style: solid;
-            border-color: transparent;
-            border-left-color: #68b6e7;
-            display: none;
-            position: absolute;
-            top: 15px;
-            right: -20px;
-            // transition: 0.5s all;
-          }
-        }
-        .active {
-          background-color: #68b6e7;
-          color: #fff !important;
-          p {
-            color: #fff;
-          }
-          span {
-            color: #fff;
-          }
-          .triangleIocn {
-            //   border-left-color: #68b6e7;
-            display: block;
-          }
-        }
-      }
-    }
-  }
-  .recheckDetailedInformation {
-    float: left;
-    padding: 15px 0px 30px 30px;
-    width: 800px;
-    .tableHeader {
-      font-size: 16px;
-      color: #68b7e7;
-      margin-bottom: 14px;
-      .recheckDegree {
-        position: relative;
-        margin-right: 30px;
-        &:after {
-          content: " ";
-          position: absolute;
-          top: 2px;
-          right: -15px;
-          width: 2px;
-          height: 14px;
-          background-color: #68b7e7;
-        }
-      }
-    }
-    .examination {
-      position: relative;
-      margin-right: 30px;
-      &:after {
-        content: " ";
-        position: absolute;
-        top: 2px;
-        right: -15px;
-        width: 1px;
-        height: 14px;
-        background-color: #ccc;
-      }
-    }
-    .wire {
-      width: 100%;
-      height: 1px;
-      background-color: #ccc;
-      margin: 20px 0px;
-    }
-    .recheckTable {
-      width: 752px;
-      border: 1px solid #ccc;
-      div {
-        float: left;
-        width: 28%;
-        height: 120px;
-        margin: 14px 0px 16px 34px;
-        border-right: 1px solid #ccc;
-
-        p {
-          color: #666666;
-          span {
-            color: #333333;
-          }
-          margin-bottom: 16px;
-          i {
-            color: #999999;
-            font-style: normal;
-            margin-left: 8px;
-          }
-        }
-        p:last-child {
-          margin-bottom: 0px;
-        }
-      }
-      div:last-child {
-        border-right: none;
-      }
-      div:nth-child(1) {
-        position: relative;
-        .triangleIocn1 {
-          background: url("../../../assets/cross.png") no-repeat 0 0;
-          width: 8px;
-          height: 8px;
-          position: absolute;
-          top: 48px;
-          right: -4px;
-          background-color: #fff;
-        }
-      }
-      div:nth-child(2) {
-        position: relative;
-        .triangleIocn2 {
-          background: url("../../../assets/cross.png") no-repeat 0 0;
-          width: 8px;
-          height: 8px;
-          position: absolute;
-          top: 48px;
-          right: -4px;
-          background-color: #fff;
-        }
-      }
-    }
-    //  查看全部块
-    .lookAtallBtnBox {
-      width: 100%;
-      position: relative;
-      margin-top: 16px;
-      h2 {
+      p {
         font-size: 16px;
-        display: inline-block;
-        padding-right: 14px;
+        color: #010101;
+        text-align: center;
       }
-      .positionWire {
-        position: absolute;
-        top: 50%;
-        right: 0px;
-        width: 90%;
-        height: 1px;
-        background-color: #ccc;
-      }
-      .positionWire2 {
-        width: 86%;
-        position: absolute;
-        top: 50%;
-        right: 0px;
-        height: 1px;
-        background-color: #ccc;
-      }
-      .basicLookAtallBtn,
-      .guidanceBtn,
-      .inspectionResult {
-        padding: 0px 5px;
-        position: absolute;
-        right: 28px;
-        top: 0px;
+    }
+    .recordNumsBoxData {
+      // display: none;
+      .Contant_left_overflow {
+        height: 500px;
+        width: 168px;
         background-color: #fff;
-        cursor: pointer;
-        -moz-user-select: none; /*火狐*/
-        -webkit-user-select: none; /*webkit浏览器*/
-        -ms-user-select: none; /*IE10*/
-        -khtml-user-select: none; /*早期浏览器*/
-        user-select: none;
-        i {
-          color: #68b6e7;
-        }
-        span {
-          color: #999999;
-        }
-      }
-    }
-    .malaise,
-    .handlingSuggestion {
-      margin-top: 16px;
-      padding-bottom: 14px;
-    }
+        border: 1px solid #ccc;
+        float: left;
+        overflow: hidden;
 
-    .consequenceBox {
-      ul {
-        margin-top: 24px;
-        li {
-          float: left;
-          margin-right: 34px;
-          margin-bottom: 20px;
-          div {
-            width: 96px;
-            height: 96px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
+        h2 {
+          display: inline-block;
+          height: 52px;
+          width: 168px;
+          text-align: center;
+          line-height: 52px;
+          font-size: 14px;
+          color: #333333;
+          border-bottom: 1px solid #ccc;
+          position: relative;
+          .crossIcon {
+            background: url("../../../assets/cross.png") no-repeat 0 0;
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            top: 48px;
+            right: 84px;
+            background-color: #fff;
+          }
+          i {
+            font-style: normal;
           }
         }
-        li:nth-child(6n) {
-          margin-right: 0px;
+        ul {
+          height: 420px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: -17px;
+          bottom: 0;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          margin-top: 62px;
+          > li {
+            width: 168px;
+            position: relative;
+            padding: 8px 0px;
+            padding-left: 20px;
+            cursor: pointer;
+            -moz-user-select: none; /*火狐*/
+            -webkit-user-select: none; /*webkit浏览器*/
+            -ms-user-select: none; /*IE10*/
+            -khtml-user-select: none; /*早期浏览器*/
+            user-select: none;
+
+            p {
+              font-size: 14px;
+              color: #333333;
+            }
+            span {
+              font-size: 12px;
+              color: #666666;
+            }
+            .triangleIocn {
+              width: 20px;
+              height: 20px;
+              border-width: 10px;
+              border-style: solid;
+              border-color: transparent;
+              border-left-color: #68b6e7;
+              display: none;
+              position: absolute;
+              top: 15px;
+              right: -20px;
+              // transition: 0.5s all;
+            }
+          }
+          .active {
+            background-color: #68b6e7;
+            color: #fff !important;
+            p {
+              color: #fff;
+            }
+            span {
+              color: #fff;
+            }
+            .triangleIocn {
+              //   border-left-color: #68b6e7;
+              display: block;
+            }
+          }
+        }
+      }
+      .recheckDetailedInformation {
+        float: left;
+        padding: 15px 0px 30px 30px;
+        width: 800px;
+        .tableHeader {
+          font-size: 16px;
+          color: #68b7e7;
+          margin-bottom: 14px;
+          .recheckDegree {
+            position: relative;
+            margin-right: 30px;
+            &:after {
+              content: " ";
+              position: absolute;
+              top: 2px;
+              right: -15px;
+              width: 2px;
+              height: 14px;
+              background-color: #68b7e7;
+            }
+          }
+        }
+        .examination {
+          position: relative;
+          margin-right: 30px;
+          &:after {
+            content: " ";
+            position: absolute;
+            top: 2px;
+            right: -15px;
+            width: 1px;
+            height: 14px;
+            background-color: #ccc;
+          }
+        }
+        .wire {
+          width: 100%;
+          height: 1px;
+          background-color: #ccc;
+          margin: 20px 0px;
+        }
+        .recheckTable {
+          width: 752px;
+          border: 1px solid #ccc;
+          div {
+            float: left;
+            width: 28%;
+            height: 120px;
+            margin: 14px 0px 16px 34px;
+            border-right: 1px solid #ccc;
+
+            p {
+              color: #666666;
+              span {
+                color: #333333;
+              }
+              margin-bottom: 16px;
+              i {
+                color: #999999;
+                font-style: normal;
+                margin-left: 8px;
+              }
+            }
+            p:last-child {
+              margin-bottom: 0px;
+            }
+          }
+          div:last-child {
+            border-right: none;
+          }
+          div:nth-child(1) {
+            position: relative;
+            .triangleIocn1 {
+              background: url("../../../assets/cross.png") no-repeat 0 0;
+              width: 8px;
+              height: 8px;
+              position: absolute;
+              top: 48px;
+              right: -4px;
+              background-color: #fff;
+            }
+          }
+          div:nth-child(2) {
+            position: relative;
+            .triangleIocn2 {
+              background: url("../../../assets/cross.png") no-repeat 0 0;
+              width: 8px;
+              height: 8px;
+              position: absolute;
+              top: 48px;
+              right: -4px;
+              background-color: #fff;
+            }
+          }
+        }
+        //  查看全部块
+        .lookAtallBtnBox {
+          width: 100%;
+          position: relative;
+          margin-top: 16px;
+          h2 {
+            font-size: 16px;
+            display: inline-block;
+            padding-right: 14px;
+          }
+          .positionWire {
+            position: absolute;
+            top: 50%;
+            right: 0px;
+            width: 90%;
+            height: 1px;
+            background-color: #ccc;
+          }
+          .positionWire2 {
+            width: 86%;
+            position: absolute;
+            top: 50%;
+            right: 0px;
+            height: 1px;
+            background-color: #ccc;
+          }
+          .basicLookAtallBtn,
+          .guidanceBtn,
+          .inspectionResult {
+            padding: 0px 5px;
+            position: absolute;
+            right: 28px;
+            top: 0px;
+            background-color: #fff;
+            cursor: pointer;
+            -moz-user-select: none; /*火狐*/
+            -webkit-user-select: none; /*webkit浏览器*/
+            -ms-user-select: none; /*IE10*/
+            -khtml-user-select: none; /*早期浏览器*/
+            user-select: none;
+            i {
+              color: #68b6e7;
+            }
+            span {
+              color: #999999;
+            }
+          }
+        }
+        .malaise,
+        .handlingSuggestion {
+          margin-top: 16px;
+          padding-bottom: 14px;
+        }
+
+        .consequenceBox {
+          ul {
+            margin-top: 24px;
+            li {
+              float: left;
+              margin-right: 34px;
+              margin-bottom: 20px;
+
+              div {
+                width: 96px;
+                height: 96px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                img {
+                  width: 96px;
+                  height: 96px;
+                  cursor: pointer;
+                  border-radius: 8px;
+                }
+              }
+            }
+            li:nth-child(6n) {
+              margin-right: 0px;
+            }
+          }
         }
       }
     }
   }
+
   // 高危评估模块
   .spouseNewsBox {
     padding-bottom: 30px;
+    // min-height: 530px;
+     height: 600px;
     .spouseNumsBox {
       // display: inline-block;
       -webkit-user-select: none;
@@ -1491,12 +1581,21 @@ export default {
         }
       }
       ul {
-        margin-top: 10px;
+        height: 420px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: -17px;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        margin-top: 62px;
         > li {
           position: relative;
-          width: 100%;
+          width: 168px;
           padding: 8px 0px;
           padding-left: 40px;
+          cursor: pointer;
           i {
             display: inline-block;
             width: 14px;

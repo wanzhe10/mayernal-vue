@@ -153,23 +153,26 @@
               class="greenStrip"
               v-show="scope.row.highRiskClass !=0"
             >
+              绿色（{{scope.row.colorNumGreen}}）项
+              <!-- 绿色（<span v-for="(item,index) in colorNum" :key="index">{{item.green}}</span>）项 -->
+
             </p>
             <p
               class="yellowStrip"
               v-show="scope.row.highRiskClass !=1"
-            >黄色（12）项</p>
+            >黄色（{{scope.row.colorNumYellow}}）项</p>
             <p
               class="orangeStrip"
               v-show="scope.row.highRiskClass !=2"
-            >橙色（12）项</p>
+            >橙色（{{scope.row.colorNumOrange}}）项</p>
             <p
               class="proponStrip"
               v-show="scope.row.highRiskClass !=3"
-            >紫色（12）项</p>
+            >紫色（{{scope.row.colorNumPurple}}）项</p>
             <p
               class="redStrip"
               v-show="scope.row.highRiskClass !=4"
-            >红色（12）项</p>
+            >红色（{{scope.row.colorNumRed}}）项</p>
           </template>
         </el-table-column>
         <el-table-column
@@ -282,9 +285,10 @@ export default {
           blood: "O",
           grade: "10",
           element: "26+3",
-          green:'',
+          green: ""
         }
       ],
+      colorNum: [],
       currentPageOfice: 1, //页码
       cur_page: 10, //分页条数
       pagerCount: 0 //总页数
@@ -292,27 +296,25 @@ export default {
   },
   mounted() {
     this.indexInquire();
-  
+    // this.colorNum = this.tableData.highRiskTotalNum
   },
   methods: {
     handleEdit(index, row) {
-      console.log(row.highRiskTotalNum);
-      localStorage.setItem('tableDataParticulars',JSON.stringify(row))
+      localStorage.setItem("tableDataParticulars", JSON.stringify(row));
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-        this.cur_page = val;
+      this.cur_page = val;
       this.currentPageOfice = 1;
       this.indexInquire();
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-       this.currentPageOfice = val;
-       this.indexInquire();
+      this.currentPageOfice = val;
+      this.indexInquire();
     },
     // 点击查询按钮
-    inquireBtn(){
-
+    inquireBtn() {
       this.indexInquire();
     },
     // 查询
@@ -332,15 +334,37 @@ export default {
           secondCheckType: this.secondCheckType
         })
         .then(res => {
-            console.log(res);
+          console.log(res);
           if (res.status === "20200") {
-            this.tableData = res.pcPatientCenterBeans;
+            // var highRiskTotalNum = res.pcPatientCenterBeans.highRiskTotalNum;
+            // console.log(highRiskTotalNum);
+            //  var colorNum  = eval("(" +highRiskTotalNum + ")");
             this.pagerCount = res.pages;
             self.imgShow = false;
             self.tableShow = true;
-
-            //  = eval("(" + this.tableData.highRiskTotalNum + ")");
-            console.log(this.tableData);
+            // console.log(this.tableData);
+            var aaa = res.pcPatientCenterBeans;
+            for (let i = 0; i < aaa.length; i++) {
+              const element = aaa[i];
+              if (element.highRiskTotalNum == "") {
+                var colorNum = JSON.parse(element.highRiskTotalNum);
+                element.colorNumGreen = 0;
+                element.colorNumYellow = 0;
+                element.colorNumOrange = 0;
+                element.colorNumRed = 0;
+                element.colorNumPurple = 0;
+              } else {
+                var colorNum = JSON.parse(element.highRiskTotalNum);
+                element.colorNumGreen = colorNum.green;
+                element.colorNumYellow = colorNum.yellow;
+                element.colorNumOrange = colorNum.orange;
+                element.colorNumRed = colorNum.red;
+                element.colorNumPurple = colorNum.purple;
+              }
+            }
+            this.tableData = res.pcPatientCenterBeans;
+            //  this.colorNum = colorNum
+            //  console.log(this.colorNum)
           } else {
             this.officeTableData = [];
             self.tableShow = false;
