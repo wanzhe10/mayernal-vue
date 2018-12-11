@@ -133,7 +133,8 @@
                   </p>
                   <p>衔&nbsp;&nbsp;&nbsp;接：
                     <span v-show="recheckRightData.cohesion==0">未衔接</span>
-                    <span v-show="recheckRightData.cohesion==1">已衔接 </span>
+                    <span v-show="recheckRightData.cohesion==1">已衔接</span>
+                    <span v-show="recheckRightData.cohesion==2">未填写</span>
                   </p>
                 </div>
                 <div>
@@ -287,28 +288,28 @@
                 @click="spouseNewsCareNum(index)"
                 :class="{active:index == spouseNewshowActive}"
               >
-                  <i
-                    class="colorLump level0"
-                    v-show="item.gradeType == 0"
-                  ></i>
-                  <i
-                    class="colorLump level1"
-                    v-show="item.gradeType == 1"
-                  ></i>
-                  <i
-                    class="colorLump level2"
-                    v-show="item.gradeType == 2"
-                  ></i>
-                  <i
-                    class="colorLump level3"
-                    v-show="item.gradeType == 3"
-                  ></i>
-                  <i
-                    class="colorLump level4"
-                    v-show="item.gradeType == 4"
-                  ></i>
+                <i
+                  class="colorLump level0"
+                  v-show="item.gradeType == 0"
+                ></i>
+                <i
+                  class="colorLump level1"
+                  v-show="item.gradeType == 1"
+                ></i>
+                <i
+                  class="colorLump level2"
+                  v-show="item.gradeType == 2"
+                ></i>
+                <i
+                  class="colorLump level3"
+                  v-show="item.gradeType == 3"
+                ></i>
+                <i
+                  class="colorLump level4"
+                  v-show="item.gradeType == 4"
+                ></i>
                 <p v-html="'第'+item.checkNumber +'次评估'"></p>
-                <span  v-html="item.createDate"></span>
+                <span v-html="item.createDate"></span>
                 <div class="triangleIocn"></div>
               </li>
 
@@ -343,16 +344,41 @@
                 class="assessInformationBox"
                 v-show="isShow4"
               >
-                <p class="mgb16"  v-if="spouseNewsRrightData.green !=undefined"><i class="level0"></i> <span class="colour">绿色（低风险）</span><span class="greenNum" >{{spouseNewsRrightData.green.length+'项'}}</span></p>
-                <div class="colorTxt greenText"><p  v-for="(item,index) in spouseNewsRrightData.green">{{item}}</p></div>
-                <p class="mgb16"   v-if="spouseNewsRrightData.red !=undefined"><i class="level3" ></i> <span class="colour">红色（高风险）</span><span class="redNum">{{spouseNewsRrightData.red.length+'项'}}</span></p>
-                <div class="colorTxt redText" ><p v-for="item in spouseNewsRrightData.red">{{item}}</p></div>
-                <p class="mgb16"  v-if="spouseNewsRrightData.yellow !=undefined"><i class="level1"></i> <span class="colour">黄色（一般风险）</span><span class="yellowNum" >{{spouseNewsRrightData.yellow.length+'项'}}</span></p>
-                <div class="colorTxt yellowText"><p v-for="item in spouseNewsRrightData.yellow">{{item}}</p></div>
-                <p class="mgb16" v-if="spouseNewsRrightData.orange !=undefined"><i class="level2"></i> <span class="colour">橙色（较高风险）</span><span class="orangeNum" >{{spouseNewsRrightData.orange.length+'项'}}</span></p>
-                <div class="colorTxt orangeText"><p v-for="item in spouseNewsRrightData.orange">{{item}}</p></div>
-                <p class="mgb16"  v-if="spouseNewsRrightData.purple !=undefined"><i class="level4"></i> <span class="colour">紫色（传染性疾病）</span><span class="purpleNum" >{{spouseNewsRrightData.purple.length+'项'}}</span></p>
-                <div class="colorTxt purpleText"><p v-for="item in spouseNewsRrightData.purple">{{item}}</p></div>
+                <p
+                  class="mgb16"
+                  v-if="spouseNewsRrightData.green !=undefined"
+                ><i class="level0"></i> <span class="colour">绿色（低风险）</span><span class="greenNum">{{spouseNewsRrightData.green.length+'项'}}</span></p>
+                <div class="colorTxt greenText">
+                  <p v-for="(item,index) in spouseNewsRrightData.green">{{item}}</p>
+                </div>
+                <p
+                  class="mgb16"
+                  v-if="spouseNewsRrightData.red !=undefined"
+                ><i class="level3"></i> <span class="colour">红色（高风险）</span><span class="redNum">{{spouseNewsRrightData.red.length+'项'}}</span></p>
+                <div class="colorTxt redText">
+                  <p v-for="item in spouseNewsRrightData.red">{{item}}</p>
+                </div>
+                <p
+                  class="mgb16"
+                  v-if="spouseNewsRrightData.yellow !=undefined"
+                ><i class="level1"></i> <span class="colour">黄色（一般风险）</span><span class="yellowNum">{{spouseNewsRrightData.yellow.length+'项'}}</span></p>
+                <div class="colorTxt yellowText">
+                  <p v-for="item in spouseNewsRrightData.yellow">{{item}}</p>
+                </div>
+                <p
+                  class="mgb16"
+                  v-if="spouseNewsRrightData.orange !=undefined"
+                ><i class="level2"></i> <span class="colour">橙色（较高风险）</span><span class="orangeNum">{{spouseNewsRrightData.orange.length+'项'}}</span></p>
+                <div class="colorTxt orangeText">
+                  <p v-for="item in spouseNewsRrightData.orange">{{item}}</p>
+                </div>
+                <p
+                  class="mgb16"
+                  v-if="spouseNewsRrightData.purple !=undefined"
+                ><i class="level4"></i> <span class="colour">紫色（传染性疾病）</span><span class="purpleNum">{{spouseNewsRrightData.purple.length+'项'}}</span></p>
+                <div class="colorTxt purpleText">
+                  <p v-for="item in spouseNewsRrightData.purple">{{item}}</p>
+                </div>
               </div>
             </el-collapse-transition>
             <div class="lookAtallBtnBox">
@@ -377,9 +403,9 @@
               <p
                 class="postscriptContent"
                 v-show="isShow5"
-              > 
-              <span v-show="spouseNewsRrightData.remarks == ''">无</span>
-              <span v-show="spouseNewsRrightData.remarks !== ''">{{spouseNewsRrightData.remarks}}</span>
+              >
+                <span v-show="spouseNewsRrightData.remarks == ''">无</span>
+                <span v-show="spouseNewsRrightData.remarks !== ''">{{spouseNewsRrightData.remarks}}</span>
               </p>
             </el-collapse-transition>
           </div>
@@ -404,82 +430,95 @@
         name="record"
         class="fortyTwoBox"
       >
-        <div class="fortyTwoTittle clearfix">
-          <p class="fl fortyTwoTittle_left">
-            <span>2018-06-20</span>
-            <span>产后42天</span>
-            <span>母乳喂养</span>
-          </p>
-          <p class="fr"><i>操作人：</i><span class="doctorName">周晓晓</span></p>
+        <div
+          class="fortyTwoImgShow"
+          v-show="fortyTwoImgHide"
+        >
+          <div class="noDataImg"></div>
+          <p>暂无记录...</p>
         </div>
-        <div class="fortyTwoTable">
-          <div>
-            <img
-              src="../../../assets/cross.png"
-              alt=""
-            >
-            <h4>一般检查</h4>
-            <h2>
-              <p><i>血压：</i><span>110/120</span><i class="unit">mmHg</i></p>
-              <p><i>体重：</i><span>110</span><i class="unit">kg</i></p>
-              <p><i>乳房：</i><span>未出现异常</span></p>
-              <p><i>乳头：</i><span>未出现异常</span></p>
-              <p><i>乳汁：</i><span>未出现异常</span></p>
-            </h2>
+        <div
+          class="fortyTwoShooBox"
+          v-show="fortyTwoDataHide"
+        >
+          <div class="fortyTwoTittle clearfix">
+            <p class="fl fortyTwoTittle_left">
+              <span>{{patientFourtyTwoData.checkDate}}</span>
+              <span>产后{{patientFourtyTwoData.checkDay}}天</span>
+              <span v-show="patientFourtyTwoData.feedingType ==1">母乳喂养</span>
+              <span v-show="patientFourtyTwoData.feedingType ==2">混合</span>
+              <span v-show="patientFourtyTwoData.feedingType ==3">人工喂养</span>
+            </p>
+            <!-- <p class="fr"><i>操作人：</i><span class="doctorName">周晓晓</span></p> -->
           </div>
-          <div>
-            <img
-              src="../../../assets/cross.png"
-              alt=""
-            >
-            <h4>妇科检查</h4>
-            <h2>
-              <p><i>外阴：</i><span>未出现异常</span></p>
-              <p><i>阴道：</i><span>未出现异常</span></p>
-              <p><i>宫颈：</i><span>未出现异常</span></p>
-              <p><i>子宫：</i><span>未出现异常</span></p>
-              <p class="mgr70"><i>双侧附件：</i><span>未出现异常</span></p>
-              <p><i>恶露：</i><span>未出现异常</span></p>
-            </h2>
-          </div>
-          <div>
-            <h4>婴儿情况</h4>
-            <h2>
+          <div class="fortyTwoTable">
+            <div>
+              <img
+                src="../../../assets/cross.png"
+                alt=""
+              >
+              <h4>一般检查</h4>
+              <h2>
+                <p><i>血压：</i><span>{{patientFourtyTwoData.baseBloodPressureHigh}}/{{patientFourtyTwoData.baseBloodPressureLow}}</span><i class="unit">mmHg</i></p>
+                <p><i>体重：</i><span>{{patientFourtyTwoData.baseWeight}}</span><i class="unit">kg</i></p>
+                <p><i>乳房：</i><span v-show="patientFourtyTwoData.baseBreast ==0">未出现异常</span><span v-show="patientFourtyTwoData.baseBreast ==1">异常</span></p>
+                <p><i>乳头：</i><span v-show="patientFourtyTwoData.baseNipple ==0">未出现异常</span><span v-show="patientFourtyTwoData.baseNipple ==1">异常</span></p>
+                <p><i>乳汁：</i><span v-show="patientFourtyTwoData.baseLatex ==0">未出现异常</span><span v-show="patientFourtyTwoData.baseLatex ==1">异常</span></p>
+              </h2>
+            </div>
+            <div>
+              <img
+                src="../../../assets/cross.png"
+                alt=""
+              >
+              <h4>妇科检查</h4>
+              <h2>
+                <p><i>外阴：</i><span v-show="patientFourtyTwoData.gynecologyVulva ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyVulva ==1">异常</span></p>
+                <p><i>阴道：</i><span v-show="patientFourtyTwoData.gynecologyVagina ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyVagina ==1">异常</span></p>
+                <p><i>宫颈：</i><span v-show="patientFourtyTwoData.gynecologyCervical ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyCervical ==1">异常</span></p>
+                <p><i>子宫：</i><span v-show="patientFourtyTwoData.gynecologyUterus ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyUterus ==1">异常</span></p>
+                <p class="mgr70"><i>双侧附件：</i><span v-show="patientFourtyTwoData.gynecologyAttachmentOnBothSides ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyAttachmentOnBothSides ==1">异常</span></p>
+                <p><i>恶露：</i><span v-show="patientFourtyTwoData.gynecologyLochia ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyLochia ==1">异常</span></p>
+              </h2>
+            </div>
+            <div>
+              <h4>婴儿情况</h4>
+              <h2>
 
-              <p><i>体重：</i><span>110</span><i class="unit">kg</i></p>
-              <p><i>身长：</i><span>15</span><i class="unit">cm</i></p>
-              <p><i>胸部：</i><span>未出现异常</span></p>
-              <p><i>心：</i><span>未出现异常</span></p>
-              <p><i>肺：</i><span>未出现异常</span></p>
-            </h2>
+                <p><i>体重：</i><span>{{patientFourtyTwoData.babyWeight}}</span><i class="unit">kg</i></p>
+                <p><i>身长：</i><span>{{patientFourtyTwoData.babyHigh}}</span><i class="unit">cm</i></p>
+                <p><i>胸部：</i><span v-show="patientFourtyTwoData.babyChest ==0">未出现异常</span><span v-show="patientFourtyTwoData.babyChest ==1">异常</span></p>
+                <p><i>心：</i><span v-show="patientFourtyTwoData.babyHeart ==0">未出现异常</span><span v-show="patientFourtyTwoData.babyHeart ==1">异常</span></p>
+                <p><i>肺：</i><span v-show="patientFourtyTwoData.babyLungs ==0">未出现异常</span><span v-show="patientFourtyTwoData.babyLungs ==1">异常</span></p>
+              </h2>
+            </div>
           </div>
-        </div>
-        <!--新生儿评估查看全部 -->
-        <div class="lookAtallBtnBox">
-          <h2>新生儿评估</h2>
-          <div class="positionWire"></div>
-          <div
-            class="fortyTwoAtallBtn"
-            @click="toggle6()"
-          >
-            <span>查看全部</span>
-            <i
-              class="el-icon-arrow-down"
-              v-show="downIcon6"
-            ></i>
-            <i
-              class="el-icon-arrow-up"
-              v-show="!downIcon6"
-            ></i>
+          <!--新生儿评估查看全部 -->
+          <div class="lookAtallBtnBox">
+            <h2>新生儿评估</h2>
+            <div class="positionWire"></div>
+            <div
+              class="fortyTwoAtallBtn"
+              @click="toggle6()"
+            >
+              <span>查看全部</span>
+              <i
+                class="el-icon-arrow-down"
+                v-show="downIcon6"
+              ></i>
+              <i
+                class="el-icon-arrow-up"
+                v-show="!downIcon6"
+              ></i>
+            </div>
           </div>
-        </div>
+          
         <!-- 42天新生儿评估内容 -->
         <el-collapse-transition>
           <p
             class="newbornContent"
             v-show="isShow6"
-          >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-            呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+          >{{patientFourtyTwoData.malaise}}</p>
         </el-collapse-transition>
 
         <!-- 42天指导与处理查看全部 -->
@@ -506,9 +545,12 @@
           <p
             class="guidanceCantent"
             v-show="isShow7"
-          >哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢，哪里那里离有点好像不舒服
-            呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢哪里那里离有点好像不舒服呀，怎办法呢</p>
+          >
+            {{patientFourtyTwoData.guideTheProcessing}}
+          </p>
         </el-collapse-transition>
+        </div>
+
         <!-- 新增42天按钮 -->
         <!-- <div class="recordNewsNav">
           <router-link :to="{path:'fortyTwoDay'}">
@@ -530,7 +572,7 @@ export default {
   data() {
     return {
       tableDataParticulars: [], // 头部详情
-      activeName: "evaluate",
+      activeName: "recheck", // recheck 复检记录，evaluate高危评估记录，record产后42天记录
       isShow1: true,
       isShow2: true,
       isShow3: true,
@@ -555,11 +597,12 @@ export default {
       imageList: [], //复检记录-图片数组
       imgShowHide: false, //复检暂无数据
       recordNumsDataShow: false, //复检数据显示隐藏
-
       spouseNewsData: [], //高危评估数据
-      spouseNewsNum: "" ,//高危评估数据条数
+      spouseNewsNum: "", //高危评估数据条数
       spouseNewsRrightData: {}, //高危评估右边数据
-
+      patientFourtyTwoData: {}, //产后42天数据
+      fortyTwoImgHide: false, //产后42天暂无数据图片
+      fortyTwoDataHide: false //产后42天数据显示
     };
   },
   mounted() {
@@ -572,6 +615,7 @@ export default {
     this.highRiskFactor = eval("(" + highRiskFactor + ")");
     this.indexInquire();
     this.assessInquire();
+    this.patientFourtyTwo();
   },
   methods: {
     handleClick(tab, event) {
@@ -653,13 +697,16 @@ export default {
           patientCenterId: this.patientCenterId
         })
         .then(res => {
-          // console.log(res);
+          console.log(res);
           if (res.status === "20200") {
             let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
             this.recheckRecord = recheckRecordData;
+            console.log(this.recheckRecord)
             this.recheckRightData = res.pcPatientSecondCheckBeanList[0];
+            if (this.recheckRecord[0].imageList !=='') {
             this.imageList = eval("(" + this.recheckRecord[0].imageList + ")");
-            this.examineNum = res.pcPatientSecondCheckBeanList.length;
+            }
+               this.examineNum = res.pcPatientSecondCheckBeanList.length;
             this.recordNumsDataShow = true;
             this.imgShowHide = false;
           } else if (res.status === "20209") {
@@ -682,29 +729,50 @@ export default {
           patientCenterId: this.patientCenterId
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             let spouseNews = res.pcPatientHighRiskGradeBeanList.reverse();
             this.spouseNewsRrightData = res.pcPatientHighRiskGradeBeanList[0];
             this.spouseNewsNum = res.pcPatientHighRiskGradeBeanList.length;
-            // this.recordNumsDataShow = true;
-            // this.imgShowHide = false;
-              var aaa = res.pcPatientHighRiskGradeBeanList;
+            var aaa = res.pcPatientHighRiskGradeBeanList;
             for (let i = 0; i < aaa.length; i++) {
               const HighRiskGradeBeanList = aaa[i];
-                var HighRiskparticulars = JSON.parse(HighRiskGradeBeanList.details);
-              //  console.log(HighRiskparticulars)
-               HighRiskGradeBeanList.green = HighRiskparticulars.green;
-               HighRiskGradeBeanList.orange = HighRiskparticulars.orange;
-               HighRiskGradeBeanList.purple = HighRiskparticulars.purple;
-               HighRiskGradeBeanList.red = HighRiskparticulars.red;
-               HighRiskGradeBeanList.yellow = HighRiskparticulars.yellow;
+              var HighRiskparticulars = JSON.parse(
+                HighRiskGradeBeanList.details
+              );
+              HighRiskGradeBeanList.green = HighRiskparticulars.green;
+              HighRiskGradeBeanList.orange = HighRiskparticulars.orange;
+              HighRiskGradeBeanList.purple = HighRiskparticulars.purple;
+              HighRiskGradeBeanList.red = HighRiskparticulars.red;
+              HighRiskGradeBeanList.yellow = HighRiskparticulars.yellow;
             }
             this.spouseNewsData = spouseNews;
           } else if (res.status === "20209") {
-            // this.recheckRecord = [];
-            // this.imgShowHide = true;
-            // this.recordNumsDataShow = false;
+            this.recheckRecord = [];
+          }
+        })
+        .catch(error => {
+        });
+    },
+
+    // 产后42天查询
+    patientFourtyTwo() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .patientFourtyTwoFindByCenterId({
+          token: token1,
+          patientCenterId: this.patientCenterId
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.status === "20200") {
+            this.patientFourtyTwoData = res;
+            this.fortyTwoImgHide = false;
+            this.fortyTwoDataHide =  true;
+          } else if (res.status === "20209") {
+             this.fortyTwoImgHide = true;
+            this.fortyTwoDataHide =  false;
           }
         })
         .catch(error => {
@@ -721,186 +789,8 @@ export default {
 .fr {
   float: right;
 }
-// 产后42天模块
-.fortyTwoBox {
-  padding: 18px 28px 30px 28px;
-  .fortyTwoTittle {
-    border-bottom: 1px solid black;
-    width: 100%;
-    height: 54px;
-    line-height: 54px;
-    .fortyTwoTittle_left {
-      span {
-        color: #68b6e7;
-        position: relative;
-        margin-right: 36px;
-        &:before {
-          content: " ";
-          position: absolute;
-          top: 4px;
-          right: -18px;
-          width: 1px;
-          height: 10px;
-          background: #68b6e7;
-        }
-      }
-      span:nth-last-child(1):before {
-        display: none;
-      }
-    }
-    i {
-      font-style: normal;
-      color: #666666;
-    }
-  }
-  .fortyTwoTable {
-    margin-top: 18px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    div {
-      padding: 24px 0px 30px 20px;
-      h4 {
-        font-size: 16px;
-        color: #333333;
-        margin-bottom: 20px;
-      }
-      h2 {
-        font-size: 14px;
-        p {
-          display: inline;
-          margin-right: 40px;
-          position: relative;
-          line-height: 30px;
-          &:before {
-            content: " ";
-            position: absolute;
-            top: 4px;
-            right: -20px;
-            width: 1px;
-            height: 10px;
-            background: #ccc;
-          }
-          i {
-            color: #666666;
-            font-style: normal;
-            margin-right: 10px;
-          }
-        }
-        .mgr70 {
-          margin-right: 70px;
-        }
-        p:nth-last-child(1):before {
-          display: none;
-        }
-      }
-    }
-    div:nth-child(1),
-    div:nth-child(2) {
-      border-bottom: 1px solid #ccc;
-      position: relative;
-      img {
-        background: url("../../../assets/cross.png") no-repeat 0 0;
-        width: 8px;
-        height: 8px;
-        position: absolute;
-        bottom: -4px;
-        left: 50%;
-        background-color: #fff;
-        padding: 0px 5px;
-      }
-    }
-    div:nth-last-child(1) {
-      border: none;
-    }
-    div:nth-child(2) {
-      p:nth-last-child(2):before {
-        display: none;
-      }
-    }
-  }
-  .unit {
-    font-size: 14px;
-    margin-left: 6px;
-    color: #999999;
-  }
-  //  查看全部块
-  .lookAtallBtnBox {
-    width: 100%;
-    position: relative;
-    margin-top: 16px;
-    h2 {
-      font-size: 16px;
-      display: inline-block;
-      padding-right: 14px;
-    }
-    .positionWire {
-      position: absolute;
-      top: 50%;
-      right: 0px;
-      width: 90%;
-      height: 1px;
-      background-color: #ccc;
-    }
-    .positionWire2 {
-      width: 90%;
-      position: absolute;
-      top: 50%;
-      right: 0px;
-      height: 1px;
-      background-color: #ccc;
-    }
-    .fortyTwoAtallBtn,
-    .fortyTwoGuidanceBtn {
-      padding: 0px 5px;
-      position: absolute;
-      right: 28px;
-      top: 0px;
-      background-color: #fff;
-      cursor: pointer;
-      -moz-user-select: none; /*火狐*/
-      -webkit-user-select: none; /*webkit浏览器*/
-      -ms-user-select: none; /*IE10*/
-      -khtml-user-select: none; /*早期浏览器*/
-      user-select: none;
-      i {
-        color: #68b6e7;
-      }
-      span {
-        color: #999999;
-      }
-    }
-  }
-  .newbornContent,
-  .guidanceCantent {
-    margin-top: 18px;
-  }
-}
-// 新增记录按钮
-.recordNewsNav,
-.spouseNewsnav {
-  position: fixed;
-  width: 100%;
-  height: 88px;
-  line-height: 88px;
-  vertical-align: middle;
-  bottom: 0;
-  left: 0;
-  background-color: #92c9eb;
-  opacity: 0.8;
-  input {
-    width: 160px;
-    height: 40px;
-    background-color: #f4fafd;
-    color: #000000;
-    text-align: center;
-    line-height: 40px;
-    border-radius: 8px;
-    font-size: 14px;
-    float: right;
-    margin-right: 56px;
-    margin-top: 25px;
-  }
-}
+
+
 .w78 {
   width: 78px;
 }
@@ -1250,7 +1140,7 @@ export default {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    height: 500px;
+    min-height: 600px;
     position: relative;
     .imgSkow {
       position: absolute;
@@ -1544,8 +1434,7 @@ export default {
   // 高危评估模块
   .spouseNewsBox {
     padding-bottom: 30px;
-    // min-height: 530px;
-     height: 600px;
+    min-height: 600px;
     .spouseNumsBox {
       // display: inline-block;
       -webkit-user-select: none;
@@ -1775,7 +1664,227 @@ export default {
       }
     }
   }
+  // 产后42天模块
+.fortyTwoBox {
+  padding: 18px 28px 30px 28px;
+  min-height: 600px;
+  .fortyTwoImgShow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .noDataImg {
+      margin: 0px auto;
+      background: url("../../../assets/42NoData.png") no-repeat -1px -22px;
+      width: 180px;
+      height: 98px;
+    }
+    p {
+      font-size: 16px;
+      color: #010101;
+      text-align: center;
+    }
+  }
+  .fortyTwoShooBox {
+    .fortyTwoTittle {
+      border-bottom: 1px solid black;
+      width: 100%;
+      height: 54px;
+      line-height: 54px;
+      .fortyTwoTittle_left {
+        span {
+          color: #68b6e7;
+          position: relative;
+          margin-right: 36px;
+          // &:before {
+          //   content: " ";
+          //   position: absolute;
+          //   top: 4px;
+          //   right: -18px;
+          //   width: 1px;
+          //   height: 10px;
+          //   background: #68b6e7;
+          // }
+        }
+        span:nth-child(1) {
+          &:before {
+            content: " ";
+            position: absolute;
+            top: 4px;
+            right: -18px;
+            width: 1px;
+            height: 10px;
+            background: #68b6e7;
+          }
+        }
+        span:nth-child(2) {
+          &:before {
+            content: " ";
+            position: absolute;
+            top: 4px;
+            right: -18px;
+            width: 1px;
+            height: 10px;
+            background: #68b6e7;
+          }
+        }
+      }
+      i {
+        font-style: normal;
+        color: #666666;
+      }
+    }
+    .fortyTwoTable {
+      margin-top: 18px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      div {
+        padding: 24px 0px 30px 20px;
+        h4 {
+          font-size: 16px;
+          color: #333333;
+          margin-bottom: 20px;
+        }
+        h2 {
+          font-size: 14px;
+          p {
+            display: inline;
+            margin-right: 40px;
+            position: relative;
+            line-height: 30px;
+            &:before {
+              content: " ";
+              position: absolute;
+              top: 4px;
+              right: -20px;
+              width: 1px;
+              height: 10px;
+              background: #ccc;
+            }
+            i {
+              color: #666666;
+              font-style: normal;
+              margin-right: 10px;
+            }
+          }
+          .mgr70 {
+            margin-right: 120px;
+          }
+          p:nth-last-child(1):before {
+            display: none;
+          }
+        }
+      }
+      div:nth-child(1),
+      div:nth-child(2) {
+        border-bottom: 1px solid #ccc;
+        position: relative;
+        img {
+          background: url("../../../assets/cross.png") no-repeat 0 0;
+          width: 8px;
+          height: 8px;
+          position: absolute;
+          bottom: -4px;
+          left: 50%;
+          background-color: #fff;
+          padding: 0px 5px;
+        }
+      }
+      div:nth-last-child(1) {
+        border: none;
+      }
+      div:nth-child(2) {
+        p:nth-last-child(2):before {
+          display: none;
+        }
+      }
+    }
+    .unit {
+      font-size: 14px;
+      margin-left: 6px;
+      color: #999999;
+    }
+    //  查看全部块
+    .lookAtallBtnBox {
+      width: 100%;
+      position: relative;
+      margin-top: 16px;
+      h2 {
+        font-size: 16px;
+        display: inline-block;
+        padding-right: 14px;
+      }
+      .positionWire {
+        position: absolute;
+        top: 50%;
+        right: 0px;
+        width: 90%;
+        height: 1px;
+        background-color: #ccc;
+      }
+      .positionWire2 {
+        width: 90%;
+        position: absolute;
+        top: 50%;
+        right: 0px;
+        height: 1px;
+        background-color: #ccc;
+      }
+      .fortyTwoAtallBtn,
+      .fortyTwoGuidanceBtn {
+        padding: 0px 5px;
+        position: absolute;
+        right: 28px;
+        top: 0px;
+        background-color: #fff;
+        cursor: pointer;
+        -moz-user-select: none; /*火狐*/
+        -webkit-user-select: none; /*webkit浏览器*/
+        -ms-user-select: none; /*IE10*/
+        -khtml-user-select: none; /*早期浏览器*/
+        user-select: none;
+        i {
+          color: #68b6e7;
+        }
+        span {
+          color: #999999;
+        }
+      }
+    }
+    .newbornContent,
+    .guidanceCantent {
+      margin-top: 18px;
+    }
+  }
 }
+// 新增记录按钮
+.recordNewsNav,
+.spouseNewsnav {
+  position: fixed;
+  width: 100%;
+  height: 88px;
+  line-height: 88px;
+  vertical-align: middle;
+  bottom: 0;
+  left: 0;
+  background-color: #92c9eb;
+  opacity: 0.8;
+  input {
+    width: 160px;
+    height: 40px;
+    background-color: #f4fafd;
+    color: #000000;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 8px;
+    font-size: 14px;
+    float: right;
+    margin-right: 56px;
+    margin-top: 25px;
+  }
+}
+}
+
 </style>
 
 <style lang="less">

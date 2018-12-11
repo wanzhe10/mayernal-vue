@@ -93,7 +93,6 @@ export default {
         localStorage.setItem('token',res.token)
         localStorage.setItem('userName',res.name)
          self.$router.push({name: 'management'})
-        console.log(1)
       //  $router.push('/management')
           // this.pageList = res.data.item
       } else {

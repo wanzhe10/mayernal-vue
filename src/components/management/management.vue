@@ -334,7 +334,7 @@ export default {
           secondCheckType: this.secondCheckType
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             // var highRiskTotalNum = res.pcPatientCenterBeans.highRiskTotalNum;
             // console.log(highRiskTotalNum);

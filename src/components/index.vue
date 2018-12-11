@@ -187,18 +187,18 @@ export default {
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-      console.log(keyPath);
+      // console.log(key, keyPath);
+      // console.log(keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      // console.log(key, keyPath);
     },
     tittleFont(event) {
       $(".characterFont").html(event.target.innerHTML);
     },
     seticon() {
       $(".seticon").attr("src");
-      console.log($(".seticon").attr("src"));
+      // console.log($(".seticon").attr("src"));
     },
     logOut() {
       let self = this;
@@ -208,7 +208,7 @@ export default {
           token: token
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             localStorage.clear();
             self.$router.push({ name: "login" });

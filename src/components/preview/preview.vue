@@ -1,194 +1,245 @@
 <template>
   <div class="newfileBox">
-    <el-tabs v-model="activeName" class="aaaa">
-      <el-tab-pane label="孕妇基本信息" name="first" class='pregnantNewsBox'>
-        <!-- 孕妇基本信息 -->
+    <el-tabs
+      v-model="activeName"
+      class="aaaa"
+      @tab-click="handleClick"
+    >
+      <!-- 孕妇基本信息 -->
+      <el-tab-pane
+        label="孕妇基本信息"
+        name="first"
+        class='pregnantNewsBox'
+        @click="firstClick()"
+      >
         <div class="lookAtallBtnBox">
           <h2>孕妇基本信息</h2>
           <div class="positionWire"></div>
-          <!-- <div class="basicLookAtallBtn conscientiousAll" @click="toggle1()">
-                        <span>查看全部</span>
-                        <i class="el-icon-arrow-down" v-show="downIcon"></i>
-                        <i class="el-icon-arrow-up" v-show="!downIcon"></i>
-                    </div> -->
         </div>
         <!-- 孕妇基本信息查看全部块 -->
-        <!-- <el-collapse-transition> -->
-        <p><i>孕妇姓名：</i><span>王越越</span></p>
-        <p><i>就诊卡号：</i><span>20181022003</span></p>
-        <p><i>手&nbsp;&nbsp;机&nbsp;&nbsp;号：</i><span>15093357355</span></p>
-        <p><i>证件类型：</i><span>居民身份证</span></p>
-        <p><i>身份证号：</i><span>130110201812102018</span></p>
-        <p><i>出生年月：</i><span>2018-12-10 27岁 女</span></p>
-        <p><i>结婚年龄：</i><span>23岁</span></p>
-        <p><i>孕前体重：</i><span>70kg</span></p>
+        <p><i>孕妇姓名：</i><span>{{essentialInformation.name}}</span></p>
+        <p><i>就诊卡号：</i><span>{{essentialInformation.number}}</span></p>
+        <p><i>手&nbsp;&nbsp;机&nbsp;&nbsp;号：</i><span>{{essentialInformation.telephone}}</span></p>
+        <p><i>证件类型：</i><span v-show="essentialInformation.idCardType == 0">身份证</span><span v-show="essentialInformation.idCardType == 1">护照</span></p>
+        <p><i>身份证号：</i><span>{{essentialInformation.idCard}}</span></p>
+        <p><i>出生年月：</i><span>{{essentialInformation.birthdayDate}}{{essentialInformation.age}}<span v-show="essentialInformation.sex == 0">男</span><span v-show="essentialInformation.sex == 1">女</span></span></p>
+        <p><i>结婚年龄：</i><span>{{essentialInformation.marryAge}}岁</span></p>
+        <p><i>孕前体重：</i><span>{{essentialInformation.lastWeight}}kg</span></p>
         <div class="wire"></div>
-        <p><i>结婚状况：</i><span>初婚</span></p>
-        <p><i>婚&nbsp;&nbsp;检：</i><span>是</span></p>
-        <p><i>近半年避孕方法：</i><span>未避孕</span></p>
-        <p><i>文化程度：</i><span>本科</span></p>
-        <p><i>民&nbsp;&nbsp;族：</i><span>汉族</span></p>
-        <p><i>职&nbsp;&nbsp;业：</i><span>医疗、科技</span><span class="jobBox mgl20">北京安智杰科技有限</span></p>
+        <p><i>结婚状况：</i><span v-show="essentialInformation.marryType ==0">初婚</span><span v-show="essentialInformation.marryType ==1">再婚</span><span v-show="essentialInformation.marryType ==2">其他</span></p>
+        <p><i>婚&nbsp;&nbsp;检：</i><span v-show="essentialInformation.marryCheck ==0">无</span><span v-show="essentialInformation.marryCheck ==1">有</span></p>
+        <p><i>近半年避孕方法：</i><span v-show="essentialInformation.contraception ==-0">未避孕</span><span v-show="essentialInformation.contraception ==-1">口服避孕药</span><span v-show="essentialInformation.contraception ==-2">避孕套</span><span v-show="essentialInformation.contraception ==-3">避孕膜</span><span v-show="essentialInformation.contraception ==-4">其他</span></p>
+        <p><i>文化程度：</i><span v-show="essentialInformation.education ==0">硕士以上</span><span v-show="essentialInformation.education ==1">本科</span><span v-show="essentialInformation.education ==2">大专</span><span v-show="essentialInformation.education ==3">中专及高中</span><span v-show="essentialInformation.education ==4">初中</span><span v-show="essentialInformation.education ==5">文盲</span></p>
+        <p><i>民&nbsp;&nbsp;族：</i><span>{{essentialInformation.nation}}</span></p>
+        <p><i>职&nbsp;&nbsp;业：</i><span v-show="essentialInformation.job ==0">无</span><span v-show="essentialInformation.job ==1">农、牧、渔</span><span v-show="essentialInformation.job ==2">干部、职员</span><span v-show="essentialInformation.job ==3">医院、科技</span><span v-show="essentialInformation.job ==4">工人</span><span v-show="essentialInformation.job ==5">个体</span><span v-show="essentialInformation.job ==6">家务</span><span class="jobBox mgl20">{{essentialInformation.jobCompanyName}}</span></p>
         <div class="wire"></div>
-        <h4 class="mgt26"><i>户口所在地：</i><span>河北省陕西省山西市</span></h4>
-        <h4><i>详细地址：</i><span>明发雅苑10号楼，1单元，158室 </span></h4>
-        <h4><i>现住地址：</i><span>君月国际22号楼，6单元，1200室</span></h4>
+        <h4 class="mgt26"><i>户口所在地：</i><span>{{essentialInformation.idCardAddressProvince}}{{essentialInformation.idCardAddressCity}}{{essentialInformation.idCardAddressCounty}}</span></h4>
+        <h4><i>现住地址：</i><span>{{essentialInformation.newAddressProvince}}{{essentialInformation.newAddressCity}}{{essentialInformation.newAddressCounty}}</span></h4>
+        <h4><i>详细地址：</i><span>{{essentialInformation.newAddressRemarks}}</span></h4>
 
-        <!-- </el-collapse-transition> -->
       </el-tab-pane>
-      <el-tab-pane label="配偶一般信息" name="second" class='spouseNewsBox'>
+      <el-tab-pane
+        label="配偶一般信息"
+        name="second"
+        class='spouseNewsBox'
+        @click="secondClick()"
+      >
         <!-- 配偶一般信息 -->
         <div class="lookAtallBtnBox">
           <h2>配偶一般信息</h2>
           <div class="positionWire"></div>
-          <!-- <div class="basicLookAtallBtn conscientiousAll" @click="toggle1()">
-                        <span>查看全部</span>
-                        <i class="el-icon-arrow-down" v-show="downIcon"></i>
-                        <i class="el-icon-arrow-up" v-show="!downIcon"></i>
-                    </div> -->
         </div>
         <!-- 孕妇基本信息查看全部块 -->
-        <!-- <el-collapse-transition> -->
-        <p><i>配偶姓名：</i><span>王越越</span></p>
-        <p><i>手&nbsp;&nbsp;机&nbsp;&nbsp;号：</i><span>15093357355</span></p>
-
-        <p><i>结婚年龄：</i><span>23岁</span></p>
-        <p><i>证件类型：</i><span>居民身份证</span></p>
-        <p><i>身份证号：</i><span>130110201812102018</span></p>
-        <p><i>配偶年龄：</i><span> 7岁</span></p>
+        <p><i>配偶姓名：</i><span>{{spouseInformation.name}}</span></p>
+        <p><i>手&nbsp;&nbsp;机&nbsp;&nbsp;号：</i><span>{{spouseInformation.telephone}}</span></p>
+        <p><i>结婚年龄：</i><span>{{spouseInformation.marryAge}}岁</span></p>
+        <p><i>证件类型：</i><span v-show="spouseInformation.idCardType == 0">身份证</span><span v-show="spouseInformation.idCardType == 1">护照</span></p>
+        <p><i>身份证号：</i><span>{{spouseInformation.idCard}}</span></p>
+        <p><i>配偶年龄：</i><span> {{spouseInformation.age}}岁</span></p>
         <div class="wire"></div>
-        <p><i>结婚状况：</i><span>初婚</span></p>
-        <p><i>婚&nbsp;&nbsp;检：</i><span>是</span></p>
-        <p><i>将康状态：</i><span>健康</span></p>
-        <p><i>文化程度：</i><span>本科</span></p>
-        <p><i>民&nbsp;&nbsp;族：</i><span>汉族</span></p>
-        <p><i>职&nbsp;&nbsp;业：</i><span>医疗、科技</span></p>
+        <p><i>结婚状况：</i><span v-show="spouseInformation.marryType ==0">初婚</span><span v-show="spouseInformation.marryType ==1">再婚</span><span v-show="spouseInformation.marryType ==2">其他</span></p>
+        <p><i>婚&nbsp;&nbsp;检：</i><span v-show="spouseInformation.marryCheck ==0">无</span><span v-show="spouseInformation.marryCheck ==1">有</span></p>
+        <p><i>将康状态：</i><span v-show="spouseInformation.healthType ==0">健康</span><span v-show="spouseInformation.healthType ==1">一般</span><span v-show="spouseInformation.healthType ==2">较弱</span></p>
+        <p><i>文化程度：</i><span v-show="spouseInformation.education ==0">硕士以上</span><span v-show="spouseInformation.education ==1">本科</span><span v-show="spouseInformation.education ==2">大专</span><span v-show="spouseInformation.education ==3">中专及高中</span><span v-show="spouseInformation.education ==4">初中</span><span v-show="spouseInformation.education ==5">文盲</span></p>
+        <!-- <p><i>民&nbsp;&nbsp;族：</i><span>{{spouseInformation.nation}}</span></p> -->
+        <p><i>职&nbsp;&nbsp;业：</i><span v-show="spouseInformation.job ==0">无</span><span v-show="spouseInformation.job ==1">农、牧、渔</span><span v-show="spouseInformation.job ==2">干部、职员</span><span v-show="spouseInformation.job ==3">医院、科技</span><span v-show="spouseInformation.job ==4">工人</span><span v-show="spouseInformation.job ==5">个体</span><span v-show="spouseInformation.job ==6">家务</span></p>
         <div class="wire"></div>
-        <p><i>吸&nbsp;&nbsp;烟：</i><span>每天<i>10</i>支</span></p>
-        <p><i>饮&nbsp;&nbsp;酒：</i><span>经常</span></p>
-        <h4><i>家族史：</i><span>高血压、糖尿病、遗传性疾病</span></h4>
+        <p><i>吸&nbsp;&nbsp;烟：</i><span v-show="spouseInformation.smoke !== ''">每天<i>{{spouseInformation.smoke}}</i>支</span> <span v-show="spouseInformation.smoke == ''">无</span></p>
+        <p><i>饮&nbsp;&nbsp;酒：</i><span v-show="spouseInformation.drink ==0">否</span><span v-show="spouseInformation.drink ==1">偶尔</span><span v-show="spouseInformation.drink ==2">经常</span></p>
+        <h4><i>家族史：</i><span v-show="spouseInformation.patientHistory == ''">无</span><span v-show="spouseInformation.patientHistory !== ''">{{spouseInformation.patientHistory}}</span></h4>
         <div class="wire"></div>
-        <h4><i>详细地址：</i><span>明发雅苑10号楼，1单元，158室 </span></h4>
-        <h4><i>现住地址：</i><span>君月国际22号楼，6单元，1200室</span></h4>
-
-        <!-- </el-collapse-transition> -->
+        <h4><i>现住地址：</i><span>{{spouseInformation.newAddressProvince}}{{spouseInformation.newAddressCity}}{{spouseInformation.newAddressCounty}}</span></h4>
+        <h4><i>详细地址：</i><span>{{spouseInformation.newAddressRemarks}}</span></h4>
       </el-tab-pane>
       <!--孕产信息 -->
-      <el-tab-pane label="孕产信息" name="third" class='pregnancyNewsBox'>
+      <el-tab-pane
+        label="孕产信息"
+        name="third"
+        class='pregnancyNewsBox'
+        @click="thirdClick()"
+      >
         <div class="lookAtallBtnBox">
           <h2>孕产信息</h2>
           <div class="positionWire"></div>
-          <!-- <div class="basicLookAtallBtn conscientiousAll" @click="toggle1()">
-                        <span>查看全部</span>
-                        <i class="el-icon-arrow-down" v-show="downIcon"></i>
-                        <i class="el-icon-arrow-up" v-show="!downIcon"></i>
-                    </div> -->
         </div>
         <!-- 孕妇基本信息查看全部块 -->
-        <!-- <el-collapse-transition> -->
-        <p><i>出诊时间：</i><span>2018-12-10</span></p>
-        <p><i>末次月经：</i><span>2018-10-09</span></p>
-        <p><i>预&nbsp;产&nbsp;期：</i><span>2019-12-10</span></p>
-        <p><i>孕&nbsp;周：</i><span>13+4周</span></p>
-        <p><i>月&nbsp;经&nbsp;史：</i><span>初潮，<i>32</i>岁<span class="jobBox mgl20">周期，<i>12</i>天</span></span></p>
+        <p><i>出诊时间：</i><span>{{pregnancyNewsInformation.firstCheckDate}}</span></p>
+        <p><i>末次月经：</i><span>{{pregnancyNewsInformation.lastMenstruation}}</span></p>
+        <p><i>预&nbsp;产&nbsp;期：</i><span>{{pregnancyNewsInformation.dueDate}}</span></p>
+        <p><i>孕&nbsp;周：</i><span>{{pregnancyNewsInformation.newAgeOfMenarche}}+{{pregnancyNewsInformation.newAgeOfMenarcheDay}}周</span></p>
+        <p><i>月&nbsp;经&nbsp;史：</i><span>初潮，<i>{{pregnancyNewsInformation.menstrualHistoryAge}}</i>岁<span class="jobBox mgl20">周期，<i>{{pregnancyNewsInformation.menstrualHistoryDay}}</i>天</span></span></p>
         <div class="wire"></div>
-        <p><i>怀孕次数：</i><span>2次</span></p>
+        <p><i>怀孕次数：</i><span>{{PregnancyNum}}次</span></p>
         <div class="mgb24">
-               <el-table :data="PregnancyInformation" border style="width: 100%" class="dynamicTable"  stripe>
-          <el-table-column prop="number" label="胎次" align='center' width="80px">
-          </el-table-column>
-          <el-table-column prop="ageOfMenarche" label="孕周" align='center' width="102px">
-          </el-table-column>
-          <el-table-column prop="productionDate" label="年月日" align='center' width="">
-          </el-table-column>
-          <el-table-column prop="productionOfAge" label="年龄" align='center'>
-          </el-table-column>
-          <el-table-column prop="productionAbortion" label="分娩方式" align='center'>
-          </el-table-column>
-          <el-table-column prop="babySex" label="性别" align='center'>
-          </el-table-column>
-          <el-table-column prop="babyHealthType" label="健否" align='center'>
-          </el-table-column>
-          <el-table-column prop="remarks" label="备注" align='center'>
-          </el-table-column>
-        </el-table>
+          <el-table
+            :data="PregnancyInformation"
+            border
+            style="width: 100%"
+            class="dynamicTable"
+            stripe
+          >
+            <el-table-column
+              prop="number"
+              label="胎次"
+              align='center'
+              width="80px"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="ageOfMenarche"
+              label="孕周"
+              align='center'
+              width="102px"
+            >
+              <template slot-scope="scope">
+                <div v-show="scope.row.pregnantType == 0">早产</div>
+                <div v-show="scope.row.pregnantType == 1">足月妊娠</div>
+                <div v-show="scope.row.pregnantType == 2">过期妊娠</div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="productionDate"
+              label="年月日"
+              align='center'
+              width=""
+            >
+            </el-table-column>
+            <el-table-column
+              prop="productionOfAge"
+              label="年龄"
+              align='center'
+            >
+            </el-table-column>
+            <el-table-column
+              prop="productionAbortion"
+              label="分娩方式"
+              align='center'
+            >
+              <template slot-scope="scope">
+                <div v-show="scope.row.productionAbortion == 0">自然</div>
+                <div v-show="scope.row.productionAbortion == 1">人工</div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="babySex"
+              label="性别"
+              align='center'
+            >
+              <template slot-scope="scope">
+                <div v-show="scope.row.babySex == 0">男</div>
+                <div v-show="scope.row.babySex == 1">女</div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="babyHealthType"
+              label="健否"
+              align='center'
+            >
+              <template slot-scope="scope">
+                <div v-show="scope.row.babyHealthType == 0">健康</div>
+                <div v-show="scope.row.babyHealthType == 1">死亡</div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="remarks"
+              label="备注"
+              align='center'
+            >
+            </el-table-column>
+          </el-table>
         </div>
-   
-          <div class="wire"></div>
-        <p><i>孕期用药：</i><span>2018-12-10</span></p>
-        <p><i>尿&nbsp;酮&nbsp;体：</i><span>2018-12-10</span></p>
-        <p><i>早孕反应程度：</i><span>轻</span></p>
-        <p><i>宠物接触：</i><span>无</span></p>
-        <p><i>接触放射性：</i><span>是</span><span class="jobBox mgl20">2018-12-12</span></p>
         <div class="wire"></div>
-        <h4><i>接触毒物：</i><span>无 </span></h4>
-        <h4><i>病毒感染：</i><span>无</span></h4>
-        <h4><i>家&nbsp;族&nbsp;史：</i><span>是</span><span class="jobBox mgl20">糖尿病、高血压、慢性传染病、白血病</span></h4>
-        <h4><i>现&nbsp;病&nbsp;史：</i><span>无</span></h4>
-
-        <!-- </el-collapse-transition> -->
+        <p><i>孕期用药：</i><span v-show="pregnancyNewsInformation.parturitionFrontPharmacy ==0">无</span><span v-show="pregnancyNewsInformation.parturitionFrontPharmacy ==1">有</span></p>
+        <p><i>尿&nbsp;酮&nbsp;体：</i><span v-show="pregnancyNewsInformation.ketosis ==0">无</span><span v-show="pregnancyNewsInformation.ketosis ==1">有</span></p>
+        <p><i>早孕反应程度：</i><span v-show="pregnancyNewsInformation.morningSickness ==0">轻</span><span v-show="pregnancyNewsInformation.morningSickness ==1">中</span><span v-show="pregnancyNewsInformation.ketosis ==2">重</span></p>
+        <p><i>宠物接触：</i><span v-show="pregnancyNewsInformation.animalContact ==0">无</span><span v-show="pregnancyNewsInformation.animalContact ==1">有</span></p>
+        <p><i>接触放射性：</i><span v-show="pregnancyNewsInformation.contactRadioactiveRays ==0">否</span><span v-show="pregnancyNewsInformation.contactRadioactiveRays ==1">是<span class="jobBox mgl20">{{pregnancyNewsInformation.contactRadioactiveRaysDate}}</span></span></p>
+        <div class="wire"></div>
+        <h4><i>接触毒物：</i><span v-show="pregnancyNewsInformation.contactToxic ==0">无</span><span v-show="pregnancyNewsInformation.contactToxic ==1">{{pregnancyNewsInformation.contactToxicName}}</span></h4>
+        <h4><i>病毒感染：</i><span v-show="pregnancyNewsInformation.virusInfection ==0">无</span><span v-show="pregnancyNewsInformation.virusInfection ==1">{{pregnancyNewsInformation.virusInfectionOther}}</span></h4>
+        <h4><i>家&nbsp;族&nbsp;史：</i><span v-show="pregnancyNewsInformation.familyHistory ==''">无</span><span v-show="pregnancyNewsInformation.familyHistory !==''">{{pregnancyNewsInformation.familyHistory}}</span></h4>
+        <h4><i>现&nbsp;病&nbsp;史：</i><span v-show="pregnancyNewsInformation.nowHistory ==''">无</span><span v-show="pregnancyNewsInformation.nowHistory !==''">{{pregnancyNewsInformation.nowHistory}}</span></h4>
       </el-tab-pane>
-      <el-tab-pane label="体格检查" name="fourth" class='healthCheckupBox'>
+      <el-tab-pane
+        label="体格检查"
+        name="fourth"
+        class='healthCheckupBox'
+      >
         <!-- 体格检查 -->
-          <div class="lookAtallBtnBox">
+        <div class="lookAtallBtnBox">
           <h2>体格检查</h2>
           <div class="positionWire"></div>
-          <!-- <div class="basicLookAtallBtn conscientiousAll" @click="toggle1()">
-                        <span>查看全部</span>
-                        <i class="el-icon-arrow-down" v-show="downIcon"></i>
-                        <i class="el-icon-arrow-up" v-show="!downIcon"></i>
-                    </div> -->
         </div>
-        <div class="subheadingBox" style="margin-top:0px;">
+        <div
+          class="subheadingBox"
+          style="margin-top:0px;"
+        >
           <h5>一般检查</h5>
-           <div class="positionWire2"></div>
+          <div class="positionWire2"></div>
         </div>
         <!-- 孕妇基本信息查看全部块 -->
-        <!-- <el-collapse-transition> -->
-        <p><i>血&nbsp;压：</i><span>100/80</span><i>mmHg</i></p>
-        <p><i>身&nbsp;高：</i><span>177cm</span></p>
-        <p><i>体&nbsp;重：</i><span>65kg</span></p>
-        <p><i>心&nbsp;率：</i><span>正常</span></p>
-        <p><i>肺：</i><span>正常</span></p>
-        <p><i>肝：</i><span> 正常</span></p>
-        <p><i>脾：</i><span>正常</span></p>
-        <p><i>脊&nbsp;椎：</i><span>正常</span></p>
-        <p><i>乳&nbsp;房：</i><span>正常</span></p>
-        <p><i>乳&nbsp;头：</i><span>凸</span></p>
-        <p><i>四肢水肿：</i><span>无</span></p>
+        <p><i>血&nbsp;压：</i><span>{{healthCheckup.baseBloodPressureHigh}}/{{healthCheckup.baseBloodPressureLow}}</span><i>mmHg</i></p>
+        <p><i>身&nbsp;高：</i><span>{{healthCheckup.baseHeight}}cm</span></p>
+        <p><i>体&nbsp;重：</i><span>{{healthCheckup.baseWeight}}kg</span></p>
+        <p><i>心&nbsp;率：</i><span v-show="healthCheckup.baseHeartRate ==0">正常</span><span v-show="healthCheckup.baseHeartRate ==1">异常</span></p>
+        <p><i>肺：</i><span v-show="healthCheckup.baseAbdomenLiver ==0">正常</span><span v-show="healthCheckup.baseAbdomenLiver ==1">异常</span></p>
+        <p><i>肝：</i><span v-show="healthCheckup.baseAbdomenLiver ==0">正常</span><span v-show="healthCheckup.baseAbdomenLiver ==1">异常</span></p>
+        <p><i>脾：</i><span v-show="healthCheckup.baseAbdomenSpleen ==0">正常</span><span v-show="healthCheckup.baseAbdomenSpleen ==1">异常</span></p>
+        <p><i>脊&nbsp;椎：</i><span v-show="healthCheckup.baseSpinalLimbsDeformity ==0">正常</span><span v-show="healthCheckup.baseSpinalLimbsDeformity ==1">畸形</span></p>
+        <p><i>乳&nbsp;房：</i><span v-show="healthCheckup.baseBreasts ==0">丰满</span><span v-show="healthCheckup.baseBreasts ==1">扁平</span></p>
+        <p><i>乳&nbsp;头：</i><span v-show="healthCheckup.baseNipple ==0">凸</span><span v-show="healthCheckup.baseNipple ==1">凹</span></p>
+        <p><i>四肢水肿：</i><span v-show="healthCheckup.baseSpinalLimbsEdema ==0">无</span><span v-show="healthCheckup.baseSpinalLimbsEdema ==1">轻</span><span v-show="healthCheckup.baseSpinalLimbsEdema ==2">中</span><span v-show="healthCheckup.baseNipple ==3">重</span></p>
         <div class="subheadingBox">
           <h5>妇科检查</h5>
-           <div class="positionWire2"></div>
+          <div class="positionWire2"></div>
         </div>
-        <p><i>外&nbsp;阴：</i><span>正常</span></p>
-        <p><i>阴&nbsp;道：</i><span>正常</span></p>
-        <p><i>宫&nbsp;颈：</i><span>正常</span></p>
-          <div class="subheadingBox">
+        <p><i>外&nbsp;阴：</i><span v-show="healthCheckup.obstetricsVulva ==0">正常</span><span v-show="healthCheckup.obstetricsVulva ==1">异常</span></p>
+        <p><i>阴&nbsp;道：</i><span v-show="healthCheckup.obstetricsVagina ==0">正常</span><span v-show="healthCheckup.obstetricsVagina ==1">异常</span></p>
+        <p><i>宫&nbsp;颈：</i><span v-show="healthCheckup.obstetricsCervix ==0">正常</span><span v-show="healthCheckup.obstetricsCervix ==1">异常</span></p>
+        <div class="subheadingBox">
           <h5>化验检查</h5>
-           <div class="positionWire2"></div>
+          <div class="positionWire2"></div>
         </div>
-        <p><i>尿蛋白：</i><span>1</span></p>
-        <p><i>血红蛋白：</i><span>1</span></p>
-        <p><i>血小板：</i><span>1</span></p>
-        <p><i>血&nbsp;型：</i><span>0型</span></p>
-          <div class="subheadingBox">
+        <p><i>尿蛋白：</i><span>{{healthCheckup.assayUrineProtein}}</span></p>
+        <p><i>血红蛋白：</i><span>{{healthCheckup.assayHemoglobin}}</span></p>
+        <p><i>血小板：</i><span>{{healthCheckup.assayBloodPlatelet}}</span></p>
+        <p><i>血&nbsp;型：</i><span v-show="healthCheckup.assayBloodType ==0">0型</span><span v-show="healthCheckup.assayBloodType ==1">A型</span><span v-show="healthCheckup.assayBloodType ==2">B型</span><span v-show="healthCheckup.assayBloodType ==3">AB型</span><span v-show="healthCheckup.assayBloodType ==4">RH型</span></p>
+        <div class="subheadingBox">
           <h5>产科检查</h5>
-           <div class="positionWire2"></div>
+          <div class="positionWire2"></div>
         </div>
-        <p><i>宫&nbsp;高：</i><span>12cm</span></p>
-        <p><i>腹&nbsp;围：</i><span>12cm</span></p>
-        <p><i>先&nbsp;露：</i><span>先露头</span></p>
-        <p><i>胎方位：</i><span>12cm</span></p>
-        <p><i>胎心率：</i><span>120次/分</span></p>
-        <p><i>盆骨出口横径：</i><span>12cm</span></p>
+        <p><i>宫&nbsp;高：</i><span>{{healthCheckup.obstetricsHeight}}cm</span></p>
+        <p><i>腹&nbsp;围：</i><span>{{healthCheckup.obstetricsAbdominalGirth}}cm</span></p>
+        <p><i>先&nbsp;露：</i><span v-show="healthCheckup.obstetricsFirstDew ==0">未填写</span><span v-show="healthCheckup.obstetricsFirstDew ==1">先头露</span><span v-show="healthCheckup.obstetricsFirstDew ==2">臀先露</span></p>
+        <p><i>胎方位：</i><span v-show="healthCheckup.obstetricsPlacental ==0">未填写</span><span v-show="healthCheckup.obstetricsPlacental ==1">枕左前位</span><span v-show="healthCheckup.obstetricsPlacental ==2">枕右横位</span><span v-show="healthCheckup.obstetricsPlacental ==3">枕右前位</span></p>
+        <p><i>胎心率：</i><span>{{healthCheckup.obstetricsFetalHeart}}次/分</span></p>
+        <p><i>盆骨出口横径：</i><span>{{healthCheckup.obstetricsTransversePelvicDiameter}}cm</span></p>
         <div class="subheadingBox mgb10">
           <h5>诊断处置</h5>
-           <div class="positionWire2"></div>
+          <div class="positionWire2"></div>
         </div>
-        <h4><i>诊断：</i><span>无 </span></h4>
-        <h4 style="margin-bottom:0px;"><i>处置：</i><span>此处所有填写信息字号为：14px,字和字的上下间距是20px,各项标题和数据之间间距12px,数据颜色为：#3333333</span></h4>
-
-        <!-- </el-collapse-transition> -->
+        <h4><i>诊断：</i><span v-show="healthCheckup.primaryDiagnosis == ''">无 </span><span v-show="healthCheckup.primaryDiagnosis !== ''">{{healthCheckup.primaryDiagnosis}}</span></h4>
+        <h4 style="margin-bottom:0px;"><i>处置：</i><span v-show="healthCheckup.disposal == ''">无 </span><span v-show="healthCheckup.disposal !== ''">{{healthCheckup.disposal}}</span></h4>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -200,60 +251,161 @@ import { pca, pcaa } from "area-data";
 export default {
   data() {
     return {
-      activeName: "first",
-      downIcon: true,
-      isShow1: true,
-      PregnancyInformation: [
-        {
-          number: "1",
-          ageOfMenarche: "28",
-          productionDate: "2016-05-02",
-          productionOfAge: "30",
-          productionAbortion: "自然分娩",
-          babySex: "男",
-          babyHealthType: "健康",
-          remarks: "备注信息"
-        },
-        {
-          number: "2",
-          ageOfMenarche: "28",
-          productionDate: "2016-05-02",
-          productionOfAge: "30",
-          productionAbortion: "自然分娩",
-          babySex: "女",
-          babyHealthType: "健康",
-          remarks: "备注信息"
-        },
-        
-      ]
+      activeName: "first", //first 基本信息，second 配偶信息，third孕产信息，fourth体格检查
+      checkId: "", // 基本信息ID
+      superId: "", //配偶ID
+      id: "", //id
+      parturitionDetailId: "", //孕产id
+      healthCheckId: "", //体格检查id
+      essentialInformation: {}, //基本信息数据
+      spouseInformation: {}, //配偶信息数据
+      pregnancyNewsInformation: {}, //孕产信息数据
+      PregnancyInformation: [], //怀孕次数数据
+      PregnancyNum: '', //怀孕次数数据
+      healthCheckup: {} //体格检查数据
     };
   },
+  mounted() {
+    let tableDataParticulars = eval(
+      "(" + localStorage.getItem("tableDataParticulars") + ")"
+    );
+    // console.log(tableDataParticulars);
+    this.checkId = tableDataParticulars.checkId; //基本信息ID
+    this.superId = tableDataParticulars.husbandsId; //配偶id
+    this.id = tableDataParticulars.id; //孕产
+    this.parturitionDetailId = tableDataParticulars.parturitionDetailId; //孕产
+    this.healthCheckId = tableDataParticulars.healthCheckId; //体格检查
+    //基本信息查询
+    //  直接调接口
+    this.essentialInquire();
+    this.patientHusbandsFindForFiling();
+    this.patientParturitionDetailFindForFiling();
+    this.patientHealthCheckFindById();
+  },
   methods: {
-    //复检记录- 自觉不适点击显示隐藏
-    toggle1: function() {
-      this.isShow1 = !this.isShow1;
-      this.downIcon = !this.downIcon;
+    // 点击teb切换在调接口
+    handleClick(tab) {
+      //   var _val = tab.index;
+      //   if (_val == 0) {
+      //     this.essentialInquire();
+      //     console.log(0);
+      //   } else if (_val == 1) {
+      //     this.patientHusbandsFindForFiling();
+      //     console.log(1);
+      //   } else if (_val == 2) {
+      //     this.patientParturitionDetailFindForFiling();
+      //     console.log(2);
+      //   } else {
+      //       this.patientHealthCheckFindById();
+      //     console.log(3);
+      //   }
+    },
+    //基本信息查询
+    essentialInquire() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .patientCheckControllerFindForFiling({
+          token: token1,
+          id: this.checkId
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.status === "20200") {
+            this.essentialInformation = res;
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+
+    // 配偶信息查询
+    patientHusbandsFindForFiling() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .patientHusbandsFindForFiling({
+          token: token1,
+          id: this.superId
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.status === "20200") {
+            this.spouseInformation = res;
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    // 孕产信息查询
+    patientParturitionDetailFindForFiling() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .patientParturitionDetailFindForFiling({
+          token: token1,
+          id: this.parturitionDetailId,
+          patientCenterId: this.id
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.pregnancyNewsInformation = res;
+            this.PregnancyInformation =
+              res.patientParturitionDetailHistoryBeanList;
+              this.PregnancyNum =  res.patientParturitionDetailHistoryBeanList.length;
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    // 体格检查查询
+    patientHealthCheckFindById() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .patientHealthCheckFindById({
+          token: token1,
+          id: this.healthCheckId
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.pregnancyNewsInformation = res;
+            this.healthCheckup = res;
+            console.log(this.healthCheckup);
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
-
 .mgt26 {
   margin-top: 26px;
 }
-.mgb10{
-  margin-bottom:10px;
+.mgb10 {
+  margin-bottom: 10px;
 }
-.mgb24{
-  margin-bottom:24px;
+.mgb24 {
+  margin-bottom: 24px;
 }
-
 
 .pregnantNewsBox,
 .spouseNewsBox,
-.pregnancyNewsBox,.healthCheckupBox{
+.pregnancyNewsBox,
+.healthCheckupBox {
   padding: 24px;
   width: 100%;
   background-color: #fff;
@@ -297,7 +449,7 @@ export default {
       left: 0px;
       font-size: 16px;
       padding-right: 14px;
-       font-weight: 500;
+      font-weight: 500;
     }
     .positionWire {
       position: absolute;
@@ -341,12 +493,12 @@ export default {
     }
   }
 }
-.healthCheckupBox{
-  .subheadingBox{
-     width: 100%;
+.healthCheckupBox {
+  .subheadingBox {
+    width: 100%;
     position: relative;
-    height:26px;
-    margin-top:10px;
+    height: 26px;
+    margin-top: 10px;
     h5 {
       background-color: #fff;
       display: block;
@@ -363,12 +515,10 @@ export default {
       top: 10px;
       right: 0px;
       width: 100%;
-      border-bottom:1px dashed #ccc;
+      border-bottom: 1px dashed #ccc;
     }
- 
+  }
 }
-}
-
 </style>
 <style>
 .el-select-dropdown__item.selected {

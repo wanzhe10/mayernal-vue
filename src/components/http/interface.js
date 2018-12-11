@@ -217,7 +217,64 @@ export const patientHighRiskGradeFindList = data => {
     data
   })
 }
+// 产后42天查询
+export const patientFourtyTwoFindByCenterId = data => {
+  return axios({
+    url: 'v1/web/pc/patientFourtyTwo/findByCenterId',
+    method: 'post',
+    data
+  })
+}
+// 预览
+//基本信息-查询
+export const patientCheckControllerFindForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientCheckController/findForFiling',
+    method: 'post',
+    data
+  })
+}
+//配偶信息-查询
+export const patientHusbandsFindForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientHusbands/findForFiling',
+    method: 'post',
+    data
+  })
+}
+//孕妇检查-查询
+export const patientParturitionDetailFindForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientParturitionDetail/findForFiling',
+    method: 'post',
+    data
+  })
+}
 
+//体格检查-查询
+export const patientHealthCheckFindById = data => {
+  return axios({
+    url: 'v1/web/pc/patientHealthCheck/findById',
+    method: 'post',
+    data
+  })
+}
+//个人信息查询
+export const doctorFindSelf = data => {
+  return axios({
+    url: 'v1/web/pc/doctor/findSelf',
+    method: 'post',
+    data
+  })
+}
+//个人信息修改
+export const doctorUpdateSelf = data => {
+  return axios({
+    url: 'v1/web/pc/doctor/updateSelf',
+    method: 'post',
+    data
+  })
+}
 
 
 // 默认全部导出
@@ -245,5 +302,12 @@ export default {
   signOut,
   findListWithParamForFiling,
   patientSecondCheckFindListByCenterId,
-  patientHighRiskGradeFindList
+  patientHighRiskGradeFindList,
+  patientFourtyTwoFindByCenterId,
+  patientCheckControllerFindForFiling,
+  patientHusbandsFindForFiling,
+  patientParturitionDetailFindForFiling,
+  patientHealthCheckFindById,
+  doctorFindSelf,
+  doctorUpdateSelf
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="personalDetailsBox">
-    <h2 class="personalDetailsBoxTittle">机构信息维护</h2>
+    <h2 class="personalDetailsBoxTittle">用户个人信息维护</h2>
     <!-- 基本信息块 -->
     <div class="personalDetailsBoxContant">
       <div class="lookAtallBtnBox">
@@ -9,43 +9,72 @@
       </div>
       <div class="newsBox">
         <span class="mgr50">登录名</span>
-        <input type="text" class='hospitalId'>
+        <span>{{userNewsData.userName}}</span>
       </div>
       <div class="newsBox">
         <span class="mgr20">用户名</span>
-        <input type="text" class='hospitalId'>
+        <span>{{userNewsData.name}}</span>
       </div>
       <div class="newsBox">
         <span class="mgr24">手&nbsp;机&nbsp;号</span>
-        <input type="text" class='hospitalId' placeholder="请输入手机号">
+        <input
+          type="text"
+          class='hospitalId'
+          placeholder="请输入手机号"
+          v-model="userNewsData.telephone"
+         @keyup="getInputValue"
+        >
       </div>
-	   <div class="newsBox" style="margin-bottom:18px;">
+      <div
+        class="newsBox"
+        style="margin-bottom:18px;"
+      >
         <span class="mgr50">邮箱</span>
-        <input type="text" class='hospitalId' placeholder="请输入邮箱号">
+        <input
+          type="text"
+          class='hospitalId'
+          placeholder="请输入邮箱号"
+          v-model="userNewsData.emails"
+        @keyup="getInputValue"
+        >
       </div>
-        <span>备注</span><br/>
-        <input type="text" class='remark' placeholder="请输入你要备注的信息">
-	    <input type="button" value="保 存" class="personalDetailsBox_btn">
-		
+      <span>备注</span><br />
+      <input
+        type="text"
+        class='remark'
+        placeholder="请输入你要备注的信息"
+        v-model="userNewsData.remarks"
+       @keyup="getInputValue"
+      >
+      <input
+        type="button"
+        value="保 存"
+        class="personalDetailsBox_btn"
+        @click="doctorUpdateSelf"
+        :disabled = 'btnStatas'
+        :class="{ 'active': select }"
+      >
+
       <div class="lookAtallBtnBox mgt40">
         <h2>机构信息</h2>
         <div class="positionWire"></div>
       </div>
-	<p class="agencyInformation">
-		<span>创建时间：</span>
-		<i style="margin-right:60px;">2018-12-10</i>
-		<span>所在机构：</span>
-		<i style="margin-right:66px;">北京市丰台妇幼保健院</i>
-		<span>所在科室</span>
-		<i style="margin-right:88px;">孕产妇-住院</i>
-		<span>激活状态</span>
-		<i>已激活</i>
-	</p>
+      <p class="agencyInformation">
+        <span>创建时间：</span>
+        <i style="margin-right:60px;">{{userNewsData.createDate}}</i>
+        <span>所在机构：</span>
+        <i style="margin-right:66px;">{{userNewsData.hospitalName}}</i>
+        <span>所在科室</span>
+        <i style="margin-right:88px;">{{userNewsData.deptSimpleName}}</i>
+        <span>激活状态</span>
+        <i v-show="userNewsData.types == 0">未激活</i>
+        <i v-show="userNewsData.types == 1">已激活</i>
+      </p>
     </div>
     <!-- 保存弹出层 -->
-  <div class="personalDetailsLayer">
+    <div class="personalDetailsLayer">
 
-  </div>
+    </div>
   </div>
 
 </template>
@@ -80,17 +109,100 @@ export default {
 
       contactsModel: "", //激活状态
       classModel: "", //机构等级
-      locationOrganzation: [], // 孕妇基本信息现户口所在地数组
+      userNewsData: {}, //用户个人信息维护数据
       pca: pca,
-      pcaa: pcaa
+      pcaa: pcaa,
+      telephone: "",
+      emails: "",
+      btnStatas: true, //按钮点击状态
+      select: false,
     };
+  },
+  mounted() {
+    // this.doctorFindSelf();
+     let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .doctorFindSelf({
+          token: token1
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.userNewsData = res;
+            // this.telephone = res.telephone;
+            // this.emails = res.emails;
+          } else {
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
   },
   methods: {
     //机构所在地
     registeredModelResidence() {
       console.log(this.registeredModel);
+    },
+    // doctorFindSelf() {
+    //   let self = this;
+    //   let token1 = window.localStorage.getItem("token");
+    //   this.$api
+    //     .doctorFindSelf({
+    //       token: token1
+    //     })
+    //     .then(res => {
+    //       console.log(res);
+    //       if (res.status === "20200") {
+    //         this.userNewsData = res;
+    //         // this.telephone = res.telephone;
+    //         // this.emails = res.emails;
+    //       } else {
+    //       }
+    //     })
+    //     .catch(error => {
+    //       // this.$Message.info(error);
+    //     });
+    // },
+    doctorUpdateSelf() {
+      alert(1)
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .doctorUpdateSelf({
+          token: token1,
+          telephone: this.userNewsData.telephone,
+          email: this.userNewsData.emails,
+          remarks: this.userNewsData.remarks
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.doctorFindSelf();
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    getInputValue(){
+      console.log(111)
+     return this.btnStatas = false;
+      return  this.select = true;
     }
-  }
+  },
+  // watch: {
+  //   "userNewsData.telephone": {
+  //     handler(val,oldval) {
+  //       if (oldval !=val) {
+  //            console.log(111);
+  //       this.btnStatas = true;
+  //       this.select = true;
+  //       }
+       
+  //     },
+  //   }
+  // }
 };
 </script>
 
@@ -127,11 +239,10 @@ export default {
     padding: 24px 24px 24px 24px;
     font-size: 18px;
     color: #333333;
-    
   }
   .personalDetailsBoxContant {
-	padding: 26px 24px 86px 24px;
-	overflow: hidden;
+    padding: 26px 24px 86px 24px;
+    overflow: hidden;
     .lookAtallBtnBox {
       width: 100%;
       position: relative;
@@ -183,16 +294,15 @@ export default {
         .borderNo {
           border: none;
         }
-	  }
-	 
+      }
     }
-   .remark{
-	 width: 100%;
-	 height: 40px;
-	 line-height: 40px;
-		border-bottom:1px solid #ccc;
-	  }
- 
+    .remark {
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid #ccc;
+    }
+
     .personalDetailsBox_btn {
       width: 239px;
       height: 42px;
@@ -203,6 +313,10 @@ export default {
       margin-top: 38px;
       display: block;
       color: #fff;
+      cursor: pointer;
+    }
+    .active {
+      opacity: 1;
     }
   }
   //  基本信息
@@ -210,14 +324,13 @@ export default {
 .locationOrganzation {
   display: inline-block;
 }
-.agencyInformation{
-	padding-left: 10px;
-	font-size: 14px;
-	color:#333333;
-	i{
-		font-style: normal;
-	}
-
+.agencyInformation {
+  padding-left: 10px;
+  font-size: 14px;
+  color: #333333;
+  i {
+    font-style: normal;
+  }
 }
 </style>
 <style>
@@ -250,11 +363,11 @@ export default {
   color: #68b6e7;
   font-weight: 700;
 }
-  .personalDetailsBox .newsBox:nth-child(2n) {
-      margin-right: 46px;
-    }
- .personalDetailsBox .newsBox:nth-last-child(1) {
-      margin-right: 0px;
-    }
+.personalDetailsBox .newsBox:nth-child(2n) {
+  margin-right: 46px;
+}
+.personalDetailsBox .newsBox:nth-last-child(1) {
+  margin-right: 0px;
+}
 </style>
 

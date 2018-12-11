@@ -855,7 +855,6 @@ export default {
               display: inline-block;
               padding: 20px 0px;
               float: left;
-
               a {
                 color: #68b7e7;
               }

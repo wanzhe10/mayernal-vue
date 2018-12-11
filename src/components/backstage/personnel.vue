@@ -687,9 +687,6 @@ export default {
     background-color: #fff;
     width: 100%;
     min-height: 500px;
-    .hideBox {
-      // display: none;
-    }
     .noDataIcon {
       width: 153px;
       height: 141px;
