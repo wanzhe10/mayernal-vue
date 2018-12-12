@@ -67,7 +67,7 @@ export const deptSimpleUpdate = data => {
 //  人员信息维护查询
 export const patientCenterFindSelfDoctorList = data => {
   return axios({
-    url: 'v1/web/pc/patientCenter/findSelfDoctorList',
+    url: 'v1/web/pc/doctor/findSelfDoctorList',
     method: 'post',
     data
   })
@@ -75,7 +75,7 @@ export const patientCenterFindSelfDoctorList = data => {
 //  人员信息维护新增
 export const patientCenterInsert = data => {
   return axios({
-    url: 'v1/web/pc/patientCenter/insert',
+    url: 'v1/web/pc/doctor/insert',
     method: 'post',
     data
   })
@@ -83,7 +83,7 @@ export const patientCenterInsert = data => {
 //  人员信息维护编辑
 export const patientCenterUpdate = data => {
   return axios({
-    url: 'v1/web/pc/patientCenter/update',
+    url: 'v1/web/pc/doctor/update',
     method: 'post',
     data
   })
@@ -178,7 +178,7 @@ export const countEntityForOthersWithDueDate = data => {
 //  更改自己密码
 export const patientCenterUpdateSelfPass = data => {
   return axios({
-    url: 'v1/web/pc/patientCenter/updateSelfPass',
+    url: 'v1/web/pc/doctor/updateSelfPass',
     method: 'post',
     data
   })

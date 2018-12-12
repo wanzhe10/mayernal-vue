@@ -20,7 +20,6 @@
       <div class="Contant_right clearfix">
         <div class="Contant_tittle">
           <span>报告单类型</span>
-          <!-- <input type="button" value="添加标签" @click="dialogVisible = true"> -->
           <input
             type="button"
             value="添加标签"
@@ -41,31 +40,6 @@
         </ul>
         <div class="labelContant">
           <h2>标签内容</h2>
-          <!-- <div class="labelContant_font">
-            <div class="labelIntroduce">
-              <p><span id="tittleName"></span>介绍</p>
-              <el-input
-                type="textarea"
-                autosize
-                placeholder="请输入内容"
-                v-model="labelIntroduce"
-                 :disabled="compile"
-              >
-              </el-input>
-            </div>
-            <div class="wire"></div>
-            <div class="labelExplain">
-              <p>解释说明</p>
-              <el-input
-                type="textarea"
-                autosize
-                placeholder="请输入内容"
-                v-model="labelExplain"
-                 :disabled="compile"
-              >
-              </el-input>
-            </div>
-          </div> -->
           <div
             class="labelContant_font"
             v-for="(item,index) in arr"
@@ -332,6 +306,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+[v-cloak]{
+  display: none;
+}
 .mgr18 {
   margin-right: 18px;
 }

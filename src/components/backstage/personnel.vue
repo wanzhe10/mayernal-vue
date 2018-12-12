@@ -48,6 +48,7 @@
             v-model="value3"
             placeholder="请选择"
             class="seeSelect"
+            @change="aaa"
           >
             <el-option
               size='126px'
@@ -74,7 +75,7 @@
           type="primary"
           round
           class="inquireBtn"
-          @click="inquire()"
+          @click="inquireBtn()"
         >查询</el-button>
       </div>
     </div>
@@ -411,6 +412,9 @@ export default {
     this.getUseInquire(token, 1, 10);
   },
   methods: {
+    aaa(){
+      console.log(this.value3)
+    },
     handleSizeChange(val) {
       let token = window.localStorage.getItem("token");
       this.currentPageOfice = 1;
@@ -473,6 +477,7 @@ export default {
           pageSize: pageSIze
         })
         .then(res => {
+          console.log(res)
           if (res.status === "20200") {
             this.role = res.pcOccupationBeanList;
           } else {
@@ -508,7 +513,7 @@ export default {
           occupationId: occupationId
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
 
           if (res.status === "20200") {
             self.personnelableData = res.pcDoctorBeanList;
@@ -522,24 +527,75 @@ export default {
         });
     },
 
+    // 查询按钮
+    inquireBtn(){
+       let token1 = window.localStorage.getItem("token");
+       if ( isNaN(this.fileSearch)) {
+        //  姓名
+           this.inquire(token1, 1, 10,0,this.fileSearch,this.contactsModel, this.value2,this.value3);
+       }else{
+        //  手机号
+           this.inquire(token1, 1, 10,1,this.fileSearch,this.contactsModel, this.value2,this.value3);
+       }
+    },
+
     // 人员信息维护新增
     patientCenterInsertBtn() {
-      var token = localStorage.getItem("token");
-      let self = this;
-      console.log(this.arr);
-      this.$api
-        .patientCenterInsert(this.arr)
-        .then(res => {
-          if (res.status === "20200") {
-            this.dialogVisible = false;
-            this.inquire(token, 1, self.cur_page);
-          } else {
-            // this.$Message.info(res.desc);
-          }
-        })
-        .catch(error => {
-          // this.$Message.info(error);
+      var reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+      if (this.arr.name == "") {
+        this.$message({
+          showClose: true,
+          message: "用户姓名不能为空",
+          type: "warning"
         });
+      } else if (this.arr.telephone == "") {
+        this.$message({
+          showClose: true,
+          message: "手机号不能为空",
+          type: "warning"
+        });
+      } else if (!reg.test(this.arr.telephone)) {
+        this.$message({
+          showClose: true,
+          message: "手机格式不正确",
+          type: "warning"
+        });
+      } else if (this.arr.deptId == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择科室",
+          type: "warning"
+        });
+      } else if (this.arr.occupationId == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择角色名称",
+          type: "warning"
+        });
+      } else if (this.arr.types == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择激活状态",
+          type: "warning"
+        });
+      } else {
+        var token = localStorage.getItem("token");
+        let self = this;
+        console.log(this.arr);
+        this.$api
+          .patientCenterInsert(this.arr)
+          .then(res => {
+            if (res.status === "20200") {
+              this.dialogVisible = false;
+              this.inquire(token, 1, self.cur_page);
+            } else {
+              // this.$Message.info(res.desc);
+            }
+          })
+          .catch(error => {
+            // this.$Message.info(error);
+          });
+      }
     },
 
     // 编辑
@@ -549,34 +605,55 @@ export default {
       this.arr2 = JSON.parse(JSON.stringify(row));
       this.arr2.deptId = row.deptSimpleName;
     },
-    // 人员信息维护编辑
+    // 人员信息维护编辑确定按钮
     patientCenterUpdateBtn() {
-      let token = localStorage.getItem("token");
-      let self = this;
-      console.log(this.arr2);
-      this.$api
-        .patientCenterUpdate({
-          telephone:this.arr2.telephone, // 编辑人员弹框 手机号
-          name: this.arr2.name, // 编辑人员弹框 用户姓名
-          occupationId: this.arr2.occupationId, //编辑人员弹框角色id
-          deptId: this.arr2.deptId, //编辑人员弹框 科室id
-          types:this.arr2.types, // 编辑人员弹框激活状态
-          rolesType:'0', //角色描述
-          id: this.arr2.id, //人员编号
-          token: token
-        })
-        .then(res => {
-          console.log(res);
-          if (res.status === "20200") {
-            this.editdialogVisible = false;
-            this.inquire(token, 1, self.cur_page);
-          } else {
-            // this.$Message.info(res.desc);
-          }
-        })
-        .catch(error => {
-          // this.$Message.info(error);
+      var reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+      if (this.arr2.name == "") {
+        this.$message({
+          showClose: true,
+          message: "用户姓名不能为空",
+          type: "warning"
         });
+      } else if (this.arr2.telephone == "") {
+        this.$message({
+          showClose: true,
+          message: "手机号不能为空",
+          type: "warning"
+        });
+      } else if (!reg.test(this.arr2.telephone)) {
+        this.$message({
+          showClose: true,
+          message: "手机格式不正确",
+          type: "warning"
+        });
+      } else {
+        let token = localStorage.getItem("token");
+        let self = this;
+        console.log(this.arr2);
+        this.$api
+          .patientCenterUpdate({
+            telephone: this.arr2.telephone, // 编辑人员弹框 手机号
+            name: this.arr2.name, // 编辑人员弹框 用户姓名
+            occupationId: this.arr2.occupationId, //编辑人员弹框角色id
+            deptId: this.arr2.deptId, //编辑人员弹框 科室id
+            types: this.arr2.types, // 编辑人员弹框激活状态
+            rolesType: "0", //角色描述
+            id: this.arr2.id, //人员编号
+            token: token
+          })
+          .then(res => {
+            console.log(res);
+            if (res.status === "20200") {
+              this.editdialogVisible = false;
+              this.inquire(token, 1, self.cur_page);
+            } else {
+              // this.$Message.info(res.desc);
+            }
+          })
+          .catch(error => {
+            // this.$Message.info(error);
+          });
+      }
     }
   }
 };

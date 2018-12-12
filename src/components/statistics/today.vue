@@ -771,6 +771,9 @@ export default {
   .todayBox .el-table th {
     padding: 10px 0;
   }
+   .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #68b6e7;
+  }
 }
 </style>
 

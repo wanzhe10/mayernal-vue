@@ -2,9 +2,9 @@
   <div class="managementBox">
     <div class="topBox clearfix">
       <div class="btnsBOx">
-        <router-link :to="{path: 'newfile'}">
+        <!-- <router-link :to="{path: 'newfile'}"> -->
           <div class="newBtn">新建孕妇档案</div>
-        </router-link>
+        <!-- </router-link> -->
       </div>
       <div class="selectBox clearfix">
         <div class="pdl20 fl w170">

@@ -22,7 +22,7 @@
           class='hospitalId'
           placeholder="请输入手机号"
           v-model="userNewsData.telephone"
-         @keyup="getInputValue"
+          @keyup="getInputValue"
         >
       </div>
       <div
@@ -35,7 +35,7 @@
           class='hospitalId'
           placeholder="请输入邮箱号"
           v-model="userNewsData.emails"
-        @keyup="getInputValue"
+          @keyup="getInputValue"
         >
       </div>
       <span>备注</span><br />
@@ -44,14 +44,14 @@
         class='remark'
         placeholder="请输入你要备注的信息"
         v-model="userNewsData.remarks"
-       @keyup="getInputValue"
+        @keyup="getInputValue"
       >
       <input
         type="button"
         value="保 存"
         class="personalDetailsBox_btn"
         @click="doctorUpdateSelf"
-        :disabled = 'btnStatas'
+        :disabled='btnStatas'
         :class="{ 'active': select }"
       >
 
@@ -114,13 +114,20 @@ export default {
       pcaa: pcaa,
       telephone: "",
       emails: "",
-      btnStatas: true, //按钮点击状态
-      select: false,
+      btnStatas: false, //按钮点击状态
+      select: false
     };
   },
   mounted() {
-    // this.doctorFindSelf();
-     let self = this;
+    this.doctorFindSelf();
+  },
+  methods: {
+    //机构所在地
+    registeredModelResidence() {
+      console.log(this.registeredModel);
+    },
+    doctorFindSelf() {
+      let self = this;
       let token1 = window.localStorage.getItem("token");
       this.$api
         .doctorFindSelf({
@@ -138,71 +145,60 @@ export default {
         .catch(error => {
           // this.$Message.info(error);
         });
-  },
-  methods: {
-    //机构所在地
-    registeredModelResidence() {
-      console.log(this.registeredModel);
     },
-    // doctorFindSelf() {
-    //   let self = this;
-    //   let token1 = window.localStorage.getItem("token");
-    //   this.$api
-    //     .doctorFindSelf({
-    //       token: token1
-    //     })
-    //     .then(res => {
-    //       console.log(res);
-    //       if (res.status === "20200") {
-    //         this.userNewsData = res;
-    //         // this.telephone = res.telephone;
-    //         // this.emails = res.emails;
-    //       } else {
-    //       }
-    //     })
-    //     .catch(error => {
-    //       // this.$Message.info(error);
-    //     });
-    // },
     doctorUpdateSelf() {
-      alert(1)
-      let self = this;
-      let token1 = window.localStorage.getItem("token");
-      this.$api
-        .doctorUpdateSelf({
-          token: token1,
-          telephone: this.userNewsData.telephone,
-          email: this.userNewsData.emails,
-          remarks: this.userNewsData.remarks
-        })
-        .then(res => {
-          console.log(res);
-          if (res.status === "20200") {
-            this.doctorFindSelf();
-          }
-        })
-        .catch(error => {
-          // this.$Message.info(error);
+      var reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+      var emailReg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z]{2,5}$/;
+      if (this.userNewsData.telephone == "") {
+        this.$message({
+          showClose: true,
+          message: "手机号不能为空",
+          type: "warning"
         });
+      } else if (!reg.test(this.userNewsData.telephone)) {
+        this.$message({
+          showClose: true,
+          message: "手机格式不正确",
+          type: "warning"
+        });
+      } else if (this.userNewsData.emails == "") {
+        this.$message({
+          showClose: true,
+          message: "邮箱不能为空",
+          type: "warning"
+        });
+      } else if (!emailReg.test(this.userNewsData.emails)) {
+        this.$message({
+          showClose: true,
+          message: "邮箱格式格式不正确",
+          type: "warning"
+        });
+      } else {
+        let self = this;
+        let token1 = window.localStorage.getItem("token");
+        this.$api
+          .doctorUpdateSelf({
+            token: token1,
+            telephone: this.userNewsData.telephone,
+            email: this.userNewsData.emails,
+            remarks: this.userNewsData.remarks
+          })
+          .then(res => {
+            console.log(res);
+            if (res.status === "20200") {
+              this.doctorFindSelf();
+            }
+          })
+          .catch(error => {
+            // this.$Message.info(error);
+          });
+      }
     },
-    getInputValue(){
-      console.log(111)
-     return this.btnStatas = false;
-      return  this.select = true;
+    getInputValue() {
+      this.btnStatas = false;
+      this.select = true;
     }
-  },
-  // watch: {
-  //   "userNewsData.telephone": {
-  //     handler(val,oldval) {
-  //       if (oldval !=val) {
-  //            console.log(111);
-  //       this.btnStatas = true;
-  //       this.select = true;
-  //       }
-       
-  //     },
-  //   }
-  // }
+  }
 };
 </script>
 

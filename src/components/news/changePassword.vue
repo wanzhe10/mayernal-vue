@@ -5,7 +5,7 @@
 			<p>修改密码 /<span>Change Password</span></p>
 			<el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="70px" class="demo-ruleForm" label-position='left'>
 				<el-form-item label="登录名">
-					<el-input v-model="ruleForm2.name" class="user"></el-input>
+					<el-input v-model="ruleForm2.name" class="user" readonly='readonly'></el-input>
 				</el-form-item>
 				<el-form-item label="原始密码" prop="oldpassword">
 					<el-input type="password" v-model="ruleForm2.oldpassword" autocomplete="off"></el-input>
@@ -28,15 +28,14 @@
 <script>
 export default {
   data() {
-   
     var validatePass = (rule, value, callback) => {
+      var Reg_PassWord =/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
       if (value === "") {
         callback(new Error("请输入密码"));
-      } else {
-        if (this.ruleForm2.newpassword !== "") {
-          //   this.$refs.ruleForm2.validateField("newpassword");
-        }
-        callback();
+      } else if(!Reg_PassWord.test(value)){
+        callback(new Error("8-16位含数字/字母2种组合"));
+      }else{
+          callback();
       }
     };
     var validatePass2 = (rule, value, callback) => {
@@ -62,6 +61,10 @@ export default {
       },
        flag:true,
     };
+  },
+  mounted(){
+    let loginName =localStorage.getItem('loginName');
+    this.ruleForm2.name = loginName;
   },
   methods: {
     submitForm(formName) {

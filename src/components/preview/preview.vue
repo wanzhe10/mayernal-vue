@@ -269,7 +269,6 @@ export default {
     let tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
     );
-    // console.log(tableDataParticulars);
     this.checkId = tableDataParticulars.checkId; //基本信息ID
     this.superId = tableDataParticulars.husbandsId; //配偶id
     this.id = tableDataParticulars.id; //孕产
@@ -317,7 +316,7 @@ export default {
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+          this.$message.error('基本信息查询错误，请稍后重试');
         });
     },
 
@@ -338,7 +337,7 @@ export default {
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+          this.$message.error('配偶信息查询错误，请稍后重试');
         });
     },
     // 孕产信息查询
@@ -362,7 +361,7 @@ export default {
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+          this.$message.error('孕产信息查询错误，请稍后重试');
         });
     },
     // 体格检查查询
@@ -384,7 +383,7 @@ export default {
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+         this.$message.error('体格检查查询错误，请稍后重试');
         });
     }
   }

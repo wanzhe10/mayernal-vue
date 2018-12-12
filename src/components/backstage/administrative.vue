@@ -8,6 +8,7 @@
           v-model="contactsModel"
           placeholder="请选择"
           clear="contactsModel"
+          @change='isProhibitSelect'
         >
           <el-option
             v-for="item in contacts"
@@ -31,8 +32,12 @@
         src="../../assets/noDataIcon.png"
         alt="暂无数据"
         class="noDataIcon"
+        v-show='imgShow'
       >
-      <div class="hideBox">
+      <div
+        class="hideBox"
+        v-show='tableShow'
+      >
         <el-table
           :data="officeTableData"
           style="width: 100%"
@@ -71,10 +76,10 @@
             label="状态"
             width="112px"
           >
-          <template slot-scope="scope">
-            <div v-show="scope.row.isProhibit == 0">未激活</div>
-            <div v-show="scope.row.isProhibit == 1">激活</div>
-          </template>
+            <template slot-scope="scope">
+              <div v-show="scope.row.isProhibit == 0">未激活</div>
+              <div v-show="scope.row.isProhibit == 1">激活</div>
+            </template>
           </el-table-column>
           <el-table-column
             prop="createDate"
@@ -129,7 +134,6 @@
           <el-input
             v-model="form.name"
             autocomplete="off"
-
           ></el-input>
         </el-form-item>
         <el-form-item label="激活状态">
@@ -261,6 +265,8 @@ export default {
       contactsModel: "",
       dialogVisible: false, //新建按钮弹框
       editdialogVisible: false, // 编辑按钮弹框
+      tableShow: false,
+      imgShow: false,
       // 新建科室
       form: {
         isProhibit: "", //激活状态
@@ -269,7 +275,7 @@ export default {
         remarks: "", //角色描述
         token: token1 //token
       },
-      
+
       // 编辑科室
       form2: {
         isProhibit: "",
@@ -279,10 +285,9 @@ export default {
         token: token1 //token
       },
       currentPageOfice: 1, //分页
-      cur_page: 10,//分页
-      pagerCount: 3,//分页
+      cur_page: 10, //分页
+      pagerCount: 3 //分页
     };
-     
   },
   mounted() {
     let token1 = window.localStorage.getItem("token");
@@ -319,47 +324,71 @@ export default {
         .catch(_ => {});
     },
     // 查询
-    getUser(token, pageNum, pageSize) {
+    getUser(token, pageNum, pageSize, isProhibit) {
       let self = this;
       let token1 = window.localStorage.getItem("token");
       this.$api
         .deptSimpleFindList({
           token: token1,
           pageNum: pageNum,
-          pageSize: pageSize
+          pageSize: pageSize,
+          isProhibit: isProhibit
         })
         .then(res => {
+          console.log(res);
           if (res.status === "20200") {
             this.officeTableData = res.pcDeptSimpleBeanList;
             console.log(this.officeTableData);
             this.pagerCount = res.pageNum;
-          } else {
-            // this.$Message.info(res.desc);
+            self.imgShow = false;
+            self.tableShow = true;
+          } else if (res.status === "20209") {
+            self.tableShow = false;
+            self.imgShow = true;
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+           this.$message.error('查询错误，请稍后重试');
         });
+    },
+    // 激活状态查询
+    isProhibitSelect() {
+      let token1 = window.localStorage.getItem("token");
+      this.getUser(token1, 1, 10, this.contactsModel);
     },
     // 新建
     radioEvent() {
-      var token = localStorage.getItem("token");
-      console.log(this.form);
-      this.$api
-        .deptSimpleInsert(this.form)
-        .then(res => {
-          if (res.status === "20200") {
-            //  console.log('成功')
-            this.dialogVisible = false;
-            console.log(res);
-            getUser(token, 1, pageSize);
-          } else {
-            // this.$Message.info(res.desc);
-          }
-        })
-        .catch(error => {
-          // this.$Message.info(error);
+      if (this.form.name == "") {
+        this.$message({
+          showClose: true,
+          message: "科室名称不能为空",
+          type: "warning"
         });
+      } else if (this.form.isProhibit == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择激活状态",
+          type: "warning"
+        });
+      } else {
+        var token = localStorage.getItem("token");
+        console.log(this.form);
+        this.$api
+          .deptSimpleInsert(this.form)
+          .then(res => {
+            if (res.status === "20200") {
+              //  console.log('成功')
+              this.dialogVisible = false;
+              console.log(res);
+              getUser(token, 1, pageSize);
+            } else {
+              // this.$Message.info(res.desc);
+            }
+          })
+          .catch(error => {
+            // this.$Message.info(error);
+          });
+      }
     },
     // 编辑
     handleEdit(index, row) {
@@ -369,31 +398,38 @@ export default {
     },
     // 编辑确认按钮
     editRadioBtn() {
-       var token = localStorage.getItem("token");
-       var self = this
-      this.$api
-        .deptSimpleUpdate({
-          id: this.form2.id,
-          token: token,
-          isProhibit: this.form2.isProhibit,
-          remarks: this.form2.remarks,
-          name: this.form2.name
-        })
-        .then(res => {
-          if (res.status === "20200") {
-             console.log('成功')
-            // console.log(res);
-            this.editdialogVisible = false;
-            this.getUser(token, 1, self.cur_page);
-          } else {
-            // this.$Message.info(res.desc);
-          }
-        })
-        .catch(error => {
-          // this.$Message.info(error);
+      if (this.form2.name == "") {
+        this.$message({
+          showClose: true,
+          message: "科室名称不能为空",
+          type: "warning"
         });
+      } else {
+        var token = localStorage.getItem("token");
+        var self = this;
+        this.$api
+          .deptSimpleUpdate({
+            id: this.form2.id,
+            token: token,
+            isProhibit: this.form2.isProhibit,
+            remarks: this.form2.remarks,
+            name: this.form2.name
+          })
+          .then(res => {
+            if (res.status === "20200") {
+              console.log("成功");
+              // console.log(res);
+              this.editdialogVisible = false;
+              this.getUser(token, 1, self.cur_page);
+            } else {
+              // this.$Message.info(res.desc);
+            }
+          })
+          .catch(error => {
+            // this.$Message.info(error);
+          });
+      }
     }
-    
   }
 };
 </script>
@@ -447,7 +483,7 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    display: none;
+    // display: none;
     z-index: 111;
     transform: translate(-50%, -50%);
   }

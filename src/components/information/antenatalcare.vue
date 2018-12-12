@@ -11,7 +11,7 @@
         <li style="width:240px;">温馨提示</li>
         <li style="width:100px;">操作</li>
       </ul>
-      <div class="hideBox">
+      <div class="hideBox" v-show='tableShow'>
         <ul class="tableContant">
           <li
             v-for="(item,index) in tableContantData"
@@ -109,6 +109,7 @@
         src="../../assets/noDataIcon.png"
         alt="暂无数据"
         class="noDataIcon"
+         v-show='imgShow'
       >
     </div>
     <!-- 新增模板弹窗 -->
@@ -135,6 +136,7 @@
                 v-model="gestationalWeekStarModel"
                 placeholder="请选择"
                 size='100%'
+                @change="gestationalScope"
               >
                 <el-option
                   v-for="item in gestationalWeekStar"
@@ -148,6 +150,7 @@
                 v-model="gestationalWeekEndModel"
                 placeholder="请选择"
                 size='100%'
+                  @change="gestationalScope"
               >
                 <el-option
                   v-for="item in gestationalWeekEnd"
@@ -616,7 +619,9 @@ export default {
       alteropinion: "",
       altertemplateNameId: "", //id
       altertemplateNameNumber: "", //number
-      btnText: "查看"
+      btnText: "查看",
+       tableShow: false,
+      imgShow: false,
     };
   },
   mounted() {
@@ -633,6 +638,15 @@ export default {
         event.target.innerHTML = "收起";
       } else {
         event.target.innerHTML = "查看";
+      }
+    },
+    gestationalScope(){
+      if (this.gestationalWeekStarModel>this.gestationalWeekEndModel) {
+          this.$message({
+          showClose: true,
+          message: "孕周开始不能大于孕周结束",
+          type: "warning"
+        });
       }
     },
     descInput2() {
@@ -676,19 +690,45 @@ export default {
         .then(res => {
           if (res.status === "20200") {
             this.tableContantData = res.pcCheckForWeekBeanList;
-            console.log(this.tableContantData);
-            // this.pagerCount = res.pageNum;
-          } else {
-            // this.$Message.info(res.desc);
+           self.imgShow = false;
+            self.tableShow = true;
+          } else if(res.status === "20209") {
+            self.tableShow = false;
+            self.imgShow = true;
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+          this.$message.error('查询错误，请稍后重试');
         });
     },
     // 新建
     radioEvent() {
-      let self = this;
+    if (this.templateName == "") {
+        this.$message({
+          showClose: true,
+          message: "产品名称不能为空",
+          type: "warning"
+        });
+      } else if (this.activatedStateModel == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择激活状态",
+          type: "warning"
+        });
+      } else if (this.remnantFontContant == "") {
+        this.$message({
+          showClose: true,
+          message: "产检须知不能为空",
+          type: "warning"
+        });
+      } else if (this.opinionModel == "") {
+        this.$message({
+          showClose: true,
+          message: "温馨提示不能为空",
+          type: "warning"
+        });
+      } else{
+   let self = this;
       let token = localStorage.getItem("token");
       let number = this.tableContantData.length + 1;
       console.log(number);
@@ -709,15 +749,13 @@ export default {
             //  console.log('成功')
             this.dialogVisible = false;
             console.log(res);
-          } else {
-            // this.$Message.info(res.desc);
-          }
+          } 
         })
         .catch(error => {
-          // this.$Message.info(error);
+          this.$message.error("新建错误，请稍后重试");
         });
+      }
     },
-
     //修改
     // 编辑
     handleEdit(i) {
@@ -740,45 +778,66 @@ export default {
     },
     // 编辑确认按钮
     editRadioBtn() {
-      var token = localStorage.getItem("token");
-      this.$api
-        .checkForWeekUpdate({
-          id: this.altertemplateNameId,
-          token: token,
-          number: this.altertemplateNameNumber,
-          name: this.altertemplateName,
-          gestationalWeekStart: this.altergestationalWeekEndModel,
-          gestationalWeekEnd: this.altergestationalWeekStarModel,
-          checkDetail: this.alteropinionModel,
-          isAbnormal: "",
-          remarks: this.alterremnantFontContant,
-          types: this.alteractivatedStateModel
-        })
-        .then(res => {
-          // 调查询接口
-          let self = this;
-          let token1 = window.localStorage.getItem("token");
-          this.$api
-            .checkForWeekFindList({
-              token: token1
-            })
-            .then(res => {
-              if (res.status === "20200") {
-                this.tableContantData = res.pcCheckForWeekBeanList;
-              }
-            })
-            .catch(error => {
-              // this.$Message.info(error);
-            });
-          if (res.status === "20200") {
-            this.alterdialogVisible = false;
-          } else {
-            // this.$Message.info(res.desc);
-          }
-        })
-        .catch(error => {
-          // this.$Message.info(error);
+      if (this.altertemplateName == "") {
+        this.$message({
+          showClose: true,
+          message: "产品名称不能为空",
+          type: "warning"
         });
+      } else if (this.alteractivatedStateModel == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择激活状态",
+          type: "warning"
+        });
+      } else if (this.alterremnantFontContant == "") {
+        this.$message({
+          showClose: true,
+          message: "产检须知不能为空",
+          type: "warning"
+        });
+      } else if (this.alteropinionModel == "") {
+        this.$message({
+          showClose: true,
+          message: "温馨提示不能为空",
+          type: "warning"
+        });
+      } else {
+        var token = localStorage.getItem("token");
+        this.$api
+          .checkForWeekUpdate({
+            id: this.altertemplateNameId,
+            token: token,
+            number: this.altertemplateNameNumber,
+            name: this.altertemplateName,
+            gestationalWeekStart: this.altergestationalWeekEndModel,
+            gestationalWeekEnd: this.altergestationalWeekStarModel,
+            checkDetail: this.alteropinionModel,
+            isAbnormal: "",
+            remarks: this.alterremnantFontContant,
+            types: this.alteractivatedStateModel
+          })
+          .then(res => {
+            // 调查询接口
+            let self = this;
+            let token1 = window.localStorage.getItem("token");
+            this.$api
+              .checkForWeekFindList({
+                token: token1
+              })
+              .then(res => {
+                if (res.status === "20200") {
+                  this.tableContantData = res.pcCheckForWeekBeanList;
+                  this.alterdialogVisible = false;
+                } else {
+                  this.$message.error("修改错误，请稍后重试");
+                }
+              })
+              .catch(error => {
+                this.$message.error("修改错误，请稍后重试");
+              });
+          });
+      }
     },
 
     // 判断是激活还是未激活
@@ -901,7 +960,6 @@ export default {
       position: absolute;
       top: 50%;
       left: 50%;
-      display: none;
       transform: translate(-50%, -50%);
     }
   }

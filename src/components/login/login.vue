@@ -92,6 +92,7 @@ export default {
      if (res.status ==="20200" ) {
         localStorage.setItem('token',res.token)
         localStorage.setItem('userName',res.name)
+        localStorage.setItem('loginName',res.userName)
          self.$router.push({name: 'management'})
       //  $router.push('/management')
           // this.pageList = res.data.item

@@ -27,8 +27,8 @@
           <span class="mgr20">注册时间</span>
           <span
             class='registrationDate'
-            :v-html="arr.time"
-          >2018-11-11</span>
+            v-html="arr.createDate"
+          ></span>
         </div>
         <div class="newsBox">
           <span class="mgr20">机构联系人</span>
@@ -37,7 +37,8 @@
             class='userName'
             placeholder='请输入联系人名称'
             v-model="arr.userName"
-            readonly='readonly'
+            readonly='true'
+              @keyup="registeredModelResidence()"
           >
         </div>
         <div class="newsBox">
@@ -46,8 +47,9 @@
             type="text"
             class='pgoneNum'
             placeholder="请输入手机号"
-            v-model="arr.telephone"
-            readonly='readonly'
+            v-model="arr.userTelephone"
+            readonly='true'
+               @keyup="registeredModelResidence()"
           >
         </div>
         <div class="newsBox">
@@ -56,6 +58,7 @@
             v-model="arr.isProhibit"
             placeholder="请选择"
             v-bind:disabled="disabledInput"
+               @keyup="registeredModelResidence()"
           >
             <el-option
               v-for="item in contacts"
@@ -74,7 +77,8 @@
             class='emilNum'
             placeholder="请输入邮箱号"
             v-model="arr.emails"
-            readonly='readonly'
+            readonly='true'
+               @keyup="registeredModelResidence()"
           >
         </div>
       </div>
@@ -98,6 +102,7 @@
             class='organizationName'
             placeholder="请输入机构名称"
             v-model="arr.name"
+               @keyup="registeredModelResidence()"
           >
         </div>
         <div class="InformationBox">
@@ -106,6 +111,7 @@
             v-model="arr.types"
             placeholder="请选择"
             v-bind:disabled="disabledInput2"
+               @keyup="registeredModelResidence()"
           >
             <el-option
               v-for="item in classes"
@@ -125,7 +131,7 @@
             :level='1'
             :data="pcaa"
             :placeholders="arr.placeholders"
-            @change="registeredModelResidence()"
+            @keyup="registeredModelResidence()"
             class="locationOrganzation"
           ></area-cascader>
           <input
@@ -133,6 +139,7 @@
             class='detailedAddress'
             placeholder="请输入详细地址"
             v-model="arr.addressRemarks"
+               @keyup="registeredModelResidence()"
           >
         </div>
         <div class="InformationBoxS ">
@@ -142,6 +149,7 @@
             :autosize="{ minRows: 2, maxRows: 10}"
             placeholder="输入机构简介"
             v-model="arr.remarks"
+               @keyup="registeredModelResidence()"
           > </el-input>
         </div>
       </div>
@@ -151,6 +159,8 @@
         value="保 存"
         class="organizationBox_btn"
         @click='clickBtn()'
+        :disabled='btnStatas'
+        :class="{ 'active': select }"
       >
     </div>
     <!-- 保存弹出层 -->
@@ -193,47 +203,49 @@ export default {
       ],
       pca: pca,
       pcaa: pcaa,
-     
       arr: {
-         placeholders:[],
+        placeholders: [],
         contactsModel: "", //激活状态
         classModel: "", //机构等级
         hospitalId: "",
-        time: "",
+        createDate: "",
         userName: "", // 机构联系人
-        telephone: "", // 手机号
+        userTelephone: "", // 手机号
         emails: "", //邮箱
         name: "", //机构名称
         detailedAddress: "", //详细地址
-        remnantFontContant: "" ,//机构简介
-
+        remnantFontContant: "" //机构简介
       },
-       do_not_save: false,
+      do_not_save: false,
+       btnStatas: false, //按钮点击状态
+      select: false
     };
   },
   mounted() {
-    // this.getUser();
-     let self = this;
-     let token1 = window.localStorage.getItem("token");
-      this.$api.findSelfHospital({ token: token1 }).then(res => {
-     if (res.status ==="20200" ) {
-        self.arr = res;
-        // var placeholdersDate = res.addressProvince +res.addressCity +res.addressArea;
-        // self.arr.placeholders = placeholdersDate;
-      //  $('.area-selected-trigger').html(placeholdersDate)
-      } else {
-        // this.$Message.info(res.desc);
-      }
-     })
-     .catch(error => {
-        // this.$Message.info(error);
-      })
+ this.findSelfHospital();
   },
   methods: {
+    findSelfHospital(){
+   let self = this;
+    let token1 = window.localStorage.getItem("token");
+    this.$api
+      .findSelfHospital({ token: token1 })
+      .then(res => {
+        console.log(res);
+        if (res.status === "20200") {
+          self.arr = res;
+        } else {
+          // this.$Message.info(res.desc);
+        }
+      })
+      .catch(error => {
+         this.$message.error('查询错误，请稍后重试');
+      });
+    },
     //机构所在地
     registeredModelResidence() {
-    
-      console.log(this.arr.placeholders);
+       this.btnStatas = false;
+      this.select = true;
     },
     // 基本情情况修改
     edit() {
@@ -252,51 +264,116 @@ export default {
       $(".organizationName").focus();
     },
     // 点击保存按钮
-    clickBtn(){
-      let token1 = window.localStorage.getItem("token");
-       let self = this;
-       console.log(this.arr.placeholders)
-       console.log(this.arr.placeholders.length)
-        for (let i = 0; i < this.arr.placeholders.length; i++) {
-        const element = this.arr.placeholders[0];
-        var addressProvince = this.arr.placeholders[0];
-        var addressCity = this.arr.placeholders[1];
-        var addressArea = this.arr.placeholders[2];
-      }
-
-      console.log(addressProvince)
-      console.log(addressCity)
-      console.log(addressArea)
-       
-
-      this.$api.updateSelfHospital({ 
-          name:self.arr.name,
-          types:self.arr.isProhibit,//类型 0.三甲医院
-          addressCountry:'china',//国家
-          addressProvince:addressProvince,//省
-          addressCity:addressCity,//市
-          addressArea:addressArea,//区
-          addressRemarks:self.arr.addressRemarks,//地区-详情
-          details:'',//详情
-          remarks:self.arr.remarks,//备注
-          userName:self.arr.userName,//联系人
-          userTelephone:'',//联系人-电话
-          telephone:self.arr.userTelephone,//电话
-          emails:self.arr.emails,//邮箱
-          multipartFile:'',//医院图片
-          isProhibit:self.arr.isProhibit,
-          token:token1
-      }).then(res => {
-     if (res.status ==="20200" ) {
-       console.log(res)
-      //  $('.area-selected-trigger').html(placeholdersDate)
+    clickBtn() {
+      var reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+      var emailReg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z]{2,5}$/;
+      if (this.arr.userName == "") {
+        this.$message({
+          showClose: true,
+          message: "机构联系人不能为空",
+          type: "warning"
+        });
+      } else if (this.arr.userTelephone =='') {
+        this.$message({
+          showClose: true,
+          message: "手机号不能为空",
+          type: "warning"
+        });
+      }else if (!reg.test(this.arr.userTelephone)) {
+        this.$message({
+          showClose: true,
+          message: "手机格式不正确",
+          type: "warning"
+        });
+      }else if (this.arr.contactsModel == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择激活状态",
+          type: "warning"
+        });
+      } else if (this.arr.emails == "") {
+        this.$message({
+          showClose: true,
+          message: "邮箱不能为空",
+          type: "warning"
+        });
+      } else if (!emailReg.test(this.arr.emails)) {
+        this.$message({
+          showClose: true,
+          message: "邮箱格式格式不正确",
+          type: "warning"
+        });
+      } else if (this.arr.name == "") {
+        this.$message({
+          showClose: true,
+          message: "请填写机构名称",
+          type: "warning"
+        });
+      }  else if (this.arr.classModel == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择机构等级",
+          type: "warning"
+        });
+      }  else if (this.arr.placeholders == null) {
+        this.$message({
+          showClose: true,
+          message: "请选择所在地区",
+          type: "warning"
+        });
+      } else if (this.arr.detailedAddress == "") {
+        this.$message({
+          showClose: true,
+          message: "请填写详细地址",
+          type: "warning"
+        });
+      } else if (this.arr.remnantFontContant == "") {
+        this.$message({
+          showClose: true,
+          message: "请填写机构简介",
+          type: "warning"
+        });
       } else {
-        // this.$Message.info(res.desc);
+        let token1 = window.localStorage.getItem("token");
+        let self = this;
+        console.log(this.arr.placeholders);
+        for (let i = 0; i < this.arr.placeholders.length; i++) {
+          const element = this.arr.placeholders[0];
+          var addressProvince = this.arr.placeholders[0];
+          var addressCity = this.arr.placeholders[1];
+          var addressArea = this.arr.placeholders[2];
+        }
+        this.$api
+          .updateSelfHospital({
+            name: self.arr.name,
+            types: self.arr.isProhibit, //类型 0.三甲医院
+            addressCountry: "china", //国家
+            addressProvince: addressProvince, //省
+            addressCity: addressCity, //市
+            addressArea: addressArea, //区
+            addressRemarks: self.arr.addressRemarks, //地区-详情
+            details: "", //详情
+            remarks: self.arr.remarks, //备注
+            userName: self.arr.userName, //联系人
+            userTelephone: self.arr.userTelephone, //联系人-电话
+            telephone: "", //电话
+            emails: self.arr.emails, //邮箱
+            multipartFile: "", //医院图片
+            isProhibit: self.arr.isProhibit,
+            token: token1
+          })
+          .then(res => {
+            if (res.status === "20200") {
+              console.log(res);
+               this.findSelfHospital();
+            } else {
+          this.$message.error('修改错误，请稍后重试');
+            }
+          })
+          .catch(error => {
+         this.$message.error('修改错误，请稍后重试');
+          });
       }
-     })
-     .catch(error => {
-        // this.$Message.info(error);
-      })
     }
   },
   watch: {
@@ -307,12 +384,12 @@ export default {
     //   },
     //   deep: true
     // }
-    'arr.userName' : function (val, oldVal) {
+    "arr.userName": function(val, oldVal) {
       // console.log(val, oldVal)
       if (val !== oldVal) {
-        console.log(val)
+        console.log(val);
       }
-    },
+    }
   }
 };
 </script>
@@ -480,6 +557,9 @@ export default {
       margin-top: 38px;
       display: block;
       color: #fff;
+    }
+    .active{
+      opacity: 1;
     }
   }
   //  基本信息

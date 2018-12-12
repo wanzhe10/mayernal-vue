@@ -8,6 +8,7 @@
           v-model="characterModel"
           placeholder="请选择"
           clear="characterModel"
+          @change='isProhibitSelect'
         >
           <el-option
             v-for="item in character"
@@ -31,8 +32,12 @@
         src="../../assets/noDataIcon.png"
         alt="暂无数据"
         class="noDataIcon"
+        v-show='imgShow'
       >
-      <div class="hideBox">
+      <div
+        class="hideBox"
+        v-show='tableShow'
+      >
         <el-table
           :data="characterTableData"
           style="width: 100%"
@@ -70,7 +75,12 @@
             prop="isProhibit"
             label="状态"
             width="112px"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              <div v-show="scope.row.isProhibit == 0">未激活</div>
+              <div v-show="scope.row.isProhibit == 1">激活</div>
+            </template>
+          </el-table-column>
           <el-table-column
             prop="createDate"
             label="添加时间"
@@ -86,7 +96,7 @@
                 type="text"
                 size="small"
                 style="text-align: center;"
-               @click="handleEdit(scope.$index, scope.row)"
+                @click="handleEdit(scope.$index, scope.row)"
               >编辑</el-button>
             </template>
           </el-table-column>
@@ -112,7 +122,7 @@
 
     </div>
     <!-- 新增标签弹框 -->
-   <el-dialog
+    <el-dialog
       title="新建角色"
       :visible.sync="dialogVisible"
       width="458px"
@@ -124,7 +134,6 @@
           <el-input
             v-model="form.name"
             autocomplete="off"
-
           ></el-input>
         </el-form-item>
         <el-form-item label="激活状态">
@@ -168,9 +177,7 @@
       </div>
     </el-dialog>
 
-
-
-      <!-- 编辑标签弹框 -->
+    <!-- 编辑标签弹框 -->
     <el-dialog
       title="编辑角色"
       :visible.sync="editdialogVisible"
@@ -254,7 +261,7 @@ export default {
           createDate: ""
         }
       ],
-       // 新建角色
+      // 新建角色
       form: {
         isProhibit: "", //激活状态
         name: "", //科室名称
@@ -262,7 +269,7 @@ export default {
         remarks: "", //角色描述
         token: token1 //token
       },
-       // 编辑角色
+      // 编辑角色
       form2: {
         isProhibit: "",
         name: "",
@@ -286,6 +293,8 @@ export default {
       ],
       contactsModel: "", //新增标签状态
       dialogVisible: false,
+      tableShow: false,
+      imgShow: false,
       newlyLayerInput: "",
       remnantFont: 100,
       remnantFontContant: "", //角色描述
@@ -307,20 +316,20 @@ export default {
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-       let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("token");
       console.log(`每页 ${val} 条`);
       this.currentPageOfice = 1;
       this.getUser(token1, 1, `${val}`);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-       let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("token");
       console.log(`当前页: ${val}`);
       this.currentPageOfice = val;
 
       this.getUser(token1, `${val}`, this.cur_page);
     },
-   descInput2() {
+    descInput2() {
       var remnantFontVal = this.form.remarks.length;
       this.form.remnantFont = 100 - remnantFontVal;
     },
@@ -337,58 +346,95 @@ export default {
         .catch(_ => {});
     },
     // 查询
-    getUser(token, pageNum, pageSIze) {
+    getUser(token, pageNum, pageSIze, isProhibit) {
       let self = this;
       let token1 = window.localStorage.getItem("token");
       this.$api
         .occupationFindList({
           token: token,
           pageNum: pageNum,
-          pageSize: pageSIze
+          pageSize: pageSIze,
+          isProhibit: isProhibit
         })
         .then(res => {
+          console.log(res);
           if (res.status === "20200") {
-             loadingInstance.close();
             this.characterTableData = res.pcOccupationBeanList;
-            console.log(this.characterTableData);
             this.pagerCount = res.pageNum;
-          } else {
-            // this.$Message.info(res.desc);
+            self.imgShow = false;
+            self.tableShow = true;
+          } else if (res.status === "20209") {
+            self.tableShow = false;
+            self.imgShow = true;
           }
         })
         .catch(error => {
           // this.$Message.info(error);
         });
     },
+    // 激活状态查询
+    isProhibitSelect() {
+      let token1 = window.localStorage.getItem("token");
+      this.getUser(token1, 1, 10, this.characterModel);
+    },
     // 新建
     radioEvent() {
-      var token = localStorage.getItem("token");
-      console.log(this.form);
-      this.$api
-        .occupationInsert(this.form)
-        .then(res => {
-          if (res.status === "20200") {
-            //  console.log('成功')
-            this.dialogVisible = false;
-            console.log(res);
-            // getUser(token, 1, pageSize);
-          } else {
-            // this.$Message.info(res.desc);
-          }
-        })
-        .catch(error => {
-          // this.$Message.info(error);
+      if (this.form.name == "") {
+        this.$message({
+          showClose: true,
+          message: "角色名称不能为空",
+          type: "warning"
         });
+      } else if (this.form.isProhibit == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择激活状态",
+          type: "warning"
+        });
+      } else {
+        var token = localStorage.getItem("token");
+        console.log(this.form);
+        this.$api
+          .occupationInsert(this.form)
+          .then(res => {
+            if (res.status === "20200") {
+              //  console.log('成功')
+              this.dialogVisible = false;
+              console.log(res);
+              // getUser(token, 1, pageSize);
+            } else {
+              this.$message({
+                showClose: true,
+                message: "新建失败，请稍后重试",
+                type: "warning"
+              });
+            }
+          })
+          .catch(error => {
+            this.$message({
+              showClose: true,
+              message: "新建失败，请稍后重试",
+              type: "warning"
+            });
+          });
+      }
     },
     // 编辑
     handleEdit(index, row) {
       this.editdialogVisible = true;
-      this.form2 = JSON.parse(JSON.stringify(row));;
+      this.form2 = JSON.parse(JSON.stringify(row));
       console.log(this.form2);
     },
     // 编辑确认按钮
     editRadioBtn() {
-       var token = localStorage.getItem("token");
+        if (this.form2.name == "") {
+        this.$message({
+          showClose: true,
+          message: "角色名称不能为空",
+          type: "warning"
+        });
+      }else{
+          var token = localStorage.getItem("token");
       this.$api
         .occupationUpdate({
           id: this.form2.id,
@@ -401,12 +447,22 @@ export default {
           if (res.status === "20200") {
             this.editdialogVisible = false;
           } else {
-            // this.$Message.info(res.desc);
+            this.$message({
+              showClose: true,
+              message: "编辑失败，请稍后重试",
+              type: "warning"
+            });
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+          this.$message({
+            showClose: true,
+            message: "编辑失败，请稍后重试",
+            type: "warning"
+          });
         });
+      }
+    
     }
   }
 };

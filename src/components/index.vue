@@ -1,7 +1,6 @@
 <template>
   <el-container>
     <!-- 头部 -->
-
     <el-header class="clearfix">
       <div class="headerBox clearfix">
         <img
@@ -63,7 +62,7 @@
               </template>
               <el-menu-item-group>
                 <router-link :to="{path: 'organization'}">
-                  <el-menu-item index="2-1"> 机构信息维护</el-menu-item>
+                  <el-menu-item index="2-1" > 机构信息维护</el-menu-item>
                 </router-link>
                 <router-link :to="{path: 'administrative'}">
                   <el-menu-item index="2-2">科室信息维护</el-menu-item>
@@ -108,7 +107,9 @@
               </template>
               <el-menu-item-group>
                 <router-link :to="{path: 'set'}">
+                    <li @click="templateStatistics"> 
                   <el-menu-item index="4-1">模板信息维护</el-menu-item>
+                    </li>
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
@@ -123,16 +124,24 @@
               </template>
               <el-menu-item-group>
                 <router-link :to="{path: 'today'}">
+                     <li @click="dataStatistics"> 
                   <el-menu-item index="5-1">今日复检人数</el-menu-item>
+                     </li>
                 </router-link>
                 <router-link :to="{path: 'documented'}">
+                    <li @click="dataStatistics"> 
                   <el-menu-item index="5-2">已建孕妇档案</el-menu-item>
+                   </li>
                 </router-link>
                 <router-link :to="{path: 'overtime'}">
+                    <li @click="dataStatistics"> 
                   <el-menu-item index="5-3">复检超时</el-menu-item>
+                   </li>
                 </router-link>
                 <router-link :to="{path: 'berth'}">
+                    <li @click="dataStatistics"> 
                   <el-menu-item index="5-4"> 预分娩床位统计</el-menu-item>
+                   </li>
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
@@ -147,10 +156,14 @@
               </template>
               <el-menu-item-group>
                 <router-link :to="{path: 'personalDetails'}">
+                    <li @click="informationBtn"> 
                   <el-menu-item index="6-1">用户个人信息</el-menu-item>
+                </li>
                 </router-link>
                 <router-link :to="{path: 'changePassword'}">
+                  <li @click="informationBtn"> 
                   <el-menu-item index="6-2">修改密码</el-menu-item>
+                  </li>
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
@@ -186,6 +199,15 @@ export default {
     this.userName = username;
   },
   methods: {
+    templateStatistics(){
+      $(".characterFont").html('模板数据统计');
+    },
+    dataStatistics(){
+       $(".characterFont").html('数据统计');
+    },
+    informationBtn(){
+      $(".characterFont").html('信息管理');
+    },
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
       // console.log(keyPath);
@@ -280,6 +302,7 @@ export default {
     font-size: 16px;
     line-height: 16px;
     margin-right: 30px;
+    padding-right:10px;
   }
   .doctorName {
     font-style: normal;
@@ -404,9 +427,15 @@ body > .el-container {
 }
 .el-submenu__title * {
   font-size: 16px;
+   -moz-user-select: none; /*火狐*/
+    -webkit-user-select: none; /*webkit浏览器*/
+    -ms-user-select: none; /*IE10*/
+    -khtml-user-select: none; /*早期浏览器*/
+    user-select: none;
 }
 .router-link-active {
   color: red;
   background-color: #ccc;
 }
+
 </style>
