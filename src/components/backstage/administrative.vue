@@ -348,7 +348,7 @@ export default {
           }
         })
         .catch(error => {
-           this.$message.error('查询错误，请稍后重试');
+           this.$message.error('查询失败，请稍后重试');
         });
     },
     // 激活状态查询
@@ -382,11 +382,11 @@ export default {
               console.log(res);
               getUser(token, 1, pageSize);
             } else {
-              // this.$Message.info(res.desc);
+              this.$message.error('新建失败，请稍后重试');
             }
           })
           .catch(error => {
-            // this.$Message.info(error);
+             this.$message.error('新建失败，请稍后重试');
           });
       }
     },
@@ -422,11 +422,11 @@ export default {
               this.editdialogVisible = false;
               this.getUser(token, 1, self.cur_page);
             } else {
-              // this.$Message.info(res.desc);
+              this.$message.error('编辑失败，请稍后重试');
             }
           })
           .catch(error => {
-            // this.$Message.info(error);
+            this.$message.error('编辑失败，请稍后重试');
           });
       }
     }

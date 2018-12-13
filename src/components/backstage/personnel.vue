@@ -93,7 +93,7 @@
           <el-table-column
             prop=""
             label="序号"
-            width="112px"
+            width="110px"
             type="index"
           ></el-table-column>
           <el-table-column
@@ -455,6 +455,7 @@ export default {
           pageSize: pageSize
         })
         .then(res => {
+         
           if (res.status === "20200") {
             this.departments = res.pcDeptSimpleBeanList;
           } else {
@@ -513,17 +514,17 @@ export default {
           occupationId: occupationId
         })
         .then(res => {
-          // console.log(res);
+          console.log(res);
 
           if (res.status === "20200") {
             self.personnelableData = res.pcDoctorBeanList;
             this.pagerCount = res.pageNum;
           } else {
-            // this.$Message.info(res.desc);
+              this.$message.error('查询失败，请稍后重试');
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+              this.$message.error('查询失败，请稍后重试');
         });
     },
 
@@ -589,11 +590,11 @@ export default {
               this.dialogVisible = false;
               this.inquire(token, 1, self.cur_page);
             } else {
-              // this.$Message.info(res.desc);
+              this.$message.error('新增失败，请稍后重试');
             }
           })
           .catch(error => {
-            // this.$Message.info(error);
+              this.$message.error('新增失败，请稍后重试');
           });
       }
     },
@@ -647,11 +648,11 @@ export default {
               this.editdialogVisible = false;
               this.inquire(token, 1, self.cur_page);
             } else {
-              // this.$Message.info(res.desc);
+             this.$message.error('编辑失败，请稍后重试');
             }
           })
           .catch(error => {
-            // this.$Message.info(error);
+             this.$message.error('编辑失败，请稍后重试');
           });
       }
     }

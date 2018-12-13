@@ -4,7 +4,7 @@
     <div class="reportBoxContant clearfix">
       <div class="Contant_left">
         <div class="Contant_left_overflow">
-          <p>产检次数列表</p>
+          <p class="wireP">产检次数列表</p>
           <ul>
             <li
               v-for="(item,index) in antenatalCareNums"
@@ -33,7 +33,7 @@
             v-html="item.pcCheckCellsBean.name"
             @click="toggleClass(index)"
             @dblclick="modification = true"
-            :class="addclass(item.type)"
+            :class="[item.types ==1?'actives':'nonactivated',{active:index==clickActive}] "
             :id='item.pcCheckCellsBean.id'
             v-show="typeReport"
           ></li>
@@ -42,20 +42,17 @@
           <h2>标签内容</h2>
           <div
             class="labelContant_font"
-            v-for="(item,index) in arr"
-            v-show="isShow1 ===index"
           >
             <div class="labelIntroduce">
               <p><span
                   id="tittleName"
-                  v-html="item.pcCheckCellsBean.name"
-                ></span>介绍</p>
+                >{{pcCheckCellsBean.name}}</span>介绍</p>
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 5, maxRows: 10 }"
                 placeholder="请输入内容"
-                v-model="item.pcCheckCellsBean.checkDetail"
                 :disabled="compile"
+                 :value='pcCheckCellsBean.checkDetail'
               >
               </el-input>
             </div>
@@ -66,8 +63,8 @@
                 type="textarea"
                 autosize
                 placeholder="请输入内容"
-                v-model="item.pcCheckCellsBean.remarks"
                 :disabled="compile"
+                :value='pcCheckCellsBean.remarks'
               >
               </el-input>
             </div>
@@ -86,8 +83,7 @@
       :visible.sync="dialogVisible"
       width="450px"
       :before-close="handleClose"
-      class="newlyLayer"
-    >
+      class="newlyLayer">
       <p>标签名称</p>
       <el-input
         v-model="newlyLayerInput"
@@ -124,8 +120,7 @@
       :visible.sync="modification"
       width="450px"
       :before-close="handleClose"
-      class="modificationlyLayer"
-    >
+      class="modificationlyLayer">
       <p>标签名称</p>
       <el-input
         v-model="modificationlyLayerInput"
@@ -167,20 +162,21 @@ export default {
   data() {
     return {
       // 报告单类型
-      arr: [
-        {
-          id: "",
-          types: "",
-          pcCheckCellsBean: {
-            id: "",
-            name: "",
-            title: "",
-            checkDetail: "",
-            number: "",
-            remarks: ""
-          }
-        }
-      ],
+      arr: {}
+        // {
+        //   id: "",
+        //   types: "",
+        //   pcCheckCellsBean: {
+        //     id: "",
+        //     name: "",
+        //     title: "",
+        //     checkDetail: "",
+        //     number: "",
+        //     remarks: ""
+        //   }
+        // }
+      ,
+      pcCheckCellsBean:{},  //标签内容
       isActive: 0,
       // 标签内容介绍
       labelIntroduce: "",
@@ -208,7 +204,8 @@ export default {
       antenatalCareNums: [], //产检次数列表
       showActive: "0",
       compile: false, // 介绍和解释说明是否能编辑编辑
-      isShow1: -1
+      isShow1: -1,
+      clickActive:-1,
     };
   },
   mounted() {
@@ -236,18 +233,14 @@ export default {
     },
 
     //根据状态值判断标签页样式显示
-    addclass(i) {
-      if (i == 0) {
-        return "nonactivated";
-        this.compile = true;
-      } else if (i == 1) {
-        return "actives";
-      }
-    },
+
     //切换"报告单类型"样式
     toggleClass(index) {
       console.log(index);
+        this.clickActive = index;
       this.isShow1 = index;
+      console.log(this.arr[index].pcCheckCellsBean)
+      this.pcCheckCellsBean = this.arr[index].pcCheckCellsBean;
     },
     // 弹框右上角关闭按钮
     handleClose(done) {
@@ -290,8 +283,10 @@ export default {
           console.log(res);
           if (res.status === "20200") {
             self.arr = res.pcCheckForWeekAndCellBeanList;
+            self.pcCheckCellsBean = res.pcCheckForWeekAndCellBeanList[0].pcCheckCellsBean;
              this.typeReport =true;
             this.noreportIconShow = false;
+             console.log(self.pcCheckCellsBean);
           } else if (res.status === "20209") {
             this.typeReport = false;
             this.noreportIconShow = true;
@@ -327,7 +322,7 @@ export default {
   }
   .Contant_left {
     float: left;
-    min-height: 600px;
+    min-height: 640px;
     height: 100%;
     width: 206px;
     border-right: 1px solid #ccc;
@@ -348,6 +343,7 @@ export default {
         width: 100%;
         height: 60px;
         padding: 20px 0 0 30px;
+        border-bottom:1px solid #ccc;
       }
       ul {
         li {
@@ -424,9 +420,15 @@ export default {
         color: #999;
       }
       .actives {
+        // background-color: #68b6e7;
+        // color: #fff;
+        color: #68b6e7;
+        border: 1px solid #68b6e7;
+      }
+      .active{
         background-color: #68b6e7;
         color: #fff;
-        border: 1px solid #68b6e7;
+
       }
     }
     .labelContant {

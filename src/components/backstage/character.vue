@@ -317,14 +317,11 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       let token1 = window.localStorage.getItem("token");
-      console.log(`每页 ${val} 条`);
       this.currentPageOfice = 1;
       this.getUser(token1, 1, `${val}`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
       let token1 = window.localStorage.getItem("token");
-      console.log(`当前页: ${val}`);
       this.currentPageOfice = val;
 
       this.getUser(token1, `${val}`, this.cur_page);
@@ -369,7 +366,7 @@ export default {
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+            this.$message.error("查询失败，请稍后重试");
         });
     },
     // 激活状态查询
@@ -403,19 +400,11 @@ export default {
               console.log(res);
               // getUser(token, 1, pageSize);
             } else {
-              this.$message({
-                showClose: true,
-                message: "新建失败，请稍后重试",
-                type: "warning"
-              });
+              this.$message.error("新建失败，请稍后重试");
             }
           })
           .catch(error => {
-            this.$message({
-              showClose: true,
-              message: "新建失败，请稍后重试",
-              type: "warning"
-            });
+            this.$message.error("新建失败，请稍后重试");
           });
       }
     },
@@ -427,42 +416,33 @@ export default {
     },
     // 编辑确认按钮
     editRadioBtn() {
-        if (this.form2.name == "") {
+      if (this.form2.name == "") {
         this.$message({
           showClose: true,
           message: "角色名称不能为空",
           type: "warning"
         });
-      }else{
-          var token = localStorage.getItem("token");
-      this.$api
-        .occupationUpdate({
-          id: this.form2.id,
-          token: token,
-          isProhibit: this.form2.isProhibit,
-          remarks: this.form2.remarks,
-          name: this.form2.name
-        })
-        .then(res => {
-          if (res.status === "20200") {
-            this.editdialogVisible = false;
-          } else {
-            this.$message({
-              showClose: true,
-              message: "编辑失败，请稍后重试",
-              type: "warning"
-            });
-          }
-        })
-        .catch(error => {
-          this.$message({
-            showClose: true,
-            message: "编辑失败，请稍后重试",
-            type: "warning"
+      } else {
+        var token = localStorage.getItem("token");
+        this.$api
+          .occupationUpdate({
+            id: this.form2.id,
+            token: token,
+            isProhibit: this.form2.isProhibit,
+            remarks: this.form2.remarks,
+            name: this.form2.name
+          })
+          .then(res => {
+            if (res.status === "20200") {
+              this.editdialogVisible = false;
+            } else {
+              this.$message.error("编辑失败，请稍后重试");
+            }
+          })
+          .catch(error => {
+            this.$message.error("编辑失败，请稍后重试");
           });
-        });
       }
-    
     }
   }
 };

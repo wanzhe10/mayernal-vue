@@ -4,112 +4,286 @@
     <div class="setBoxTop clearfix">
       <div class="setBoxTop_left">
         <span class="mgr18">激活状态</span>
-        <el-select v-model="contactsModel" placeholder="请选择" clear="contactsModel">
-          <el-option v-for="item in contacts" :key="item.value" :label="item.label" :value="item.value" popper-class="borderNo">
+        <el-select
+          v-model="contactsModel"
+          placeholder="请选择"
+          clear="contactsModel"
+            @change='isProhibitSelect'
+        >
+          <el-option
+            v-for="item in contacts"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            popper-class="borderNo"
+          >
           </el-option>
         </el-select>
       </div>
-      <input type="button" value="新建模板" class="NewdepartmentBtn" @click="dialogVisible = true">
+      <input
+        type="button"
+        value="新建模板"
+        class="NewdepartmentBtn"
+        @click="dialogVisible = true"
+      >
     </div>
     <div class="setBoxContant">
-      <img src="../../assets/noDataIcon.png" alt="暂无数据" class="noDataIcon">
-      <el-table :data="officeTableData" style="width: 100%">
-        <el-table-column prop="officeNum" label="序号" width="120px"></el-table-column>
-        <el-table-column prop="officeName" label="模板名称" width="150px"></el-table-column>
-        <el-table-column prop="officeDescribe" label="模板描述" width="366px" style="padding-right:100px">
-          <template slot-scope="scope">
-            <el-tooltip placement="bottom-start" effect="light">
-              <div slot="content" style="width:300px;display:block;word-break: break-all;word-wrap:break-word;">{{ scope.row.officeDescribe }}</div>
-              <span style=" width:248px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.officeDescribe }}</span>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column prop="officeState" label="状态" width="112px"></el-table-column>
-        <el-table-column prop="officeAddTime" label="添加时间" width="154px"></el-table-column>
-        <el-table-column prop="officeOperate" label="操作" width="74px">
-          <template slot-scope="scope">
-            <el-button type="text" size="small" style="text-align: center;" @click="dialogVisible2 = true">编辑</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <!-- 分页 -->
-      <div class="setBoxBlock" style="margin-top:30px; text-align:center;">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPageOfice" :page-sizes="[10, 20, 30, 40]" :page-size="100" layout="sizes, prev, pager, next" :total="1000" background>
-        </el-pagination>
+      <img
+        src="../../assets/noDataIcon.png"
+        alt="暂无数据"
+        class="noDataIcon"
+        v-show='imgShow'
+      >
+      <div
+        class="hideBox"
+        v-show='tableShow'
+      >
+        <el-table
+          :data="officeTableData"
+          style="width: 100%"
+        >
+          <el-table-column
+            prop="id"
+            label="序号"
+            type="index"
+            width="120px"
+          ></el-table-column>
+          <el-table-column
+            prop="name"
+            label="科室名称"
+            width="150px"
+          ></el-table-column>
+          <el-table-column
+            prop="remarks"
+            label="科室描述"
+            width="366px"
+          >
+            <template slot-scope="scope">
+              <el-tooltip
+                placement="bottom-start"
+                effect="light"
+              >
+                <div
+                  slot="content"
+                  style="width:300px;display:block;word-break: break-all;word-wrap:break-word;"
+                >{{ scope.row.remarks }}</div>
+                <span style=" width:248px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.remarks }}</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="isProhibit"
+            label="状态"
+            width="112px"
+          >
+            <template slot-scope="scope">
+              <div v-show="scope.row.isProhibit == 0">未激活</div>
+              <div v-show="scope.row.isProhibit == 1">激活</div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="createDate"
+            label="添加时间"
+            width="154px"
+          ></el-table-column>
+          <el-table-column
+            prop="officeOperate"
+            label="操作"
+            width="74px"
+          >
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="small"
+                style="text-align: center;"
+                @click="handleEdit(scope.$index, scope.row)"
+              >编辑</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- 分页 -->
+        <div
+          class="setBoxBlock"
+          style="margin-top:30px; text-align:center;"
+        >
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPageOfice"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="cur_page"
+            layout="sizes, prev, pager, next"
+            background
+            :page-count='pagerCount'
+          >
+          </el-pagination>
+        </div>
       </div>
+
     </div>
     <!-- 新增模板弹窗 -->
-    <el-dialog title="新增模板" :visible.sync="dialogVisible" width="820px" :before-close="handleClose" class="newlyLayer">
+    <el-dialog
+      title="新增模板"
+      :visible.sync="dialogVisible"
+      width="820px"
+      :before-close="handleClose"
+      class="newlyLayer"
+    >
       <div class="addTemplateLayer">
         <div class="addTemplateLayer_top">
           <div class="clearfix">
             <div class="fl modolNameBox">
               <p>模板名称</p>
-              <el-input v-model="templateName" placeholder="请输入模板名称"></el-input>
+              <el-input
+                v-model="form1.name"
+                placeholder="请输入模板名称"
+              ></el-input>
             </div>
             <div class="fr activatedBox">
               <p>激活状态</p>
-              <el-select v-model="activatedStateModel" placeholder="请选择" size='100%'>
-                <el-option v-for="item in activatedState" :key="item.value" :label="item.label" :value="item.value">
+              <el-select
+                v-model="form1.isProhibit"
+                placeholder="请选择"
+                size='100%'
+              >
+                <el-option
+                  v-for="item in contacts"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
                 </el-option>
               </el-select>
             </div>
           </div>
           <div class="mgt22">
             <p class="clearfix">模板描述<span>（可不填）</span><span class="fr">{{remnant}}/100</span></p>
-            <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入模板描述......." v-model="templateDscription" maxlength='100' @input="descInput">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 10}"
+              placeholder="输入模板描述......."
+              v-model="form1.remarks"
+              maxlength='100'
+              @input="descInput"
+            >
             </el-input>
           </div>
         </div>
         <div class="addTemplateLayer_bottom">
           <p class="clearfix">自觉不适<span class="fr">{{remnantFont}}/2000</span></p>
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入模板自觉不适描述......." v-model="remnantFontContant" maxlength='2000' @input="descInput2">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 10}"
+            placeholder="输入模板自觉不适描述......."
+            v-model="form1.malaise"
+            maxlength='2000'
+            @input="descInput2"
+          >
           </el-input>
           <p class="clearfix">指导处理意见<span class="fr">{{opinion}}/2000</span></p>
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入模板指导处理意见描述......." v-model="opinionModel" maxlength='2000' @input="descInput3">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 10}"
+            placeholder="输入模板指导处理意见描述......."
+            v-model="form1.dispose"
+            maxlength='2000'
+            @input="descInput3"
+          >
           </el-input>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="templateInsert"
+        >确 定</el-button>
       </span>
     </el-dialog>
     <!-- 编辑模板弹框 -->
-    <el-dialog title="编辑模板" :visible.sync="dialogVisible2" width="820px" :before-close="handleClose2" class="newlyLayer">
+    <el-dialog
+      title="编辑模板"
+      :visible.sync="dialogVisible2"
+      width="820px"
+      :before-close="handleClose2"
+      class="newlyLayer"
+    >
       <div class="editaddTemplateLayer">
         <div class="addTemplateLayer_top">
           <div class="clearfix">
             <div class="fl modolNameBox">
               <p>模板名称</p>
-              <el-input v-model="edittemplateName" placeholder="请输入模板名称"></el-input>
+              <el-input
+                v-model="form2.name"
+                placeholder="请输入模板名称"
+              ></el-input>
             </div>
             <div class="fr activatedBox">
               <p>激活状态</p>
-              <el-select v-model="editactivatedStateModel" placeholder="请选择" size='100%'>
-                <el-option v-for="item in editactivatedState" :key="item.value" :label="item.label" :value="item.value">
+              <el-select
+                v-model="form2.isProhibit"
+                placeholder="请选择"
+                size='100%'
+              >
+                <el-option
+                  v-for="item in contacts"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
                 </el-option>
               </el-select>
             </div>
           </div>
           <div class="mgt22">
             <p class="clearfix">模板描述<span>（可不填）</span><span class="fr">{{editremnant}}/100</span></p>
-            <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入模板描述......." v-model="edittemplateDscription" maxlength='100' @input="editdescInput">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 10}"
+              placeholder="输入模板描述......."
+              v-model="form2.remarks"
+              maxlength='100'
+              @input="editdescInput"
+            >
             </el-input>
           </div>
         </div>
         <div class="addTemplateLayer_bottom">
           <p class="clearfix">自觉不适<span class="fr">{{editremnantFont}}/2000</span></p>
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入模板自觉不适描述......." v-model="editremnantFontContant" maxlength='2000' @input="editdescInput2">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 10}"
+            placeholder="输入模板自觉不适描述......."
+            v-model="form2.malaise"
+            maxlength='2000'
+            @input="editdescInput2"
+          >
           </el-input>
           <p class="clearfix">指导处理意见<span class="fr">{{editopinion}}/2000</span></p>
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 10}" placeholder="输入模板指导处理意见描述......." v-model="editopinionModel" maxlength='2000' @input="editdescInput3">
+          <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 10}"
+            placeholder="输入模板指导处理意见描述......."
+            v-model="form2.dispose"
+            maxlength='2000'
+            @input="editdescInput3"
+          >
           </el-input>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogVisible2 = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible2 = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="templateUpdate"
+        >确 定</el-button>
       </span>
     </el-dialog>
 
@@ -118,6 +292,7 @@
 <script>
 export default {
   data() {
+    let token1 = window.localStorage.getItem("token");
     return {
       // 激活状态
       contacts: [
@@ -130,152 +305,78 @@ export default {
           label: "已激活"
         }
       ],
-      activatedState: [
-        {
-          value: "0",
-          label: "未激活"
-        },
-        {
-          value: "1",
-          label: "已激活"
-        }
-      ],
-      editactivatedState: [
-        {
-          value: "0",
-          label: "未激活"
-        },
-        {
-          value: "1",
-          label: "已激活"
-        }
-      ],
-      officeTableData: [
-        {
-          officeNum: "1",
-          officeName: "妇产科-门诊",
-          officeDescribe:
-            "孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我.孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我.孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我.孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我孕产妇-住院或是间距备注设大二大所我.",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        },
-        {
-          officeNum: "2",
-          officeName: "妇产科-门诊",
-          officeDescribe: "这里限制字数在18个之内，超出......表示",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        },
-        {
-          officeNum: "3",
-          officeName: "妇产科-门诊",
-          officeDescribe: "这里限制字数在18个之内，超出......表示",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        },
-        {
-          officeNum: "4",
-          officeName: "妇产科-门诊",
-          officeDescribe: "这里限制字数在18个之内，超出......表示",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        },
-        {
-          officeNum: "2",
-          officeName: "妇产科-门诊",
-          officeDescribe: "这里限制字数在18个之内，超出......表示",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        },
-        {
-          officeNum: "3",
-          officeName: "妇产科-门诊",
-          officeDescribe: "这里限制字数在18个之内，超出......表示",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        },
-        {
-          officeNum: "4",
-          officeName: "妇产科-门诊",
-          officeDescribe: "这里限制字数在18个之内，超出......表示",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        },
-        {
-          officeNum: "2",
-          officeName: "妇产科-门诊",
-          officeDescribe: "这里限制字数在18个之内，超出......表示",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        },
-        {
-          officeNum: "3",
-          officeName: "妇产科-门诊",
-          officeDescribe: "这里限制字数在18个之内，超出......表示",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        },
-        {
-          officeNum: "4",
-          officeName: "妇产科-门诊",
-          officeDescribe: "这里限制字数在18个之内，超出......表示",
-          officeState: "已激活",
-          officeAddTime: "2018-10-22"
-        }
-      ],
+      officeTableData: [], //模板数据维护数据
       contactsModel: "", //激活状态
-      activatedStateModel: "", //弹框激活状态
-      templateName: "", //弹框模板名称
-      templateDscription: "", //模板描述
-      remnantFontContant: "", //自觉不适
-      opinionModel: "", //指导与处理意见
-      currentPageOfice: 1,
       remnant: 100,
       remnantFont: 2000,
       opinion: 2000,
-
-      editactivatedStateModel: "", //弹框激活状态
-      edittemplateName: "", //弹框模板名称
-      edittemplateDscription: "", //模板描述
-      editremnantFontContant: "", //自觉不适
-      editopinionModel: "", //指导与处理意见
-      editcurrentPageOfice: 1,
+      form1: {
+        isProhibit: "", //弹框激活状态
+        name: "", //弹框模板名称
+        remarks: "", //模板描述
+        malaise: "", //自觉不适
+        dispose: "", //指导与处理意见
+        token: token1 //token
+      },
+      form2: {
+        id: "",
+        isProhibit: "", //弹框激活状态
+        name: "", //弹框模板名称
+        remarks: "", //模板描述
+        malaise: "", //自觉不适
+        dispose: "", //指导与处理意见
+        token: token1 //token
+      },
       editremnant: 100,
       editremnantFont: 2000,
       editopinion: 2000,
       dialogVisible: false,
-      dialogVisible2: false
+      dialogVisible2: false,
+      tableShow: false,
+      imgShow: false,
+      currentPageOfice: 1, //页码
+      cur_page: 10, //分页条数
+      pagerCount: 0 //总页数
     };
+  },
+  mounted() {
+    this.templateFindList();
   },
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
+       this.currentPageOfice = 1;
+      this.cur_page = val;
+      this.templateFindList()
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+     this.currentPageOfice = val;
+      console.log(this.currentPageOfice)
+      this.templateFindList()
     },
     descInput() {
-      var txtVal = this.templateDscription.length;
+      var txtVal = this.form1.remarks.length;
       this.remnant = 100 - txtVal;
     },
     descInput2() {
-      var remnantFontVal = this.remnantFontContant.length;
+      var remnantFontVal = this.form1.malaise.length;
       this.remnantFont = 2000 - remnantFontVal;
     },
     descInput3() {
-      var opinionVal = this.opinionModel.length;
+      var opinionVal = this.form1.dispose.length;
       this.opinion = 2000 - opinionVal;
     },
     editdescInput() {
-      var edittxtVal = this.edittemplateDscription.length;
+      var edittxtVal = this.form2.remarks.length;
       this.editremnant = 100 - edittxtVal;
     },
     editdescInput2() {
-      var editremnantFontVal = this.editremnantFontContant.length;
+      var editremnantFontVal = this.form2.malaise.length;
       this.editremnantFont = 2000 - editremnantFontVal;
     },
     editdescInput3() {
-      var editopinionVal = this.editopinionModel.length;
+      var editopinionVal = this.form2.dispose.length;
       this.editopinion = 2000 - editopinionVal;
     },
     //切换"记住密码"样式
@@ -295,6 +396,96 @@ export default {
           done();
         })
         .catch(_ => {});
+    },
+     // 激活状态查询
+    isProhibitSelect() {
+      let token1 = window.localStorage.getItem("token");
+      this.templateFindList()
+    },
+    // 查询
+    templateFindList() {
+      let self = this;
+      let token1 = window.localStorage.getItem("token");
+      this.$api
+        .templateFindList({
+          token: token1,
+          pageNum: this.currentPageOfice,
+          pageSize: this.cur_page,
+          isProhibit: this.contactsModel
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            self.officeTableData = res.pcTemplateBeanList;
+            self.pagerCount = parseInt(res.pages);
+            self.imgShow = false;
+            self.tableShow = true;
+          } else if (res.status === "20209") {
+            self.officeTableData = [];
+            self.tableShow = false;
+            self.imgShow = true;
+          } else {
+            this.$message.error("查询失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("查询失败，请稍后重试");
+        });
+    },
+    //新建
+    templateInsert() {
+      let self = this;
+      this.$api
+        .templateInsert(this.form1)
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.templateFindList();
+            this.form1.name = "";
+            (this.form1.malaise = ""), (this.form1.dispose = "");
+            this.form1.remarks = "";
+            this.form1.isProhibit = "";
+            this.dialogVisible = false;
+          } else if (res.status === "20209") {
+            self.tableShow = false;
+            self.imgShow = true;
+          } else {
+            this.$message.error("新增失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("新增失败，请稍后重试");
+        });
+    },
+
+    handleEdit(index, row) {
+      let token1 = localStorage.getItem('token');
+      this.dialogVisible2 = true;
+      this.form2 = JSON.parse(JSON.stringify(row));
+      this.form2.token =token1;
+      console.log(this.form2);
+      console.log(this.form1);
+    },
+    // 修改
+    templateUpdate() {
+      let self = this;
+      this.$api
+        .templateUpdate(this.form2)
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.templateFindList();
+            this.dialogVisible2 = false;
+          } else if (res.status === "20209") {
+            self.tableShow = false;
+            self.imgShow = true;
+          } else {
+            this.$message.error("编辑失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("编辑失败，请稍后重试");
+        });
     }
   }
 };
@@ -347,6 +538,9 @@ export default {
     cursor: pointer;
   }
   .setBoxContant {
+    .hideBox {
+      padding-bottom: 30px;
+    }
     table {
       width: 100%;
     }
@@ -358,7 +552,6 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    display: none;
     transform: translate(-50%, -50%);
   }
   // 新增模板弹框
@@ -492,12 +685,18 @@ export default {
 
 // 右侧下面块
 .setBoxContant {
-  .el-table .cell{
+  .el-table .cell {
   }
   .el-table--enable-row-transition .el-table__body td {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #68b6e7;
+  }
+  .el-button--text {
+    color: #68b6e7;
   }
   thead {
     th {
@@ -516,10 +715,9 @@ export default {
   }
   tbody {
     td:nth-child(3) {
-      padding-right:118px;
-      .el-table .cell{
-      width: 248px !important;
-
+      padding-right: 118px;
+      .el-table .cell {
+        width: 248px !important;
       }
     }
     td:nth-child(1),
@@ -551,5 +749,3 @@ export default {
   padding-bottom: 30px;
 }
 </style>
-
-

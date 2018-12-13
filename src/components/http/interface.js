@@ -146,6 +146,50 @@ export const checkForWeekAndCellFindList = data => {
     data
   })
 }
+// 报告单解读新增
+export const checkForWeekAndCellInsert = data => {
+  return axios({
+    url: 'v1/web/pc/checkForWeekAndCell/insert',
+    method: 'post',
+    data
+  })
+}
+// 报告单解读修改
+export const checkCellsUpdate = data => {
+  return axios({
+    url: 'v1/web/pc/checkCells/update',
+    method: 'post',
+    data
+  })
+}
+
+//模板管理
+  // 查询列表
+export const templateFindList = data => {
+  return axios({
+    url: 'v1/web/pc/template/findList',
+    method: 'post',
+    data
+  })
+}
+// 新增
+export const templateInsert = data => {
+  return axios({
+    url: 'v1/web/pc/template/insert',
+    method: 'post',
+    data
+  })
+}
+// 修改
+export const templateUpdate = data => {
+  return axios({
+    url: 'v1/web/pc/template/update',
+    method: 'post',
+    data
+  })
+}
+
+
 
 // 数据统计
 // 今日复检人数
@@ -309,5 +353,10 @@ export default {
   patientParturitionDetailFindForFiling,
   patientHealthCheckFindById,
   doctorFindSelf,
-  doctorUpdateSelf
+  doctorUpdateSelf,
+  checkForWeekAndCellInsert,
+  checkCellsUpdate,
+  templateFindList,
+  templateInsert,
+  templateUpdate
 }

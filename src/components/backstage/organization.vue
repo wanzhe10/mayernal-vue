@@ -235,11 +235,11 @@ export default {
         if (res.status === "20200") {
           self.arr = res;
         } else {
-          // this.$Message.info(res.desc);
+           this.$message.error('查询失败，请稍后重试');
         }
       })
       .catch(error => {
-         this.$message.error('查询错误，请稍后重试');
+         this.$message.error('查询失败，请稍后重试');
       });
     },
     //机构所在地
@@ -367,11 +367,11 @@ export default {
               console.log(res);
                this.findSelfHospital();
             } else {
-          this.$message.error('修改错误，请稍后重试');
+          this.$message.error('编辑失败，请稍后重试');
             }
           })
           .catch(error => {
-         this.$message.error('修改错误，请稍后重试');
+         this.$message.error('编辑失败，请稍后重试');
           });
       }
     }

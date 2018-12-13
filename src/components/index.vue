@@ -332,7 +332,7 @@ export default {
 }
 .el-aside {
   margin-bottom: 74px;
-  width: 190px !important;
+  width: 192px !important;
   background-color: #fff;
   .headline {
     height: 52px;

@@ -774,6 +774,9 @@ export default {
    .el-pagination.is-background .el-pager li:not(.disabled).active {
     background-color: #68b6e7;
   }
+  .el-button--text{
+    color: #68b6e7;
+  }
 }
 </style>
 
