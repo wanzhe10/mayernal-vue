@@ -18,8 +18,6 @@ Vue.use(Element);
 Vue.use(VueAreaLinkage);
 // Vue.prototype.$http = axios;
 Vue.prototype.qs = Qs;
-
-
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 

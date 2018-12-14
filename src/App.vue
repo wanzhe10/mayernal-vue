@@ -25,7 +25,6 @@ body{
     width: 1200px; // position: relative;
     margin: 0 auto;
     #app {
-  width: 1200px;
   min-width: 1200px;
   margin:0 auto;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

@@ -5,7 +5,7 @@
       <div class="Contant_left">
         <div class="Contant_left_overflow">
           <p class="wireP">产检次数列表</p>
-          <ul>
+          <ul  class="leftList">
             <li
               v-for="(item,index) in antenatalCareNums"
               :key="index"
@@ -13,7 +13,8 @@
               @click="antenatalCareNum(index)"
               :class="{active:index==showActive}"
               v-html="item.name"
-            ></li>
+            >
+            </li>
           </ul>
         </div>
       </div>
@@ -32,11 +33,12 @@
             v-for="(item,index) in arr"
             v-html="item.pcCheckCellsBean.name"
             @click="toggleClass(index)"
-            @dblclick="modification = true"
+            @dblclick="dblclickBtn"
             :class="[item.types ==1?'actives':'nonactivated',{active:index==clickActive}] "
             :id='item.pcCheckCellsBean.id'
             v-show="typeReport"
-          ></li>
+          >
+          </li>
         </ul>
         <div class="labelContant">
           <h2>标签内容</h2>
@@ -53,6 +55,7 @@
                 placeholder="请输入内容"
                 :disabled="compile"
                  :value='pcCheckCellsBean.checkDetail'
+                 v-model="labelIntroduce"
               >
               </el-input>
             </div>
@@ -65,6 +68,7 @@
                 placeholder="请输入内容"
                 :disabled="compile"
                 :value='pcCheckCellsBean.remarks'
+                v-model="labelExplain"
               >
               </el-input>
             </div>
@@ -73,7 +77,7 @@
         <el-button
           type="primary"
           class="saveBtn"
-          disabled
+          @click="checkCellsUpdate"
         >保 存</el-button>
       </div>
     </div>
@@ -89,7 +93,7 @@
         v-model="newlyLayerInput"
         placeholder="请输入报告单名称"
       ></el-input>
-      <p>状态</p>
+      <!-- <p>状态</p>
       <el-select
         v-model="contactsModel"
         placeholder="请选择"
@@ -102,7 +106,7 @@
           :value="item.value"
         >
         </el-option>
-      </el-select>
+      </el-select> -->
       <span
         slot="footer"
         class="dialog-footer"
@@ -110,7 +114,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="addLable()"
+           @click="checkForWeekAndCellInsert()"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -126,7 +130,7 @@
         v-model="modificationlyLayerInput"
         placeholder="请输入报告单名称"
       ></el-input>
-      <p>状态</p>
+      <!-- <p>状态</p>
       <el-select
         v-model="modificationContactsModel"
         placeholder="请选择"
@@ -139,7 +143,7 @@
           :value="item.value"
         >
         </el-option>
-      </el-select>
+      </el-select> -->
       <span
         slot="footer"
         class="dialog-footer"
@@ -147,7 +151,7 @@
         <el-button @click="modification = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="modification = false"
+          @click="modificationOk()"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -197,8 +201,6 @@ export default {
           label: "已激活"
         }
       ],
-      contactsModel: "", //新增标签状态
-      modificationContactsModel: "", //修改标签状态
       newlyLayerInput: "",
       modificationlyLayerInput: "",
       antenatalCareNums: [], //产检次数列表
@@ -209,29 +211,18 @@ export default {
     };
   },
   mounted() {
-    let token1 = window.localStorage.getItem("token");
+    let token1 = window.localStorage.getItem("mayernal-web-token");
     this.getUser(token1);
   },
 
   methods: {
     // 切换产检次数列表
     antenatalCareNum(index) {
-      let token = localStorage.getItem("token");
+     let token = localStorage.getItem("mayernal-web-token");
       this.showActive = index;
       console.log(index);
       this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
     },
-    // 添加标签按钮
-    addLable() {
-      this.categoryItems.push({
-        value: this.newlyLayerInput,
-        label: this.contactsModel
-      });
-      this.dialogVisible = false;
-      this.newlyLayerInput = "";
-      this.contactsModel = "";
-    },
-
     //根据状态值判断标签页样式显示
 
     //切换"报告单类型"样式
@@ -241,6 +232,8 @@ export default {
       this.isShow1 = index;
       console.log(this.arr[index].pcCheckCellsBean)
       this.pcCheckCellsBean = this.arr[index].pcCheckCellsBean;
+      this.labelIntroduce = this.pcCheckCellsBean.checkDetail;
+      this.labelExplain = this.pcCheckCellsBean.remarks;
     },
     // 弹框右上角关闭按钮
     handleClose(done) {
@@ -253,7 +246,7 @@ export default {
     // 左边产检次数列表查询
     getUser(token) {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .checkForWeekFindList({
           token: token1
@@ -296,7 +289,85 @@ export default {
         .catch(error => {
           // this.$Message.info(error);
         });
+    },
+    // 新增
+     checkForWeekAndCellInsert() {
+       console.log($(".leftList"))
+      let _this = $(".leftList").children("li.active").attr("id");
+      let reportNumber = this.arr.length;
+      if (reportNumber > 0) {
+        reportNumber = this.arr.length + 1;
+      } else {
+        reportNumber = 1;
+      }
+      console.log(reportNumber);
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .checkForWeekAndCellInsert({
+          token: token1,
+          weekId: _this,
+          name: this.newlyLayerInput,
+          number: reportNumber,
+          types: 0
+        })
+        .then(res => {
+          console.log(res)
+          if (res.status === "20200") {
+            self.dialogVisible = false;
+            this.checkForWeekAndCellFindList(token1, _this);
+            this.newlyLayerInput = "";
+          } else {
+            this.$message.error("新建错误，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("新建错误，请稍后重试");
+        });
+    },
+
+  dblclickBtn(event){
+  this.modification = true;
+   var el = event.currentTarget;//复杂的click哈哈
+     this.modificationlyLayerInput = el.innerText;
+    },
+    // 双击修改确认名称
+    modificationOk(index){
+        this.pcCheckCellsBean.name=this.modificationlyLayerInput;
+         this.modification = false;
+    },
+    // 修改
+    // 报告类型修改保存按钮
+    checkCellsUpdate() {
+      let self = this;
+       let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .checkCellsUpdate({
+          token: token1,
+          id:  this.pcCheckCellsBean.id,
+          name: this.pcCheckCellsBean.name,
+          number:this.pcCheckCellsBean.number,
+          checkDetail: this.labelIntroduce,
+          remarks: this.labelExplain,
+        })
+        .then(res => {
+          console.log(res)
+          if (res.status === "20200") {
+          this.modification = false
+            //  this.modificationlyLayerInput = '';
+            //   this.checkDetail = '';
+            //   this.remarks = '';
+            this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
+
+          } else {
+            this.$message.error("修改错误，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("修改错误，请稍后重试");
+        });
     }
+   
   }
 };
 </script>

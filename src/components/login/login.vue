@@ -90,9 +90,9 @@ export default {
       this.$api.login({'username':'15012345678','password':'123456'}).then(res => {
           console.log(res);
      if (res.status ==="20200" ) {
-        localStorage.setItem('token',res.token)
-        localStorage.setItem('userName',res.name)
-        localStorage.setItem('loginName',res.userName)
+        localStorage.setItem('mayernal-web-token',res.token)
+        localStorage.setItem('mayernal-web-userName',res.name)
+        localStorage.setItem('mayernal-web-loginName',res.userName)
          self.$router.push({name: 'management'})
       //  $router.push('/management')
           // this.pageList = res.data.item

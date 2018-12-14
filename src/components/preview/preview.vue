@@ -302,7 +302,7 @@ export default {
     //基本信息查询
     essentialInquire() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .patientCheckControllerFindForFiling({
           token: token1,
@@ -323,7 +323,7 @@ export default {
     // 配偶信息查询
     patientHusbandsFindForFiling() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .patientHusbandsFindForFiling({
           token: token1,
@@ -343,7 +343,7 @@ export default {
     // 孕产信息查询
     patientParturitionDetailFindForFiling() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .patientParturitionDetailFindForFiling({
           token: token1,
@@ -367,7 +367,7 @@ export default {
     // 体格检查查询
     patientHealthCheckFindById() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .patientHealthCheckFindById({
           token: token1,

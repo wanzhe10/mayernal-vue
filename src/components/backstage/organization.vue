@@ -227,7 +227,7 @@ export default {
   methods: {
     findSelfHospital(){
    let self = this;
-    let token1 = window.localStorage.getItem("token");
+    let token1 = window.localStorage.getItem("mayernal-web-token");
     this.$api
       .findSelfHospital({ token: token1 })
       .then(res => {
@@ -334,7 +334,7 @@ export default {
           type: "warning"
         });
       } else {
-        let token1 = window.localStorage.getItem("token");
+        let token1 = window.localStorage.getItem("mayernal-web-token");
         let self = this;
         console.log(this.arr.placeholders);
         for (let i = 0; i < this.arr.placeholders.length; i++) {
@@ -437,7 +437,7 @@ export default {
   }
 
   .organizationBoxContant {
-    padding: 26px 24px 86px 24px;
+    padding: 26px 20px 86px 20px;
     .lookAtallBtnBox {
       width: 100%;
       position: relative;
@@ -605,8 +605,8 @@ export default {
 .organizationBox .el-textarea__inner {
   border: none;
 }
-.el-input--suffix .el-input__inner {
+/* .el-input--suffix .el-input__inner {
   height: 40px !important;
-}
+} */
 </style>
 

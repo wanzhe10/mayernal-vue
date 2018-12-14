@@ -8,7 +8,7 @@
           v-model="contactsModel"
           placeholder="请选择"
           clear="contactsModel"
-            @change='isProhibitSelect'
+          @change='isProhibitSelect'
         >
           <el-option
             v-for="item in contacts"
@@ -292,7 +292,7 @@
 <script>
 export default {
   data() {
-    let token1 = window.localStorage.getItem("token");
+    let token1 = window.localStorage.getItem("mayernal-web-token");
     return {
       // 激活状态
       contacts: [
@@ -345,15 +345,15 @@ export default {
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-       this.currentPageOfice = 1;
+      this.currentPageOfice = 1;
       this.cur_page = val;
-      this.templateFindList()
+      this.templateFindList();
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-     this.currentPageOfice = val;
-      console.log(this.currentPageOfice)
-      this.templateFindList()
+      this.currentPageOfice = val;
+      console.log(this.currentPageOfice);
+      this.templateFindList();
     },
     descInput() {
       var txtVal = this.form1.remarks.length;
@@ -397,15 +397,15 @@ export default {
         })
         .catch(_ => {});
     },
-     // 激活状态查询
+    // 激活状态查询
     isProhibitSelect() {
-      let token1 = window.localStorage.getItem("token");
-      this.templateFindList()
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.templateFindList();
     },
     // 查询
     templateFindList() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .templateFindList({
           token: token1,
@@ -434,58 +434,110 @@ export default {
     },
     //新建
     templateInsert() {
-      let self = this;
-      this.$api
-        .templateInsert(this.form1)
-        .then(res => {
-          console.log(res);
-          if (res.status === "20200") {
-            this.templateFindList();
-            this.form1.name = "";
-            (this.form1.malaise = ""), (this.form1.dispose = "");
-            this.form1.remarks = "";
-            this.form1.isProhibit = "";
-            this.dialogVisible = false;
-          } else if (res.status === "20209") {
-            self.tableShow = false;
-            self.imgShow = true;
-          } else {
-            this.$message.error("新增失败，请稍后重试");
-          }
-        })
-        .catch(error => {
-          this.$message.error("新增失败，请稍后重试");
+      if (this.form1.name == "") {
+        this.$message({
+          showClose: true,
+          message: "模板名称不能为空",
+          type: "warning"
         });
+      } else if (this.form1.isProhibit == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择激活状态",
+          type: "warning"
+        });
+      } else if (this.form1.malaise == "") {
+        this.$message({
+          showClose: true,
+          message: "自觉不适不能为空",
+          type: "warning"
+        });
+      } else if (this.form1.dispose == "") {
+        this.$message({
+          showClose: true,
+          message: "指导处理意见不能为空",
+          type: "warning"
+        });
+      } else {
+        let self = this;
+        this.$api
+          .templateInsert(this.form1)
+          .then(res => {
+            console.log(res);
+            if (res.status === "20200") {
+              this.templateFindList();
+              this.form1.name = "";
+              (this.form1.malaise = ""), (this.form1.dispose = "");
+              this.form1.remarks = "";
+              this.form1.isProhibit = "";
+              this.dialogVisible = false;
+            } else if (res.status === "20209") {
+              self.tableShow = false;
+              self.imgShow = true;
+            } else {
+              this.$message.error("新增失败，请稍后重试");
+            }
+          })
+          .catch(error => {
+            this.$message.error("新增失败，请稍后重试");
+          });
+      }
     },
 
     handleEdit(index, row) {
-      let token1 = localStorage.getItem('token');
+      let token1 = localStorage.getItem("mayernal-web-token");
       this.dialogVisible2 = true;
       this.form2 = JSON.parse(JSON.stringify(row));
-      this.form2.token =token1;
+      this.form2.token = token1;
       console.log(this.form2);
       console.log(this.form1);
     },
     // 修改
     templateUpdate() {
-      let self = this;
-      this.$api
-        .templateUpdate(this.form2)
-        .then(res => {
-          console.log(res);
-          if (res.status === "20200") {
-            this.templateFindList();
-            this.dialogVisible2 = false;
-          } else if (res.status === "20209") {
-            self.tableShow = false;
-            self.imgShow = true;
-          } else {
-            this.$message.error("编辑失败，请稍后重试");
-          }
-        })
-        .catch(error => {
-          this.$message.error("编辑失败，请稍后重试");
+      if (this.form2.name == "") {
+        this.$message({
+          showClose: true,
+          message: "模板名称不能为空",
+          type: "warning"
         });
+      } else if (this.form2.isProhibit == "") {
+        this.$message({
+          showClose: true,
+          message: "请选择激活状态",
+          type: "warning"
+        });
+      } else if (this.form2.malaise == "") {
+        this.$message({
+          showClose: true,
+          message: "自觉不适不能为空",
+          type: "warning"
+        });
+      } else if (this.form2.dispose == "") {
+        this.$message({
+          showClose: true,
+          message: "指导处理意见不能为空",
+          type: "warning"
+        });
+      } else {
+        let self = this;
+        this.$api
+          .templateUpdate(this.form2)
+          .then(res => {
+            console.log(res);
+            if (res.status === "20200") {
+              this.templateFindList();
+              this.dialogVisible2 = false;
+            } else if (res.status === "20209") {
+              self.tableShow = false;
+              self.imgShow = true;
+            } else {
+              this.$message.error("编辑失败，请稍后重试");
+            }
+          })
+          .catch(error => {
+            this.$message.error("编辑失败，请稍后重试");
+          });
+      }
     }
   }
 };
@@ -746,6 +798,5 @@ export default {
   width: 100%;
   background-color: #fff;
   margin-top: 10px;
-  padding-bottom: 30px;
 }
 </style>

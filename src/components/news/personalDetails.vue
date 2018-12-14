@@ -128,7 +128,7 @@ export default {
     },
     doctorFindSelf() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .doctorFindSelf({
           token: token1
@@ -175,7 +175,7 @@ export default {
         });
       } else {
         let self = this;
-        let token1 = window.localStorage.getItem("token");
+        let token1 = window.localStorage.getItem("mayernal-web-token");
         this.$api
           .doctorUpdateSelf({
             token: token1,
@@ -237,7 +237,7 @@ export default {
     color: #333333;
   }
   .personalDetailsBoxContant {
-    padding: 26px 24px 86px 24px;
+    padding: 26px 20px 86px 20px;
     overflow: hidden;
     .lookAtallBtnBox {
       width: 100%;

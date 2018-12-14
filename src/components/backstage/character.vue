@@ -238,7 +238,7 @@
 <script>
 export default {
   data() {
-    let token1 = window.localStorage.getItem("token");
+    let token1 = window.localStorage.getItem("mayernal-web-token");
     return {
       // 激活状态
       character: [
@@ -310,18 +310,18 @@ export default {
     };
   },
   mounted() {
-    let token1 = window.localStorage.getItem("token");
+    let token1 = window.localStorage.getItem("mayernal-web-token");
     this.getUser(token1, 1, 10);
   },
   methods: {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice = 1;
       this.getUser(token1, 1, `${val}`);
     },
     handleCurrentChange(val) {
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice = val;
 
       this.getUser(token1, `${val}`, this.cur_page);
@@ -345,7 +345,7 @@ export default {
     // 查询
     getUser(token, pageNum, pageSIze, isProhibit) {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .occupationFindList({
           token: token,
@@ -371,7 +371,7 @@ export default {
     },
     // 激活状态查询
     isProhibitSelect() {
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.getUser(token1, 1, 10, this.characterModel);
     },
     // 新建
@@ -389,7 +389,7 @@ export default {
           type: "warning"
         });
       } else {
-        var token = localStorage.getItem("token");
+         var token = localStorage.getItem("mayernal-web-token");
         console.log(this.form);
         this.$api
           .occupationInsert(this.form)
@@ -423,7 +423,7 @@ export default {
           type: "warning"
         });
       } else {
-        var token = localStorage.getItem("token");
+         var token = localStorage.getItem("mayernal-web-token");
         this.$api
           .occupationUpdate({
             id: this.form2.id,
@@ -491,6 +491,7 @@ export default {
   }
   .hideBox {
     // display: none;
+    padding-bottom:30px;
   }
   .noDataIcon {
     width: 153px;
@@ -541,6 +542,9 @@ export default {
 }
 // 右侧下面块
 .characterBoxContant {
+    width: 100%;
+  background-color: #fff;
+  margin-top: 10px;
   thead {
     th {
       color: #333333;
@@ -579,10 +583,7 @@ export default {
   div {
     padding: 0px;
   }
-  width: 100%;
-  background-color: #fff;
-  margin-top: 10px;
-  padding-bottom: 30px;
+
 }
 .characterBox {
   .el-dialog__body {

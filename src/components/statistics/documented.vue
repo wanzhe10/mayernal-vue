@@ -292,7 +292,7 @@ export default {
     };
   },
   mounted() {
-    let token1 = window.localStorage.getItem("token");
+    let token1 = window.localStorage.getItem("mayernal-web-token");
     this.getTime();
     // 初始近一个月的全部数据
     this.documentedInquire();
@@ -370,7 +370,7 @@ export default {
     // 孕周切换
     toggle1(index) {
       this.current = index;
-      let token = localStorage.getItem("token");
+     let token = localStorage.getItem("mayernal-web-token");
       if (this.current == 0) {
         this.startWeek = "";
         this.endWeek = "";
@@ -392,7 +392,7 @@ export default {
     // 查询
     documentedInquire() {
       let  self = this;
-      let token = localStorage.getItem("token");
+     let token = localStorage.getItem("mayernal-web-token");
       this.$api
         .patientCenterCountEntityForOthers({
           token: token,

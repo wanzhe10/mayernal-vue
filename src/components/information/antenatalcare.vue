@@ -625,7 +625,7 @@ export default {
     };
   },
   mounted() {
-    let token1 = window.localStorage.getItem("token");
+    let token1 = window.localStorage.getItem("mayernal-web-token");
     this.getUser(token1);
   },
   methods: {
@@ -682,7 +682,7 @@ export default {
     // 查询
     getUser(token) {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .checkForWeekFindList({
           token: token1
@@ -729,7 +729,7 @@ export default {
         });
       } else{
    let self = this;
-      let token = localStorage.getItem("token");
+     let token = localStorage.getItem("mayernal-web-token");
       let number = this.tableContantData.length + 1;
       console.log(number);
       this.$api
@@ -803,7 +803,7 @@ export default {
           type: "warning"
         });
       } else {
-        var token = localStorage.getItem("token");
+         var token = localStorage.getItem("mayernal-web-token");
         this.$api
           .checkForWeekUpdate({
             id: this.altertemplateNameId,
@@ -820,7 +820,7 @@ export default {
           .then(res => {
             // 调查询接口
             let self = this;
-            let token1 = window.localStorage.getItem("token");
+            let token1 = window.localStorage.getItem("mayernal-web-token");
             this.$api
               .checkForWeekFindList({
                 token: token1

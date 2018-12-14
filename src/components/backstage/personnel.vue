@@ -344,7 +344,7 @@
 <script>
 export default {
   data() {
-    var token = window.localStorage.getItem("token");
+    var token = window.localStorage.getItem("mayernal-web-token");
     return {
       // 档案管理下拉框数据
       contacts: [
@@ -406,7 +406,7 @@ export default {
     };
   },
   mounted() {
-    let token = window.localStorage.getItem("token");
+    let token = window.localStorage.getItem("mayernal-web-token");
     this.inquire(token, 1, 10);
     this.getUser(token, 1, 10);
     this.getUseInquire(token, 1, 10);
@@ -416,13 +416,13 @@ export default {
       console.log(this.value3)
     },
     handleSizeChange(val) {
-      let token = window.localStorage.getItem("token");
+      let token = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice = 1;
       this.inquire(token, 1, `${val}`);
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      let token = window.localStorage.getItem("token");
+      let token = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice = val;
       this.inquire(token, `${val}`, this.cur_page);
       console.log(`当前页: ${val}`);
@@ -447,7 +447,7 @@ export default {
     // 科室信息查询
     getUser(token, pageNum, pageSize) {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .deptSimpleFindList({
           token: token1,
@@ -470,7 +470,7 @@ export default {
     // 用户角色查询
     getUseInquire(token, pageNum, pageSIze) {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .occupationFindList({
           token: token,
@@ -501,7 +501,7 @@ export default {
       occupationId
     ) {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .patientCenterFindSelfDoctorList({
           token: token1,
@@ -530,7 +530,7 @@ export default {
 
     // 查询按钮
     inquireBtn(){
-       let token1 = window.localStorage.getItem("token");
+       let token1 = window.localStorage.getItem("mayernal-web-token");
        if ( isNaN(this.fileSearch)) {
         //  姓名
            this.inquire(token1, 1, 10,0,this.fileSearch,this.contactsModel, this.value2,this.value3);
@@ -580,7 +580,7 @@ export default {
           type: "warning"
         });
       } else {
-        var token = localStorage.getItem("token");
+         var token = localStorage.getItem("mayernal-web-token");
         let self = this;
         console.log(this.arr);
         this.$api
@@ -628,7 +628,7 @@ export default {
           type: "warning"
         });
       } else {
-        let token = localStorage.getItem("token");
+        let token = localStorage.getItem("mayernal-web-token");
         let self = this;
         console.log(this.arr2);
         this.$api

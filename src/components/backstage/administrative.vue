@@ -240,7 +240,7 @@
 import $ from "jquery";
 export default {
   data() {
-    let token1 = window.localStorage.getItem("token");
+    let token1 = window.localStorage.getItem("mayernal-web-token");
     return {
       // 激活状态
       contacts: [
@@ -290,18 +290,18 @@ export default {
     };
   },
   mounted() {
-    let token1 = window.localStorage.getItem("token");
+    let token1 = window.localStorage.getItem("mayernal-web-token");
     this.getUser(token1, 1, 10);
   },
   methods: {
     handleSizeChange(val) {
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       console.log(`每页 ${val} 条`);
       this.currentPageOfice = 1;
       this.getUser(token1, 1, `${val}`);
     },
     handleCurrentChange(val) {
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       console.log(`当前页: ${val}`);
       this.currentPageOfice = val;
       this.getUser(token1, `${val}`, this.cur_page);
@@ -326,7 +326,7 @@ export default {
     // 查询
     getUser(token, pageNum, pageSize, isProhibit) {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .deptSimpleFindList({
           token: token1,
@@ -353,7 +353,7 @@ export default {
     },
     // 激活状态查询
     isProhibitSelect() {
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.getUser(token1, 1, 10, this.contactsModel);
     },
     // 新建
@@ -371,7 +371,7 @@ export default {
           type: "warning"
         });
       } else {
-        var token = localStorage.getItem("token");
+        var token = localStorage.getItem("mayernal-web-token");
         console.log(this.form);
         this.$api
           .deptSimpleInsert(this.form)
@@ -405,7 +405,7 @@ export default {
           type: "warning"
         });
       } else {
-        var token = localStorage.getItem("token");
+         var token = localStorage.getItem("mayernal-web-token");
         var self = this;
         this.$api
           .deptSimpleUpdate({
@@ -470,7 +470,7 @@ export default {
   }
   .administrativeBoxContant {
     .hideBox {
-      // display: none;
+     padding-bottom:30px;
     }
     table {
       width: 100%;
@@ -553,7 +553,6 @@ export default {
   width: 100%;
   background-color: #fff;
   margin-top: 10px;
-  padding-bottom: 30px;
 }
 .administrativeBox {
   .el-dialog__body {

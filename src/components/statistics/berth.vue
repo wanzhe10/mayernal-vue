@@ -787,7 +787,7 @@ export default {
     // 床位统计
     bedStatistics() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .countEntityForOthersWithDueDate({
           token: token1,

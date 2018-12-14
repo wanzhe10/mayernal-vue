@@ -690,7 +690,7 @@ export default {
     // 复检记录查询
     indexInquire() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .patientSecondCheckFindListByCenterId({
           token: token1,
@@ -722,7 +722,7 @@ export default {
     // 高危评估查询
     assessInquire() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .patientHighRiskGradeFindList({
           token: token1,
@@ -758,7 +758,7 @@ export default {
     // 产后42天查询
     patientFourtyTwo() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .patientFourtyTwoFindByCenterId({
           token: token1,

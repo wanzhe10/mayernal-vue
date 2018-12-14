@@ -141,6 +141,7 @@
                   type="text"
                   size="small"
                   style="text-align: center;"
+                  @click="lookBtn(scope.row)"
                 >查看</el-button>
               </template>
             </el-table-column>
@@ -335,7 +336,7 @@ export default {
       console.log(tab, event);
     },
     handleSizeChange(val) {
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice = 1;
       console.log(`每页 ${val} 条`);
       this.currentdate(startDateStr, endDateStr);
@@ -361,7 +362,7 @@ export default {
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
       // console.log(endDateStr);
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice = val;
       //  this.numInquire(token,startDateStr,endDateStr,`${val}`,this.cur_page);
       this.numInquire(
@@ -373,7 +374,7 @@ export default {
       );
     },
     handleSizeChange3(val) {
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice3 = 1;
       console.log(`每页 ${val} 条`);
       this.currentdate(startDateStr, endDateStr);
@@ -399,7 +400,7 @@ export default {
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
       // console.log(endDateStr);
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice3 = val;
       //  this.numInquire(token,startDateStr,endDateStr,`${val}`,this.cur_page);
       this.numInquire3(
@@ -420,7 +421,7 @@ export default {
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
       // console.log(endDateStr);
-      var token = localStorage.getItem("token");
+       var token = localStorage.getItem("mayernal-web-token");
       // this.numInquire(token,startDateStr,endDateStr,1,10);
       this.numInquire(token, "2018-01-01", "2018-10-01", 1, 10); //测试
     },
@@ -448,7 +449,7 @@ export default {
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
       // console.log(endDateStr);
-      var token = localStorage.getItem("token");
+       var token = localStorage.getItem("mayernal-web-token");
       // this.numInquire(token,startDateStr,endDateStr,1,10);
       this.numInquire3(token, "2018-01-01", "2018-10-01", 1, 10); //测试
     },
@@ -566,6 +567,10 @@ export default {
       // console.log(endDateStr);
       return startDateStr;
       return endDateStr;
+    },
+    lookBtn(row){
+       localStorage.setItem("tableDataParticulars", JSON.stringify(row));
+      this.$router.push({name: 'personalCenter'})
     }
   }
 };

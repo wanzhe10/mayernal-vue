@@ -2,9 +2,9 @@
   <div class="managementBox">
     <div class="topBox clearfix">
       <div class="btnsBOx">
-        <!-- <router-link :to="{path: 'newfile'}"> -->
+        <router-link :to="{path: 'newfile'}">
           <div class="newBtn">新建孕妇档案</div>
-        <!-- </router-link> -->
+        </router-link>
       </div>
       <div class="selectBox clearfix">
         <div class="pdl20 fl w170">
@@ -98,7 +98,16 @@
           style="text-align: center;"
           type="index"
           :index="indexMethod"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            <span v-html="scope.$index+1">{{scope.$index+1}}</span>
+            <div v-show="scope.row.highRiskClass ==0"><img src="../../assets/lv_di.png" alt="低风险" style=" position: absolute;top:0px;left:0px;"></div>
+            <div v-show="scope.row.highRiskClass ==1"><img src="../../assets/yellowIcon.png" alt="一般风险" style=" position: absolute;top:0px;left:0px;"></div>
+            <div v-show="scope.row.highRiskClass ==2"><img src="../../assets/orangeIcon.png" alt="较高风险" style=" position: absolute;top:0px;left:0px;"></div>
+            <div v-show="scope.row.highRiskClass ==3"><img src="../../assets/redIcon.png" alt="高风险" style=" position: absolute;top:0px;left:0px;"></div>
+            <div v-show="scope.row.highRiskClass ==4"><img src="../../assets/zi_chuan.png" alt="传染病" style=" position: absolute;top:0px;left:0px;"></div>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="checkName"
           label="姓名"
@@ -136,7 +145,7 @@
         <el-table-column
           prop="healthAssayBloodType"
           label="血型"
-          width="46px"
+          width="48px"
         ></el-table-column>
         <el-table-column
           prop="highRiskNumber"
@@ -145,7 +154,7 @@
         ></el-table-column>
         <el-table-column
           prop="highRiskClass"
-          label="高危因素"
+          label="高风险"
           width="100px"
         >
           <template slot-scope="scope">
@@ -203,9 +212,11 @@
           :current-page.sync="currentPageOfice"
           :page-sizes="[10, 20, 30, 40]"
           :page-size.sync="cur_page"
-          layout="sizes, prev, pager, next"
+          layout="prev,pager,next,sizes"
           background
           :page-count='pagerCount'
+          prev-text ='上一页'
+          next-text ='下一页'
         >
         </el-pagination>
       </div>
@@ -273,21 +284,7 @@ export default {
       highClass: "", //高危等级
       secondCheckType: "", //就诊目的
       fileSearch: "", //搜索内容
-      tableData: [
-        {
-          tableNum: "1",
-          username: "王小虎1",
-          goal: "第三次产检",
-          idCard: "1302281988092741118",
-          age: "29",
-          gestational: "26+3",
-          pregnant: "2017-10-03",
-          blood: "O",
-          grade: "10",
-          element: "26+3",
-          green: ""
-        }
-      ],
+      tableData: [], //已建档案数据
       colorNum: [],
       currentPageOfice: 1, //页码
       cur_page: 10, //分页条数
@@ -320,7 +317,7 @@ export default {
     // 查询
     indexInquire() {
       let self = this;
-      let token1 = window.localStorage.getItem("token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .findListWithParamForFiling({
           token: token1,
@@ -334,7 +331,7 @@ export default {
           secondCheckType: this.secondCheckType
         })
         .then(res => {
-          // console.log(res);
+          console.log(res);
           if (res.status === "20200") {
             // var highRiskTotalNum = res.pcPatientCenterBeans.highRiskTotalNum;
             // console.log(highRiskTotalNum);

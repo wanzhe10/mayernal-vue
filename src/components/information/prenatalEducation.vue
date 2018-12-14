@@ -5,63 +5,134 @@
       <div class="Contant_right clearfix">
         <div class="Contant_tittle">
           <span>孕期检查标签</span>
-          <input type="button" value="添加标签" @click="dialogVisible = true">
+          <input
+            type="button"
+            value="添加标签"
+            @click="dialogVisible = true"
+          >
         </div>
         <ul class="category clearfix">
           <!-- <li v-for="item in categoryItems" v-html="item" :key="item.num" @click="toggleClass($event)" :class="{'actives':isActive}"></li> -->
-            <li v-for="(item,index) in categoryItems" v-html="item" @click="toggleClass(index)"  @dblclick="modification = true" :class="{actives:index==isActive}" :key="index"></li>
+          <li
+            v-for="(item,index) in categoryItems"
+            v-html="item"
+            @click="toggleClass(index)"
+            @dblclick="modification = true"
+            :class="{actives:index==isActive}"
+            :key="index"
+          ></li>
         </ul>
       </div>
       <div class="prenatalEducationBottom clearfix">
         <div class="headlineBox">
           <h2>孕期检查标题</h2>
-          <el-table :data="tittledata" class="prenatalEducationTable">
-            <el-table-column prop="name" label="">
+          <el-table
+            :data="tittledata"
+            class="prenatalEducationTable"
+          >
+            <el-table-column
+              prop="name"
+              label=""
+            >
               <template slot-scope="scope">
-                <el-input v-model="tittledata[scope.$index].name" placeholder="请输入"></el-input>
+                <el-input
+                  v-model="tittledata[scope.$index].name"
+                  placeholder="请输入"
+                ></el-input>
               </template>
             </el-table-column>
           </el-table>
           <div class="newConstruction">
-            <div class="addBox" @click="add">
+            <div
+              class="addBox"
+              @click="add"
+            >
               <i class="addIcon"></i>
               <p class="newConstructionBtn">添加标题</p>
             </div>
           </div>
 
         </div>
-        <div class="matterBox">
-
-        </div>
+        <!-- <div class="matterBox"> -->
+          <div id="editorElem"></div>
+        <!-- </div> -->
       </div>
     </div>
     <!-- 新增标签弹框 -->
-    <el-dialog title="添加标签" :visible.sync="dialogVisible" width="450px" :before-close="handleClose" class="newlyLayer">
+    <el-dialog
+      title="添加标签"
+      :visible.sync="dialogVisible"
+      width="450px"
+      :before-close="handleClose"
+      class="newlyLayer"
+    >
       <p>标签名称</p>
-      <el-input v-model="newlyLayerInput" placeholder="请输入报告单名称"></el-input>
+      <el-input
+        v-model="newlyLayerInput"
+        placeholder="请输入报告单名称"
+      ></el-input>
       <p>状态</p>
-      <el-select v-model="value" placeholder="请选择" size='100%'>
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+      <el-select
+        v-model="value"
+        placeholder="请选择"
+        size='100%'
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
         </el-option>
       </el-select>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="dialogVisible = false"
+        >确 定</el-button>
       </span>
     </el-dialog>
 
-       <!-- 编辑标签弹框 -->
-    <el-dialog title="编辑标签" :visible.sync="modification" width="450px" :before-close="handleClose" class="newlyLayer">
+    <!-- 编辑标签弹框 -->
+    <el-dialog
+      title="编辑标签"
+      :visible.sync="modification"
+      width="450px"
+      :before-close="handleClose"
+      class="newlyLayer"
+    >
       <p>标签名称</p>
-      <el-input v-model="modificationlyLayerInput" placeholder="请输入报告单名称"></el-input>
+      <el-input
+        v-model="modificationlyLayerInput"
+        placeholder="请输入报告单名称"
+      ></el-input>
       <p>状态</p>
-      <el-select v-model="modificationvalue" placeholder="请选择" size='100%'>
-        <el-option v-for="item in modificationoptions" :key="item.value" :label="item.label" :value="item.value">
+      <el-select
+        v-model="modificationvalue"
+        placeholder="请选择"
+        size='100%'
+      >
+        <el-option
+          v-for="item in modificationoptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
         </el-option>
       </el-select>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="modification = false">取 消</el-button>
-        <el-button type="primary" @click="modification = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="modification = false"
+        >确 定</el-button>
       </span>
     </el-dialog>
     <div>
@@ -69,6 +140,7 @@
   </div>
 </template>
 <script>
+import E from "wangeditor";
 export default {
   data() {
     return {
@@ -93,12 +165,12 @@ export default {
         "宫双顶径高",
         "羊水指数"
       ],
-       isActive: 0,
-    dialogVisible: false,
+      isActive: 0,
+      dialogVisible: false,
       modification: false,
       // 添加标签 状态
       options: [
-       {
+        {
           value: "0",
           label: "未激活"
         },
@@ -107,10 +179,10 @@ export default {
           label: "已激活"
         }
       ],
-         newlyLayerInput: "",
-        value: "",
+      newlyLayerInput: "",
+      value: "",
       // 编辑标签 状态
-        modificationoptions: [
+      modificationoptions: [
         {
           value: "0",
           label: "未激活"
@@ -120,14 +192,15 @@ export default {
           label: "已激活"
         }
       ],
-      modificationlyLayerInput:'',
-      modificationvalue:'',
-     
+      modificationlyLayerInput: "",
+      modificationvalue: "",
+
       tittledata: [
         { name: "11111111111" },
         { name: "2222222222222" },
         { name: "33333333333" }
       ],
+      editorContent: ''
     };
   },
   methods: {
@@ -144,8 +217,18 @@ export default {
     },
     add() {
       this.tittledata.push({});
-    }
-  }
+    },
+     getContent: function () {
+            alert(this.editorContent)
+        }
+  },
+  mounted() {
+        var editor = new E('#editorElem')
+        editor.customConfig.onchange = (html) => {
+          this.editorContent = html
+        }
+        editor.create()
+      }
 };
 </script>
 <style lang="less" scoped>
@@ -199,7 +282,7 @@ export default {
         margin-bottom: 20px;
         margin-right: 18px;
         cursor: pointer;
-         -moz-user-select: none; /*火狐*/
+        -moz-user-select: none; /*火狐*/
         -webkit-user-select: none; /*webkit浏览器*/
         -ms-user-select: none; /*IE10*/
         -khtml-user-select: none; /*早期浏览器*/
@@ -244,7 +327,7 @@ export default {
         box-shadow: 0px 2px 12px 5px #e1e1e1;
         height: 60px;
         line-height: 60px;
-        width: 98%;
+        width: 100%;
         -moz-user-select: none; /*火狐*/
         -webkit-user-select: none; /*webkit浏览器*/
         -ms-user-select: none; /*IE10*/
@@ -271,10 +354,10 @@ export default {
         }
       }
     }
-    .matterBox {
+     #editorElem {
       float: right;
       width: 710px;
-      background-color: yellow;
+      background-color: #fff;
       height: 500px;
     }
   }

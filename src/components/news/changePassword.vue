@@ -63,7 +63,7 @@ export default {
     };
   },
   mounted(){
-    let loginName =localStorage.getItem('loginName');
+    let loginName =localStorage.getItem('mayernal-web-loginName');
     this.ruleForm2.name = loginName;
   },
   methods: {
@@ -79,7 +79,7 @@ export default {
     },
 
     changrPassWold(){
-      let token = localStorage.getItem('token');
+      let token = localStorage.getItem('mayernal-web-token');
          this.$api
         .patientCenterUpdateSelfPass({
           token:token,

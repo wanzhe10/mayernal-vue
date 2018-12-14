@@ -195,7 +195,7 @@ export default {
     };
   },
   mounted() {
-    let username = localStorage.getItem("userName");
+    let username = localStorage.getItem("mayernal-web-userName");
     this.userName = username;
   },
   methods: {
@@ -224,7 +224,7 @@ export default {
     },
     logOut() {
       let self = this;
-      let token = localStorage.getItem("token");
+     let token = localStorage.getItem("mayernal-web-token");
       this.$api
         .signOut({
           token: token
@@ -353,7 +353,7 @@ export default {
 
 .el-main {
   //   background-color: #e9eef3;
-  margin: 16px;
+  margin: 14px;
   padding: 0px;
   color: #333;
   //   text-align: center;
