@@ -18,7 +18,10 @@
             v-html="tableDataParticulars.checkAge +'岁'"
           ></span>
         </p>
-        <div class="BMLValue">BMI值</div>
+        <div
+          class="BMLValue"
+          @click="BMLValue = true"
+        >BMI值</div>
         <i class="crossIcon"></i>
       </div>
       <div class="informationBox_right">
@@ -512,43 +515,43 @@
               ></i>
             </div>
           </div>
-          
-        <!-- 42天新生儿评估内容 -->
-        <el-collapse-transition>
-          <p
-            class="newbornContent"
-            v-show="isShow6"
-          >{{patientFourtyTwoData.malaise}}</p>
-        </el-collapse-transition>
 
-        <!-- 42天指导与处理查看全部 -->
-        <div class="lookAtallBtnBox">
-          <h2>指导与处理</h2>
-          <div class="positionWire2"></div>
-          <div
-            class="fortyTwoGuidanceBtn"
-            @click="toggle7()"
-          >
-            <span>查看全部</span>
-            <i
-              class="el-icon-arrow-down"
-              v-show="downIcon7"
-            ></i>
-            <i
-              class="el-icon-arrow-up"
-              v-show="!downIcon7"
-            ></i>
+          <!-- 42天新生儿评估内容 -->
+          <el-collapse-transition>
+            <p
+              class="newbornContent"
+              v-show="isShow6"
+            >{{patientFourtyTwoData.malaise}}</p>
+          </el-collapse-transition>
+
+          <!-- 42天指导与处理查看全部 -->
+          <div class="lookAtallBtnBox">
+            <h2>指导与处理</h2>
+            <div class="positionWire2"></div>
+            <div
+              class="fortyTwoGuidanceBtn"
+              @click="toggle7()"
+            >
+              <span>查看全部</span>
+              <i
+                class="el-icon-arrow-down"
+                v-show="downIcon7"
+              ></i>
+              <i
+                class="el-icon-arrow-up"
+                v-show="!downIcon7"
+              ></i>
+            </div>
           </div>
-        </div>
-        <!-- 42天指导与处理内容 -->
-        <el-collapse-transition>
-          <p
-            class="guidanceCantent"
-            v-show="isShow7"
-          >
-            {{patientFourtyTwoData.guideTheProcessing}}
-          </p>
-        </el-collapse-transition>
+          <!-- 42天指导与处理内容 -->
+          <el-collapse-transition>
+            <p
+              class="guidanceCantent"
+              v-show="isShow7"
+            >
+              {{patientFourtyTwoData.guideTheProcessing}}
+            </p>
+          </el-collapse-transition>
         </div>
 
         <!-- 新增42天按钮 -->
@@ -564,6 +567,30 @@
         </div> -->
       </el-tab-pane>
     </el-tabs>
+
+    <!-- BMI值弹框 -->
+    <el-dialog
+      title="BMI值"
+      :visible.sync="BMLValue"
+      width="800px"
+      :before-close="handleClose"
+      class="newlyLayer"
+    >
+      <div class="newlyLayerTop">
+
+      </div>
+      <div class="newlyLayerBottom"></div>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="BMLValue = false">取 消</el-button>
+        <el-button
+          type="primary"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 
 </template>
@@ -602,7 +629,8 @@ export default {
       spouseNewsRrightData: {}, //高危评估右边数据
       patientFourtyTwoData: {}, //产后42天数据
       fortyTwoImgHide: false, //产后42天暂无数据图片
-      fortyTwoDataHide: false //产后42天数据显示
+      fortyTwoDataHide: false, //产后42天数据显示
+      BMLValue: true
     };
   },
   mounted() {
@@ -618,6 +646,14 @@ export default {
     this.patientFourtyTwo();
   },
   methods: {
+    // 弹框关闭按钮
+      handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
     handleClick(tab, event) {
       // console.log(tab, event);
     },
@@ -701,12 +737,14 @@ export default {
           if (res.status === "20200") {
             let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
             this.recheckRecord = recheckRecordData;
-            console.log(this.recheckRecord)
+            console.log(this.recheckRecord);
             this.recheckRightData = res.pcPatientSecondCheckBeanList[0];
-            if (this.recheckRecord[0].imageList !=='') {
-            this.imageList = eval("(" + this.recheckRecord[0].imageList + ")");
+            if (this.recheckRecord[0].imageList !== "") {
+              this.imageList = eval(
+                "(" + this.recheckRecord[0].imageList + ")"
+              );
             }
-               this.examineNum = res.pcPatientSecondCheckBeanList.length;
+            this.examineNum = res.pcPatientSecondCheckBeanList.length;
             this.recordNumsDataShow = true;
             this.imgShowHide = false;
           } else if (res.status === "20209") {
@@ -751,8 +789,7 @@ export default {
             this.recheckRecord = [];
           }
         })
-        .catch(error => {
-        });
+        .catch(error => {});
     },
 
     // 产后42天查询
@@ -769,10 +806,10 @@ export default {
           if (res.status === "20200") {
             this.patientFourtyTwoData = res;
             this.fortyTwoImgHide = false;
-            this.fortyTwoDataHide =  true;
+            this.fortyTwoDataHide = true;
           } else if (res.status === "20209") {
-             this.fortyTwoImgHide = true;
-            this.fortyTwoDataHide =  false;
+            this.fortyTwoImgHide = true;
+            this.fortyTwoDataHide = false;
           }
         })
         .catch(error => {
@@ -789,7 +826,6 @@ export default {
 .fr {
   float: right;
 }
-
 
 .w78 {
   width: 78px;
@@ -1665,226 +1701,240 @@ export default {
     }
   }
   // 产后42天模块
-.fortyTwoBox {
-  padding: 18px 28px 30px 28px;
-  min-height: 600px;
-  .fortyTwoImgShow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    .noDataImg {
-      margin: 0px auto;
-      background: url("../../../assets/42NoData.png") no-repeat -1px -22px;
-      width: 180px;
-      height: 98px;
-    }
-    p {
-      font-size: 16px;
-      color: #010101;
-      text-align: center;
-    }
-  }
-  .fortyTwoShooBox {
-    .fortyTwoTittle {
-      border-bottom: 1px solid black;
-      width: 100%;
-      height: 54px;
-      line-height: 54px;
-      .fortyTwoTittle_left {
-        span {
-          color: #68b6e7;
-          position: relative;
-          margin-right: 36px;
-          // &:before {
-          //   content: " ";
-          //   position: absolute;
-          //   top: 4px;
-          //   right: -18px;
-          //   width: 1px;
-          //   height: 10px;
-          //   background: #68b6e7;
-          // }
-        }
-        span:nth-child(1) {
-          &:before {
-            content: " ";
-            position: absolute;
-            top: 4px;
-            right: -18px;
-            width: 1px;
-            height: 10px;
-            background: #68b6e7;
-          }
-        }
-        span:nth-child(2) {
-          &:before {
-            content: " ";
-            position: absolute;
-            top: 4px;
-            right: -18px;
-            width: 1px;
-            height: 10px;
-            background: #68b6e7;
-          }
-        }
+  .fortyTwoBox {
+    padding: 18px 28px 30px 28px;
+    min-height: 600px;
+    .fortyTwoImgShow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      .noDataImg {
+        margin: 0px auto;
+        background: url("../../../assets/42NoData.png") no-repeat -1px -22px;
+        width: 180px;
+        height: 98px;
       }
-      i {
-        font-style: normal;
-        color: #666666;
+      p {
+        font-size: 16px;
+        color: #010101;
+        text-align: center;
       }
     }
-    .fortyTwoTable {
-      margin-top: 18px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      div {
-        padding: 24px 0px 30px 20px;
-        h4 {
-          font-size: 16px;
-          color: #333333;
-          margin-bottom: 20px;
-        }
-        h2 {
-          font-size: 14px;
-          p {
-            display: inline;
-            margin-right: 40px;
+    .fortyTwoShooBox {
+      .fortyTwoTittle {
+        border-bottom: 1px solid black;
+        width: 100%;
+        height: 54px;
+        line-height: 54px;
+        .fortyTwoTittle_left {
+          span {
+            color: #68b6e7;
             position: relative;
-            line-height: 30px;
+            margin-right: 36px;
+            // &:before {
+            //   content: " ";
+            //   position: absolute;
+            //   top: 4px;
+            //   right: -18px;
+            //   width: 1px;
+            //   height: 10px;
+            //   background: #68b6e7;
+            // }
+          }
+          span:nth-child(1) {
             &:before {
               content: " ";
               position: absolute;
               top: 4px;
-              right: -20px;
+              right: -18px;
               width: 1px;
               height: 10px;
-              background: #ccc;
-            }
-            i {
-              color: #666666;
-              font-style: normal;
-              margin-right: 10px;
+              background: #68b6e7;
             }
           }
-          .mgr70 {
-            margin-right: 120px;
+          span:nth-child(2) {
+            &:before {
+              content: " ";
+              position: absolute;
+              top: 4px;
+              right: -18px;
+              width: 1px;
+              height: 10px;
+              background: #68b6e7;
+            }
           }
-          p:nth-last-child(1):before {
+        }
+        i {
+          font-style: normal;
+          color: #666666;
+        }
+      }
+      .fortyTwoTable {
+        margin-top: 18px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        div {
+          padding: 24px 0px 30px 20px;
+          h4 {
+            font-size: 16px;
+            color: #333333;
+            margin-bottom: 20px;
+          }
+          h2 {
+            font-size: 14px;
+            p {
+              display: inline;
+              margin-right: 40px;
+              position: relative;
+              line-height: 30px;
+              &:before {
+                content: " ";
+                position: absolute;
+                top: 4px;
+                right: -20px;
+                width: 1px;
+                height: 10px;
+                background: #ccc;
+              }
+              i {
+                color: #666666;
+                font-style: normal;
+                margin-right: 10px;
+              }
+            }
+            .mgr70 {
+              margin-right: 120px;
+            }
+            p:nth-last-child(1):before {
+              display: none;
+            }
+          }
+        }
+        div:nth-child(1),
+        div:nth-child(2) {
+          border-bottom: 1px solid #ccc;
+          position: relative;
+          img {
+            background: url("../../../assets/cross.png") no-repeat 0 0;
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            background-color: #fff;
+            padding: 0px 5px;
+          }
+        }
+        div:nth-last-child(1) {
+          border: none;
+        }
+        div:nth-child(2) {
+          p:nth-last-child(2):before {
             display: none;
           }
         }
       }
-      div:nth-child(1),
-      div:nth-child(2) {
-        border-bottom: 1px solid #ccc;
+      .unit {
+        font-size: 14px;
+        margin-left: 6px;
+        color: #999999;
+      }
+      //  查看全部块
+      .lookAtallBtnBox {
+        width: 100%;
         position: relative;
-        img {
-          background: url("../../../assets/cross.png") no-repeat 0 0;
-          width: 8px;
-          height: 8px;
+        margin-top: 16px;
+        h2 {
+          font-size: 16px;
+          display: inline-block;
+          padding-right: 14px;
+        }
+        .positionWire {
           position: absolute;
-          bottom: -4px;
-          left: 50%;
-          background-color: #fff;
+          top: 50%;
+          right: 0px;
+          width: 90%;
+          height: 1px;
+          background-color: #ccc;
+        }
+        .positionWire2 {
+          width: 90%;
+          position: absolute;
+          top: 50%;
+          right: 0px;
+          height: 1px;
+          background-color: #ccc;
+        }
+        .fortyTwoAtallBtn,
+        .fortyTwoGuidanceBtn {
           padding: 0px 5px;
+          position: absolute;
+          right: 28px;
+          top: 0px;
+          background-color: #fff;
+          cursor: pointer;
+          -moz-user-select: none; /*火狐*/
+          -webkit-user-select: none; /*webkit浏览器*/
+          -ms-user-select: none; /*IE10*/
+          -khtml-user-select: none; /*早期浏览器*/
+          user-select: none;
+          i {
+            color: #68b6e7;
+          }
+          span {
+            color: #999999;
+          }
         }
       }
-      div:nth-last-child(1) {
-        border: none;
-      }
-      div:nth-child(2) {
-        p:nth-last-child(2):before {
-          display: none;
-        }
+      .newbornContent,
+      .guidanceCantent {
+        margin-top: 18px;
       }
     }
-    .unit {
+  }
+  // 新增记录按钮
+  .recordNewsNav,
+  .spouseNewsnav {
+    position: fixed;
+    width: 100%;
+    height: 88px;
+    line-height: 88px;
+    vertical-align: middle;
+    bottom: 0;
+    left: 0;
+    background-color: #92c9eb;
+    opacity: 0.8;
+    input {
+      width: 160px;
+      height: 40px;
+      background-color: #f4fafd;
+      color: #000000;
+      text-align: center;
+      line-height: 40px;
+      border-radius: 8px;
       font-size: 14px;
-      margin-left: 6px;
-      color: #999999;
-    }
-    //  查看全部块
-    .lookAtallBtnBox {
-      width: 100%;
-      position: relative;
-      margin-top: 16px;
-      h2 {
-        font-size: 16px;
-        display: inline-block;
-        padding-right: 14px;
-      }
-      .positionWire {
-        position: absolute;
-        top: 50%;
-        right: 0px;
-        width: 90%;
-        height: 1px;
-        background-color: #ccc;
-      }
-      .positionWire2 {
-        width: 90%;
-        position: absolute;
-        top: 50%;
-        right: 0px;
-        height: 1px;
-        background-color: #ccc;
-      }
-      .fortyTwoAtallBtn,
-      .fortyTwoGuidanceBtn {
-        padding: 0px 5px;
-        position: absolute;
-        right: 28px;
-        top: 0px;
-        background-color: #fff;
-        cursor: pointer;
-        -moz-user-select: none; /*火狐*/
-        -webkit-user-select: none; /*webkit浏览器*/
-        -ms-user-select: none; /*IE10*/
-        -khtml-user-select: none; /*早期浏览器*/
-        user-select: none;
-        i {
-          color: #68b6e7;
-        }
-        span {
-          color: #999999;
-        }
-      }
-    }
-    .newbornContent,
-    .guidanceCantent {
-      margin-top: 18px;
+      float: right;
+      margin-right: 56px;
+      margin-top: 25px;
     }
   }
-}
-// 新增记录按钮
-.recordNewsNav,
-.spouseNewsnav {
-  position: fixed;
-  width: 100%;
-  height: 88px;
-  line-height: 88px;
-  vertical-align: middle;
-  bottom: 0;
-  left: 0;
-  background-color: #92c9eb;
-  opacity: 0.8;
-  input {
-    width: 160px;
-    height: 40px;
-    background-color: #f4fafd;
-    color: #000000;
-    text-align: center;
-    line-height: 40px;
-    border-radius: 8px;
-    font-size: 14px;
-    float: right;
-    margin-right: 56px;
-    margin-top: 25px;
+  .newlyLayerTop {
+    width: 760px;
+    height: 100px;
+    background-color: red;
+    box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
+    padding: 24px;
+  }
+  .newlyLayerBottom {
+    width: 760px;
+    height: 100px;
+    background-color: yellow;
+    margin-top: 16px;
+    box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
+    padding: 24px;
   }
 }
-}
-
 </style>
 
 <style lang="less">
@@ -1917,6 +1967,9 @@ export default {
   .el-tabs__content {
     padding: 0px;
     background-color: #fff;
+  }
+  .el-dialog__header {
+    background-color: #ededed;
   }
 }
 </style>

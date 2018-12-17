@@ -316,6 +316,15 @@ export default {
     },
     // 查询
     indexInquire() {
+      let paramType = '';
+      if (this.fileSearch == '') {
+        paramType = '';
+      }else if (isNaN(this.fileSearch)) {
+      paramType = 1;
+      }else{
+           paramType = 0;
+      }
+      console.log(paramType)
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
@@ -324,9 +333,9 @@ export default {
           pageNum: this.currentPageOfice,
           pageSize: this.cur_page,
           filingType: this.filingType,
-          orderByType: "",
+          orderByType:'',
           paramDetail: this.fileSearch,
-          paramType: "",
+          paramType: paramType,
           highClass: this.highClass,
           secondCheckType: this.secondCheckType
         })

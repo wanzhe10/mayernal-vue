@@ -5,7 +5,7 @@
       <div class="Contant_left">
         <div class="Contant_left_overflow">
           <p class="wireP">产检次数列表</p>
-          <ul  class="leftList">
+          <ul class="leftList">
             <li
               v-for="(item,index) in antenatalCareNums"
               :key="index"
@@ -20,7 +20,16 @@
       </div>
       <div class="Contant_right clearfix">
         <div class="Contant_tittle">
-          <span>报告单类型</span>
+          <div class="lattleSelectBox clearfix">
+            <span>报告单类型</span>
+            <el-radio-group
+              v-model="types"
+              @change='choiceRadio'
+            >
+              <el-radio :label="0">未激活</el-radio>
+              <el-radio :label="1">已激活</el-radio>
+            </el-radio-group>
+          </div>
           <input
             type="button"
             value="添加标签"
@@ -28,34 +37,33 @@
           >
         </div>
         <ul class="category clearfix">
-          <i class="noreportIcon" v-show="noreportIconShow"></i>
+          <i
+            class="noreportIcon"
+            v-show="noreportIconShow"
+          ></i>
           <li
             v-for="(item,index) in arr"
             v-html="item.pcCheckCellsBean.name"
             @click="toggleClass(index)"
             @dblclick="dblclickBtn"
             :class="[item.types ==1?'actives':'nonactivated',{active:index==clickActive}] "
-            :id='item.pcCheckCellsBean.id'
+            :id='item.id'
             v-show="typeReport"
           >
           </li>
         </ul>
         <div class="labelContant">
           <h2>标签内容</h2>
-          <div
-            class="labelContant_font"
-          >
+          <div class="labelContant_font">
             <div class="labelIntroduce">
-              <p><span
-                  id="tittleName"
-                >{{pcCheckCellsBean.name}}</span>介绍</p>
+              <p><span id="tittleName">{{pcCheckCellsBean.name}}</span>介绍</p>
               <el-input
                 type="textarea"
-                :autosize="{ minRows: 5, maxRows: 10 }"
+                :autosize="{ minRows: 3, maxRows: 10 }"
                 placeholder="请输入内容"
                 :disabled="compile"
-                 :value='pcCheckCellsBean.checkDetail'
-                 v-model="labelIntroduce"
+                :value='pcCheckCellsBean.checkDetail'
+                v-model="labelIntroduce"
               >
               </el-input>
             </div>
@@ -64,7 +72,7 @@
               <p>解释说明</p>
               <el-input
                 type="textarea"
-                autosize
+                :autosize="{ minRows: 3, maxRows: 10 }"
                 placeholder="请输入内容"
                 :disabled="compile"
                 :value='pcCheckCellsBean.remarks'
@@ -87,26 +95,13 @@
       :visible.sync="dialogVisible"
       width="450px"
       :before-close="handleClose"
-      class="newlyLayer">
+      class="newlyLayer"
+    >
       <p>标签名称</p>
       <el-input
         v-model="newlyLayerInput"
         placeholder="请输入报告单名称"
       ></el-input>
-      <!-- <p>状态</p>
-      <el-select
-        v-model="contactsModel"
-        placeholder="请选择"
-        size='100%'
-      >
-        <el-option
-          v-for="item in contacts"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select> -->
       <span
         slot="footer"
         class="dialog-footer"
@@ -114,7 +109,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button
           type="primary"
-           @click="checkForWeekAndCellInsert()"
+          @click="checkForWeekAndCellInsert()"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -124,26 +119,13 @@
       :visible.sync="modification"
       width="450px"
       :before-close="handleClose"
-      class="modificationlyLayer">
+      class="modificationlyLayer"
+    >
       <p>标签名称</p>
       <el-input
         v-model="modificationlyLayerInput"
         placeholder="请输入报告单名称"
       ></el-input>
-      <!-- <p>状态</p>
-      <el-select
-        v-model="modificationContactsModel"
-        placeholder="请选择"
-        size='100%'
-      >
-        <el-option
-          v-for="item in contacts"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select> -->
       <span
         slot="footer"
         class="dialog-footer"
@@ -156,7 +138,6 @@
       </span>
     </el-dialog>
     <div>
-
     </div>
   </div>
 </template>
@@ -166,21 +147,8 @@ export default {
   data() {
     return {
       // 报告单类型
-      arr: {}
-        // {
-        //   id: "",
-        //   types: "",
-        //   pcCheckCellsBean: {
-        //     id: "",
-        //     name: "",
-        //     title: "",
-        //     checkDetail: "",
-        //     number: "",
-        //     remarks: ""
-        //   }
-        // }
-      ,
-      pcCheckCellsBean:{},  //标签内容
+      arr: {},
+      pcCheckCellsBean: {}, //标签内容
       isActive: 0,
       // 标签内容介绍
       labelIntroduce: "",
@@ -189,7 +157,7 @@ export default {
       dialogVisible: false, //新建弹框
       modification: false, //编辑弹框
       typeReport: true, //报告单类型
-      noreportIconShow:false,// 报告单类型暂无数据
+      noreportIconShow: false, // 报告单类型暂无数据
       // 状态
       contacts: [
         {
@@ -205,35 +173,46 @@ export default {
       modificationlyLayerInput: "",
       antenatalCareNums: [], //产检次数列表
       showActive: "0",
-      compile: false, // 介绍和解释说明是否能编辑编辑
-      isShow1: -1,
-      clickActive:-1,
+      compile: true, // 介绍和解释说明是否能编辑编辑
+      clickActive: -1,
+      types: 0 //激活状态
     };
   },
   mounted() {
     let token1 = window.localStorage.getItem("mayernal-web-token");
     this.getUser(token1);
+    this.choiceRadio();
+    // console.log(this.types);
   },
 
   methods: {
+    choiceRadio() {
+      if (this.types == 0) {
+        this.compile = true;
+      } else if (this.types == 1) {
+        this.compile = false;
+      }
+    },
     // 切换产检次数列表
     antenatalCareNum(index) {
-     let token = localStorage.getItem("mayernal-web-token");
+      let token = localStorage.getItem("mayernal-web-token");
       this.showActive = index;
-      console.log(index);
       this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
     },
     //根据状态值判断标签页样式显示
-
     //切换"报告单类型"样式
     toggleClass(index) {
-      console.log(index);
-        this.clickActive = index;
-      this.isShow1 = index;
-      console.log(this.arr[index].pcCheckCellsBean)
+      // console.log(index);
+      this.clickActive = index;
       this.pcCheckCellsBean = this.arr[index].pcCheckCellsBean;
       this.labelIntroduce = this.pcCheckCellsBean.checkDetail;
       this.labelExplain = this.pcCheckCellsBean.remarks;
+      this.types = parseInt(this.arr[index].types);
+      if (this.types == 0) {
+        this.compile = true;
+      } else if (this.types == 1) {
+        this.compile = false;
+      }
     },
     // 弹框右上角关闭按钮
     handleClose(done) {
@@ -252,10 +231,11 @@ export default {
           token: token1
         })
         .then(res => {
+          // console.log(res)
           if (res.status === "20200") {
             this.antenatalCareNums = res.pcCheckForWeekBeanList;
             this.antenatalCareNum(0);
-            this.toggleClass(0);
+            // this.toggleClass(0);
           } else {
             // this.$Message.info(res.desc);
           }
@@ -276,24 +256,26 @@ export default {
           console.log(res);
           if (res.status === "20200") {
             self.arr = res.pcCheckForWeekAndCellBeanList;
-            self.pcCheckCellsBean = res.pcCheckForWeekAndCellBeanList[0].pcCheckCellsBean;
-             this.typeReport =true;
+            // self.pcCheckCellsBean =
+            //   res.pcCheckForWeekAndCellBeanList[0].pcCheckCellsBean;
+            this.typeReport = true;
             this.noreportIconShow = false;
-             console.log(self.pcCheckCellsBean);
+            // console.log(self.pcCheckCellsBean);
           } else if (res.status === "20209") {
             this.typeReport = false;
             this.noreportIconShow = true;
-            
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+          this.$message.error("查询错误，请稍后重试");
         });
     },
     // 新增
-     checkForWeekAndCellInsert() {
-       console.log($(".leftList"))
-      let _this = $(".leftList").children("li.active").attr("id");
+    checkForWeekAndCellInsert() {
+      console.log($(".leftList"));
+      let _this = $(".leftList")
+        .children("li.active")
+        .attr("id");
       let reportNumber = this.arr.length;
       if (reportNumber > 0) {
         reportNumber = this.arr.length + 1;
@@ -312,10 +294,13 @@ export default {
           types: 0
         })
         .then(res => {
-          console.log(res)
+          // console.log(res);
           if (res.status === "20200") {
             self.dialogVisible = false;
-            this.checkForWeekAndCellFindList(token1, _this);
+            let _thisId = $(".leftList")
+              .children("li.active")
+              .attr("id");
+            this.checkForWeekAndCellFindList(token1, _thisId);
             this.newlyLayerInput = "";
           } else {
             this.$message.error("新建错误，请稍后重试");
@@ -326,39 +311,50 @@ export default {
         });
     },
 
-  dblclickBtn(event){
-  this.modification = true;
-   var el = event.currentTarget;//复杂的click哈哈
-     this.modificationlyLayerInput = el.innerText;
+    dblclickBtn(event) {
+      this.modification = true;
+      var el = event.currentTarget; //复杂的click哈哈
+      this.modificationlyLayerInput = el.innerText;
     },
     // 双击修改确认名称
-    modificationOk(index){
-        this.pcCheckCellsBean.name=this.modificationlyLayerInput;
-         this.modification = false;
+    modificationOk(index) {
+      this.pcCheckCellsBean.name = this.modificationlyLayerInput;
+      this.modification = false;
     },
     // 修改
     // 报告类型修改保存按钮
     checkCellsUpdate() {
+      let _this = $(".category")
+        .children("li.active")
+        .attr("id");
+      console.log(_this);
       let self = this;
-       let token1 = window.localStorage.getItem("mayernal-web-token");
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .checkCellsUpdate({
           token: token1,
-          id:  this.pcCheckCellsBean.id,
+          id: _this,
+          cellId: this.pcCheckCellsBean.id,
           name: this.pcCheckCellsBean.name,
-          number:this.pcCheckCellsBean.number,
+          number: this.pcCheckCellsBean.number,
           checkDetail: this.labelIntroduce,
           remarks: this.labelExplain,
+          types: this.types
         })
         .then(res => {
-          console.log(res)
+          console.log(res);
           if (res.status === "20200") {
-          this.modification = false
-            //  this.modificationlyLayerInput = '';
-            //   this.checkDetail = '';
-            //   this.remarks = '';
-            this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
-
+            this.$message({
+              showClose: true,
+              message: "修改成功",
+              type: "success"
+            });
+            this.modification = false;
+            // this.clickActive = -1;
+            let _thisId = $(".leftList")
+              .children("li.active")
+              .attr("id");
+            this.checkForWeekAndCellFindList(token1, _thisId);
           } else {
             this.$message.error("修改错误，请稍后重试");
           }
@@ -367,12 +363,11 @@ export default {
           this.$message.error("修改错误，请稍后重试");
         });
     }
-   
   }
 };
 </script>
 <style lang="less" scoped>
-[v-cloak]{
+[v-cloak] {
   display: none;
 }
 .mgr18 {
@@ -414,7 +409,7 @@ export default {
         width: 100%;
         height: 60px;
         padding: 20px 0 0 30px;
-        border-bottom:1px solid #ccc;
+        border-bottom: 1px solid #ccc;
       }
       ul {
         li {
@@ -444,11 +439,6 @@ export default {
       padding: 20px 0;
       padding-bottom: 40px;
       border-bottom: 1px solid #ccc;
-      span {
-        color: #333333;
-        font-size: 16px;
-        float: left;
-      }
       input {
         width: 86px;
         height: 32px;
@@ -457,6 +447,16 @@ export default {
         font-size: 12px;
         border-radius: 8px;
         float: right;
+      }
+      .lattleSelectBox {
+      display: inline-block;
+
+        span {
+          color: #333333;
+          font-size: 16px;
+          float: left;
+          margin-right:30px;
+        }
       }
     }
     .category {
@@ -473,11 +473,15 @@ export default {
       }
       li {
         float: left;
-        padding: 10px 20px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        padding: 0px 18px;
         border: 1px solid #999999;
         color: #666666;
         border-radius: 8px;
         margin-bottom: 20px;
+        // margin:20px 9px;
         margin-right: 18px;
         cursor: pointer;
         user-select: none;
@@ -496,18 +500,13 @@ export default {
         color: #68b6e7;
         border: 1px solid #68b6e7;
       }
-      .active{
+      .active {
         background-color: #68b6e7;
         color: #fff;
-
       }
     }
     .labelContant {
       margin-top: 20px;
-      h2 {
-        color: #333333;
-        font-size: 16px;
-      }
       .labelContant_font {
         margin-top: 20px;
         background-color: #f6f6f6;
@@ -592,6 +591,13 @@ export default {
   }
   .el-dialog__footer {
     padding: 30px;
+  }
+  .el-radio__input.is-checked + .el-radio__label {
+    color: #68b6e7;
+  }
+  .el-radio__input.is-checked .el-radio__inner {
+    border-color: #68b6e7;
+    background: #68b6e7;
   }
 }
 </style>

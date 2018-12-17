@@ -157,11 +157,36 @@ export const checkForWeekAndCellInsert = data => {
 // 报告单解读修改
 export const checkCellsUpdate = data => {
   return axios({
-    url: 'v1/web/pc/checkCells/update',
+    url: 'v1/web/pc/checkForWeekAndCell/update',
     method: 'post',
     data
   })
 }
+// 孕期检查标签-查询
+export const pregnantPrenatalEducationAndClassFindList = data => {
+  return axios({
+    url: 'v1/web/pc/pregnantPrenatalEducationAndClass/findList',
+    method: 'post',
+    data
+  })
+}
+// 孕期检查标签-添加
+export const pregnantPrenatalEducationAndClassInsert = data => {
+  return axios({
+    url: 'v1/web/pc/pregnantPrenatalEducationAndClass/insert',
+    method: 'post',
+    data
+  })
+}
+// 孕期检查标题-添加
+export const pregnantPrenatalEducationClassAndCellInsert = data => {
+  return axios({
+    url: 'v1/web/pc/pregnantPrenatalEducationClassAndCell/insert',
+    method: 'post',
+    data
+  })
+}
+
 
 //模板管理
   // 查询列表
@@ -237,13 +262,7 @@ export const findListWithParamForFiling = data => {
     data
   })
 }
-// export const findListWithParamForFiling = data => {
-//   return axios({
-//     url: 'v1/web/pc/patientCenterController/findListWithParamForFiling',
-//     method: 'post',
-//     data
-//   })
-// }
+
 // 复检记录查询
 export const patientSecondCheckFindListByCenterId = data => {
   return axios({
@@ -319,7 +338,14 @@ export const doctorUpdateSelf = data => {
     data
   })
 }
-
+//  BMI查询列表
+export const patientBMI = data => {
+  return axios({
+    url: 'v1/web/pc/patientBMI/findListByCenterId',
+    method: 'post',
+    data
+  })
+}
 
 // 默认全部导出
 export default {
@@ -358,5 +384,9 @@ export default {
   checkCellsUpdate,
   templateFindList,
   templateInsert,
-  templateUpdate
+  templateUpdate,
+  pregnantPrenatalEducationAndClassFindList,
+  pregnantPrenatalEducationAndClassInsert,
+  pregnantPrenatalEducationClassAndCellInsert,
+  patientBMI
 }
