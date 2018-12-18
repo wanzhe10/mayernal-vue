@@ -20,7 +20,7 @@
         </p>
         <div
           class="BMLValue"
-          @click="BMLValue = true"
+          @click="BMLValueBtn"
         >BMI值</div>
         <i class="crossIcon"></i>
       </div>
@@ -577,24 +577,32 @@
       class="newlyLayer"
     >
       <div class="newlyLayerTop">
-
+        <h2>BMI孕期体重管理曲线图</h2>
+        <p>孕前BMI：<span>18.5-24.9</span>kg/m</p>
+        <p>体重正常，建议孕期体重增长目标：<span>11.5~16</span>kg</p>
       </div>
-      <div class="newlyLayerBottom"></div>
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
-        <el-button @click="BMLValue = false">取 消</el-button>
-        <el-button
-          type="primary"
-        >确 定</el-button>
-      </span>
+      <div class="newlyLayerBottom clearfix">
+        <p class="lengthways">体重增长（kg）</p>
+        <div
+          id="myChart"
+          :style="{width: '94%', height: '280px',left:'0px',top:'-30px',float: 'left'}"
+        ></div>
+        <p class="lengtweeks">孕周（周）</p>
+      </div>
     </el-dialog>
 
   </div>
 
 </template>
 <script>
+import $ from "jquery";
+// 引入基本模板
+let echarts = require("echarts/lib/echarts");
+// 引入柱状图组件
+require("echarts/lib/chart/bar");
+// 引入提示框和title组件
+require("echarts/lib/component/tooltip");
+require("echarts/lib/component/title");
 export default {
   data() {
     return {
@@ -630,9 +638,10 @@ export default {
       patientFourtyTwoData: {}, //产后42天数据
       fortyTwoImgHide: false, //产后42天暂无数据图片
       fortyTwoDataHide: false, //产后42天数据显示
-      BMLValue: true
+      BMLValue: false
     };
   },
+
   mounted() {
     var tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
@@ -644,10 +653,11 @@ export default {
     this.indexInquire();
     this.assessInquire();
     this.patientFourtyTwo();
+    // this.drawLine();
   },
   methods: {
     // 弹框关闭按钮
-      handleClose(done) {
+    handleClose(done) {
       this.$confirm("确认关闭？")
         .then(_ => {
           done();
@@ -735,22 +745,7 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
-            let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
-            this.recheckRecord = recheckRecordData;
-            console.log(this.recheckRecord);
-            this.recheckRightData = res.pcPatientSecondCheckBeanList[0];
-            if (this.recheckRecord[0].imageList !== "") {
-              this.imageList = eval(
-                "(" + this.recheckRecord[0].imageList + ")"
-              );
-            }
-            this.examineNum = res.pcPatientSecondCheckBeanList.length;
-            this.recordNumsDataShow = true;
-            this.imgShowHide = false;
           } else if (res.status === "20209") {
-            this.recheckRecord = [];
-            this.imgShowHide = true;
-            this.recordNumsDataShow = false;
           }
         })
         .catch(error => {
@@ -815,7 +810,88 @@ export default {
         .catch(error => {
           // this.$Message.info(error);
         });
-    }
+    },
+    BMLValueBtn() {
+      this.BMLValue = true;
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .patientBMI({
+          token: token1,
+          patientCenterId: this.patientCenterId
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            // 基于准备好的dom，初始化echarts实例
+            let myChart = echarts.init(document.getElementById("myChart"));
+            var tempData = [];
+            var patientBMIBeanList = res.pcPatientBMIBeanList;
+            var a;
+            for (let i = 0; i < patientBMIBeanList.length; i++) {
+              var tempArr = [];
+              a = JSON.parse(patientBMIBeanList[i].newAgeOfMenarche);
+              // a = a*1-13;
+              tempArr.push(a);
+              tempArr.push(patientBMIBeanList[i].details);
+              tempData.push(tempArr);
+              // tempData.splice(a, 1, patientBMIBeanList[i].details);
+            }
+            console.log(tempData);
+
+            var xTempData = [];
+            for (let index = 13; index <= 43; index++) {
+              xTempData.push(index);
+            }
+            // 绘制图表
+            myChart.setOption({
+              // title: { text: "ECharts 入门示例" },
+              tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                  type: "cross",
+                  label: {
+                    backgroundColor: "#6a7985"
+                  }
+                }
+              },
+              grid: {
+                left: "2%",
+                right: "4%",
+                bottom: "3%",
+                containLabel: true
+              },
+              xAxis: {
+                // data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+                data: xTempData
+              },
+              yAxis: {
+                type: "value",
+                nameLocation: "center",
+                // ,
+                min: 10,
+                max: 50,
+                splitNumber: 8
+              },
+              series: [
+                {
+                  name: "kg",
+                  type: "line",
+                  data: tempData
+                }
+              ]
+            });
+          } else if (res.status === "20209") {
+            xTempData = [];
+            tempData = [];
+
+          }
+        })
+        .catch(error => {
+          // this.$Message.info(error);
+        });
+    },
+    drawLine() {}
   }
 };
 </script>
@@ -1920,19 +1996,40 @@ export default {
     }
   }
   .newlyLayerTop {
-    width: 760px;
-    height: 100px;
-    background-color: red;
-    box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
     padding: 24px;
+    background: url("../../../assets/backgroundIcon.png") no-repeat 0 0;
+    width: 774px;
+    height: 124px;
+    h2 {
+      font-size: 16px;
+      color: #333333;
+    }
+    p {
+      font-size: 14px;
+      color: #666666;
+    }
   }
   .newlyLayerBottom {
-    width: 760px;
-    height: 100px;
-    background-color: yellow;
-    margin-top: 16px;
-    box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
-    padding: 24px;
+    background: url("../../../assets/bigBackgroundIcon.png") no-repeat 0 0;
+    width: 774px;
+    height: 300px;
+    position: relative;
+    .lengthways {
+      writing-mode: tb-rl;
+      font-size: 16px;
+      float: left;
+      letter-spacing: 10px;
+      padding-top: 40px;
+      padding-left: 24px;
+    }
+    .lengtweeks {
+      position: absolute;
+      bottom:34px;
+      left: 50%;
+      transform: translate(-50%,0);
+      letter-spacing: 10px;
+      font-size: 16px;
+    }
   }
 }
 </style>

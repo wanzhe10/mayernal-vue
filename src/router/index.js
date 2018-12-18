@@ -23,7 +23,6 @@ import recordNews from '@/components/management/personalCenter/recordNews'
 import spouseNews from '@/components/management/personalCenter/spouseNews'
 import fortyTwoDay from '@/components/management/personalCenter/fortyTwoDay'
 import preview from '@/components/preview/preview'
-
 Vue.use(Router)
 export default new Router({
   routes: [{
@@ -207,9 +206,7 @@ export default new Router({
             title: '新增产后42天'
           }
         },
-
       ]
     }
-
   ]
 })

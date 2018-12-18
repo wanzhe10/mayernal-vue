@@ -186,7 +186,14 @@ export const pregnantPrenatalEducationClassAndCellInsert = data => {
     data
   })
 }
-
+// 标题-通过标签id查询数据列表
+export const pregnantPrenatalEducationClassAndCellFindList = data => {
+  return axios({
+    url: 'v1/web/pc/pregnantPrenatalEducationClassAndCell/findList',
+    method: 'post',
+    data
+  })
+}
 
 //模板管理
   // 查询列表
@@ -388,5 +395,6 @@ export default {
   pregnantPrenatalEducationAndClassFindList,
   pregnantPrenatalEducationAndClassInsert,
   pregnantPrenatalEducationClassAndCellInsert,
-  patientBMI
+  patientBMI,
+  pregnantPrenatalEducationClassAndCellFindList
 }

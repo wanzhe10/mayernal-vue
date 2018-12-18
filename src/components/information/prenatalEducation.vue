@@ -18,7 +18,7 @@
             @click="dialogVisible = true"
           >
         </div>
-        <ul class="category clearfix">
+        <ul class="category clearfix" style="overflow:hidden">
           <i
             class="noreportIcon"
             v-show="noreportIconShow"
@@ -48,7 +48,7 @@
             >
               <template slot-scope="scope">
                 <el-input
-                  v-model="tittledata[scope.$index].name"
+                  v-model="tittledata[scope.$index].cellTitle"
                   placeholder="请输入"
                 ></el-input>
               </template>
@@ -63,11 +63,23 @@
               <p class="newConstructionBtn">添加标题</p>
             </div>
           </div>
-
         </div>
-        <!-- <div class="matterBox"> -->
-        <div id="editorElem"></div>
-        <!-- </div> -->
+        <div class="matterBox">
+          <div id="editorElem">
+            <p class="examineTittle">为什么要做B超检查，检查项目为什么什么</p>
+            <div id="editor"></div>
+            <textarea
+              id="text1"
+              style="width:100%; height:200px;"
+            ></textarea>
+
+          </div>
+          <input
+            type="button"
+            value="保 存"
+            @click=""
+          >
+        </div>
       </div>
     </div>
     <!-- 新增标签弹框 -->
@@ -119,8 +131,8 @@
         >确 定</el-button>
       </span>
     </el-dialog>
-    <div>
-    </div>
+    <!-- <div> -->
+  </div>
   </div>
 </template>
 <script>
@@ -134,11 +146,7 @@ export default {
       modification: false,
       newlyLayerInput: "",
       modificationlyLayerInput: "",
-      tittledata: [
-        { name: "11111111111" },
-        { name: "2222222222222" },
-        { name: "33333333333" }
-      ],
+      tittledata: [],//标题的数据
       editorContent: "",
       clickActive: -1,
       types: 0, //激活状态
@@ -147,13 +155,19 @@ export default {
     };
   },
   mounted() {
-    // var editor = new E('#editorElem')
-    // editor.customConfig.onchange = (html) => {
-    //   this.editorContent = html
-    // }
-    // editor.create()
     this.choiceRadio();
     this.pregnantPrenatalEducationAndClassFindList();
+    var editor = new E("#editor");
+    editor.customConfig.uploadImgShowBase64 = true;
+    editor.customConfig.showLinkImg = false;
+    var $text1 = $("#text1");
+    editor.customConfig.onchange = function(html) {
+      // 监控变化，同步更新到 textarea
+      $text1.val(html);
+    };
+    editor.create();
+    // 初始化 textarea 的值
+    $text1.val(editor.txt.html());
   },
   methods: {
     choiceRadio() {
@@ -170,6 +184,8 @@ export default {
       console.log(this.categoryItems[index].id);
       console.log(this.categoryItems[index].classNumber);
       this.types = parseInt(this.categoryItems[index].classIsProhibit);
+        let token1= window.localStorage.getItem("mayernal-web-token");
+      this.pregnantPrenatalEducationClassAndCellFindList(token1,this.categoryItems[index].id);
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -200,7 +216,7 @@ export default {
             $(".category").css("height", "0px");
             this.typeReport = true;
             this.noreportIconShow = false;
-            //   this.typeReport = false;
+            //     this.typeReport = false;
             // this.noreportIconShow = true;
           } else if (res.status === "20209") {
             $(".category").css("height", "189px");
@@ -247,6 +263,27 @@ export default {
       this.modification = true;
       var el = event.currentTarget; //复杂的click哈哈
       this.modificationlyLayerInput = el.innerText;
+    },
+    pregnantPrenatalEducationClassAndCellFindList(token,classId){
+        let self = this;
+        let token1= window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .pregnantPrenatalEducationClassAndCellFindList({
+          token: token,
+          classId:classId
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.status === "20200") {
+            this.tittledata = res.pcPregnantPrenatalEducationClassAndCellBeanList;
+            console.log(this.tittledata)
+          } else if (res.status === "20209") {
+          this.tittledata = [];
+          }
+        })
+        .catch(error => {
+          this.$message.error("查询错误，请稍后重试");
+        });
     }
   }
 };
@@ -258,7 +295,7 @@ export default {
 .prenatalEducationBox {
   position: relative;
   width: 100%;
-  min-height: 600px;
+  // min-height: 600px;
   background-color: #f6f6f6;
   .prenatalEducationBoxTittle {
     display: block;
@@ -273,7 +310,6 @@ export default {
     background-color: #fff;
     .Contant_tittle {
       padding: 20px 0;
-      // padding-bottom: 40px;
       height: 60px;
       border-bottom: 1px solid #ccc;
       span {
@@ -294,15 +330,16 @@ export default {
     }
     .category {
       margin-top: 20px;
-      //  min-height: 186px;
+       min-height: 120px;
       position: relative;
       .noreportIcon {
         background: url("../../assets/noreportIcon.png") no-repeat 0 0;
         width: 722px;
-        height: 186px;
+        height: 120px;
         background-size: 722px 186px;
         position: absolute;
         margin-left: 80px;
+        top:-40px;
       }
       li {
         float: left;
@@ -348,7 +385,7 @@ export default {
     .headlineBox {
       position: relative;
       float: left;
-      width: 260px;
+      width: 250px;
       height: 500px;
       background-color: #fff;
       .prenatalEducationTable {
@@ -356,6 +393,7 @@ export default {
         overflow: hidden;
         overflow-y: auto;
       }
+
       h2 {
         width: 100%;
         font-size: 16px;
@@ -398,11 +436,39 @@ export default {
         }
       }
     }
-    #editorElem {
+    .matterBox {
       float: right;
-      width: 710px;
-      background-color: #fff;
-      height: 500px;
+         background-color: #fff;
+        height: 500px;
+                width: 710px;
+        padding: 0 14px;
+      #editorElem {
+        .examineTittle {
+          display: block;
+          border-bottom: 1px solid #ccc;
+          height: 48px;
+          padding-left: 14px;
+          font-size: 14px;
+          color: #333333;
+          line-height: 48px;
+        }
+        #editor {
+          margin-top: 20px;
+          height: 340px;
+        }
+        #text1 {
+          display: none;
+        }
+      }
+      input {
+        width: 174px;
+        height: 42px;
+        background-color: #68b7e7;
+        color: #fff;
+        border-radius: 8px;
+        margin: 22px auto;
+        display: block;
+      }
     }
   }
 }
@@ -420,7 +486,7 @@ export default {
 .prenatalEducationBox {
   .el-textarea__inner {
     border: none;
-    min-height: 40px;
+    // min-height: 40px;
     background-color: #f6f6f6;
     color: #333333;
     padding-left: 0px;
