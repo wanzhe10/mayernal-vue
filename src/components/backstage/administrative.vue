@@ -128,6 +128,8 @@
       width="458px"
       :before-close="handleClose"
       class="newlyLayer"
+      :close-on-click-modal= 'false'
+      :lock-scroll='false'
     >
       <el-form :model="form">
         <el-form-item label="科室名称">

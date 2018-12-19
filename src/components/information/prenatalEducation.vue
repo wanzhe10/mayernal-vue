@@ -18,7 +18,10 @@
             @click="dialogVisible = true"
           >
         </div>
-        <ul class="category clearfix" style="overflow:hidden">
+        <ul
+          class="category clearfix"
+          style="overflow:hidden"
+        >
           <i
             class="noreportIcon"
             v-show="noreportIconShow"
@@ -38,23 +41,22 @@
       <div class="prenatalEducationBottom clearfix">
         <div class="headlineBox">
           <h2>孕期检查标题</h2>
-          <el-table
-            :data="tittledata"
-            class="prenatalEducationTable"
-          >
-            <el-table-column
-              prop="name"
-              label=""
+          <div class="tittledataAll">
+            <div
+              class="tittledata"
+              v-for="(item,index) in tittledata"
+              :class="{active:index ==headlineActive}"
+              @click="headlineClick(index)"
             >
-              <template slot-scope="scope">
-                <el-input
-                  v-model="tittledata[scope.$index].cellTitle"
-                  placeholder="请输入"
-                ></el-input>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="newConstruction">
+              <p
+                class="mainHeading"
+                :class="{activeColor:index ==headlineActive}"
+              >{{item.cellTitle}}</p>
+              <p
+                class="subheading"
+                :class="{activeColor:index ==headlineActive}"
+              >{{item.cellSubhead}}</p>
+            </div>
             <div
               class="addBox"
               @click="add"
@@ -63,22 +65,47 @@
               <p class="newConstructionBtn">添加标题</p>
             </div>
           </div>
+          <!-- <div class="newConstruction">
+            <div
+              class="addBox"
+              @click="add"
+            >
+              <i class="addIcon"></i>
+              <p class="newConstructionBtn">添加标题</p>
+            </div>
+          </div> -->
         </div>
         <div class="matterBox">
-          <div id="editorElem">
-            <p class="examineTittle">为什么要做B超检查，检查项目为什么什么</p>
-            <div id="editor"></div>
-            <textarea
-              id="text1"
-              style="width:100%; height:200px;"
-            ></textarea>
-
-          </div>
-          <input
-            type="button"
-            value="保 存"
-            @click=""
+          <div
+            class="matterBoxShow"
+            v-show="matterBoxShow"
           >
+            <div id="editorElem">
+              <div class="editorElemHeader">
+                <p
+                  class="examineTittle"
+                  v-model="examineTittle"
+                >{{examineTittle}}</p>
+                <p
+                  class="examineTittle-deputy"
+                  v-model="examineTittleDeputy"
+                >{{examineTittleDeputy}}</p>
+              </div>
+              <div id="editor"></div>
+              <textarea
+                id="text1"
+                style="width:100%; height:200px;"
+                v-model="cellDetails"
+              ></textarea>
+
+            </div>
+            <input
+              type="button"
+              value="保 存"
+              @click=""
+            >
+          </div>
+
         </div>
       </div>
     </div>
@@ -106,7 +133,6 @@
         >确 定</el-button>
       </span>
     </el-dialog>
-
     <!-- 编辑标签弹框 -->
     <el-dialog
       title="编辑标签"
@@ -131,6 +157,59 @@
         >确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 新建标题弹框 -->
+    <el-dialog
+      title="添加标题"
+      :visible.sync="headlineLayer"
+      width="450px"
+      :before-close="handleClose"
+      class="newlyLayer"
+      :lock-scroll='true'
+      :close-on-click-modal='false'
+    >
+      <p>标题名称</p>
+      <el-input
+        v-model="headlineNameLayer"
+        placeholder="请输入报告单名称"
+      ></el-input>
+      <p>副标题名称</p>
+      <el-input
+        v-model="vicHeadlineNameLayer"
+        placeholder="请输入报告单名称"
+      ></el-input>
+      <div>
+        <el-upload
+          class="avatar-uploader"
+          action="http://192.168.0.6:8080/pregnant/"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+          accept="image/jpeg,image/jpg,image/png"
+        >
+          <img
+            v-if="imageUrl"
+            :src="imageUrl"
+            class="avatar"
+          >
+          <i
+            v-else
+            class="el-icon-plus avatar-uploader-icon"
+          ></i>
+        </el-upload>
+
+      </div>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="headlineLayer = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="newHeadlineAffirm"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
     <!-- <div> -->
   </div>
   </div>
@@ -138,36 +217,49 @@
 <script>
 import E from "wangeditor";
 import $ from "jquery";
+  let token1 = window.localStorage.getItem("mayernal-web-token");
+    const baseInfo = 
+  {
+    token:token1,
+    cellTitile: "",
+    cellSubhead: '',
+    cellNumber: "",
+    cellImages: "",
+    cellDetails: "",
+    classIsProhibit: "",
+    classId: "",
+  }
 export default {
   data() {
+
     return {
       categoryItems: {}, // 孕期检查标签数据
       dialogVisible: false,
       modification: false,
       newlyLayerInput: "",
       modificationlyLayerInput: "",
-      tittledata: [],//标题的数据
+      tittledata: [], //标题的数据
       editorContent: "",
       clickActive: -1,
       types: 0, //激活状态
       typeReport: true, //报告单类型
-      noreportIconShow: false // 报告单类型暂无数据
+      noreportIconShow: false, // 报告单类型暂无数据
+      headlineActive: -1, //标题active
+      headlineLayer: false, //新增标签弹框
+      headlineNameLayer: "", //新增标签弹框-标题名称
+      vicHeadlineNameLayer: "", //新增标签弹框-副标题名称
+      imageUrl: "",
+      examineTittle: "",
+      examineTittleDeputy: "",
+      cellDetails: "", //详情
+      matterBoxShow: false,
+      classId:'',
+  
     };
   },
   mounted() {
     this.choiceRadio();
     this.pregnantPrenatalEducationAndClassFindList();
-    var editor = new E("#editor");
-    editor.customConfig.uploadImgShowBase64 = true;
-    editor.customConfig.showLinkImg = false;
-    var $text1 = $("#text1");
-    editor.customConfig.onchange = function(html) {
-      // 监控变化，同步更新到 textarea
-      $text1.val(html);
-    };
-    editor.create();
-    // 初始化 textarea 的值
-    $text1.val(editor.txt.html());
   },
   methods: {
     choiceRadio() {
@@ -182,10 +274,18 @@ export default {
       this.clickActive = index;
       this.isShow1 = index;
       console.log(this.categoryItems[index].id);
+      this.classId = this.categoryItems[index].id;
       console.log(this.categoryItems[index].classNumber);
       this.types = parseInt(this.categoryItems[index].classIsProhibit);
-        let token1= window.localStorage.getItem("mayernal-web-token");
-      this.pregnantPrenatalEducationClassAndCellFindList(token1,this.categoryItems[index].id);
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.examineTittle = "";
+      this.examineTittleDeputy = "";
+      this.cellDetails = "";
+      this.matterBoxShow = false;
+      this.pregnantPrenatalEducationClassAndCellFindList(
+        token1,
+        this.categoryItems[index].id
+      );
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -194,8 +294,48 @@ export default {
         })
         .catch(_ => {});
     },
+    headlineClick(index) {
+      this.headlineActive = index;
+      if (this.headlineActive !== -1) {
+        this.matterBoxShow = true;
+        this.examineTittle = this.tittledata[index].cellTitle;
+        this.examineTittleDeputy = this.tittledata[index].cellSubhead;
+        this.cellDetails = this.tittledata[index].cellDetails;
+        var editor = new E("#editor");
+        editor.customConfig.uploadImgShowBase64 = true;
+        editor.customConfig.showLinkImg = false;
+        var $text1 = $("#text1");
+        editor.customConfig.onchange = function(html) {
+          // 监控变化，同步更新到 textarea
+          $text1.val(html);
+        };
+        editor.create();
+        // 初始化 textarea 的值
+        $text1.val(editor.txt.html(this.cellDetails));
+      } else {
+        this.examineTittle = "";
+        this.examineTittleDeputy = "";
+        this.cellDetails = "";
+      }
+
+      console.log(this.cellDetails);
+      // console.log(this.tittledata[index].cellTitle);
+    },
     add() {
-      this.tittledata.push({});
+      this.headlineLayer = true;
+    },
+    newHeadlineAffirm() {
+      baseInfo.cellTitile = this.headlineNameLayer;
+      baseInfo.cellSubhead = this.vicHeadlineNameLayer;
+      baseInfo.cellNumber = this.tittledata.length+1;
+      baseInfo.cellImages = this.imageUrl; //封面
+      baseInfo.cellDetails = ''; //详情
+      baseInfo.classIsProhibit = 1; //激活状态
+      baseInfo.classId = this.classId; //标签id
+      this.tittledata.push(baseInfo);
+      console.log(baseInfo)
+      this.pregnantPrenatalEducationClassAndCellInsert();
+      this.headlineLayer = false;
     },
     getContent: function() {
       alert(this.editorContent);
@@ -264,21 +404,61 @@ export default {
       var el = event.currentTarget; //复杂的click哈哈
       this.modificationlyLayerInput = el.innerText;
     },
-    pregnantPrenatalEducationClassAndCellFindList(token,classId){
-        let self = this;
-        let token1= window.localStorage.getItem("mayernal-web-token");
+    pregnantPrenatalEducationClassAndCellFindList(token, classId) {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
         .pregnantPrenatalEducationClassAndCellFindList({
           token: token,
-          classId:classId
+          classId: classId
         })
         .then(res => {
           // console.log(res);
           if (res.status === "20200") {
-            this.tittledata = res.pcPregnantPrenatalEducationClassAndCellBeanList;
-            console.log(this.tittledata)
+            this.tittledata =
+              res.pcPregnantPrenatalEducationClassAndCellBeanList;
+            console.log(this.tittledata);
           } else if (res.status === "20209") {
-          this.tittledata = [];
+            this.tittledata = [];
+          }
+        })
+        .catch(error => {
+          this.$message.error("查询错误，请稍后重试");
+        });
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(this.imageUrl);
+    },
+    beforeAvatarUpload(file) {
+      const testmsg = /^image\/(jpeg|png|jpg)$/.test(file.type);
+      // const isJPG = file.type === 'image/jpeg';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!testmsg) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return testmsg && isLt2M;
+    },
+    // 二级标题-添加
+    pregnantPrenatalEducationClassAndCellInsert(){
+      //   let self = this;
+      // let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .pregnantPrenatalEducationClassAndCellInsert(
+          baseInfo
+        )
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            // this.tittledata =
+            //   res.pcPregnantPrenatalEducationClassAndCellBeanList;
+            // console.log(this.tittledata);
+          } else if (res.status === "20209") {
+            // this.tittledata = [];
           }
         })
         .catch(error => {
@@ -295,7 +475,7 @@ export default {
 .prenatalEducationBox {
   position: relative;
   width: 100%;
-  // min-height: 600px;
+  min-height: 600px;
   background-color: #f6f6f6;
   .prenatalEducationBoxTittle {
     display: block;
@@ -330,7 +510,7 @@ export default {
     }
     .category {
       margin-top: 20px;
-       min-height: 120px;
+      min-height: 120px;
       position: relative;
       .noreportIcon {
         background: url("../../assets/noreportIcon.png") no-repeat 0 0;
@@ -339,7 +519,7 @@ export default {
         background-size: 722px 186px;
         position: absolute;
         margin-left: 80px;
-        top:-40px;
+        top: -40px;
       }
       li {
         float: left;
@@ -388,36 +568,39 @@ export default {
       width: 250px;
       height: 500px;
       background-color: #fff;
-      .prenatalEducationTable {
+      border-right: 1px solid #ccc;
+      .tittledataAll {
         height: 380px;
         overflow: hidden;
         overflow-y: auto;
-      }
-
-      h2 {
-        width: 100%;
-        font-size: 16px;
-        color: #333333;
-        display: inline-block;
-        padding: 16px;
-        border-bottom: 1px solid #ccc;
-      }
-      .newConstruction {
-        position: absolute;
-        left: 0;
-        bottom: 0px;
-        box-shadow: 0px 2px 12px 5px #e1e1e1;
-        height: 60px;
-        line-height: 60px;
-        width: 100%;
-        -moz-user-select: none; /*火狐*/
-        -webkit-user-select: none; /*webkit浏览器*/
-        -ms-user-select: none; /*IE10*/
-        -khtml-user-select: none; /*早期浏览器*/
-        user-select: none;
+        padding: 12px;
+        .tittledata {
+          margin-bottom: 14px;
+          padding: 12px;
+          border: 1px solid #ccc;
+          cursor: pointer;
+        }
+        .active {
+          border: 1px solid #68b6e7;
+        }
+        .mainHeading {
+          font-size: 14px;
+          color: #333333;
+        }
+        .subheading {
+          font-size: 12px;
+          color: #999999;
+          margin-top: 4px;
+        }
+        .activeColor {
+          color: #68b6e7;
+        }
         .addBox {
           position: relative;
-          width: 92px;
+          height: 58px;
+          line-height: 58px;
+          text-align: center;
+          border: 2px dotted #ccc;
           margin: auto;
           cursor: pointer;
           .newConstructionBtn {
@@ -430,49 +613,103 @@ export default {
             width: 16px;
             height: 16px;
             position: absolute;
-            left: -16px;
-            top: 36%;
+            left: 60px;
+            top: 38%;
           }
         }
       }
+
+      h2 {
+        width: 100%;
+        font-size: 16px;
+        color: #333333;
+        display: inline-block;
+        padding: 16px;
+        border-bottom: 1px solid #ccc;
+      }
+      // .newConstruction {
+      //   position: absolute;
+      //   left: 0;
+      //   bottom: 0px;
+      //   box-shadow: 0px 2px 12px 5px #e1e1e1;
+      //   height: 60px;
+      //   line-height: 60px;
+      //   width: 100%;
+      //   -moz-user-select: none; /*火狐*/
+      //   -webkit-user-select: none; /*webkit浏览器*/
+      //   -ms-user-select: none; /*IE10*/
+      //   -khtml-user-select: none; /*早期浏览器*/
+      //   user-select: none;
+      //   .addBox {
+      //     position: relative;
+      //     width: 92px;
+      //     margin: auto;
+      //     cursor: pointer;
+      //     .newConstructionBtn {
+      //       color: #68b7e7;
+      //       font-size: 16px;
+      //       margin-left: 8px;
+      //     }
+      //     .addIcon {
+      //       background: url("../../assets/addIcon.png") no-repeat 0 0;
+      //       width: 16px;
+      //       height: 16px;
+      //       position: absolute;
+      //       left: -16px;
+      //       top: 36%;
+      //     }
+      //   }
+      // }
     }
     .matterBox {
-      float: right;
-         background-color: #fff;
+      float: left;
+      background-color: #fff;
+      height: 500px;
+      width: 730px;
+      .matterBoxShow {
         height: 500px;
-                width: 710px;
+        width: 730px;
+        background-color: #fff;
         padding: 0 14px;
-      #editorElem {
-        .examineTittle {
+        // display: none;
+        #editorElem {
+          .editorElemHeader {
+            border-bottom: 1px solid #ccc;
+            padding-top: 20px;
+            padding: 14px;
+            .examineTittle {
+              font-size: 16px;
+              color: #333333;
+            }
+            .examineTittle-deputy {
+              font-size: 12px;
+              margin-top: 12px;
+              color: #333333;
+            }
+          }
+          #editor {
+            margin-top: 14px;
+            height: 340px;
+          }
+          #text1 {
+            display: none;
+          }
+        }
+        input {
+          width: 174px;
+          height: 42px;
+          background-color: #68b7e7;
+          color: #fff;
+          border-radius: 8px;
+          margin: 10px auto;
           display: block;
-          border-bottom: 1px solid #ccc;
-          height: 48px;
-          padding-left: 14px;
-          font-size: 14px;
-          color: #333333;
-          line-height: 48px;
         }
-        #editor {
-          margin-top: 20px;
-          height: 340px;
-        }
-        #text1 {
-          display: none;
-        }
-      }
-      input {
-        width: 174px;
-        height: 42px;
-        background-color: #68b7e7;
-        color: #fff;
-        border-radius: 8px;
-        margin: 22px auto;
-        display: block;
       }
     }
   }
 }
 .newlyLayer {
+  z-index: 999999;
   p {
     margin-bottom: 12px;
     margin-top: 20px;
@@ -481,6 +718,54 @@ export default {
     margin-top: 20px;
   }
 }
+.avatar-uploader {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 410px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 410px;
+  height: 178px;
+  display: block;
+}
+
+// .avatar-uploader .el-upload {
+//   border: 1px dashed #d9d9d9;
+//   border-radius: 6px;
+//   cursor: pointer;
+//   position: relative;
+//   overflow: hidden;
+// }
+// .avatar-uploader .el-upload:hover {
+//   border-color: #409EFF;
+// }
+// .avatar-uploader-icon {
+//   font-size: 28px;
+//   color: #8c939d;
+//   width: 178px;
+//   height: 178px;
+//   line-height: 178px;
+//   text-align: center;
+// }
+// .avatar {
+//   width: 410px;
+//   height: 178px;
+//   display: block;
+// }
 </style>
 <style lang='less'>
 .prenatalEducationBox {
@@ -535,6 +820,12 @@ export default {
   .el-table .cell {
     padding: 0 4px;
   }
+}
+.el-message-box__wrapper {
+  z-index: 900000 !important;
+}
+.el-dialog__wrapper {
+  z-index: 99999 !important;
 }
 </style>
 
