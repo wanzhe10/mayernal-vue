@@ -5,10 +5,7 @@
       <div class="Contant_right clearfix">
         <div class="Contant_tittle">
           <span>孕期检查标签</span>
-          <el-radio-group
-            v-model="types"
-            @change='choiceRadio'
-          >
+          <el-radio-group v-model="types">
             <el-radio :label="0">未激活</el-radio>
             <el-radio :label="1">已激活</el-radio>
           </el-radio-group>
@@ -40,40 +37,35 @@
       </div>
       <div class="prenatalEducationBottom clearfix">
         <div class="headlineBox">
-          <h2>孕期检查标题</h2>
-          <div class="tittledataAll">
-            <div
-              class="tittledata"
-              v-for="(item,index) in tittledata"
-              :class="{active:index ==headlineActive}"
-              @click="headlineClick(index)"
-            >
-              <p
-                class="mainHeading"
-                :class="{activeColor:index ==headlineActive}"
-              >{{item.cellTitle}}</p>
-              <p
-                class="subheading"
-                :class="{activeColor:index ==headlineActive}"
-              >{{item.cellSubhead}}</p>
-            </div>
-            <div
-              class="addBox"
-              @click="add"
-            >
-              <i class="addIcon"></i>
-              <p class="newConstructionBtn">添加标题</p>
+          <div class="headlineBox_overflow">
+            <h2>孕期检查标题</h2>
+            <div class="tittledataAll">
+              <div
+                class="tittledata"
+                v-for="(item,index) in tittledata"
+                :class="{active:index ==headlineActive}"
+                @click="headlineClick(index)"
+                @dblclick="BothheadlineClick(index)"
+              >
+                <p
+                  class="mainHeading"
+                  :class="{activeColor:index ==headlineActive}"
+                >{{item.cellTitle}}</p>
+                <p
+                  class="subheading"
+                  :class="{activeColor:index ==headlineActive}"
+                >{{item.cellSubhead}}</p>
+              </div>
+              <div
+                class="addBox"
+                @click="add"
+              >
+                <i class="addIcon"></i>
+                <p class="newConstructionBtn">添加标题</p>
+              </div>
             </div>
           </div>
-          <!-- <div class="newConstruction">
-            <div
-              class="addBox"
-              @click="add"
-            >
-              <i class="addIcon"></i>
-              <p class="newConstructionBtn">添加标题</p>
-            </div>
-          </div> -->
+
         </div>
         <div class="matterBox">
           <div
@@ -157,7 +149,6 @@
         >确 定</el-button>
       </span>
     </el-dialog>
-
     <!-- 新建标题弹框 -->
     <el-dialog
       title="添加标题"
@@ -166,8 +157,7 @@
       :before-close="handleClose"
       class="newlyLayer"
       :lock-scroll='true'
-      :close-on-click-modal='false'
-    >
+      :close-on-click-modal='false'>
       <p>标题名称</p>
       <el-input
         v-model="headlineNameLayer"
@@ -178,26 +168,28 @@
         v-model="vicHeadlineNameLayer"
         placeholder="请输入报告单名称"
       ></el-input>
-      <div>
-        <el-upload
-          class="avatar-uploader"
-          action="http://192.168.0.6:8080/pregnant/"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-          accept="image/jpeg,image/jpg,image/png"
+      <div class="changeImageIcon">
+        <img
+          v-if="imageUrl"
+          :src="imageUrl"
+          class="avatar"
         >
-          <img
-            v-if="imageUrl"
-            :src="imageUrl"
-            class="avatar"
+        <div class="coverBtn">
+          <div class="plusIcon">
+            <i
+              class="el-icon-plus"
+              style="font-size:30px;"
+            ></i>
+            <span>上传封面</span>
+          </div>
+          <input
+            type="file"
+            name="avatar"
+            accept="image/gif,image/jpeg,image/jpg,image/png"
+            @change="changeImage($event)"
+            ref="avatarInput"
           >
-          <i
-            v-else
-            class="el-icon-plus avatar-uploader-icon"
-          ></i>
-        </el-upload>
-
+        </div>
       </div>
       <span
         slot="footer"
@@ -210,28 +202,67 @@
         >确 定</el-button>
       </span>
     </el-dialog>
-    <!-- <div> -->
+    <!-- 修改标题弹框 -->
+      <el-dialog
+      title="编辑标题"
+      :visible.sync="headlineLayerEdit"
+      width="450px"
+      :before-close="handleClose"
+      class="newlyLayer"
+      :lock-scroll='true'
+      :close-on-click-modal='false'>
+      <p>标题名称</p>
+      <el-input
+        v-model="headlineNameLayerEdit"
+        placeholder="请输入报告单名称"
+      ></el-input>
+      <p>副标题名称</p>
+      <el-input
+        v-model="vicHeadlineNameLayerEdit"
+        placeholder="请输入报告单名称"
+      ></el-input>
+      <div class="changeImageIcon">
+        <img
+          v-if="imageUrlEdit"
+          :src="imageUrlEdit"
+          class="avatar"
+        >
+        <div class="coverBtn">
+          <div class="plusIcon">
+            <i
+              class="el-icon-plus"
+              style="font-size:30px;"
+            ></i>
+            <span>上传封面</span>
+          </div>
+          <input
+            type="file"
+            name="avatar"
+            accept="image/gif,image/jpeg,image/jpg,image/png"
+            @change="changeImage($event)"
+            ref="avatarInput"
+          >
+        </div>
+      </div>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="headlineLayerEdit = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="headlineLayerEdit = false"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
   </div>
 </template>
 <script>
 import E from "wangeditor";
 import $ from "jquery";
-  let token1 = window.localStorage.getItem("mayernal-web-token");
-    const baseInfo = 
-  {
-    token:token1,
-    cellTitile: "",
-    cellSubhead: '',
-    cellNumber: "",
-    cellImages: "",
-    cellDetails: "",
-    classIsProhibit: "",
-    classId: "",
-  }
 export default {
   data() {
-
     return {
       categoryItems: {}, // 孕期检查标签数据
       dialogVisible: false,
@@ -245,30 +276,28 @@ export default {
       typeReport: true, //报告单类型
       noreportIconShow: false, // 报告单类型暂无数据
       headlineActive: -1, //标题active
-      headlineLayer: false, //新增标签弹框
+      headlineLayer: false, //新增标题弹框
       headlineNameLayer: "", //新增标签弹框-标题名称
       vicHeadlineNameLayer: "", //新增标签弹框-副标题名称
-      imageUrl: "",
-      examineTittle: "",
-      examineTittleDeputy: "",
+      imageUrl: "",//新增标签弹框-封面图片
+      imageUrlBase64: "",//新增封面图片数据
+      examineTittle: "", //右面一级标题
+      examineTittleDeputy: "",//右面二级标题
       cellDetails: "", //详情
       matterBoxShow: false,
-      classId:'',
-  
+      classId: "", //标签id
+      headlineLayerEdit:false,//修改标签弹框-标题名称
+      headlineNameLayerEdit:"",//修改标签弹框-标题名称
+      vicHeadlineNameLayerEdit:"",//修改标签弹框-副标题名称
+      imageUrlEdit:'',//修改标签弹框-封面图片
+      imageUrlBase64Edit:''//修改标签弹框-图片数据
     };
   },
   mounted() {
-    this.choiceRadio();
     this.pregnantPrenatalEducationAndClassFindList();
+   
   },
   methods: {
-    choiceRadio() {
-      // if (this.types == 0) {
-      //   this.compile = true;
-      // } else if (this.types == 1) {
-      //   this.compile = false;
-      // }
-    },
     //  标签切换
     toggleClass(index) {
       this.clickActive = index;
@@ -294,6 +323,7 @@ export default {
         })
         .catch(_ => {});
     },
+    // 标题切换
     headlineClick(index) {
       this.headlineActive = index;
       if (this.headlineActive !== -1) {
@@ -317,28 +347,35 @@ export default {
         this.examineTittleDeputy = "";
         this.cellDetails = "";
       }
-
-      console.log(this.cellDetails);
-      // console.log(this.tittledata[index].cellTitle);
+     
     },
+    // 添加标题按钮
     add() {
-      this.headlineLayer = true;
+      if (this.types == 0) {
+        this.$message({
+          message: "未激活状态不可以新增",
+          type: "warning"
+        });
+      } else {
+        this.headlineLayer = true;
+      }
     },
+    // 添加标题弹框确定按钮
     newHeadlineAffirm() {
-      baseInfo.cellTitile = this.headlineNameLayer;
-      baseInfo.cellSubhead = this.vicHeadlineNameLayer;
-      baseInfo.cellNumber = this.tittledata.length+1;
-      baseInfo.cellImages = this.imageUrl; //封面
-      baseInfo.cellDetails = ''; //详情
-      baseInfo.classIsProhibit = 1; //激活状态
-      baseInfo.classId = this.classId; //标签id
-      this.tittledata.push(baseInfo);
-      console.log(baseInfo)
-      this.pregnantPrenatalEducationClassAndCellInsert();
+      var baseInfo = new FormData();
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      baseInfo.append("token", token1);
+      baseInfo.append("cellTitile", this.headlineNameLayer);
+      baseInfo.append("cellSubhead", this.vicHeadlineNameLayer);
+      baseInfo.append("cellNumber", this.tittledata.length + 1);
+      baseInfo.append("cellImages", this.imageUrlBase64);
+      baseInfo.append("cellDetails", "");
+      baseInfo.append("classIsProhibit", 1);
+      baseInfo.append("classId", this.classId);
+      console.log(baseInfo);
+      this.pregnantPrenatalEducationClassAndCellInsert(baseInfo);
+      // this.tittledata.push(baseInfo);
       this.headlineLayer = false;
-    },
-    getContent: function() {
-      alert(this.editorContent);
     },
     // 标签查询
     pregnantPrenatalEducationAndClassFindList() {
@@ -399,11 +436,13 @@ export default {
           this.$message.error("新建错误，请稍后重试");
         });
     },
+    // 标签双击编辑
     dblclickBtn(event) {
       this.modification = true;
       var el = event.currentTarget; //复杂的click哈哈
       this.modificationlyLayerInput = el.innerText;
     },
+    // 通过标签id查询数据列表
     pregnantPrenatalEducationClassAndCellFindList(token, classId) {
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
@@ -426,39 +465,59 @@ export default {
           this.$message.error("查询错误，请稍后重试");
         });
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(this.imageUrl);
-    },
-    beforeAvatarUpload(file) {
-      const testmsg = /^image\/(jpeg|png|jpg)$/.test(file.type);
-      // const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!testmsg) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return testmsg && isLt2M;
+    // 上传封面
+    changeImage(e) {
+      var file = e.target.files[0];
+      var reader = new FileReader();
+      var that = this;
+      reader.readAsDataURL(file);
+      reader.onload = function(e) {
+        that.imageUrl = this.result;
+        that.imageUrlBase64 = file;
+        console.log(that.imageUrlBase64);
+      };
     },
     // 二级标题-添加
-    pregnantPrenatalEducationClassAndCellInsert(){
-      //   let self = this;
-      // let token1 = window.localStorage.getItem("mayernal-web-token");
+    pregnantPrenatalEducationClassAndCellInsert(baseInfo) {
       this.$api
-        .pregnantPrenatalEducationClassAndCellInsert(
-          baseInfo
-        )
+        .pregnantPrenatalEducationClassAndCellInsert(baseInfo)
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
-            // this.tittledata =
-            //   res.pcPregnantPrenatalEducationClassAndCellBeanList;
-            // console.log(this.tittledata);
+            this.toggleClass(this.clickActive);
           } else if (res.status === "20209") {
-            // this.tittledata = [];
+          }
+        })
+        .catch(error => {
+          this.$message.error("查询错误，请稍后重试");
+        });
+    },
+    // 双击标题修改
+    BothheadlineClick(index){
+      console.log(this.tittledata[index]);
+      this.headlineLayerEdit = true;
+      this.headlineNameLayerEdit = this.tittledata[index].cellTitle;
+      this.vicHeadlineNameLayerEdit =  this.tittledata[index].cellSubhead;
+      this.imageUrlEdit =  this.tittledata[index].cellImages;
+    },
+    // 二级标题-单项-修改
+    pregnantPrenatalEducationCellUpdate(){
+        this.$api
+        .pregnantPrenatalEducationCellUpdate({
+          token:token,
+          id:id,
+          title:title,
+          subhead:subhead,
+          number:number,
+          details:details,
+          images:images
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+
+            // this.toggleClass(this.clickActive);
+          } else if (res.status === "20209") {
           }
         })
         .catch(error => {
@@ -569,52 +628,62 @@ export default {
       height: 500px;
       background-color: #fff;
       border-right: 1px solid #ccc;
-      .tittledataAll {
-        height: 380px;
-        overflow: hidden;
-        overflow-y: auto;
-        padding: 12px;
-        .tittledata {
-          margin-bottom: 14px;
-          padding: 12px;
-          border: 1px solid #ccc;
-          cursor: pointer;
-        }
-        .active {
-          border: 1px solid #68b6e7;
-        }
-        .mainHeading {
-          font-size: 14px;
-          color: #333333;
-        }
-        .subheading {
-          font-size: 12px;
-          color: #999999;
-          margin-top: 4px;
-        }
-        .activeColor {
-          color: #68b6e7;
-        }
-        .addBox {
-          position: relative;
-          height: 58px;
-          line-height: 58px;
-          text-align: center;
-          border: 2px dotted #ccc;
-          margin: auto;
-          cursor: pointer;
-          .newConstructionBtn {
-            color: #68b7e7;
-            font-size: 16px;
-            margin-left: 8px;
+      overflow: hidden;
+      .headlineBox_overflow {
+        .tittledataAll {
+          position: absolute;
+          left: 0;
+          top: 60px;
+          right: -17px;
+          bottom: 0;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          height: 440px;
+          overflow: hidden;
+          overflow-y: auto;
+          .tittledata {
+            margin-bottom: 14px;
+            padding: 12px;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
           }
-          .addIcon {
-            background: url("../../assets/addIcon.png") no-repeat 0 0;
-            width: 16px;
-            height: 16px;
-            position: absolute;
-            left: 60px;
-            top: 38%;
+          .active {
+            border-bottom-style: 1px solid #68b6e7;
+          }
+          .mainHeading {
+            font-size: 14px;
+            color: #333333;
+          }
+          .subheading {
+            font-size: 12px;
+            color: #999999;
+            margin-top: 4px;
+          }
+          .activeColor {
+            color: #68b6e7;
+          }
+          .addBox {
+            position: relative;
+            height: 58px;
+            line-height: 58px;
+            text-align: center;
+            border-top: 1px dashed #d0d0d0;
+            border-bottom: 1px dashed #d0d0d0;
+            margin: auto;
+            cursor: pointer;
+            .newConstructionBtn {
+              color: #68b7e7;
+              font-size: 16px;
+              margin-left: 8px;
+            }
+            .addIcon {
+              background: url("../../assets/addIcon.png") no-repeat 0 0;
+              width: 16px;
+              height: 16px;
+              position: absolute;
+              left: 80px;
+              top: 38%;
+            }
           }
         }
       }
@@ -627,39 +696,6 @@ export default {
         padding: 16px;
         border-bottom: 1px solid #ccc;
       }
-      // .newConstruction {
-      //   position: absolute;
-      //   left: 0;
-      //   bottom: 0px;
-      //   box-shadow: 0px 2px 12px 5px #e1e1e1;
-      //   height: 60px;
-      //   line-height: 60px;
-      //   width: 100%;
-      //   -moz-user-select: none; /*火狐*/
-      //   -webkit-user-select: none; /*webkit浏览器*/
-      //   -ms-user-select: none; /*IE10*/
-      //   -khtml-user-select: none; /*早期浏览器*/
-      //   user-select: none;
-      //   .addBox {
-      //     position: relative;
-      //     width: 92px;
-      //     margin: auto;
-      //     cursor: pointer;
-      //     .newConstructionBtn {
-      //       color: #68b7e7;
-      //       font-size: 16px;
-      //       margin-left: 8px;
-      //     }
-      //     .addIcon {
-      //       background: url("../../assets/addIcon.png") no-repeat 0 0;
-      //       width: 16px;
-      //       height: 16px;
-      //       position: absolute;
-      //       left: -16px;
-      //       top: 36%;
-      //     }
-      //   }
-      // }
     }
     .matterBox {
       float: left;
@@ -710,6 +746,48 @@ export default {
 }
 .newlyLayer {
   z-index: 999999;
+
+  .changeImageIcon {
+    border: 1px dashed #ccc;
+    width: 410px;
+    height: 178px;
+    margin-top: 20px;
+    text-align: center;
+    position: relative;
+    .avatar {
+      width: 410px;
+      height: 178px;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
+    .coverBtn {
+      width: 410px;
+      height: 178px;
+      cursor: pointer;
+      .plusIcon {
+        margin-top: 60px;
+        display: inline-block;
+        text-align: center;
+        .el-icon-plus {
+          font-size: 30px;
+        }
+        span {
+          display: block;
+        }
+      }
+      input {
+        display: inline-block;
+        width: 410px;
+        height: 178px;
+        cursor: pointer;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        opacity: 0;
+      }
+    }
+  }
   p {
     margin-bottom: 12px;
     margin-top: 20px;

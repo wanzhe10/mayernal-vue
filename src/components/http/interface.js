@@ -194,6 +194,15 @@ export const pregnantPrenatalEducationClassAndCellFindList = data => {
     data
   })
 }
+//二级标题-单项-修改
+export const pregnantPrenatalEducationCellUpdate = data => {
+  return axios({
+    url: 'v1/web/pc/pregnantPrenatalEducationCell/update',
+    method: 'post',
+    data
+  })
+}
+
 
 //模板管理
   // 查询列表
@@ -396,5 +405,6 @@ export default {
   pregnantPrenatalEducationAndClassInsert,
   pregnantPrenatalEducationClassAndCellInsert,
   patientBMI,
-  pregnantPrenatalEducationClassAndCellFindList
+  pregnantPrenatalEducationClassAndCellFindList,
+  pregnantPrenatalEducationCellUpdate
 }
