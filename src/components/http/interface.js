@@ -178,6 +178,14 @@ export const pregnantPrenatalEducationAndClassInsert = data => {
     data
   })
 }
+// 一级标签-修改
+export const pregnantPrenatalEducationClassUpdate = data => {
+  return axios({
+    url: 'v1/web/pc/pregnantPrenatalEducationClass/update',
+    method: 'post',
+    data
+  })
+}
 // 孕期检查标题-添加
 export const pregnantPrenatalEducationClassAndCellInsert = data => {
   return axios({
@@ -406,5 +414,6 @@ export default {
   pregnantPrenatalEducationClassAndCellInsert,
   patientBMI,
   pregnantPrenatalEducationClassAndCellFindList,
+  pregnantPrenatalEducationClassUpdate,
   pregnantPrenatalEducationCellUpdate
 }

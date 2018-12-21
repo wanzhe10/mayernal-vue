@@ -5,7 +5,10 @@
       <div class="Contant_right clearfix">
         <div class="Contant_tittle">
           <span>孕期检查标签</span>
-          <el-radio-group v-model="types">
+          <el-radio-group
+            v-model="types"
+            @change="typesBtn"
+          >
             <el-radio :label="0">未激活</el-radio>
             <el-radio :label="1">已激活</el-radio>
           </el-radio-group>
@@ -28,7 +31,7 @@
             v-html="item.className"
             :id="item.id"
             @click="toggleClass(index)"
-            @dblclick="dblclickBtn($event)"
+            @dblclick="dblclickBtn(index)"
             :class="[item.classIsProhibit ==1?'actives':'nonactivated',{active:index==clickActive}]"
             :key="index"
             v-show="typeReport"
@@ -94,7 +97,8 @@
             <input
               type="button"
               value="保 存"
-              @click=""
+              @click="modificationBtn"
+              :disabled='saveBtn'
             >
           </div>
 
@@ -136,7 +140,7 @@
       <p>标签名称</p>
       <el-input
         v-model="modificationlyLayerInput"
-        placeholder="请输入报告单名称"
+        placeholder=""
       ></el-input>
       <span
         slot="footer"
@@ -145,7 +149,7 @@
         <el-button @click="modification = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="modification = false"
+          @click="modificationOk"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -157,7 +161,8 @@
       :before-close="handleClose"
       class="newlyLayer"
       :lock-scroll='true'
-      :close-on-click-modal='false'>
+      :close-on-click-modal='false'
+    >
       <p>标题名称</p>
       <el-input
         v-model="headlineNameLayer"
@@ -203,14 +208,15 @@
       </span>
     </el-dialog>
     <!-- 修改标题弹框 -->
-      <el-dialog
+    <el-dialog
       title="编辑标题"
       :visible.sync="headlineLayerEdit"
       width="450px"
       :before-close="handleClose"
       class="newlyLayer"
       :lock-scroll='true'
-      :close-on-click-modal='false'>
+      :close-on-click-modal='false'
+    >
       <p>标题名称</p>
       <el-input
         v-model="headlineNameLayerEdit"
@@ -239,7 +245,7 @@
             type="file"
             name="avatar"
             accept="image/gif,image/jpeg,image/jpg,image/png"
-            @change="changeImage($event)"
+            @change="amendChangeImage($event)"
             ref="avatarInput"
           >
         </div>
@@ -251,7 +257,7 @@
         <el-button @click="headlineLayerEdit = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="headlineLayerEdit = false"
+          @click="amendAffirmBtn"
         >确 定</el-button>
       </span>
     </el-dialog>
@@ -261,60 +267,70 @@
 <script>
 import E from "wangeditor";
 import $ from "jquery";
+var time = null; //  在这里定义time 为null
 export default {
   data() {
     return {
       categoryItems: {}, // 孕期检查标签数据
       dialogVisible: false,
       modification: false,
-      newlyLayerInput: "",
-      modificationlyLayerInput: "",
+      newlyLayerInput: "", // 新建标签弹框-标签名称
+      modificationlyLayerInput: "", // 修改标签弹框-标签名称
       tittledata: [], //标题的数据
       editorContent: "",
       clickActive: -1,
       types: 0, //激活状态
+      classNumber: "", //标签序号
       typeReport: true, //报告单类型
       noreportIconShow: false, // 报告单类型暂无数据
       headlineActive: -1, //标题active
       headlineLayer: false, //新增标题弹框
-      headlineNameLayer: "", //新增标签弹框-标题名称
-      vicHeadlineNameLayer: "", //新增标签弹框-副标题名称
-      imageUrl: "",//新增标签弹框-封面图片
-      imageUrlBase64: "",//新增封面图片数据
+      headlineNameLayer: "", //新增标题弹框-标题名称
+      vicHeadlineNameLayer: "", //新增标题弹框-副标题名称
+      imageUrl: "", //新增标题弹框-封面图片
+      imageUrlBase64: "", //新增封面图片数据
       examineTittle: "", //右面一级标题
-      examineTittleDeputy: "",//右面二级标题
+      examineTittleDeputy: "", //右面二级标题
       cellDetails: "", //详情
       matterBoxShow: false,
       classId: "", //标签id
-      headlineLayerEdit:false,//修改标签弹框-标题名称
-      headlineNameLayerEdit:"",//修改标签弹框-标题名称
-      vicHeadlineNameLayerEdit:"",//修改标签弹框-副标题名称
-      imageUrlEdit:'',//修改标签弹框-封面图片
-      imageUrlBase64Edit:''//修改标签弹框-图片数据
+      cellId: "", //标题id
+      headlineLayerEdit: false, //修改标题弹框
+      headlineNameLayerEdit: "", //修改标题弹框-标题名称
+      vicHeadlineNameLayerEdit: "", //修改标题弹框-副标题名称
+      headlineLayerEditNumber: "", //修改标题弹框-序号
+      imageUrlEdit: "", //修改标题弹框-封面图片
+      imageUrlBase64Edit: "", //修改标题弹框-图片数据
+      saveBtn: false //保存按钮
     };
   },
   mounted() {
     this.pregnantPrenatalEducationAndClassFindList();
-   
   },
   methods: {
     //  标签切换
     toggleClass(index) {
-      this.clickActive = index;
-      this.isShow1 = index;
-      console.log(this.categoryItems[index].id);
-      this.classId = this.categoryItems[index].id;
-      console.log(this.categoryItems[index].classNumber);
-      this.types = parseInt(this.categoryItems[index].classIsProhibit);
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      this.examineTittle = "";
-      this.examineTittleDeputy = "";
-      this.cellDetails = "";
-      this.matterBoxShow = false;
-      this.pregnantPrenatalEducationClassAndCellFindList(
-        token1,
-        this.categoryItems[index].id
-      );
+      this.headlineActive = -1;
+      clearTimeout(time); //首先清除计时器
+      time = setTimeout(() => {
+        this.clickActive = index;
+        this.isShow1 = index;
+        // console.log(this.categoryItems[index]);
+        this.classId = this.categoryItems[index].id;
+        this.classNumber = this.categoryItems[index].classNumber;
+        this.modificationlyLayerInput = this.categoryItems[index].className;
+        // console.log(this.categoryItems[index].classNumber);
+        this.types = parseInt(this.categoryItems[index].classIsProhibit);
+        let token1 = window.localStorage.getItem("mayernal-web-token");
+        this.examineTittle = "";
+        this.examineTittleDeputy = "";
+        this.cellDetails = "";
+        this.matterBoxShow = false;
+        this.pregnantPrenatalEducationClassAndCellFindList(
+          token1,
+          this.categoryItems[index].id
+        );
+      }, 200); //大概时间300ms
     },
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -323,61 +339,7 @@ export default {
         })
         .catch(_ => {});
     },
-    // 标题切换
-    headlineClick(index) {
-      this.headlineActive = index;
-      if (this.headlineActive !== -1) {
-        this.matterBoxShow = true;
-        this.examineTittle = this.tittledata[index].cellTitle;
-        this.examineTittleDeputy = this.tittledata[index].cellSubhead;
-        this.cellDetails = this.tittledata[index].cellDetails;
-        var editor = new E("#editor");
-        editor.customConfig.uploadImgShowBase64 = true;
-        editor.customConfig.showLinkImg = false;
-        var $text1 = $("#text1");
-        editor.customConfig.onchange = function(html) {
-          // 监控变化，同步更新到 textarea
-          $text1.val(html);
-        };
-        editor.create();
-        // 初始化 textarea 的值
-        $text1.val(editor.txt.html(this.cellDetails));
-      } else {
-        this.examineTittle = "";
-        this.examineTittleDeputy = "";
-        this.cellDetails = "";
-      }
-     
-    },
-    // 添加标题按钮
-    add() {
-      if (this.types == 0) {
-        this.$message({
-          message: "未激活状态不可以新增",
-          type: "warning"
-        });
-      } else {
-        this.headlineLayer = true;
-      }
-    },
-    // 添加标题弹框确定按钮
-    newHeadlineAffirm() {
-      var baseInfo = new FormData();
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      baseInfo.append("token", token1);
-      baseInfo.append("cellTitile", this.headlineNameLayer);
-      baseInfo.append("cellSubhead", this.vicHeadlineNameLayer);
-      baseInfo.append("cellNumber", this.tittledata.length + 1);
-      baseInfo.append("cellImages", this.imageUrlBase64);
-      baseInfo.append("cellDetails", "");
-      baseInfo.append("classIsProhibit", 1);
-      baseInfo.append("classId", this.classId);
-      console.log(baseInfo);
-      this.pregnantPrenatalEducationClassAndCellInsert(baseInfo);
-      // this.tittledata.push(baseInfo);
-      this.headlineLayer = false;
-    },
-    // 标签查询
+    // 一级标签查询
     pregnantPrenatalEducationAndClassFindList() {
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
@@ -405,7 +367,7 @@ export default {
           this.$message.error("查询错误，请稍后重试");
         });
     },
-    // 孕期检查标签-添加
+    // 一级标签-添加
     pregnantPrenatalEducationAndClassInsert() {
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
@@ -419,7 +381,7 @@ export default {
         .pregnantPrenatalEducationAndClassInsert({
           token: token1,
           className: this.newlyLayerInput,
-          classNumber: classNumber,
+          classNumber: this.classNumber,
           classIsProhibit: 0
         })
         .then(res => {
@@ -436,11 +398,59 @@ export default {
           this.$message.error("新建错误，请稍后重试");
         });
     },
+    // 一级标签-修改
+    pregnantPrenatalEducationClassUpdate() {
+      console.log(this.modificationlyLayerInput);
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .pregnantPrenatalEducationClassUpdate({
+          token: token1,
+          id: this.classId,
+          name: this.modificationlyLayerInput,
+          number: this.classNumber,
+          isProhibit: this.types
+        })
+
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.modification = false;
+            this.pregnantPrenatalEducationAndClassFindList();
+            // this.modificationlyLayerInput = "";
+          } else {
+            this.$message.error("修改错误，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("修改错误，请稍后重试");
+        });
+    },
     // 标签双击编辑
-    dblclickBtn(event) {
+    dblclickBtn(index) {
+      clearTimeout(time); //清除
+      this.classNumber = this.categoryItems[index].classNumber;
+      this.classId = this.categoryItems[index].id;
       this.modification = true;
       var el = event.currentTarget; //复杂的click哈哈
       this.modificationlyLayerInput = el.innerText;
+    },
+    // 标签编辑确定按钮
+    modificationOk() {
+      this.pregnantPrenatalEducationClassUpdate();
+    },
+    // 激活未激活
+    typesBtn() {
+      if (!$('.category').children('li').hasClass('active')) {
+           this.$message({
+          message: "请选择标签",
+          type: "warning"
+        });
+      }else{
+            this.toggleClass(this.clickActive)
+      this.pregnantPrenatalEducationClassUpdate();
+      }
+   
     },
     // 通过标签id查询数据列表
     pregnantPrenatalEducationClassAndCellFindList(token, classId) {
@@ -452,7 +462,7 @@ export default {
           classId: classId
         })
         .then(res => {
-          // console.log(res);
+          console.log(res);
           if (res.status === "20200") {
             this.tittledata =
               res.pcPregnantPrenatalEducationClassAndCellBeanList;
@@ -477,6 +487,86 @@ export default {
         console.log(that.imageUrlBase64);
       };
     },
+    // 标题切换
+    headlineClick(index) {
+      this.headlineActive = index;
+      if (this.headlineActive !== -1) {
+        this.matterBoxShow = true;
+        this.examineTittle = this.tittledata[index].cellTitle;
+        this.examineTittleDeputy = this.tittledata[index].cellSubhead;
+        this.cellDetails = this.tittledata[index].cellDetails;
+        this.headlineNameLayerEdit = this.tittledata[index].cellTitle;
+        this.vicHeadlineNameLayerEdit = this.tittledata[index].cellSubhead;
+        this.cellId = this.tittledata[index].cellId;
+        this.headlineLayerEditNumber = this.tittledata[index].cellNumber;
+        console.log(this.tittledata[index]);
+
+        var editor = new E("#editor");
+        editor.customConfig.uploadImgShowBase64 = true;
+        editor.customConfig.showLinkImg = false;
+
+        var $text1 = $("#text1");
+        let selt = this;
+        editor.customConfig.onchange = function(html) {
+          // 监控变化，同步更新到 textarea
+          $text1.val(html);
+          selt.cellDetails = html;
+        };
+        editor.create();
+        if (this.types == 0) {
+          editor.$textElem.attr("contenteditable", false);
+          this.saveBtn = true;
+        } else {
+          editor.$textElem.attr("contenteditable", true);
+          this.saveBtn = false;
+        }
+        // 初始化 textarea 的值
+        $text1.val(editor.txt.html(this.cellDetails));
+      } else {
+        this.examineTittle = "";
+        this.examineTittleDeputy = "";
+        this.cellDetails = "";
+      }
+    },
+    // 添加标题按钮
+    add() {
+      if (
+        !$(".category")
+          .children("li")
+          .hasClass("active")
+      ) {
+        this.$message({
+          message: "请选择标签",
+          type: "warning"
+        });
+      } else {
+        if (this.types == 0) {
+          this.$message({
+            message: "未激活状态不可以新增",
+            type: "warning"
+          });
+        } else {
+          this.headlineLayer = true;
+        }
+      }
+    },
+    // 添加标题弹框确定按钮
+    newHeadlineAffirm() {
+      var baseInfo = new FormData();
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      baseInfo.append("token", token1);
+      baseInfo.append("cellTitile", this.headlineNameLayer);
+      baseInfo.append("cellSubhead", this.vicHeadlineNameLayer);
+      baseInfo.append("cellNumber", this.tittledata.length + 1);
+      baseInfo.append("cellImages", this.imageUrlBase64);
+      baseInfo.append("cellDetails", "");
+      baseInfo.append("classIsProhibit", 1);
+      baseInfo.append("classId", this.classId);
+      console.log(baseInfo);
+      this.pregnantPrenatalEducationClassAndCellInsert(baseInfo);
+      // this.tittledata.push(baseInfo);
+      this.headlineLayer = false;
+    },
     // 二级标题-添加
     pregnantPrenatalEducationClassAndCellInsert(baseInfo) {
       this.$api
@@ -489,34 +579,86 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error("查询错误，请稍后重试");
+          this.$message.error("添加错误，请稍后重试");
         });
     },
     // 双击标题修改
-    BothheadlineClick(index){
-      console.log(this.tittledata[index]);
-      this.headlineLayerEdit = true;
-      this.headlineNameLayerEdit = this.tittledata[index].cellTitle;
-      this.vicHeadlineNameLayerEdit =  this.tittledata[index].cellSubhead;
-      this.imageUrlEdit =  this.tittledata[index].cellImages;
+    BothheadlineClick(index) {
+      if (this.types == 0) {
+        this.$message({
+          message: "未激活状态不可编辑",
+          type: "warning"
+        });
+      } else {
+        // console.log(this.tittledata[index]);
+        this.headlineLayerEdit = true;
+        this.headlineNameLayerEdit = this.tittledata[index].cellTitle;
+        this.vicHeadlineNameLayerEdit = this.tittledata[index].cellSubhead;
+        this.cellId = this.tittledata[index].cellId;
+        this.headlineLayerEditNumber = this.tittledata[index].cellNumber;
+        // this.imageUrlBase64Edit=this.imageUrlBase64;
+        if (
+          this.tittledata[index].cellImages == null ||
+          this.tittledata[index].cellImages == ""
+        ) {
+          this.imageUrlEdit = "";
+        } else {
+          var imgSrc = eval("(" + this.tittledata[index].cellImages + ")");
+          this.imageUrlEdit = "http://192.168.0.6:8763" + imgSrc.minImageURL;
+        }
+      }
+    },
+    // 修改上传封面
+    amendChangeImage(e) {
+      var that = this;
+      var file = e.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function(e) {
+        if (file) {
+          that.imageUrlEdit = this.result;
+          that.imageUrlBase64Edit = file;
+          console.log(that.imageUrlBase64Edit);
+        }
+      };
+    },
+    // 修改标题确认按钮
+    amendAffirmBtn() {
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      var modifyData = new FormData();
+      modifyData.append("token", token1);
+      modifyData.append("id", this.cellId);
+      modifyData.append("title", this.headlineNameLayerEdit);
+      modifyData.append("subhead", this.vicHeadlineNameLayerEdit);
+      modifyData.append("number", this.headlineLayerEditNumber);
+      modifyData.append("details", this.cellDetails);
+      modifyData.append("images", this.imageUrlBase64Edit);
+      this.pregnantPrenatalEducationCellUpdate(modifyData);
+    },
+    // 保存按钮
+    modificationBtn() {
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      var modifyData = new FormData();
+      modifyData.append("token", token1);
+      modifyData.append("id", this.cellId);
+      modifyData.append("title", this.headlineNameLayerEdit);
+      modifyData.append("subhead", this.vicHeadlineNameLayerEdit);
+      modifyData.append("number", this.headlineLayerEditNumber);
+      modifyData.append("details", this.cellDetails);
+      modifyData.append("images", this.imageUrlBase64Edit);
+      console.log(this.cellDetails);
+      this.pregnantPrenatalEducationCellUpdate(modifyData);
     },
     // 二级标题-单项-修改
-    pregnantPrenatalEducationCellUpdate(){
-        this.$api
-        .pregnantPrenatalEducationCellUpdate({
-          token:token,
-          id:id,
-          title:title,
-          subhead:subhead,
-          number:number,
-          details:details,
-          images:images
-        })
+    pregnantPrenatalEducationCellUpdate(modifyData) {
+      let self = this;
+      this.$api
+        .pregnantPrenatalEducationCellUpdate(modifyData)
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
-
-            // this.toggleClass(this.clickActive);
+            this.toggleClass(this.clickActive);
+            this.headlineLayerEdit = false;
           } else if (res.status === "20209") {
           }
         })
@@ -739,6 +881,7 @@ export default {
           border-radius: 8px;
           margin: 10px auto;
           display: block;
+          cursor: pointer;
         }
       }
     }
@@ -904,6 +1047,9 @@ export default {
 }
 .el-dialog__wrapper {
   z-index: 99999 !important;
+}
+.w-e-text-container{
+   z-index: 10!important;
 }
 </style>
 

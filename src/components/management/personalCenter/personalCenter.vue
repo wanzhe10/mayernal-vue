@@ -745,7 +745,22 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
+             let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
+            this.recheckRecord = recheckRecordData;
+            console.log(this.recheckRecord);
+            this.recheckRightData = res.pcPatientSecondCheckBeanList[0];
+            if (this.recheckRecord[0].imageList !== "") {
+              this.imageList = eval(
+                "(" + this.recheckRecord[0].imageList + ")"
+              );
+            }
+            this.examineNum = res.pcPatientSecondCheckBeanList.length;
+            this.recordNumsDataShow = true;
+            this.imgShowHide = false;
           } else if (res.status === "20209") {
+                this.recheckRecord = [];
+             this.imgShowHide = true;
+             this.recordNumsDataShow = false;
           }
         })
         .catch(error => {

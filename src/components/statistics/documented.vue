@@ -86,7 +86,10 @@
         </ul>
         <div class="fr mgr38">
           <el-button round>打印</el-button>
-          <el-button round>导出</el-button>
+          <el-button
+            round
+            @click="exportExcel"
+          >导出</el-button>
         </div>
       </div>
       <div class="administrativeBoxContant">
@@ -96,11 +99,13 @@
           class="noDataIcon"
           v-show='imgShow'
         >
-        <div class="TableDataBox"  v-show='tableShow'>
+        <div
+          class="TableDataBox"
+          v-show='tableShow'
+        >
           <el-table
             :data="officeTableData"
             style="width: 100%"
-            
           >
             <el-table-column
               prop="makeAppointmentTime"
@@ -228,6 +233,8 @@
 </template>
 
  <script>
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
   data() {
     return {
@@ -287,8 +294,8 @@ export default {
       endWeek: "", //孕周结束
       countType: "", //检索类型countType
       searching: "", //检索类型countType
-      tableShow:true,
-      imgShow:false,
+      tableShow: true,
+      imgShow: false
     };
   },
   mounted() {
@@ -298,6 +305,69 @@ export default {
     this.documentedInquire();
   },
   methods: {
+    // 导出表格
+    exportExcel() {
+      var jsono = this.officeTableData;
+      var jsonp = [];
+      jsono.forEach(element => {
+        var tempJson = {};
+        tempJson.复检时间 = element.makeAppointmentTime;
+        tempJson.姓名 = element.checkName;
+        tempJson.孕周 = "孕" + element.newAgeOfMenarche + "-" + element.newAgeOfMenarcheDay + "天" ;
+        tempJson.预产期 = element.parturitionDetailDueDate;
+        tempJson.年龄 = element.checkAge;
+        tempJson.高危评估 = getHighRiskClass(element.highRiskClass);
+        jsonp.push(tempJson);
+      });
+      function getHighRiskClass(param) {
+        var highClassStr = "";
+        if (param == null) {
+          return highClassStr;
+        }
+        console.log(param)
+          switch (param) {
+            case "0":
+              highClassStr = "绿色";
+            break;
+            case "1":
+              highClassStr = "黄色";
+            break;
+            case "2":
+              highClassStr = "橘色";
+            break;
+            case "3":
+              highClassStr = "红色";
+            break;
+            case "4":
+              highClassStr = "紫色";
+            break;
+          default:
+            break;
+        }
+        console.log(highClassStr)
+        return highClassStr;
+      }
+      
+        const wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };// 这里的数据是用来定义导出的格式类型
+        downloadExl(jsonp,wopts);
+        function downloadExl(data, type) {
+            const wb = { SheetNames: ['Sheet1'], Sheets: {}, Props: {} };
+            wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);   //  通过json_to_sheet转成单页(Sheet)数据
+            saveAs(new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" }), "已建孕妇档案列表" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
+        }
+        function s2ab(s) {
+            if (typeof ArrayBuffer !== 'undefined') {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            } else {
+                var buf = new Array(s.length);
+                for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+        }
+    },
     // 日期默认当前月
     getTime() {
       let date = new Date();
@@ -341,27 +411,27 @@ export default {
     },
     // 开始时间切换
     starTimeSelect() {
-      if (this.starTime >this.endTime) {
-          this.$message({
-          message: '起始时间不能大于截止时间',
-          type: 'warning'
+      if (this.starTime > this.endTime) {
+        this.$message({
+          message: "起始时间不能大于截止时间",
+          type: "warning"
         });
-          return false;
-      }else{
-      this.documentedInquire();
+        return false;
+      } else {
+        this.documentedInquire();
       }
     },
     // 结束时间切换
     endTimeSelect() {
-       if (this.starTime >this.endTime) {
-          this.$message({
-          message: '截止时间不能小于起始时间',
-          type: 'warning'
+      if (this.starTime > this.endTime) {
+        this.$message({
+          message: "截止时间不能小于起始时间",
+          type: "warning"
         });
-          return false;
-       }else{
-      this.documentedInquire();
-       }
+        return false;
+      } else {
+        this.documentedInquire();
+      }
     },
     // 高危风险下拉选择切换
     selectChange() {
@@ -370,7 +440,7 @@ export default {
     // 孕周切换
     toggle1(index) {
       this.current = index;
-     let token = localStorage.getItem("mayernal-web-token");
+      let token = localStorage.getItem("mayernal-web-token");
       if (this.current == 0) {
         this.startWeek = "";
         this.endWeek = "";
@@ -391,8 +461,8 @@ export default {
     },
     // 查询
     documentedInquire() {
-      let  self = this;
-     let token = localStorage.getItem("mayernal-web-token");
+      let self = this;
+      let token = localStorage.getItem("mayernal-web-token");
       this.$api
         .patientCenterCountEntityForOthers({
           token: token,
@@ -411,7 +481,7 @@ export default {
           if (res.status === "20200") {
             this.officeTableData = res.pcPatientCenterBeans;
             this.pagerCount = res.pages;
-             self.imgShow = false;
+            self.imgShow = false;
             self.tableShow = true;
           } else if (res.status === "20209") {
             this.officeTableData = [];
