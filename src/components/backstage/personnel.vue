@@ -582,15 +582,20 @@ export default {
       } else {
          var token = localStorage.getItem("mayernal-web-token");
         let self = this;
-        console.log(this.arr);
         this.$api
           .patientCenterInsert(this.arr)
           .then(res => {
+              console.log(res)
             if (res.status === "20200") {
+        this.arr.telephone='';
+        this.arr.name='';
+        this.arr.occupationId='';
+        this.arr.types='';
+        this.arr.deptId='';
               this.dialogVisible = false;
-              this.inquire(token, 1, self.cur_page);
-            } else {
-              this.$message.error('新增失败，请稍后重试');
+             this.inquire(token, 1, 10);
+            } else if (res.status === "20210") {
+             this.$message.error('信息重复，请勿重复添加');
             }
           })
           .catch(error => {
@@ -636,7 +641,7 @@ export default {
             telephone: this.arr2.telephone, // 编辑人员弹框 手机号
             name: this.arr2.name, // 编辑人员弹框 用户姓名
             occupationId: this.arr2.occupationId, //编辑人员弹框角色id
-            deptId: this.arr2.deptId, //编辑人员弹框 科室id
+            deptId: this.arr2.deptSimpleId, //编辑人员弹框 科室id
             types: this.arr2.types, // 编辑人员弹框激活状态
             rolesType: "0", //角色描述
             id: this.arr2.id, //人员编号

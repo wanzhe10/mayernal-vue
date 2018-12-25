@@ -19,7 +19,7 @@ export default {
 <style lang="less">
 // @import "../css/reset.css";
 // @import "../css/root.less";
-html{overflow-y:scroll;}
+// html{overflow-y:scroll;}
 body{
     background-color: #f6f6f6;
     width: 1200px; // position: relative;

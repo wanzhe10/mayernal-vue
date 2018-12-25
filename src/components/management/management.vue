@@ -146,7 +146,15 @@
           prop="healthAssayBloodType"
           label="血型"
           width="48px"
-        ></el-table-column>
+        >
+            <template slot-scope="scope">
+            <div v-show="scope.row.healthAssayBloodType==0">O型</div>
+            <div v-show="scope.row.healthAssayBloodType==1">A型</div>
+            <div v-show="scope.row.healthAssayBloodType==2">B型</div>
+            <div v-show="scope.row.healthAssayBloodType==3">AB型</div>
+            <div v-show="scope.row.healthAssayBloodType==4">RH型</div>
+          </template>
+        </el-table-column>
         <el-table-column
           prop="highRiskNumber"
           label="评分等级"
@@ -320,11 +328,11 @@ export default {
       if (this.fileSearch == '') {
         paramType = '';
       }else if (isNaN(this.fileSearch)) {
-      paramType = 1;
+      paramType = 0;
       }else{
-           paramType = 0;
+           paramType = 1;
       }
-      console.log(paramType)
+      // console.log(paramType)
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
@@ -684,7 +692,7 @@ export default {
     width: 100%;
     background-color: #fff;
     margin-top: 10px;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
   }
 }
 </style>

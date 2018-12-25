@@ -38,7 +38,7 @@
             placeholder='请输入联系人名称'
             v-model="arr.userName"
             readonly='true'
-              @keyup="registeredModelResidence()"
+            @keyup="registeredModelResidence()"
           >
         </div>
         <div class="newsBox">
@@ -49,7 +49,7 @@
             placeholder="请输入手机号"
             v-model="arr.userTelephone"
             readonly='true'
-               @keyup="registeredModelResidence()"
+            @keyup="registeredModelResidence()"
           >
         </div>
         <div class="newsBox">
@@ -58,7 +58,8 @@
             v-model="arr.isProhibit"
             placeholder="请选择"
             v-bind:disabled="disabledInput"
-               @keyup="registeredModelResidence()"
+            @keyup="registeredModelResidence()"
+            style="height:30px;"
           >
             <el-option
               v-for="item in contacts"
@@ -78,7 +79,7 @@
             placeholder="请输入邮箱号"
             v-model="arr.emails"
             readonly='true'
-               @keyup="registeredModelResidence()"
+            @keyup="registeredModelResidence()"
           >
         </div>
       </div>
@@ -102,7 +103,7 @@
             class='organizationName'
             placeholder="请输入机构名称"
             v-model="arr.name"
-               @keyup="registeredModelResidence()"
+            @keyup="registeredModelResidence()"
           >
         </div>
         <div class="InformationBox">
@@ -111,7 +112,7 @@
             v-model="arr.types"
             placeholder="请选择"
             v-bind:disabled="disabledInput2"
-               @keyup="registeredModelResidence()"
+            @keyup="registeredModelResidence()"
           >
             <el-option
               v-for="item in classes"
@@ -125,21 +126,21 @@
         </div>
         <div class="InformationBoxS">
           <span class="mgr36">所在地区</span>
-          <area-cascader
+          <!-- <area-cascader
             type='text'
             v-model="arr.placeholders"
             :level='1'
             :data="pcaa"
-            :placeholders="arr.placeholders"
+            :placeholders="arr.addressArea"
             @keyup="registeredModelResidence()"
             class="locationOrganzation"
-          ></area-cascader>
+          ></area-cascader> -->
           <input
             type="text"
             class='detailedAddress'
             placeholder="请输入详细地址"
             v-model="arr.addressRemarks"
-               @keyup="registeredModelResidence()"
+            @keyup="registeredModelResidence()"
           >
         </div>
         <div class="InformationBoxS ">
@@ -149,17 +150,24 @@
             :autosize="{ minRows: 2, maxRows: 10}"
             placeholder="输入机构简介"
             v-model="arr.remarks"
-               @keyup="registeredModelResidence()"
+            @keyup="registeredModelResidence()"
           > </el-input>
         </div>
       </div>
+  <div class="w960 mgt30">
+        <el-cascader
+  :options="options"
+   v-model="arr.placeholders"
+   @change="handleChange"
+></el-cascader>
+    </div>
 
       <input
         type="button"
         value="保 存"
         class="organizationBox_btn"
         @click='clickBtn()'
-        :disabled='btnStatas'
+        disabled
         :class="{ 'active': select }"
       >
     </div>
@@ -171,14 +179,19 @@
 
 </template>
 <script>
+
 import $ from "jquery";
 import { AreaCascader } from "vue-area-linkage";
 import { pca, pcaa } from "area-data";
+import area from '../../../static/area.js';  //引入外部js文件
 export default {
   data() {
     return {
       disabledInput: true,
       disabledInput2: true,
+        options: areajson, //调用外部js文件的json数据
+          //自定义 默认值
+        // workarea: ['340000', '340100', '340104'],  //此处填写对应的value值
       // 激活状态
       contacts: [
         {
@@ -217,35 +230,38 @@ export default {
         remnantFontContant: "" //机构简介
       },
       do_not_save: false,
-       btnStatas: false, //按钮点击状态
+      btnStatas: false, //按钮点击状态
       select: false
     };
   },
   mounted() {
- this.findSelfHospital();
+    this.findSelfHospital();
   },
   methods: {
-    findSelfHospital(){
-   let self = this;
-    let token1 = window.localStorage.getItem("mayernal-web-token");
-    this.$api
-      .findSelfHospital({ token: token1 })
-      .then(res => {
-        console.log(res);
-        if (res.status === "20200") {
-          self.arr = res;
-        } else {
-           this.$message.error('查询失败，请稍后重试');
-        }
-      })
-      .catch(error => {
-         this.$message.error('查询失败，请稍后重试');
-      });
+      handleChange(label) {
+        console.log(label);
+      },
+    findSelfHospital() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .findSelfHospital({ token: token1 })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            self.arr = res;
+          } else {
+            this.$message.error("查询失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("查询失败，请稍后重试");
+        });
     },
     //机构所在地
     registeredModelResidence() {
-       this.btnStatas = false;
       this.select = true;
+      $(".organizationBox_btn").removeAttr("disabled");
     },
     // 基本情情况修改
     edit() {
@@ -273,19 +289,19 @@ export default {
           message: "机构联系人不能为空",
           type: "warning"
         });
-      } else if (this.arr.userTelephone =='') {
+      } else if (this.arr.userTelephone == "") {
         this.$message({
           showClose: true,
           message: "手机号不能为空",
           type: "warning"
         });
-      }else if (!reg.test(this.arr.userTelephone)) {
+      } else if (!reg.test(this.arr.userTelephone)) {
         this.$message({
           showClose: true,
           message: "手机格式不正确",
           type: "warning"
         });
-      }else if (this.arr.contactsModel == "") {
+      } else if (this.arr.contactsModel == "") {
         this.$message({
           showClose: true,
           message: "请选择激活状态",
@@ -309,13 +325,13 @@ export default {
           message: "请填写机构名称",
           type: "warning"
         });
-      }  else if (this.arr.classModel == "") {
+      } else if (this.arr.classModel == "") {
         this.$message({
           showClose: true,
           message: "请选择机构等级",
           type: "warning"
         });
-      }  else if (this.arr.placeholders == null) {
+      } else if (this.arr.placeholders == null) {
         this.$message({
           showClose: true,
           message: "请选择所在地区",
@@ -338,7 +354,7 @@ export default {
         let self = this;
         console.log(this.arr.placeholders);
         for (let i = 0; i < this.arr.placeholders.length; i++) {
-          const element = this.arr.placeholders[0];
+          // const element = this.arr.placeholders[0];
           var addressProvince = this.arr.placeholders[0];
           var addressCity = this.arr.placeholders[1];
           var addressArea = this.arr.placeholders[2];
@@ -352,11 +368,11 @@ export default {
             addressCity: addressCity, //市
             addressArea: addressArea, //区
             addressRemarks: self.arr.addressRemarks, //地区-详情
-            details: "", //详情
+            details: "xiangqing", //详情
             remarks: self.arr.remarks, //备注
             userName: self.arr.userName, //联系人
             userTelephone: self.arr.userTelephone, //联系人-电话
-            telephone: "", //电话
+            telephone: "1351111111", //电话
             emails: self.arr.emails, //邮箱
             multipartFile: "", //医院图片
             isProhibit: self.arr.isProhibit,
@@ -365,32 +381,40 @@ export default {
           .then(res => {
             if (res.status === "20200") {
               console.log(res);
-               this.findSelfHospital();
+              this.findSelfHospital();
+              this.select = false;
+              $(".organizationBox_btn").attr("disabled", "disabled");
             } else {
-          this.$message.error('编辑失败，请稍后重试');
+              this.$message.error("编辑失败，请稍后重试");
             }
           })
           .catch(error => {
-         this.$message.error('编辑失败，请稍后重试');
+            this.$message.error("编辑失败，请稍后重试");
           });
       }
     }
-  },
-  watch: {
-    // arr: {
-    //   handler: function() {
-    //     // 数据发生变化的时候的操作 未完成
-    //     console.log("变化");
-    //   },
-    //   deep: true
-    // }
-    "arr.userName": function(val, oldVal) {
-      // console.log(val, oldVal)
-      if (val !== oldVal) {
-        console.log(val);
-      }
-    }
   }
+  // watch: {
+  //   // arr: {
+  //   //   handler: function() {
+  //   //     // 数据发生变化的时候的操作 未完成
+  //   //     console.log("变化");
+  //   //   },
+  //   //   deep: true
+  //   // }
+  //   "arr.userName": function(val, oldVal) {
+  //     // console.log(val, oldVal)
+  //     if (val !== oldVal) {
+  //           this.select=true;
+  //     }
+  //   },
+  //    "arr.userTelephone":{//深度监听，可监听到对象、数组的变化
+  //           handler(val, oldVal){
+  //               console.log("b.c: "+val.userTelephone, oldVal.userTelephone);//但是这两个值打印出来却都是一样的
+  //           },
+  //           deep:true
+  //       }
+  // },
 };
 </script>
 
@@ -437,7 +461,7 @@ export default {
   }
 
   .organizationBoxContant {
-    padding: 26px 20px 86px 20px;
+    padding: 26px 20px 70px 20px;
     .lookAtallBtnBox {
       width: 100%;
       position: relative;
@@ -489,7 +513,7 @@ export default {
       }
     }
     .newsBox {
-      height: 46px;
+      // height: 46px;
       width: 440px;
       display: inline-block;
       border-bottom: 1px solid #ccc;
@@ -557,8 +581,9 @@ export default {
       margin-top: 38px;
       display: block;
       color: #fff;
+      cursor: pointer;
     }
-    .active{
+    .active {
       opacity: 1;
     }
   }
@@ -605,8 +630,9 @@ export default {
 .organizationBox .el-textarea__inner {
   border: none;
 }
-/* .el-input--suffix .el-input__inner {
-  height: 40px !important;
-} */
+
+.organizationBoxp .el-input__inner {
+  height: 30px !important;
+}
 </style>
 

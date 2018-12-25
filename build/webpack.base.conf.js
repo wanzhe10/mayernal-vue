@@ -3,9 +3,9 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-var webpack = require("webpack") 
+var webpack = require("webpack")
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -19,9 +19,9 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+    publicPath: process.env.NODE_ENV === 'production' ?
+      config.build.assetsPublicPath :
+      config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -30,29 +30,39 @@ module.exports = {
       '@': resolve('src'),
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin('common.js'),
-          new webpack.ProvidePlugin({
-            jQuery: "jquery",
-            $: "jquery"
-          })
+      new webpack.optimize.CommonsChunkPlugin('common.js'),
+      new webpack.ProvidePlugin({
+        jQuery: "jquery",
+        $: "jquery"
+      })
     ],
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
       },
-       {
-         //less
-         test: /\.less$/,
-         loader: "style-loader!css-loader!less-loader",
-       },
+      {
+        //less
+        test: /\.less$/,
+        loader: "style-loader!css-loader!less-loader",
+      },
+      // {
+      //   test: /\.js$/,
+      //   loader: 'babel-loader',
+      //   // include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+      //   include: [resolve('src'), resolve('test'), resolve('_element-ui@2.4.9@element-ui/src')]
+      // },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        include: [
+          resolve('src'),
+          resolve('test'),
+          resolve('/node_modules/_element-ui@2.4.9@element-ui/src'), //和下面截图文件名字对应起来即可正常打包！！！
+          resolve('/node_modules/_element-ui@2.4.9@element-ui/packages')
+        ]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

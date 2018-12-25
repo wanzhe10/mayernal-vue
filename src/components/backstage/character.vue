@@ -395,11 +395,14 @@ export default {
           .occupationInsert(this.form)
           .then(res => {
             if (res.status === "20200") {
-              //  console.log('成功')
+              this.form.name = '';
+              this.form.isProhibit = '';
+              this.form.remarks = '';
               this.dialogVisible = false;
-              console.log(res);
-              // getUser(token, 1, pageSize);
-            } else {
+               this.getUser(token, 1, 10);
+            }  else if (res.status === "20210") {
+              this.$message.error('信息重复，请勿重复添加');
+            }else {
               this.$message.error("新建失败，请稍后重试");
             }
           })
@@ -435,6 +438,7 @@ export default {
           .then(res => {
             if (res.status === "20200") {
               this.editdialogVisible = false;
+               this.getUser(token, 1, 10);
             } else {
               this.$message.error("编辑失败，请稍后重试");
             }

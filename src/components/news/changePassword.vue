@@ -107,7 +107,7 @@ export default {
 .chagePasswordBox {
   position: relative;
   width: 100%;
-  min-height: 600px;
+  // min-height: 600px;
   background-color: #fff;
   .chagePasswordBoxTittle {
     display: block;
@@ -118,7 +118,7 @@ export default {
     color: #333333;
   }
   .chagePasswordContant {
-    padding: 92px 250px 0 290px;
+    padding: 92px 250px 60px 290px;
     p {
       font-size: 16px;
       margin-bottom: 20px;

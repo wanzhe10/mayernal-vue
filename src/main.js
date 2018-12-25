@@ -13,34 +13,31 @@ import $ from "jquery"
 import axios from 'axios'
 import Qs from 'qs'
 import api from './components/http/index'
-// // 导入vue-echarts插件
-// import ECharts from 'vue-echarts/components/ECharts'
-// // 导入echarts的图形类型
-// import 'echarts/lib/chart/line'
-// // 导入工具部分
-// import 'echarts/lib/component/tooltip'
-// import 'echarts/lib/component/title';
-// // register component to use
-// import 'echarts/lib/component/legendScroll';
-// // register component to use
-// import 'echarts/lib/component/dataZoom';
-// import 'echarts/lib/component/markPoint';
-// import 'echarts/lib/component/markLine';
-// import 'echarts/lib/component/markArea';
-// import 'echarts/lib/component/dataZoom';
-
-// import echarts from 'echarts'
+import Print from 'vue-print-nb'
+Vue.use(Print); //注册
  import echarts from 'echarts'
-// Vue.prototype.$echarts = echarts
-
-
 Vue.use(api)
 Vue.use(Element);
 Vue.use(VueAreaLinkage);
-// Vue.prototype.$http = axios;
 Vue.prototype.qs = Qs;
-Vue.config.productionTip = false
-/* eslint-disable no-new */
+Vue.config.productionTip = false;
+//弹出框禁止滑动
+Vue.prototype.noScroll = function () {
+  var mo = function (e) {
+    e.preventDefault()
+  }
+  document.body.style.overflow = 'hidden'
+  document.addEventListener('touchmove', mo, false) // 禁止页面滑动
+}
+
+//弹出框可以滑动
+Vue.prototype.canScroll = function () {
+  var mo = function (e) {
+    e.preventDefault()
+  }
+  document.body.style.overflow = '' // 出现滚动条
+  document.removeEventListener('touchmove', mo, false)
+}
 
 new Vue({
   el: '#app',

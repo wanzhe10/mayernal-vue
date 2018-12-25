@@ -128,8 +128,8 @@
       width="458px"
       :before-close="handleClose"
       class="newlyLayer"
-      :close-on-click-modal= 'false'
-      :lock-scroll='false'
+      :close-on-click-modal='false'
+      :lock-scroll='true'
     >
       <el-form :model="form">
         <el-form-item label="科室名称">
@@ -159,7 +159,7 @@
             <el-input
               type="textarea"
               :autosize="{ minRows: 2, maxRows: 10}"
-              placeholder="输入模板自觉不适描述......."
+              placeholder="请输入科室描述......."
               v-model="form.remarks"
               maxlength='100'
               @input="descInput2"
@@ -216,7 +216,7 @@
             <el-input
               type="textarea"
               :autosize="{ minRows: 2, maxRows: 10}"
-              placeholder="输入模板自觉不适描述......."
+              placeholder="请输入科室描述......."
               v-model="form2.remarks"
               maxlength='100'
               @input="editdescInput2"
@@ -350,7 +350,7 @@ export default {
           }
         })
         .catch(error => {
-           this.$message.error('查询失败，请稍后重试');
+          this.$message.error("查询失败，请稍后重试");
         });
     },
     // 激活状态查询
@@ -374,21 +374,24 @@ export default {
         });
       } else {
         var token = localStorage.getItem("mayernal-web-token");
-        console.log(this.form);
         this.$api
           .deptSimpleInsert(this.form)
           .then(res => {
+            console.log(res);
             if (res.status === "20200") {
-              //  console.log('成功')
+              this.form.isProhibit ='';
+              this.form.name ='';
+              this.form.remarks ='';
               this.dialogVisible = false;
               console.log(res);
-              getUser(token, 1, pageSize);
-            } else {
-              this.$message.error('新建失败，请稍后重试');
+              let token1 = window.localStorage.getItem("mayernal-web-token");
+              this.getUser(token1, 1, 10);
+            } else if (res.status === "20210") {
+              this.$message.error("信息重复，请勿重复添加");
             }
           })
           .catch(error => {
-             this.$message.error('新建失败，请稍后重试');
+            this.$message.error("新建失败，请稍后重试");
           });
       }
     },
@@ -407,7 +410,7 @@ export default {
           type: "warning"
         });
       } else {
-         var token = localStorage.getItem("mayernal-web-token");
+        var token = localStorage.getItem("mayernal-web-token");
         var self = this;
         this.$api
           .deptSimpleUpdate({
@@ -424,11 +427,11 @@ export default {
               this.editdialogVisible = false;
               this.getUser(token, 1, self.cur_page);
             } else {
-              this.$message.error('编辑失败，请稍后重试');
+              this.$message.error("编辑失败，请稍后重试");
             }
           })
           .catch(error => {
-            this.$message.error('编辑失败，请稍后重试');
+            this.$message.error("编辑失败，请稍后重试");
           });
       }
     }
@@ -472,7 +475,7 @@ export default {
   }
   .administrativeBoxContant {
     .hideBox {
-     padding-bottom:30px;
+      padding-bottom: 30px;
     }
     table {
       width: 100%;

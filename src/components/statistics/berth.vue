@@ -130,11 +130,11 @@
           </li>
         </ul>
         <div class="fr mgr38">
-          <el-button round>打印</el-button>
-          <el-button round>导出</el-button>
+          <el-button round v-print="'#printTest'">打印</el-button>
+          <el-button round @click="exportExcel">导出</el-button>
         </div>
       </div>
-      <div class="administrativeBoxContant">
+      <div class="administrativeBoxContant" id="printTest">
         <img
           src="../../assets/noDataIcon.png"
           alt="暂无数据"
@@ -275,6 +275,8 @@
 
  <script>
 import $ from "jquery";
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
   data() {
     return {
@@ -713,6 +715,69 @@ export default {
     this.bedStatistics();
   },
   methods: {
+      // 导出表格
+    exportExcel() {
+      var jsono = this.officeTableData;
+      var jsonp = [];
+      jsono.forEach(element => {
+        var tempJson = {};
+        tempJson.复检时间 = element.makeAppointmentTime;
+        tempJson.姓名 = element.checkName;
+        tempJson.孕周 = "孕" + element.newAgeOfMenarche + "-" + element.newAgeOfMenarcheDay + "天" ;
+        tempJson.预产期 = element.parturitionDetailDueDate;
+        tempJson.年龄 = element.checkAge;
+        tempJson.高危评估 = getHighRiskClass(element.highRiskClass);
+        jsonp.push(tempJson);
+      });
+      function getHighRiskClass(param) {
+        var highClassStr = "";
+        if (param == null) {
+          return highClassStr;
+        }
+        console.log(param)
+          switch (param) {
+            case "0":
+              highClassStr = "绿色";
+            break;
+            case "1":
+              highClassStr = "黄色";
+            break;
+            case "2":
+              highClassStr = "橘色";
+            break;
+            case "3":
+              highClassStr = "红色";
+            break;
+            case "4":
+              highClassStr = "紫色";
+            break;
+          default:
+            break;
+        }
+        console.log(highClassStr)
+        return highClassStr;
+      }
+      
+        const wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };// 这里的数据是用来定义导出的格式类型
+        downloadExl(jsonp,wopts);
+        function downloadExl(data, type) {
+            const wb = { SheetNames: ['Sheet1'], Sheets: {}, Props: {} };
+            wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);   //  通过json_to_sheet转成单页(Sheet)数据
+            saveAs(new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" }), "预分娩床位数量统计" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
+        }
+        function s2ab(s) {
+            if (typeof ArrayBuffer !== 'undefined') {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            } else {
+                var buf = new Array(s.length);
+                for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+        }
+    },
     // 孕周范围选择
     gestationalWeeksChange() {
       if (this.gestationalWeeks == 0) {

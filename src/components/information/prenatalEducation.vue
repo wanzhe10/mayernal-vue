@@ -441,16 +441,19 @@ export default {
     },
     // 激活未激活
     typesBtn() {
-      if (!$('.category').children('li').hasClass('active')) {
-           this.$message({
+      if (
+        !$(".category")
+          .children("li")
+          .hasClass("active")
+      ) {
+        this.$message({
           message: "请选择标签",
           type: "warning"
         });
-      }else{
-            this.toggleClass(this.clickActive)
-      this.pregnantPrenatalEducationClassUpdate();
+      } else {
+        this.toggleClass(this.clickActive);
+        this.pregnantPrenatalEducationClassUpdate();
       }
-   
     },
     // 通过标签id查询数据列表
     pregnantPrenatalEducationClassAndCellFindList(token, classId) {
@@ -1042,14 +1045,18 @@ export default {
     padding: 0 4px;
   }
 }
-.el-message-box__wrapper {
-  z-index: 900000 !important;
-}
-.el-dialog__wrapper {
-  z-index: 99999 !important;
-}
-.w-e-text-container{
-   z-index: 10!important;
+.prenatalEducationBox {
+  .el-message-box__wrapper {
+    z-index: 900000 !important;
+  }
+  .w-e-toolbar {
+    .w-e-menu {
+      z-index: 11 !important;
+    }
+  }
+  .w-e-text-container {
+    z-index: 10 !important;
+  }
 }
 </style>
 

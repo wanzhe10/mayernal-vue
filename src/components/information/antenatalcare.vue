@@ -11,7 +11,10 @@
         <li style="width:240px;">温馨提示</li>
         <li style="width:100px;">操作</li>
       </ul>
-      <div class="hideBox" v-show='tableShow'>
+      <div
+        class="hideBox"
+        v-show='tableShow'
+      >
         <ul class="tableContant">
           <li
             v-for="(item,index) in tableContantData"
@@ -109,7 +112,7 @@
         src="../../assets/noDataIcon.png"
         alt="暂无数据"
         class="noDataIcon"
-         v-show='imgShow'
+        v-show='imgShow'
       >
     </div>
     <!-- 新增模板弹窗 -->
@@ -150,7 +153,7 @@
                 v-model="gestationalWeekEndModel"
                 placeholder="请选择"
                 size='100%'
-                  @change="gestationalScope"
+                @change="gestationalScope"
               >
                 <el-option
                   v-for="item in gestationalWeekEnd"
@@ -620,8 +623,8 @@ export default {
       altertemplateNameId: "", //id
       altertemplateNameNumber: "", //number
       btnText: "查看",
-       tableShow: false,
-      imgShow: false,
+      tableShow: false,
+      imgShow: false
     };
   },
   mounted() {
@@ -631,7 +634,6 @@ export default {
   methods: {
     // 基本情况点击显示隐藏
     toggle1: function(index) {
-      console.log(index);
       this.isShow1 = this.isShow1 == index ? -1 : index;
       this.isActive = this.isActive == index ? -1 : index;
       if (this.isShow1 == index) {
@@ -640,9 +642,9 @@ export default {
         event.target.innerHTML = "查看";
       }
     },
-    gestationalScope(){
-      if (this.gestationalWeekStarModel>this.gestationalWeekEndModel) {
-          this.$message({
+    gestationalScope() {
+      if (this.gestationalWeekStarModel > this.gestationalWeekEndModel) {
+        this.$message({
           showClose: true,
           message: "孕周开始不能大于孕周结束",
           type: "warning"
@@ -690,20 +692,20 @@ export default {
         .then(res => {
           if (res.status === "20200") {
             this.tableContantData = res.pcCheckForWeekBeanList;
-           self.imgShow = false;
+            self.imgShow = false;
             self.tableShow = true;
-          } else if(res.status === "20209") {
+          } else if (res.status === "20209") {
             self.tableShow = false;
             self.imgShow = true;
           }
         })
         .catch(error => {
-          this.$message.error('查询错误，请稍后重试');
+          this.$message.error("查询错误，请稍后重试");
         });
     },
     // 新建
     radioEvent() {
-    if (this.templateName == "") {
+      if (this.templateName == "") {
         this.$message({
           showClose: true,
           message: "产品名称不能为空",
@@ -727,33 +729,42 @@ export default {
           message: "温馨提示不能为空",
           type: "warning"
         });
-      } else{
-   let self = this;
-     let token = localStorage.getItem("mayernal-web-token");
-      let number = this.tableContantData.length + 1;
-      console.log(number);
-      this.$api
-        .checkForWeekInsert({
-          token: token,
-          number: number,
-          name: self.temp.lateName,
-          gestationalWeekStart: self.gestationalWeekStarModel,
-          gestationalWeekEnd: self.gestationalWeekEndModel,
-          checkDetail: self.opinionModel,
-          isAbnormal: "",
-          remarks: self.remnantFontContant,
-          types: self.activatedStateModel
-        })
-        .then(res => {
-          if (res.status === "20200") {
-            //  console.log('成功')
-            this.dialogVisible = false;
+      } else {
+        let self = this;
+        let token = localStorage.getItem("mayernal-web-token");
+        let number = this.tableContantData.length + 1;
+        console.log(number);
+        this.$api
+          .checkForWeekInsert({
+            token: token,
+            number: number,
+            name: self.templateName,
+            gestationalWeekStart: self.gestationalWeekStarModel,
+            gestationalWeekEnd: self.gestationalWeekEndModel,
+            checkDetail: self.opinionModel,
+            isAbnormal: 0,
+            remarks: self.remnantFontContant,
+            types: self.activatedStateModel
+          })
+          .then(res => {
             console.log(res);
-          } 
-        })
-        .catch(error => {
-          this.$message.error("新建错误，请稍后重试");
-        });
+            if (res.status === "20200") {
+              let token1 = window.localStorage.getItem("mayernal-web-token");
+              this.getUser(token1);
+              this.templateName = "";
+              this.gestationalWeekStarModel = "";
+              this.gestationalWeekEndModel = "";
+              this.activatedStateModel = "";
+              this.remnantFontContant = "";
+              this.opinionModel = "";
+              this.dialogVisible = false;
+            } else if (res.status === "20210") {
+              this.$message.error("信息重复，请勿重复添加");
+            }
+          })
+          .catch(error => {
+            this.$message.error("新建错误，请稍后重试");
+          });
       }
     },
     //修改
@@ -803,7 +814,7 @@ export default {
           type: "warning"
         });
       } else {
-         var token = localStorage.getItem("mayernal-web-token");
+        var token = localStorage.getItem("mayernal-web-token");
         this.$api
           .checkForWeekUpdate({
             id: this.altertemplateNameId,
@@ -813,7 +824,7 @@ export default {
             gestationalWeekStart: this.altergestationalWeekEndModel,
             gestationalWeekEnd: this.altergestationalWeekStarModel,
             checkDetail: this.alteropinionModel,
-            isAbnormal: "",
+            isAbnormal: 0,
             remarks: this.alterremnantFontContant,
             types: this.alteractivatedStateModel
           })
@@ -924,6 +935,7 @@ export default {
           }
           .active {
             box-shadow: 0px 2px 12px 5px #e1e1e1;
+            color:#68b7e7;
           }
         }
       }
@@ -931,7 +943,7 @@ export default {
         width: 100%;
         background-color: #f9f9f9;
         z-index: 2;
-        padding: 0px 14px 30px 14px;
+        padding: 0px 14px 0px 14px;
         margin-top: 8px;
         border-radius: 8px;
         p {
@@ -1106,6 +1118,11 @@ export default {
   }
   .el-dialog__footer {
     margin-top: 15px;
+  }
+}
+.concealBox_font{
+  textarea{
+    border:none !important;
   }
 }
 </style>

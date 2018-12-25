@@ -11,25 +11,24 @@
         <li>周六</li>
         <li>周日</li>
       </ul>
-      <div class="tuoyuan"><i class="el-icon-refresh"></i>刷新列表</div>
+      <div class="tuoyuan" @click="tuoyuanBtn"><i class="el-icon-refresh"></i>刷新列表</div>
     </div>
-    <div class="todayBox_bottom">
+    <div class="todayBox_bottom"   id="printTest">
       <div class="todayBoxTeb clearfix">
         <ul class="clearfix fl">
           <!-- <li @click="toggle()"></li> -->
           <li
-            @click='toggle1();nonArrival1()'
-            class='active'
+            @click='toggle1();nonArrival1();addNameClick(1)' :class="{'active':tab === 1}"
           >今日总预约复检人数<span v-model='numToggle1'>{{numToggle1}}</span>人</li>
-          <li @click='toggle2'>今日当前挂号人数10人</li>
-          <li @click='toggle3();nonArrival3()'>今日未到复检人数<span v-model='numToggle3'>{{numToggle3}}</span>人</li>
+          <li @click='toggle2();addNameClick(2)' :class="{'active':tab === 2}">今日当前挂号人数0人</li>
+          <li @click='toggle3();nonArrival3();addNameClick(3)' :class="{'active':tab === 3}">今日未到复检人数<span v-model='numToggle3'>{{numToggle3}}</span>人</li>
         </ul>
         <div class="fr mgr38">
-          <el-button round>打印</el-button>
-          <el-button round>导出</el-button>
+          <el-button round v-print="'#printTest'">打印</el-button>
+          <el-button round @click="exportExcel">导出</el-button>
         </div>
       </div>
-      <div class="administrativeBoxContant">
+      <div class="administrativeBoxContant" >
         <img
           src="../../assets/noDataIcon.png"
           alt="暂无数据"
@@ -40,6 +39,7 @@
         <div
           class="TableDataBox"
           v-show="tableShow"
+         
         >
           <el-table
             :data="officeTableData"
@@ -300,13 +300,15 @@
 </template>
  <script>
 import $ from "jquery";
-
+import FileSaver from "file-saver";
+import XLSX from "xlsx";
 export default {
   data() {
     return {
       activeName: "first",
-      officeTableData: [ ],//今日预约数据
+      officeTableData: [],//今日预约数据
       officeTableData3: [],//今日未到复检人数
+      tab:1,
       todayBoxTebLi: [
         { name: "今日总预约复检人数", number: "20人" },
         { name: "今当前挂号人数", number: "10人" },
@@ -332,6 +334,88 @@ export default {
     this.toggle3();
   },
   methods: {
+    // teb切换
+    addNameClick(index){
+    this.tab = index;
+    },
+      // 导出表格
+    exportExcel() {
+      if ($('.todayBoxTeb>ul>li').eq(0).hasClass('active')) {
+        var jsono = this.officeTableData;
+      }else if ($('.todayBoxTeb>ul>li').eq(1).hasClass('active')) {
+        alert('第二个')
+      }else{
+        var jsono = this.officeTableData3;
+      }
+      // var jsono = this.officeTableData;
+      var jsonp = [];
+      if (typeof Array.prototype.forEach != 'function') {
+    Array.prototype.forEach = function(callback){
+      for (var i = 0; i < this.length; i++){
+        callback.apply(this, [this[i], i, this]);
+      }
+    };
+}
+      jsono.forEach(element => {
+        var tempJson = {};
+        tempJson.复检时间 = element.makeAppointmentTime;
+        tempJson.姓名 = element.checkName;
+        tempJson.孕周 = "孕" + element.newAgeOfMenarche + "-" + element.newAgeOfMenarcheDay + "天" ;
+        tempJson.预产期 = element.parturitionDetailDueDate;
+        tempJson.年龄 = element.checkAge;
+        tempJson.高危评估 = getHighRiskClass(element.highRiskClass);
+        jsonp.push(tempJson);
+      });
+      function getHighRiskClass(param) {
+        var highClassStr = "";
+        if (param == null) {
+          return highClassStr;
+        }
+        console.log(param)
+          switch (param) {
+            case "0":
+              highClassStr = "绿色";
+            break;
+            case "1":
+              highClassStr = "黄色";
+            break;
+            case "2":
+              highClassStr = "橘色";
+            break;
+            case "3":
+              highClassStr = "红色";
+            break;
+            case "4":
+              highClassStr = "紫色";
+            break;
+          default:
+            break;
+        }
+        console.log(highClassStr)
+        return highClassStr;
+      }
+      
+        const wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };// 这里的数据是用来定义导出的格式类型
+        downloadExl(jsonp,wopts);
+        function downloadExl(data, type) {
+            const wb = { SheetNames: ['Sheet1'], Sheets: {}, Props: {} };
+            wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);   //  通过json_to_sheet转成单页(Sheet)数据
+            saveAs(new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" }), "今日复检统计列表" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
+        }
+        function s2ab(s) {
+            if (typeof ArrayBuffer !== 'undefined') {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            } else {
+                var buf = new Array(s.length);
+                for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+        }
+    },
+
     handleClick(tab, event) {
       console.log(tab, event);
     },
@@ -348,7 +432,7 @@ export default {
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
       // console.log(endDateStr);
-      // this.numInquire(token,startDateStr,endDateStr,1,`${val}`);
+      // this.numInquire(token1,startDateStr,endDateStr,1,`${val}`);
       this.numInquire(token1, "2018-01-01", "2018-10-01", 1, `${val}`); //测试
     },
     handleCurrentChange(val) {
@@ -364,7 +448,7 @@ export default {
       // console.log(endDateStr);
       let token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice = val;
-      //  this.numInquire(token,startDateStr,endDateStr,`${val}`,this.cur_page);
+      //  this.numInquire(token1,startDateStr,endDateStr,`${val}`,this.cur_page);
       this.numInquire(
         token1,
         "2018-01-01",
@@ -381,12 +465,10 @@ export default {
       var day = new Date();
       // 开始时间 /今天 startDateStr
       var startDateStr = day.format("yyyy-MM-dd");
-      // console.log(startDateStr);
       // 结束时间 /明天 endDateStr
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
-      // console.log(endDateStr);
-      // this.numInquire(token,startDateStr,endDateStr,1,`${val}`);
+      // this.numInquire3(token1,startDateStr,endDateStr,1,`${val}`);
       this.numInquire3(token1, "2018-01-01", "2018-10-01", 1, `${val}`); //测试
     },
     handleCurrentChange3(val) {
@@ -402,28 +484,27 @@ export default {
       // console.log(endDateStr);
       let token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice3 = val;
-      //  this.numInquire(token,startDateStr,endDateStr,`${val}`,this.cur_page);
+      //  this.numInquire3(token1,startDateStr,endDateStr,`${val}`,this.cur_page3);
       this.numInquire3(
         token1,
         "2018-01-01",
         "2018-10-01",
         `${val}`,
         this.cur_page3
-      );
+      ); //测试
     },
     toggle1() {
+      $(this).addClass('active')
       this.currentdate(startDateStr, endDateStr);
       var day = new Date();
       // 开始时间 /今天 startDateStr
       var startDateStr = day.format("yyyy-MM-dd");
-      // console.log(startDateStr);
       // 结束时间 /明天 endDateStr
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
-      // console.log(endDateStr);
-       var token = localStorage.getItem("mayernal-web-token");
-      // this.numInquire(token,startDateStr,endDateStr,1,10);
-      this.numInquire(token, "2018-01-01", "2018-10-01", 1, 10); //测试
+       var token1 = localStorage.getItem("mayernal-web-token");
+      // this.numInquire(token,startDateStr,endDateStr,1,  this.cur_page);
+      this.numInquire(token1, "2018-01-01", "2018-10-01", 1, this.cur_page); //测试
     },
     nonArrival1(e) {
       console.log(e.target);
@@ -436,10 +517,11 @@ export default {
       }
     },
     toggle2() {
-      alert(2);
+      // alert(2);
     },
     // 今日未到复检人数按钮
     toggle3() {
+      // this.cur_page3=10, 
       this.currentdate(startDateStr, endDateStr);
       var day = new Date();
       // 开始时间 /今天 startDateStr
@@ -450,8 +532,8 @@ export default {
       var endDateStr = day.format("yyyy-MM-dd");
       // console.log(endDateStr);
        var token = localStorage.getItem("mayernal-web-token");
-      // this.numInquire(token,startDateStr,endDateStr,1,10);
-      this.numInquire3(token, "2018-01-01", "2018-10-01", 1, 10); //测试
+      // this.numInquire3(token,startDateStr,endDateStr,1, this.cur_page3);
+      this.numInquire3(token, "2018-01-01", "2018-10-01", 1, this.cur_page3); //测试
     },
        nonArrival1() {
       if (this.officeTableData !== null) {
@@ -471,6 +553,16 @@ export default {
         this.tableShow = false;
         this.tableShow = false;
         this.imgShow = true; //图片显示隐藏
+      }
+    },
+    // 刷新按钮
+    tuoyuanBtn(){
+      if (this.tab ==1) {
+      this.toggle1();
+      }else if (this.tab ==2) {
+        this.toggle2();
+      }else{
+        this.toggle3();
       }
     },
 
@@ -632,6 +724,7 @@ export default {
       color: #fff;
       margin-right: 36px;
       margin-top: 16px;
+      cursor: pointer;
     }
   }
   .todayBox_bottom {

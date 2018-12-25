@@ -352,7 +352,6 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPageOfice = val;
-      console.log(this.currentPageOfice);
       this.templateFindList();
     },
     descInput() {
@@ -467,7 +466,8 @@ export default {
             if (res.status === "20200") {
               this.templateFindList();
               this.form1.name = "";
-              (this.form1.malaise = ""), (this.form1.dispose = "");
+              this.form1.malaise = "";
+              this.form1.dispose = "";
               this.form1.remarks = "";
               this.form1.isProhibit = "";
               this.dialogVisible = false;

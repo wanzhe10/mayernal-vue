@@ -73,7 +73,7 @@
       >
 
     </div>
-    <div class="documentedBox_bottom">
+    <div class="documentedBox_bottom"  id="printTest">
       <div class="documentedBoxTeb clearfix">
         <ul class="clearfix fl">
           <li
@@ -85,7 +85,7 @@
           </li>
         </ul>
         <div class="fr mgr38">
-          <el-button round>打印</el-button>
+          <el-button round  v-print="'#printTest'">打印</el-button>
           <el-button
             round
             @click="exportExcel"
@@ -559,6 +559,7 @@ export default {
       border-radius: 50px;
       color: #fff;
       font-size: 12px;
+      cursor: pointer;
     }
   }
   .documentedBox_bottom {
