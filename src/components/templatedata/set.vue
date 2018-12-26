@@ -464,6 +464,7 @@ export default {
           .then(res => {
             console.log(res);
             if (res.status === "20200") {
+               this.$message.success("新增成功");
               this.templateFindList();
               this.form1.name = "";
               this.form1.malaise = "";
@@ -525,6 +526,7 @@ export default {
           .then(res => {
             console.log(res);
             if (res.status === "20200") {
+               this.$message.success("编辑成功");
               this.templateFindList();
               this.dialogVisible2 = false;
             } else if (res.status === "20209") {

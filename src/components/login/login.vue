@@ -43,7 +43,8 @@
           </el-form-item>
           <el-button
             type="primary"
-            @click="getAjax()"
+            @click="getAjax('ruleForm2')"
+            @keyup.enter="submit"
           >登 录</el-button>
           </el-form-item>
         </el-form>
@@ -56,18 +57,20 @@
 </template>
 <script>
 // 引入基本模板
-let echarts = require('echarts/lib/echarts')
+let echarts = require("echarts/lib/echarts");
 // 引入柱状图组件
-require('echarts/lib/chart/bar')
+require("echarts/lib/chart/bar");
 // 引入提示框和title组件
-require('echarts/lib/component/tooltip')
-require('echarts/lib/component/title')
-import axios from 'axios';
+require("echarts/lib/component/tooltip");
+require("echarts/lib/component/title");
+import axios from "axios";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
+      } else if (value.length < 6) {
+        callback(new Error("密码不能小于6位"));
       } else {
         callback();
       }
@@ -81,8 +84,8 @@ export default {
     };
     return {
       ruleForm2: {
-        username: "15012345678",
-        password: "123456"
+        username: "",
+        password: ""
       },
       rules2: {
         username: [{ validator: validateUser, trigger: "blur" }],
@@ -90,44 +93,39 @@ export default {
       }
     };
   },
-  methods: {
-    getAjax: function() {
-      let self = this;
-      this.$api.login({'username':'15012345678','password':'123456'}).then(res => {
-          console.log(res);
-     if (res.status ==="20200" ) {
-        localStorage.setItem('mayernal-web-token',res.token)
-        localStorage.setItem('mayernal-web-userName',res.name)
-        localStorage.setItem('mayernal-web-loginName',res.userName)
-         self.$router.push({name: 'management'})
-      //  $router.push('/management')
-          // this.pageList = res.data.item
-      } else {
-        // this.$Message.info(res.desc);
+  created() {
+    var lett = this;
+    document.onkeydown = function(e) {
+      var key = window.event.keyCode;
+      if (key == 13) {
+        lett.submit();
       }
-     })
-     .catch(error => {
-        // this.$Message.info(error);
-      })
-
-
-      // let self = this;
-      // this.$http.post("http://www.wcqxzs.com/pregnant/v1/web/pad/login", {
-      //     username: "15093357355",
-      //     password: "123456789"
-      //   })
-      //   .then(function(response) {
-      //     console.log(response);
-      //     if(response.status == 200){
-      //        self.$router.push({name: 'management'})
-
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
+    };
+  },
+  methods: {
+    submit() {
+      this.getAjax();
     },
-      
+    getAjax(formName) {
+      let self = this;
+      this.$api
+        .login(this.ruleForm2)
+        .then(res => {
+          if (res.status === "20200") {
+            localStorage.setItem("mayernal-web-token", res.token);
+            localStorage.setItem("mayernal-web-userName", res.name);
+            localStorage.setItem("mayernal-web-loginName", res.userName);
+            self.$router.push({ name: "management" });
+          } else if (res.status === "20207") {
+            this.$message.error("用户名或密码错误");
+          } else {
+            this.$message.error("登录错误，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("登录错误，请稍后重试");
+        });
+    }
   }
 };
 </script>

@@ -3,32 +3,57 @@
     <h2 class="todayBoxTittle">今日全部复检统计列表</h2>
     <div class="todayBox_top clearfix">
       <ul class="clearfix">
-        <li>周一</li>
+        <li
+          v-for="(item,index) in weekData"
+          v-html="item.value"
+          :class="{'active':index==showActive}"
+          @click="weekDataClick(index)"
+        ></li>
+        <!-- <li>周一</li>
         <li>周二</li>
         <li>周三</li>
         <li>周四</li>
         <li>周五</li>
         <li>周六</li>
-        <li>周日</li>
+        <li>周日</li> -->
       </ul>
-      <div class="tuoyuan" @click="tuoyuanBtn"><i class="el-icon-refresh"></i>刷新列表</div>
+      <div
+        class="tuoyuan"
+        @click="tuoyuanBtn"
+      ><i class="el-icon-refresh"></i>刷新列表</div>
     </div>
-    <div class="todayBox_bottom"   id="printTest">
+    <div
+      class="todayBox_bottom"
+      id="printTest"
+    >
       <div class="todayBoxTeb clearfix">
         <ul class="clearfix fl">
           <!-- <li @click="toggle()"></li> -->
           <li
-            @click='toggle1();nonArrival1();addNameClick(1)' :class="{'active':tab === 1}"
+            @click='toggle1();nonArrival1();addNameClick(1)'
+            :class="{'active':tab === 1}"
           >今日总预约复检人数<span v-model='numToggle1'>{{numToggle1}}</span>人</li>
-          <li @click='toggle2();addNameClick(2)' :class="{'active':tab === 2}">今日当前挂号人数0人</li>
-          <li @click='toggle3();nonArrival3();addNameClick(3)' :class="{'active':tab === 3}">今日未到复检人数<span v-model='numToggle3'>{{numToggle3}}</span>人</li>
+          <li
+            @click='toggle2();addNameClick(2)'
+            :class="{'active':tab === 2}"
+          >今日当前挂号人数0人</li>
+          <li
+            @click='toggle3();nonArrival3();addNameClick(3)'
+            :class="{'active':tab === 3}"
+          >今日未到复检人数<span v-model='numToggle3'>{{numToggle3}}</span>人</li>
         </ul>
         <div class="fr mgr38">
-          <el-button round v-print="'#printTest'">打印</el-button>
-          <el-button round @click="exportExcel">导出</el-button>
+          <el-button
+            round
+            v-print="'#printTest'"
+          >打印</el-button>
+          <el-button
+            round
+            @click="exportExcel"
+          >导出</el-button>
         </div>
       </div>
-      <div class="administrativeBoxContant" >
+      <div class="administrativeBoxContant">
         <img
           src="../../assets/noDataIcon.png"
           alt="暂无数据"
@@ -39,7 +64,6 @@
         <div
           class="TableDataBox"
           v-show="tableShow"
-         
         >
           <el-table
             :data="officeTableData"
@@ -271,6 +295,7 @@
                   type="text"
                   size="small"
                   style="text-align: center;"
+                  @click="lookBtn(scope.row)"
                 >查看</el-button>
               </template>
             </el-table-column>
@@ -306,9 +331,19 @@ export default {
   data() {
     return {
       activeName: "first",
-      officeTableData: [],//今日预约数据
-      officeTableData3: [],//今日未到复检人数
-      tab:1,
+      officeTableData: [], //今日预约数据
+      officeTableData3: [], //今日未到复检人数
+      tab: 1,
+      showActive: "0",
+      weekData: [
+        { value: "周一" },
+        { value: "周二" },
+        { value: "周三" },
+        { value: "周四" },
+        { value: "周五" },
+        { value: "周六" },
+        { value: "周日" }
+      ],
       todayBoxTebLi: [
         { name: "今日总预约复检人数", number: "20人" },
         { name: "今当前挂号人数", number: "10人" },
@@ -332,35 +367,72 @@ export default {
   mounted() {
     this.toggle1();
     this.toggle3();
+    this.weekApllay();
   },
+  // 周几点击
   methods: {
-    // teb切换
-    addNameClick(index){
-    this.tab = index;
+    weekDataClick(index) {
+      this.showActive = index;
     },
-      // 导出表格
+    // 获取当前是星期几
+    weekApllay() {
+      let str = "日一二三四五六".charAt(new Date().getDay());
+      if (str == "一") {
+        this.showActive = 0;
+      } else if (str == "二") {
+        this.showActive = 1;
+      } else if (str == "三") {
+        this.showActive = 2;
+      } else if (str == "四") {
+        this.showActive = 3;
+      } else if (str == "五") {
+        this.showActive = 4;
+      } else if (str == "六") {
+        this.showActive = 5;
+      } else if (str == "日") {
+        this.showActive = 6;
+      }
+    },
+    // teb切换
+    addNameClick(index) {
+      this.tab = index;
+    },
+    // 导出表格
     exportExcel() {
-      if ($('.todayBoxTeb>ul>li').eq(0).hasClass('active')) {
+      if (
+        $(".todayBoxTeb>ul>li")
+          .eq(0)
+          .hasClass("active")
+      ) {
         var jsono = this.officeTableData;
-      }else if ($('.todayBoxTeb>ul>li').eq(1).hasClass('active')) {
-        alert('第二个')
-      }else{
+      } else if (
+        $(".todayBoxTeb>ul>li")
+          .eq(1)
+          .hasClass("active")
+      ) {
+        alert("第二个");
+      } else {
         var jsono = this.officeTableData3;
       }
       // var jsono = this.officeTableData;
       var jsonp = [];
-      if (typeof Array.prototype.forEach != 'function') {
-    Array.prototype.forEach = function(callback){
-      for (var i = 0; i < this.length; i++){
-        callback.apply(this, [this[i], i, this]);
+      if (typeof Array.prototype.forEach != "function") {
+        Array.prototype.forEach = function(callback) {
+          for (var i = 0; i < this.length; i++) {
+            callback.apply(this, [this[i], i, this]);
+          }
+        };
       }
-    };
-}
       jsono.forEach(element => {
         var tempJson = {};
         tempJson.复检时间 = element.makeAppointmentTime;
         tempJson.姓名 = element.checkName;
-        tempJson.孕周 = "孕" + element.newAgeOfMenarche + "-" + element.newAgeOfMenarcheDay + "天" ;
+        tempJson.孕周 =
+          "孕" +
+          element.newAgeOfMenarche +
+          "-" +
+          element.newAgeOfMenarcheDay +
+          "天";
         tempJson.预产期 = element.parturitionDetailDueDate;
         tempJson.年龄 = element.checkAge;
         tempJson.高危评估 = getHighRiskClass(element.highRiskClass);
@@ -371,49 +443,56 @@ export default {
         if (param == null) {
           return highClassStr;
         }
-        console.log(param)
-          switch (param) {
-            case "0":
-              highClassStr = "绿色";
+        console.log(param);
+        switch (param) {
+          case "0":
+            highClassStr = "绿色";
             break;
-            case "1":
-              highClassStr = "黄色";
+          case "1":
+            highClassStr = "黄色";
             break;
-            case "2":
-              highClassStr = "橘色";
+          case "2":
+            highClassStr = "橘色";
             break;
-            case "3":
-              highClassStr = "红色";
+          case "3":
+            highClassStr = "红色";
             break;
-            case "4":
-              highClassStr = "紫色";
+          case "4":
+            highClassStr = "紫色";
             break;
           default:
             break;
         }
-        console.log(highClassStr)
+        console.log(highClassStr);
         return highClassStr;
       }
-      
-        const wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };// 这里的数据是用来定义导出的格式类型
-        downloadExl(jsonp,wopts);
-        function downloadExl(data, type) {
-            const wb = { SheetNames: ['Sheet1'], Sheets: {}, Props: {} };
-            wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);   //  通过json_to_sheet转成单页(Sheet)数据
-            saveAs(new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" }), "今日复检统计列表" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
+
+      const wopts = { bookType: "xlsx", bookSST: false, type: "binary" }; // 这里的数据是用来定义导出的格式类型
+      downloadExl(jsonp, wopts);
+      function downloadExl(data, type) {
+        const wb = { SheetNames: ["Sheet1"], Sheets: {}, Props: {} };
+        wb.Sheets["Sheet1"] = XLSX.utils.json_to_sheet(data); //  通过json_to_sheet转成单页(Sheet)数据
+        saveAs(
+          new Blob([s2ab(XLSX.write(wb, wopts))], {
+            type: "application/octet-stream"
+          }),
+          "今日复检统计列表" +
+            "." +
+            (wopts.bookType == "biff2" ? "xls" : wopts.bookType)
+        );
+      }
+      function s2ab(s) {
+        if (typeof ArrayBuffer !== "undefined") {
+          var buf = new ArrayBuffer(s.length);
+          var view = new Uint8Array(buf);
+          for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
+          return buf;
+        } else {
+          var buf = new Array(s.length);
+          for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xff;
+          return buf;
         }
-        function s2ab(s) {
-            if (typeof ArrayBuffer !== 'undefined') {
-                var buf = new ArrayBuffer(s.length);
-                var view = new Uint8Array(buf);
-                for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-                return buf;
-            } else {
-                var buf = new Array(s.length);
-                for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
-                return buf;
-            }
-        }
+      }
     },
 
     handleClick(tab, event) {
@@ -458,7 +537,7 @@ export default {
       );
     },
     handleSizeChange3(val) {
-      let token1 = window.localStorage.getItem("mayernal-web-token");
+      var token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice3 = 1;
       console.log(`每页 ${val} 条`);
       this.currentdate(startDateStr, endDateStr);
@@ -494,7 +573,7 @@ export default {
       ); //测试
     },
     toggle1() {
-      $(this).addClass('active')
+      $(this).addClass("active");
       this.currentdate(startDateStr, endDateStr);
       var day = new Date();
       // 开始时间 /今天 startDateStr
@@ -502,8 +581,8 @@ export default {
       // 结束时间 /明天 endDateStr
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
-       var token1 = localStorage.getItem("mayernal-web-token");
-      // this.numInquire(token,startDateStr,endDateStr,1,  this.cur_page);
+      let token1 = localStorage.getItem("mayernal-web-token");
+      // this.numInquire(token1,startDateStr,endDateStr,1,  this.cur_page);
       this.numInquire(token1, "2018-01-01", "2018-10-01", 1, this.cur_page); //测试
     },
     nonArrival1(e) {
@@ -521,7 +600,7 @@ export default {
     },
     // 今日未到复检人数按钮
     toggle3() {
-      // this.cur_page3=10, 
+      // this.cur_page3=10,
       this.currentdate(startDateStr, endDateStr);
       var day = new Date();
       // 开始时间 /今天 startDateStr
@@ -531,11 +610,11 @@ export default {
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
       // console.log(endDateStr);
-       var token = localStorage.getItem("mayernal-web-token");
-      // this.numInquire3(token,startDateStr,endDateStr,1, this.cur_page3);
-      this.numInquire3(token, "2018-01-01", "2018-10-01", 1, this.cur_page3); //测试
+      let token1 = localStorage.getItem("mayernal-web-token");
+      // this.numInquire3(token1,startDateStr,endDateStr,1, this.cur_page3);
+      this.numInquire3(token1, "2018-01-01", "2018-10-01", 1, this.cur_page3); //测试
     },
-       nonArrival1() {
+    nonArrival1() {
       if (this.officeTableData !== null) {
         this.tableShow3 = false;
         this.tableShow = true;
@@ -556,12 +635,12 @@ export default {
       }
     },
     // 刷新按钮
-    tuoyuanBtn(){
-      if (this.tab ==1) {
-      this.toggle1();
-      }else if (this.tab ==2) {
+    tuoyuanBtn() {
+      if (this.tab == 1) {
+        this.toggle1();
+      } else if (this.tab == 2) {
         this.toggle2();
-      }else{
+      } else {
         this.toggle3();
       }
     },
@@ -660,9 +739,9 @@ export default {
       return startDateStr;
       return endDateStr;
     },
-    lookBtn(row){
-       localStorage.setItem("tableDataParticulars", JSON.stringify(row));
-      this.$router.push({name: 'personalCenter'})
+    lookBtn(row) {
+      localStorage.setItem("tableDataParticulars", JSON.stringify(row));
+      this.$router.push({ name: "personalCenter" });
     }
   }
 };
@@ -711,6 +790,9 @@ export default {
         -ms-user-select: none; /*IE10*/
         -khtml-user-select: none; /*早期浏览器*/
         user-select: none;
+      }
+      .active {
+        color: #68b6e7;
       }
     }
     .tuoyuan {
@@ -869,10 +951,10 @@ export default {
   .todayBox .el-table th {
     padding: 10px 0;
   }
-   .el-pagination.is-background .el-pager li:not(.disabled).active {
+  .el-pagination.is-background .el-pager li:not(.disabled).active {
     background-color: #68b6e7;
   }
-  .el-button--text{
+  .el-button--text {
     color: #68b6e7;
   }
 }

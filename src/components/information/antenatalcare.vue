@@ -240,6 +240,7 @@
                 v-model="altergestationalWeekStarModel"
                 placeholder="请选择"
                 size='100%'
+                   @change="gestationalScopes"
               >
                 <el-option
                   v-for="item in gestationalWeekStar"
@@ -253,6 +254,7 @@
                 v-model="altergestationalWeekEndModel"
                 placeholder="请选择"
                 size='100%'
+                   @change="gestationalScopes"
               >
                 <el-option
                   v-for="item in gestationalWeekEnd"
@@ -643,7 +645,16 @@ export default {
       }
     },
     gestationalScope() {
-      if (this.gestationalWeekStarModel > this.gestationalWeekEndModel) {
+      if (this.gestationalWeekStarModel >= this.gestationalWeekEndModel&& this.gestationalWeekEndModel != "") {
+        this.$message({
+          showClose: true,
+          message: "孕周开始不能大于孕周结束",
+          type: "warning"
+        });
+      }
+    },
+       gestationalScopes() {
+      if (this.altergestationalWeekStarModel >= this.altergestationalWeekEndModel&& this.altergestationalWeekEndModel != "") {
         this.$message({
           showClose: true,
           message: "孕周开始不能大于孕周结束",
@@ -749,6 +760,7 @@ export default {
           .then(res => {
             console.log(res);
             if (res.status === "20200") {
+                this.$message.success("新增成功");
               let token1 = window.localStorage.getItem("mayernal-web-token");
               this.getUser(token1);
               this.templateName = "";
@@ -838,14 +850,15 @@ export default {
               })
               .then(res => {
                 if (res.status === "20200") {
+                    this.$message.success("编辑成功");
                   this.tableContantData = res.pcCheckForWeekBeanList;
                   this.alterdialogVisible = false;
                 } else {
-                  this.$message.error("修改错误，请稍后重试");
+                  this.$message.error("编辑错误，请稍后重试");
                 }
               })
               .catch(error => {
-                this.$message.error("修改错误，请稍后重试");
+                this.$message.error("编辑错误，请稍后重试");
               });
           });
       }

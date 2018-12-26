@@ -5,6 +5,7 @@
       <div class="monthBox">
         <p class="mgb16">孕周范围</p>
         <el-select
+        clearable
           v-model="gestationalWeeks"
           placeholder="请选择"
           @change="gestationalWeeksChange()"
@@ -21,6 +22,7 @@
       <div class="ageBox">
         <p class="mgb16">年龄范围</p>
         <el-select
+        clearable
           v-model="smallAge"
           placeholder="请选择"
           @change="smallAgeChange()"
@@ -34,6 +36,7 @@
           </el-option>
         </el-select> -
         <el-select
+        clearable
           v-model="bigAge"
           placeholder="请选择"
           @change="bigAgeChange()"
@@ -50,6 +53,7 @@
       <div class="higherRiskSelectBox">
         <p class="mgb16">风险评估</p>
         <el-select
+        clearable
           v-model="highRiskClass"
           placeholder="请选择"
           clear="higherRiskModel"
@@ -245,6 +249,7 @@
                   type="text"
                   size="small"
                   style="text-align: center;"
+                     @click="lookBtn(scope.row)"
                 >查看</el-button>
               </template>
             </el-table-column>
@@ -715,6 +720,11 @@ export default {
     this.bedStatistics();
   },
   methods: {
+     // 查看按钮
+      lookBtn(row){
+       localStorage.setItem("tableDataParticulars", JSON.stringify(row));
+      this.$router.push({name: 'personalCenter'})
+    },
       // 导出表格
     exportExcel() {
       var jsono = this.officeTableData;

@@ -24,6 +24,7 @@
       <div class="higherRiskSelectBox">
         <span class="mgl40 mgr10">高危风险</span>
         <el-select
+        clearable
           v-model="highRiskClass"
           placeholder="请选择"
           clear="highRiskClass"
@@ -198,6 +199,7 @@
                   type="text"
                   size="small"
                   style="text-align: center;"
+                     @click="lookBtn(scope.row)"
                 >查看</el-button>
               </template>
             </el-table-column>
@@ -300,6 +302,11 @@ export default {
     this.documentedInquire();
   },
   methods: {
+     // 查看按钮
+      lookBtn(row){
+       localStorage.setItem("tableDataParticulars", JSON.stringify(row));
+      this.$router.push({name: 'personalCenter'})
+    },
     // 导出表格
     exportExcel() {
       var jsono = this.officeTableData;

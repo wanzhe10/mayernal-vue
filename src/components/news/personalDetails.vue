@@ -186,11 +186,14 @@ export default {
           .then(res => {
             console.log(res);
             if (res.status === "20200") {
+                this.$message.success("保存成功");
               this.doctorFindSelf();
+            }else{
+                this.$message.error("保存失败，请稍后重试");
             }
           })
           .catch(error => {
-            // this.$Message.info(error);
+                this.$message.error("保存失败，请稍后重试");
           });
       }
     },

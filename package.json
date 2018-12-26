@@ -19,6 +19,7 @@
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.3.7",
     "echarts": "^4.1.0",
+    "element-china-area-data": "^4.1.1",
     "element-ui": "^2.4.9",
     "es6-promise": "^4.2.4",
     "file-saver": "^2.0.0",

@@ -126,15 +126,11 @@
         </div>
         <div class="InformationBoxS">
           <span class="mgr36">所在地区</span>
-          <!-- <area-cascader
-            type='text'
-            v-model="arr.placeholders"
-            :level='1'
-            :data="pcaa"
-            :placeholders="arr.addressArea"
-            @keyup="registeredModelResidence()"
-            class="locationOrganzation"
-          ></area-cascader> -->
+        <el-cascader
+          :options="options"
+          v-model="selectedOptions"
+          @change="handleChange"
+        ></el-cascader>
           <input
             type="text"
             class='detailedAddress'
@@ -154,14 +150,6 @@
           > </el-input>
         </div>
       </div>
-  <div class="w960 mgt30">
-        <el-cascader
-  :options="options"
-   v-model="arr.placeholders"
-   @change="handleChange"
-></el-cascader>
-    </div>
-
       <input
         type="button"
         value="保 存"
@@ -179,19 +167,15 @@
 
 </template>
 <script>
-
 import $ from "jquery";
-import { AreaCascader } from "vue-area-linkage";
-import { pca, pcaa } from "area-data";
-import area from '../../../static/area.js';  //引入外部js文件
+import { regionData, CodeToText ,TextToCode} from "element-china-area-data";
 export default {
   data() {
     return {
       disabledInput: true,
       disabledInput2: true,
-        options: areajson, //调用外部js文件的json数据
-          //自定义 默认值
-        // workarea: ['340000', '340100', '340104'],  //此处填写对应的value值
+      //自定义 默认值
+      // workarea: ['340000', '340100', '340104'],  //此处填写对应的value值
       // 激活状态
       contacts: [
         {
@@ -214,8 +198,6 @@ export default {
           label: "已激活"
         }
       ],
-      pca: pca,
-      pcaa: pcaa,
       arr: {
         placeholders: [],
         contactsModel: "", //激活状态
@@ -229,18 +211,23 @@ export default {
         detailedAddress: "", //详细地址
         remnantFontContant: "" //机构简介
       },
+
       do_not_save: false,
       btnStatas: false, //按钮点击状态
-      select: false
+      select: false,
+      options: regionData,
+      selectedOptions: [],
+      xq:[]
     };
   },
   mounted() {
     this.findSelfHospital();
   },
   methods: {
-      handleChange(label) {
-        console.log(label);
-      },
+    handleChange(value) {
+      console.log(value);
+     this.xq=CodeToText[this.selectedOptions[0]]+''+CodeToText[this.selectedOptions[1]]+''+CodeToText[this.selectedOptions[2]]
+    },
     findSelfHospital() {
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
@@ -250,15 +237,20 @@ export default {
           console.log(res);
           if (res.status === "20200") {
             self.arr = res;
+            var myArray=new Array()
+            myArray[0]=res.addressProvince;
+            myArray[1]=res.addressCity;
+            myArray[2]=res.addressArea;
+            this.selectedOptions=myArray;
           } else {
-            this.$message.error("查询失败，请稍后重试");
+           $message.error("查询失败，请稍后重试");
           }
         })
         .catch(error => {
           this.$message.error("查询失败，请稍后重试");
         });
     },
-    //机构所在地
+    //数据变化按钮可点击
     registeredModelResidence() {
       this.select = true;
       $(".organizationBox_btn").removeAttr("disabled");
@@ -331,7 +323,7 @@ export default {
           message: "请选择机构等级",
           type: "warning"
         });
-      } else if (this.arr.placeholders == null) {
+      } else if (this.selectedOptions == null) {
         this.$message({
           showClose: true,
           message: "请选择所在地区",
@@ -352,21 +344,14 @@ export default {
       } else {
         let token1 = window.localStorage.getItem("mayernal-web-token");
         let self = this;
-        console.log(this.arr.placeholders);
-        for (let i = 0; i < this.arr.placeholders.length; i++) {
-          // const element = this.arr.placeholders[0];
-          var addressProvince = this.arr.placeholders[0];
-          var addressCity = this.arr.placeholders[1];
-          var addressArea = this.arr.placeholders[2];
-        }
         this.$api
           .updateSelfHospital({
             name: self.arr.name,
             types: self.arr.isProhibit, //类型 0.三甲医院
             addressCountry: "china", //国家
-            addressProvince: addressProvince, //省
-            addressCity: addressCity, //市
-            addressArea: addressArea, //区
+            addressProvince: this.selectedOptions[0], //省
+            addressCity:this.selectedOptions[1], //市
+            addressArea: this.selectedOptions[2], //区
             addressRemarks: self.arr.addressRemarks, //地区-详情
             details: "xiangqing", //详情
             remarks: self.arr.remarks, //备注
@@ -380,6 +365,7 @@ export default {
           })
           .then(res => {
             if (res.status === "20200") {
+                this.$message.success("编辑成功");
               console.log(res);
               this.findSelfHospital();
               this.select = false;
@@ -394,27 +380,6 @@ export default {
       }
     }
   }
-  // watch: {
-  //   // arr: {
-  //   //   handler: function() {
-  //   //     // 数据发生变化的时候的操作 未完成
-  //   //     console.log("变化");
-  //   //   },
-  //   //   deep: true
-  //   // }
-  //   "arr.userName": function(val, oldVal) {
-  //     // console.log(val, oldVal)
-  //     if (val !== oldVal) {
-  //           this.select=true;
-  //     }
-  //   },
-  //    "arr.userTelephone":{//深度监听，可监听到对象、数组的变化
-  //           handler(val, oldVal){
-  //               console.log("b.c: "+val.userTelephone, oldVal.userTelephone);//但是这两个值打印出来却都是一样的
-  //           },
-  //           deep:true
-  //       }
-  // },
 };
 </script>
 
@@ -559,7 +524,7 @@ export default {
       line-height: 46px;
       .detailedAddress {
         position: relative;
-        width: 660px;
+        width: 560px;
         height: 18px;
         line-height: 18px;
         padding-left: 20px;

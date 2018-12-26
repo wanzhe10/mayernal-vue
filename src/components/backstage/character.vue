@@ -395,6 +395,7 @@ export default {
           .occupationInsert(this.form)
           .then(res => {
             if (res.status === "20200") {
+                this.$message.success("新增成功");
               this.form.name = '';
               this.form.isProhibit = '';
               this.form.remarks = '';
@@ -403,11 +404,11 @@ export default {
             }  else if (res.status === "20210") {
               this.$message.error('信息重复，请勿重复添加');
             }else {
-              this.$message.error("新建失败，请稍后重试");
+              this.$message.error("新增失败，请稍后重试");
             }
           })
           .catch(error => {
-            this.$message.error("新建失败，请稍后重试");
+            this.$message.error("新增失败，请稍后重试");
           });
       }
     },
@@ -437,6 +438,7 @@ export default {
           })
           .then(res => {
             if (res.status === "20200") {
+                this.$message.success("编辑成功");
               this.editdialogVisible = false;
                this.getUser(token, 1, 10);
             } else {

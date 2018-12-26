@@ -82,6 +82,7 @@
           round
           class="inquireBtn"
           @click="inquireBtn()"
+  @keyup.enter="submit"
         >查询</el-button>
       </div>
     </div>
@@ -303,7 +304,19 @@ export default {
     this.indexInquire();
     // this.colorNum = this.tableData.highRiskTotalNum
   },
+   created() {
+    var lett = this;
+    document.onkeydown = function(e) {
+      var key = window.event.keyCode;
+      if (key == 13) {
+        lett.submit();
+      }
+    };
+  },
   methods: {
+    submit(){
+ this.indexInquire();
+    },
     handleEdit(index, row) {
       localStorage.setItem("tableDataParticulars", JSON.stringify(row));
     },

@@ -379,6 +379,7 @@ export default {
           .then(res => {
             console.log(res);
             if (res.status === "20200") {
+                this.$message.success("新建成功");
               this.form.isProhibit ='';
               this.form.name ='';
               this.form.remarks ='';
@@ -422,7 +423,7 @@ export default {
           })
           .then(res => {
             if (res.status === "20200") {
-              console.log("成功");
+                this.$message.success("编辑成功");
               // console.log(res);
               this.editdialogVisible = false;
               this.getUser(token, 1, self.cur_page);

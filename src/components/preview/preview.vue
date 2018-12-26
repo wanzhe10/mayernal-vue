@@ -28,7 +28,7 @@
         <div class="wire"></div>
         <p><i>结婚状况：</i><span v-show="essentialInformation.marryType ==0">初婚</span><span v-show="essentialInformation.marryType ==1">再婚</span><span v-show="essentialInformation.marryType ==2">其他</span></p>
         <p><i>婚&nbsp;&nbsp;检：</i><span v-show="essentialInformation.marryCheck ==0">无</span><span v-show="essentialInformation.marryCheck ==1">有</span></p>
-        <p><i>近半年避孕方法：</i><span v-show="essentialInformation.contraception ==-0">未避孕</span><span v-show="essentialInformation.contraception ==-1">口服避孕药</span><span v-show="essentialInformation.contraception ==-2">避孕套</span><span v-show="essentialInformation.contraception ==-3">避孕膜</span><span v-show="essentialInformation.contraception ==-4">其他</span></p>
+        <p><i>近半年避孕方法：</i><span v-show="essentialInformation.contraception == 0">未避孕</span><span v-show="essentialInformation.contraception ==1">口服避孕药</span><span v-show="essentialInformation.contraception ==2">避孕套</span><span v-show="essentialInformation.contraception ==3">避孕膜</span><span v-show="essentialInformation.contraception ==4">其他</span></p>
         <p><i>文化程度：</i><span v-show="essentialInformation.education ==0">硕士以上</span><span v-show="essentialInformation.education ==1">本科</span><span v-show="essentialInformation.education ==2">大专</span><span v-show="essentialInformation.education ==3">中专及高中</span><span v-show="essentialInformation.education ==4">初中</span><span v-show="essentialInformation.education ==5">文盲</span></p>
         <p><i>民&nbsp;&nbsp;族：</i><span>{{essentialInformation.nation}}</span></p>
         <p><i>职&nbsp;&nbsp;业：</i><span v-show="essentialInformation.job ==0">无</span><span v-show="essentialInformation.job ==1">农、牧、渔</span><span v-show="essentialInformation.job ==2">干部、职员</span><span v-show="essentialInformation.job ==3">医院、科技</span><span v-show="essentialInformation.job ==4">工人</span><span v-show="essentialInformation.job ==5">个体</span><span v-show="essentialInformation.job ==6">家务</span><span class="jobBox mgl20">{{essentialInformation.jobCompanyName}}</span></p>
@@ -83,13 +83,13 @@
           <div class="positionWire"></div>
         </div>
         <!-- 孕妇基本信息查看全部块 -->
-        <p><i>出诊时间：</i><span>{{pregnancyNewsInformation.firstCheckDate}}</span></p>
-        <p><i>末次月经：</i><span>{{pregnancyNewsInformation.lastMenstruation}}</span></p>
-        <p><i>预&nbsp;产&nbsp;期：</i><span>{{pregnancyNewsInformation.dueDate}}</span></p>
-        <p><i>孕&nbsp;周：</i><span>{{pregnancyNewsInformation.newAgeOfMenarche}}+{{pregnancyNewsInformation.newAgeOfMenarcheDay}}周</span></p>
-        <p><i>月&nbsp;经&nbsp;史：</i><span>初潮，<i>{{pregnancyNewsInformation.menstrualHistoryAge}}</i>岁<span class="jobBox mgl20">周期，<i>{{pregnancyNewsInformation.menstrualHistoryDay}}</i>天</span></span></p>
+        <p><i>出诊时间：</i><span v-html="pregnancyNewsInformation.firstCheckDate"></span></p>
+        <p><i>末次月经：</i><span  v-html="pregnancyNewsInformation.lastMenstruation"></span></p>
+        <p><i>预&nbsp;产&nbsp;期：</i><span  v-html="pregnancyNewsInformation.dueDate"></span></p>
+        <p><i>孕&nbsp;周：</i><i v-html="pregnancyNewsInformation.newAgeOfMenarche"></i>+<i v-html="pregnancyNewsInformation.newAgeOfMenarcheDay"></i>周</p>
+        <p><i>月&nbsp;经&nbsp;史：</i><span>初潮，<i v-html="pregnancyNewsInformation.menstrualHistoryAge"></i>岁<span class="jobBox mgl20">周期，<i v-html="pregnancyNewsInformation.menstrualHistoryDay"></i>天</span></span></p>
         <div class="wire"></div>
-        <p><i>怀孕次数：</i><span>{{PregnancyNum}}次</span></p>
+        <p><i>怀孕次数：</i><span v-html="PregnancyNum"></span>次</p>
         <div class="mgb24">
           <el-table
             :data="PregnancyInformation"
@@ -171,7 +171,7 @@
         <div class="wire"></div>
         <p><i>孕期用药：</i><span v-show="pregnancyNewsInformation.parturitionFrontPharmacy ==0">无</span><span v-show="pregnancyNewsInformation.parturitionFrontPharmacy ==1">有</span></p>
         <p><i>尿&nbsp;酮&nbsp;体：</i><span v-show="pregnancyNewsInformation.ketosis ==0">无</span><span v-show="pregnancyNewsInformation.ketosis ==1">有</span></p>
-        <p><i>早孕反应程度：</i><span v-show="pregnancyNewsInformation.morningSickness ==0">轻</span><span v-show="pregnancyNewsInformation.morningSickness ==1">中</span><span v-show="pregnancyNewsInformation.ketosis ==2">重</span></p>
+        <p><i>早孕反应程度：</i><span v-show="pregnancyNewsInformation.morningSickness ==0">轻</span><span v-show="pregnancyNewsInformation.morningSickness ==1">中</span><span v-show="pregnancyNewsInformation.morningSickness ==2">重</span><span v-show="pregnancyNewsInformation.morningSickness ==3">无</span></p>
         <p><i>宠物接触：</i><span v-show="pregnancyNewsInformation.animalContact ==0">无</span><span v-show="pregnancyNewsInformation.animalContact ==1">有</span></p>
         <p><i>接触放射性：</i><span v-show="pregnancyNewsInformation.contactRadioactiveRays ==0">否</span><span v-show="pregnancyNewsInformation.contactRadioactiveRays ==1">是<span class="jobBox mgl20">{{pregnancyNewsInformation.contactRadioactiveRaysDate}}</span></span></p>
         <div class="wire"></div>
@@ -374,11 +374,11 @@ export default {
           id: this.healthCheckId
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             this.pregnancyNewsInformation = res;
             this.healthCheckup = res;
-            console.log(this.healthCheckup);
+            // console.log(this.healthCheckup);
           } else if (res.status === "20209") {
           }
         })

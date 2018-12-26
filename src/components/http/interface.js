@@ -271,7 +271,7 @@ export const countEntityForOthersWithDueDate = data => {
 //  更改自己密码
 export const patientCenterUpdateSelfPass = data => {
   return axios({
-    url: 'v1/web/pc/doctor/updateSelfPass',
+    url: 'v1/web/pc/doctor/updateSelfPassword',
     method: 'post',
     data
   })

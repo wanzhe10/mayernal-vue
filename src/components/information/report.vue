@@ -296,6 +296,7 @@ export default {
         .then(res => {
           // console.log(res);
           if (res.status === "20200") {
+              this.$message.success("新建成功");
             self.dialogVisible = false;
             let _thisId = $(".leftList")
               .children("li.active")

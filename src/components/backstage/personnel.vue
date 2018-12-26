@@ -587,6 +587,7 @@ export default {
           .then(res => {
               console.log(res)
             if (res.status === "20200") {
+                this.$message.success("新增成功");
         this.arr.telephone='';
         this.arr.name='';
         this.arr.occupationId='';
@@ -650,6 +651,7 @@ export default {
           .then(res => {
             console.log(res);
             if (res.status === "20200") {
+                this.$message.success("编辑成功");
               this.editdialogVisible = false;
               this.inquire(token, 1, self.cur_page);
             } else {

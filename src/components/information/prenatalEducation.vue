@@ -387,6 +387,7 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
+               this.$message.success("新建成功");
             this.dialogVisible = false;
             this.pregnantPrenatalEducationAndClassFindList();
             this.newlyLayerInput = "";
@@ -415,15 +416,16 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
+               this.$message.success("编辑成功");
             this.modification = false;
             this.pregnantPrenatalEducationAndClassFindList();
             // this.modificationlyLayerInput = "";
           } else {
-            this.$message.error("修改错误，请稍后重试");
+            this.$message.error("编辑错误，请稍后重试");
           }
         })
         .catch(error => {
-          this.$message.error("修改错误，请稍后重试");
+          this.$message.error("编辑错误，请稍后重试");
         });
     },
     // 标签双击编辑
@@ -577,6 +579,7 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
+               this.$message.success("添加成功");
             this.toggleClass(this.clickActive);
           } else if (res.status === "20209") {
           }
@@ -660,13 +663,14 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
+               this.$message.success("编辑成功");
             this.toggleClass(this.clickActive);
             this.headlineLayerEdit = false;
           } else if (res.status === "20209") {
           }
         })
         .catch(error => {
-          this.$message.error("查询错误，请稍后重试");
+          this.$message.error("编辑失败，请稍后重试");
         });
     }
   }

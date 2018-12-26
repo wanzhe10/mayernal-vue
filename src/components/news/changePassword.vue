@@ -32,9 +32,11 @@ export default {
       var Reg_PassWord =/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/
       if (value === "") {
         callback(new Error("请输入密码"));
-      } else if(!Reg_PassWord.test(value)){
-        callback(new Error("8-16位含数字/字母2种组合"));
-      }else{
+      }
+      //  else if(!Reg_PassWord.test(value)){
+      //   callback(new Error("8-16位含数字/字母2种组合"));
+      // }
+      else{
           callback();
       }
     };
@@ -77,8 +79,8 @@ export default {
         }
       });
     },
-
     changrPassWold(){
+        let self = this;
       let token = localStorage.getItem('mayernal-web-token');
          this.$api
         .patientCenterUpdateSelfPass({
@@ -89,12 +91,14 @@ export default {
         .then(res => {
           console.log(res)
           if (res.status === "20200") {
-          } else {
-            // this.$Message.info(res.desc);
+              localStorage.clear();
+             self.$router.push({ name: "login" });
+          } else if (res.status === "20252") {
+                 this.$message.error("原始密码错误");
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+           this.$message.error("请求失败，请稍后重试");
         });
     }
   }
