@@ -717,7 +717,7 @@ export default {
       width: 118px;
     }
     .el-input--prefix .el-input__inner {
-      border-radius: 8px;
+      border-radius: 4px;
       border: 1px solid #ccc;
       height: 30px;
     }
@@ -733,7 +733,7 @@ export default {
     }
     .higherRiskSelectBox {
       .el-input__inner {
-        border-radius: 8px;
+        border-radius: 4px;
         height: 30px;
         border: 1px solid #ccc;
         background-color: #f6f6f6;

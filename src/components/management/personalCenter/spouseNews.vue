@@ -457,7 +457,7 @@ export default {
       width: 154px;
       height: 40px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
       padding-left: 16px;
     }
     .redFont {
@@ -484,7 +484,7 @@ export default {
     text-align: center;
     line-height: 30px;
     color: #fff;
-    border-radius: 8px;
+    border-radius: 4px;
   } // 基本情况块
   //  查看全部块
   .lookAtallBtnBox {
@@ -594,7 +594,7 @@ export default {
       padding: 8px 15px;
       display: inline-block;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
       margin-right: 14px;
       margin-bottom: 14px;
     }

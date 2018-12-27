@@ -540,7 +540,7 @@ export default {
       width: 239px;
       height: 42px;
       background-color: #68b6e7;
-      border-radius: 6px;
+      border-radius: 4px;
       opacity: 0.6;
       margin: auto;
       margin-top: 38px;

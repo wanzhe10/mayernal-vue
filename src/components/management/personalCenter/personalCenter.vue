@@ -1540,12 +1540,12 @@ export default {
                 width: 96px;
                 height: 96px;
                 border: 1px solid #ccc;
-                border-radius: 8px;
+                border-radius: 4px;
                 img {
                   width: 96px;
                   height: 96px;
                   cursor: pointer;
-                  border-radius: 8px;
+                  border-radius: 4px;
                 }
               }
             }
@@ -1864,7 +1864,7 @@ export default {
       .fortyTwoTable {
         margin-top: 18px;
         border: 1px solid #ccc;
-        border-radius: 8px;
+        border-radius: 4px;
         div {
           padding: 24px 0px 30px 20px;
           h4 {
@@ -2003,7 +2003,7 @@ export default {
       color: #000000;
       text-align: center;
       line-height: 40px;
-      border-radius: 8px;
+      border-radius: 4px;
       font-size: 14px;
       float: right;
       margin-right: 56px;

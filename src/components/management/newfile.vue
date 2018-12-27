@@ -1706,7 +1706,7 @@ export default {
       width: 260px;
       height: 40px;
       border: 1px solid #ccc;
-      border-radius: 8px; // margin: 10px 0px;
+      border-radius: 4px; // margin: 10px 0px;
       padding-left: 16px;
     }
     p {
@@ -1739,7 +1739,7 @@ export default {
       font-size: 14px;
       line-height: 40px;
       text-align: center;
-      border-radius: 8px;
+      border-radius: 4px;
     }
   } // 出生年月
   .birthBox {
@@ -1798,7 +1798,7 @@ export default {
       width: 260px;
       height: 40px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
       padding-left: 16px;
     }
     .redFont {
@@ -1831,7 +1831,7 @@ export default {
       font-size: 14px;
       line-height: 40px;
       text-align: center;
-      border-radius: 8px;
+      border-radius: 4px;
     }
   } // 出生年月
   .birthBox {
@@ -1958,7 +1958,7 @@ export default {
       line-height: 32px;
       border: 1px solid #ccc;
       display: inline-block;
-      border-radius: 8px;
+      border-radius: 4px;
     }
     .drinkOccasionally {
       margin-right: 50px;
@@ -1997,7 +1997,7 @@ export default {
         color: #fff;
         text-align: center;
         line-height: 30px;
-        border-radius: 8px;
+        border-radius: 4px;
         margin-right: 12px;
         margin-bottom: 8px;
       }
@@ -2074,7 +2074,7 @@ export default {
       width: 260px;
       height: 40px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
       padding-left: 16px;
     }
     .redFont {
@@ -2093,7 +2093,7 @@ export default {
     width: 260px;
     height: 40px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 4px;
     div {
       display: inline-block;
       width: 125px; //    float: left;
@@ -2249,7 +2249,7 @@ export default {
           color: #fff;
           text-align: center;
           line-height: 30px;
-          border-radius: 8px;
+          border-radius: 4px;
           margin-right: 12px;
           margin-bottom: 8px;
         }
@@ -2312,7 +2312,7 @@ export default {
         height: 108px;
         width: 100%;
         border: 1px solid #ccc;
-        border-radius: 8px;
+        border-radius: 4px;
         padding-left: 30px;
       }
       .cancelBtn,
@@ -2357,7 +2357,7 @@ export default {
       width: 260px;
       height: 40px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
       padding-left: 16px;
     }
     .redFont {
@@ -2382,12 +2382,12 @@ export default {
     height: 40px;
     line-height: 40px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 4px;
     input {
       width: 48%;
       display: inline-block;
       height: 34px;
-      border-radius: 8px;
+      border-radius: 4px;
       padding-left: 16px;
       border: none;
     }
@@ -2472,7 +2472,7 @@ export default {
       width: 154px;
       height: 40px;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
       padding-left: 16px;
     }
     .redFont {
@@ -2499,7 +2499,7 @@ export default {
     text-align: center;
     line-height: 30px;
     color: #fff;
-    border-radius: 8px;
+    border-radius: 4px;
   } // 基本情况块
   //  查看全部块
   .lookAtallBtnBox {
@@ -2601,7 +2601,7 @@ export default {
       padding: 8px 15px;
       display: inline-block;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
       margin-right: 14px;
       margin-bottom: 14px;
     }

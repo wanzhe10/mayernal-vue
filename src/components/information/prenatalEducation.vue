@@ -504,7 +504,17 @@ export default {
         this.vicHeadlineNameLayerEdit = this.tittledata[index].cellSubhead;
         this.cellId = this.tittledata[index].cellId;
         this.headlineLayerEditNumber = this.tittledata[index].cellNumber;
-        console.log(this.tittledata[index]);
+        this.headlineLayerEditNumber = this.tittledata[index].cellNumber;
+        //    if (
+        //   this.tittledata[index].cellImages == null ||
+        //   this.tittledata[index].cellImages == ""
+        // ) {
+        //   this.imageUrlEdit = "";
+        // } else {
+        //   var imgSrc = eval("(" + this.tittledata[index].cellImages + ")");
+        //   console.log(imgSrc.minImageURL)
+        //   this.imageUrlEdit = imgSrc.minImageURL;
+        // }
 
         var editor = new E("#editor");
         editor.customConfig.uploadImgShowBase64 = true;
@@ -602,7 +612,6 @@ export default {
         this.vicHeadlineNameLayerEdit = this.tittledata[index].cellSubhead;
         this.cellId = this.tittledata[index].cellId;
         this.headlineLayerEditNumber = this.tittledata[index].cellNumber;
-        // this.imageUrlBase64Edit=this.imageUrlBase64;
         if (
           this.tittledata[index].cellImages == null ||
           this.tittledata[index].cellImages == ""
@@ -610,7 +619,8 @@ export default {
           this.imageUrlEdit = "";
         } else {
           var imgSrc = eval("(" + this.tittledata[index].cellImages + ")");
-          this.imageUrlEdit = "http://192.168.0.6:8763" + imgSrc.minImageURL;
+          // console.log(imgSrc.minImageURL)
+          this.imageUrlEdit = "http://192.168.0.6:8080/pregnant" + imgSrc.minImageURL;
         }
       }
     },
@@ -712,7 +722,7 @@ export default {
         background-color: #68b6e7;
         color: #fff;
         font-size: 12px;
-        border-radius: 8px;
+        border-radius: 4px;
         float: right;
       }
     }
@@ -737,7 +747,7 @@ export default {
         padding: 0px 18px;
         border: 1px solid #999999;
         color: #666666;
-        border-radius: 8px;
+        border-radius: 4px;
         margin-bottom: 20px;
         margin-right: 18px;
         cursor: pointer;
@@ -885,7 +895,7 @@ export default {
           height: 42px;
           background-color: #68b7e7;
           color: #fff;
-          border-radius: 8px;
+          border-radius: 4px;
           margin: 10px auto;
           display: block;
           cursor: pointer;
@@ -973,7 +983,7 @@ export default {
 
 // .avatar-uploader .el-upload {
 //   border: 1px dashed #d9d9d9;
-//   border-radius: 6px;
+//   border-radius: 4px;
 //   cursor: pointer;
 //   position: relative;
 //   overflow: hidden;

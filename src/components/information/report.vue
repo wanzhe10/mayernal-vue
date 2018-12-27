@@ -446,7 +446,7 @@ export default {
         background-color: #68b6e7;
         color: #fff;
         font-size: 12px;
-        border-radius: 8px;
+        border-radius: 4px;
         float: right;
       }
       .lattleSelectBox {
@@ -480,7 +480,7 @@ export default {
         padding: 0px 18px;
         border: 1px solid #999999;
         color: #666666;
-        border-radius: 8px;
+        border-radius: 4px;
         margin-bottom: 20px;
         // margin:20px 9px;
         margin-right: 18px;
@@ -512,7 +512,7 @@ export default {
         margin-top: 20px;
         background-color: #f6f6f6;
         padding: 16px 12px;
-        border-radius: 8px;
+        border-radius: 4px;
         .wire {
           width: 100%;
           height: 1px;
@@ -583,7 +583,7 @@ export default {
   }
   /* // 配偶一般信息组件样式修改 */
   .el-input__inner {
-    border-radius: 8px;
+    border-radius: 4px;
     border-color: #ccc;
     background-color: #f6f6f6;
   }

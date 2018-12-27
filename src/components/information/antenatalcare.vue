@@ -949,6 +949,7 @@ export default {
           .active {
             box-shadow: 0px 2px 12px 5px #e1e1e1;
             color:#68b7e7;
+            border:none;
           }
         }
       }
@@ -958,7 +959,7 @@ export default {
         z-index: 2;
         padding: 0px 14px 0px 14px;
         margin-top: 8px;
-        border-radius: 8px;
+        border-radius: 4px;
         p {
           border-bottom: 1px solid #ccc;
           color: #333333;
@@ -1068,7 +1069,7 @@ export default {
   .modolNameBox {
     .el-input__inner {
       width: 314px;
-      border-radius: 8px;
+      border-radius: 4px;
       border: 1px solid #ccc;
       background-color: #fff;
     }
@@ -1082,7 +1083,7 @@ export default {
     }
     .el-input--suffix .el-input__inner {
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
     }
   }
   .mgt22 {
@@ -1091,7 +1092,7 @@ export default {
     }
     .el-input--suffix .el-input__inner {
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
     }
   }
   .addTemplateLayer_bottom {
@@ -1104,7 +1105,7 @@ export default {
     }
   }
   .el-textarea__inner {
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #ccc;
   }
   .el-dialog__header {

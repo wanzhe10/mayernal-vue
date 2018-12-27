@@ -1121,7 +1121,7 @@ export default {
   .berthBox_top {
     .monthBox {
       .el-input__inner {
-        border-radius: 8px;
+        border-radius: 4px;
         border: 1px solid #ccc;
         height: 30px;
         padding: 0px;
@@ -1143,7 +1143,7 @@ export default {
     }
     .ageBox {
       .el-input__inner {
-        border-radius: 8px;
+        border-radius: 4px;
         border: 1px solid #ccc;
         height: 30px;
         padding: 0px;
@@ -1168,7 +1168,7 @@ export default {
     }
     .higherRiskSelectBox {
       .el-input__inner {
-        border-radius: 8px;
+        border-radius: 4px;
         border: 1px solid #ccc;
         height: 30px;
         padding: 0px;

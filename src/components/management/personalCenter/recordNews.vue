@@ -509,7 +509,7 @@ export default {
           width: 260px;
           height: 40px;
           border: 1px solid #ccc;
-          border-radius: 8px; // margin: 10px 0px;
+          border-radius: 4px; // margin: 10px 0px;
           padding-left: 16px;
         }
         p {
@@ -521,7 +521,7 @@ export default {
         width: 260px;
         height: 40px;
         border: 1px solid #ccc;
-        border-radius: 8px;
+        border-radius: 4px;
         line-height: 40px;
         padding: 0 5px;
         input {
@@ -540,7 +540,7 @@ export default {
         width: 252px;
         line-height: 40px;
         border: 1px solid #ccc;
-        border-radius: 8px;
+        border-radius: 4px;
         input {
           width: 154px;
           border: none;
@@ -554,7 +554,7 @@ export default {
           font-size: 14px;
           line-height: 36px;
           text-align: center;
-          border-radius: 8px;
+          border-radius: 4px;
         }
       }
     }
@@ -637,7 +637,7 @@ export default {
         margin-top: 18px;
         width: 187px;
         height: 42px;
-        border-radius: 6px;
+        border-radius: 4px;
         font-size: 14px;
       }
       .finishBtn {
@@ -695,7 +695,7 @@ export default {
     .spouseNewsBox .area-select.large {
       width: 260px;
       height: 40px;
-      border-radius: 8px;
+      border-radius: 4px;
       background-color: #f6f6f6;
       color: #606266;
     }

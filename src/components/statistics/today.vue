@@ -9,13 +9,6 @@
           :class="{'active':index==showActive}"
           @click="weekDataClick(index)"
         ></li>
-        <!-- <li>周一</li>
-        <li>周二</li>
-        <li>周三</li>
-        <li>周四</li>
-        <li>周五</li>
-        <li>周六</li>
-        <li>周日</li> -->
       </ul>
       <div
         class="tuoyuan"
@@ -28,19 +21,18 @@
     >
       <div class="todayBoxTeb clearfix">
         <ul class="clearfix fl">
-          <!-- <li @click="toggle()"></li> -->
           <li
-            @click='toggle1();nonArrival1();addNameClick(1)'
+            @click='toggle();addNameClick(1)'
             :class="{'active':tab === 1}"
-          >今日总预约复检人数<span v-model='numToggle1'>{{numToggle1}}</span>人</li>
+          >今日总预约复检人数<span v-model='numToggle'>{{numToggle}}</span>人</li>
           <li
             @click='toggle2();addNameClick(2)'
             :class="{'active':tab === 2}"
           >今日当前挂号人数0人</li>
           <li
-            @click='toggle3();nonArrival3();addNameClick(3)'
+            @click='toggle();addNameClick(3)'
             :class="{'active':tab === 3}"
-          >今日未到复检人数<span v-model='numToggle3'>{{numToggle3}}</span>人</li>
+          >今日未到复检人数<span v-model='numToggle'>{{numToggle}}</span>人</li>
         </ul>
         <div class="fr mgr38">
           <el-button
@@ -188,136 +180,6 @@
             </el-pagination>
           </div>
         </div>
-        <!-- 今日当前挂号人数 -->
-
-        <!-- 今日未到复检人数 -->
-        <div
-          class="TableDataBox"
-          v-show='tableShow3'
-        >
-          <el-table
-            :data="officeTableData3"
-            style="width: 100%"
-          >
-            <el-table-column
-              prop="makeAppointmentTime"
-              label="复检时间2"
-              width="130px"
-            ></el-table-column>
-            <el-table-column
-              prop="checkName"
-              label="姓名2"
-              width="140px"
-            ></el-table-column>
-            <el-table-column
-              prop=''
-              label="孕周2"
-              width="125px"
-            >
-              <template slot-scope="scope">
-                <div v-html="'孕'+scope.row.newAgeOfMenarche+'-'+scope.row.newAgeOfMenarcheDay+'天'"></div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="parturitionDetailDueDate"
-              label="预产期"
-              width="156px"
-            ></el-table-column>
-            <el-table-column
-              prop="checkAge"
-              label="年龄"
-              width="94px"
-            ></el-table-column>
-            <el-table-column
-              prop="highRiskClass"
-              label="高危评估"
-              width="126px"
-            >
-              <template slot-scope="scope">
-                <i
-                  class="clolrLump level0"
-                  v-show=" scope.row.highRiskClass ==0"
-                ></i>
-                <i
-                  class="clolrLump level1"
-                  v-show=" scope.row.highRiskClass ==1"
-                ></i>
-                <i
-                  class="clolrLump level2"
-                  v-show=" scope.row.highRiskClass ==2"
-                ></i>
-                <i
-                  class="clolrLump level3"
-                  v-show=" scope.row.highRiskClass ==3"
-                ></i>
-                <i
-                  class="clolrLump level4"
-                  v-show=" scope.row.highRiskClass ==4"
-                ></i>
-                <span
-                  style="margin-left: 10px"
-                  v-show=" scope.row.highRiskClass ==0"
-                >绿色</span>
-                <span
-                  style="margin-left: 10px"
-                  v-show=" scope.row.highRiskClass ==1"
-                >黄色</span>
-                <span
-                  style="margin-left: 10px"
-                  v-show=" scope.row.highRiskClass ==2"
-                >橙色</span>
-                <span
-                  style="margin-left: 10px"
-                  v-show=" scope.row.highRiskClass ==3"
-                >红色</span>
-                <span
-                  style="margin-left: 10px"
-                  v-show=" scope.row.highRiskClass ==4"
-                >紫色</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="recheckOvertime"
-              label="超时"
-              width="86px"
-            >
-              <template slot-scope="scope">
-                <div>- -</div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop=""
-              label="操作"
-              width="70px"
-            >
-              <template slot-scope="scope">
-                <el-button
-                  type="text"
-                  size="small"
-                  style="text-align: center;"
-                  @click="lookBtn(scope.row)"
-                >查看</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <!-- 分页 -->
-          <div
-            class="administrativeBoxBlock"
-            style="margin-top:30px; text-align:center;"
-          >
-            <el-pagination
-              @size-change="handleSizeChange3"
-              @current-change="handleCurrentChange3"
-              :current-page.sync="currentPageOfice3"
-              :page-sizes="[10, 20, 30, 40]"
-              :page-size.sync="cur_page3"
-              layout="sizes, prev, pager, next"
-              background
-              :page-count='pagerCount3'
-            >
-            </el-pagination>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -332,7 +194,7 @@ export default {
     return {
       activeName: "first",
       officeTableData: [], //今日预约数据
-      officeTableData3: [], //今日未到复检人数
+      // officeTableData3: [], //今日未到复检人数
       tab: 1,
       showActive: "0",
       weekData: [
@@ -350,29 +212,61 @@ export default {
         { name: "今日未到复检人数", number: "30人" }
       ],
       current: 0,
-      currentPageOfice: 1, //分页
-      cur_page: 10, //分页
-      pagerCount: 3, //分页
+      currentPageOfice: 1, //分页 -页数
+      cur_page: 10, //分页 --条数
+      pagerCount: 0, //分页 --总条数
       tableShow: true, //今日预约表格显示隐藏
       imgShow: false, //图片显示隐藏
-      numToggle1: 1, //今日总预约人数
-
-      tableShow3: false, // 今日未到表格显示隐藏
-      numToggle3: 1, //今日未到预约人数
-      currentPageOfice3: 1, //分页
-      cur_page3: 10, //分页
-      pagerCount3: 3 //分页
+      numToggle: 0, //今日总预约人数
+      strTime: "", //开始时间
+      endTime: "" //结束时间
     };
   },
   mounted() {
-    this.toggle1();
-    this.toggle3();
+    this.inquireFun();
     this.weekApllay();
   },
-  // 周几点击
   methods: {
+    // 日期切换
     weekDataClick(index) {
       this.showActive = index;
+      switch (index) {
+        case 0:
+          this.strTime = this.showWeekDay(0);
+          this.endTime = this.showWeekDay(1);
+          break;
+        case 1:
+          this.strTime = this.showWeekDay(1);
+          this.endTime = this.showWeekDay(2);
+          break;
+        case 2:
+          this.strTime = this.showWeekDay(2);
+          this.endTime = this.showWeekDay(3);
+
+          break;
+        case 3:
+          this.strTime = this.showWeekDay(3);
+          this.endTime = this.showWeekDay(4);
+
+          break;
+        case 4:
+          this.strTime = this.showWeekDay(4);
+          this.endTime = this.showWeekDay(5);
+
+          break;
+        case 5:
+          this.strTime = this.showWeekDay(5);
+          this.endTime = this.showWeekDay(6);
+
+          break;
+        case 6:
+          this.strTime = this.showWeekDay(6);
+          this.endTime = this.showWeekDay(7);
+          break;
+      }
+        this.currentPageOfice = 1, //分页 -页数
+        this.cur_page = 10,
+        this.numInquire();
     },
     // 获取当前是星期几
     weekApllay() {
@@ -393,7 +287,22 @@ export default {
         this.showActive = 6;
       }
     },
-    // teb切换
+    // 本周第几天
+    showWeekDay: function(datNum) {
+      let Nowdate = new Date();
+      let WeekFirstDay = new Date(Nowdate - (Nowdate.getDay() - 1) * 86400000);
+      let WeekLastDay = new Date((WeekFirstDay / 1000 + datNum * 86400) * 1000);
+      let M = Number(WeekLastDay.getMonth()) + 1;
+      if (M < 10) {
+        M = "0" + M;
+      }
+      let D = WeekLastDay.getDate();
+      if (D < 10) {
+        D = "0" + D;
+      }
+      return WeekLastDay.getFullYear() + "-" + M + "-" + D;
+    },
+    // 复检teb切换
     addNameClick(index) {
       this.tab = index;
     },
@@ -499,161 +408,50 @@ export default {
       console.log(tab, event);
     },
     handleSizeChange(val) {
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      this.currentPageOfice = 1;
-      console.log(`每页 ${val} 条`);
-      this.currentdate(startDateStr, endDateStr);
-      var day = new Date();
-      // 开始时间 /今天 startDateStr
-      var startDateStr = day.format("yyyy-MM-dd");
-      // console.log(startDateStr);
-      // 结束时间 /明天 endDateStr
-      day.setDate(day.getDate() + 1);
-      var endDateStr = day.format("yyyy-MM-dd");
-      // console.log(endDateStr);
-      // this.numInquire(token1,startDateStr,endDateStr,1,`${val}`);
-      this.numInquire(token1, "2018-01-01", "2018-10-01", 1, `${val}`); //测试
+      this.numInquire();
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.numInquire();
+    },
+    // 今日总预约复检人数 -点击teb
+    toggle() {
+      (this.currentPageOfice = 1), //分页 -页数
+        (this.cur_page = 10),
+        this.numInquire();
+    },
+    // 首次进入查询封装
+    inquireFun() {
       this.currentdate(startDateStr, endDateStr);
       var day = new Date();
-      // 开始时间 /今天 startDateStr
       var startDateStr = day.format("yyyy-MM-dd");
-      // console.log(startDateStr);
-      // 结束时间 /明天 endDateStr
+      this.strTime =startDateStr; //开始时间
       day.setDate(day.getDate() + 1);
       var endDateStr = day.format("yyyy-MM-dd");
-      // console.log(endDateStr);
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      this.currentPageOfice = val;
-      //  this.numInquire(token1,startDateStr,endDateStr,`${val}`,this.cur_page);
-      this.numInquire(
-        token1,
-        "2018-01-01",
-        "2018-10-01",
-        `${val}`,
-        this.cur_page
-      );
-    },
-    handleSizeChange3(val) {
-      var token1 = window.localStorage.getItem("mayernal-web-token");
-      this.currentPageOfice3 = 1;
-      console.log(`每页 ${val} 条`);
-      this.currentdate(startDateStr, endDateStr);
-      var day = new Date();
-      // 开始时间 /今天 startDateStr
-      var startDateStr = day.format("yyyy-MM-dd");
-      // 结束时间 /明天 endDateStr
-      day.setDate(day.getDate() + 1);
-      var endDateStr = day.format("yyyy-MM-dd");
-      // this.numInquire3(token1,startDateStr,endDateStr,1,`${val}`);
-      this.numInquire3(token1, "2018-01-01", "2018-10-01", 1, `${val}`); //测试
-    },
-    handleCurrentChange3(val) {
-      console.log(`当前页: ${val}`);
-      this.currentdate(startDateStr, endDateStr);
-      var day = new Date();
-      // 开始时间 /今天 startDateStr
-      var startDateStr = day.format("yyyy-MM-dd");
-      // console.log(startDateStr);
-      // 结束时间 /明天 endDateStr
-      day.setDate(day.getDate() + 1);
-      var endDateStr = day.format("yyyy-MM-dd");
-      // console.log(endDateStr);
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      this.currentPageOfice3 = val;
-      //  this.numInquire3(token1,startDateStr,endDateStr,`${val}`,this.cur_page3);
-      this.numInquire3(
-        token1,
-        "2018-01-01",
-        "2018-10-01",
-        `${val}`,
-        this.cur_page3
-      ); //测试
-    },
-    toggle1() {
-      $(this).addClass("active");
-      this.currentdate(startDateStr, endDateStr);
-      var day = new Date();
-      // 开始时间 /今天 startDateStr
-      var startDateStr = day.format("yyyy-MM-dd");
-      // 结束时间 /明天 endDateStr
-      day.setDate(day.getDate() + 1);
-      var endDateStr = day.format("yyyy-MM-dd");
-      let token1 = localStorage.getItem("mayernal-web-token");
-      // this.numInquire(token1,startDateStr,endDateStr,1,  this.cur_page);
-      this.numInquire(token1, "2018-01-01", "2018-10-01", 1, this.cur_page); //测试
-    },
-    nonArrival1(e) {
-      console.log(e.target);
-      if (this.officeTableData1 !== null) {
-        this.tableShow1 = true;
-        this.tableShow3 = false;
-      } else {
-        this.tableShow1 = false;
-        this.imgShow = true; //图片显示隐藏
-      }
+      this.endTime = endDateStr; //结束时间
+      //测试、
+      // this.strTime = "2018-01-01";
+      // this.endTime = "2018-10-01";
+      this.numInquire();
     },
     toggle2() {
-      // alert(2);
-    },
-    // 今日未到复检人数按钮
-    toggle3() {
-      // this.cur_page3=10,
-      this.currentdate(startDateStr, endDateStr);
-      var day = new Date();
-      // 开始时间 /今天 startDateStr
-      var startDateStr = day.format("yyyy-MM-dd");
-      // console.log(startDateStr);
-      // 结束时间 /明天 endDateStr
-      day.setDate(day.getDate() + 1);
-      var endDateStr = day.format("yyyy-MM-dd");
-      // console.log(endDateStr);
-      let token1 = localStorage.getItem("mayernal-web-token");
-      // this.numInquire3(token1,startDateStr,endDateStr,1, this.cur_page3);
-      this.numInquire3(token1, "2018-01-01", "2018-10-01", 1, this.cur_page3); //测试
-    },
-    nonArrival1() {
-      if (this.officeTableData !== null) {
-        this.tableShow3 = false;
-        this.tableShow = true;
-      } else {
-        this.tableShow = false;
-        this.tableShow3 = false;
-        this.imgShow = true; //图片显示隐藏
-      }
-    },
-    nonArrival3() {
-      if (this.officeTableData3 !== null) {
-        this.tableShow3 = true;
-        this.tableShow = false;
-      } else {
-        this.tableShow = false;
-        this.tableShow = false;
-        this.imgShow = true; //图片显示隐藏
-      }
+      this.tableShow = false;
+      this.imgShow = true;
     },
     // 刷新按钮
     tuoyuanBtn() {
-      if (this.tab == 1) {
-        this.toggle1();
-      } else if (this.tab == 2) {
-        this.toggle2();
-      } else {
-        this.toggle3();
-      }
+        this.inquireFun();
     },
-
     //今日总预约查询
     numInquire(token, startDateStr, endDateStr, pageNum, pageCell) {
+      let token1 = localStorage.getItem("mayernal-web-token");
       this.$api
         .countEntityWithStartDateAndEndDate({
-          token: token,
-          startDateStr: startDateStr,
-          endDateStr: endDateStr,
-          pageNum: pageNum,
-          pageCell: pageCell
+          token: token1,
+          startDateStr: this.strTime,
+          endDateStr: this.endTime,
+          pageNum: this.currentPageOfice,
+          pageCell: this.cur_page
         })
         .then(res => {
           if (res.status === "20200") {
@@ -662,46 +460,20 @@ export default {
             this.pagerCount = res.pages;
             this.tableShow = true;
             this.imgShow = false;
-            this.numToggle1 = res.total;
+            this.numToggle = res.total;
           } else if (res.status === "20209") {
             this.tableShow = false;
             this.imgShow = true;
-          }
-          {
-            // this.$Message.info(res.desc);
-          }
-        })
-        .catch(error => {
-          // this.$Message.info(error);
-        });
-    },
-    //今日未到查询
-    numInquire3(token, startDateStr, endDateStr, pageNum, pageCell) {
-      this.$api
-        .countEntityWithStartDateAndEndDate({
-          token: token,
-          startDateStr: startDateStr,
-          endDateStr: endDateStr,
-          pageNum: pageNum,
-          pageCell: pageCell
-        })
-        .then(res => {
-          if (res.status === "20200") {
-            console.log(res);
-            this.officeTableData3 = res.pcPatientCenterBeans;
-            this.pagerCount3 = res.pages;
-            this.numToggle3 = res.total;
-          } else if (res.status === "20209") {
-            this.tableShow3 = false;
-          }
-          {
-            // this.$Message.info(res.desc);
+            this.numToggle = 0;
+          }else{
+               this.$message.error('今日全部复检统计查询错误，请稍后重试');
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+           this.$message.error('今日全部复检统计查询错误，请稍后重试');
         });
     },
+    // 获取当前时间
     currentdate(startDateStr, endDateStr) {
       Date.prototype.format = function(fmt) {
         var o = {
@@ -739,6 +511,7 @@ export default {
       return startDateStr;
       return endDateStr;
     },
+    // 查看按钮 跳转到--->个人中心
     lookBtn(row) {
       localStorage.setItem("tableDataParticulars", JSON.stringify(row));
       this.$router.push({ name: "personalCenter" });
@@ -746,8 +519,6 @@ export default {
   }
 };
 </script>
-
-
 <style lang="less" scoped>
 @level0: green;
 @level1: yellow;

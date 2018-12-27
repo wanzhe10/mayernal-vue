@@ -32,8 +32,7 @@
         src="../../assets/noDataIcon.png"
         alt="暂无数据"
         class="noDataIcon"
-        v-show='imgShow'
-      >
+        v-show='imgShow' >
       <div
         class="hideBox"
         v-show='tableShow'
@@ -485,7 +484,7 @@ export default {
     width: 99px;
     height: 36px;
     background-color: #68b6e7;
-    border-radius: 6px;
+    border-radius: 4px;
     color: #fff;
     cursor: pointer;
   }
@@ -596,7 +595,7 @@ export default {
     padding: 0px 34px;
     .el-input__inner {
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
       background-color: #f6f6f6;
     }
     .el-select {
@@ -607,7 +606,7 @@ export default {
     }
   }
   .el-textarea__inner {
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #ccc;
   }
   .el-dialog__header {

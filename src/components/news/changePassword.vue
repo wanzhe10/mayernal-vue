@@ -153,7 +153,7 @@ export default {
   }
   .el-input--suffix .el-input__inner {
     padding-right: 30px;
-    border-radius: 10px;
+    border-radius: 4px;
   }
   .area-select.large {
     width: 128px;

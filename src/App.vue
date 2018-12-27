@@ -19,7 +19,7 @@ export default {
 <style lang="less">
 // @import "../css/reset.css";
 // @import "../css/root.less";
-// html{overflow-y:scroll;}
+html{overflow-y:scroll;}
 body{
     background-color: #f6f6f6;
     width: 1200px; // position: relative;
@@ -27,7 +27,7 @@ body{
     #app {
   min-width: 1200px;
   margin:0 auto;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: '微软雅黑', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

@@ -739,7 +739,7 @@ export default {
     background-color: #68b6e7;
     color: #fff;
     font-size: 14px;
-    border-radius: 10px 10px 10px 10px;
+       border-radius: 4px;
     text-align: center;
     line-height: 34px;
     margin: 30px 16px 30px 16px;
@@ -817,19 +817,19 @@ export default {
         .recordSelect {
           input {
             width: 126px;
-            border-radius: 10px;
+            border-radius: 4px;
           }
         }
         .assessSelect {
           input {
             width: 162px;
-            border-radius: 10px;
+            border-radius: 4px;
           }
         }
         .seeSelect {
           input {
             width: 126px;
-            border-radius: 10px;
+            border-radius: 4px;
           }
         }
         .fileSearch {
@@ -902,12 +902,12 @@ export default {
     }
     .el-input__inner {
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
     }
     .addTemplateLayer_bottom {
       .el-input__inner {
         border: 1px solid #ccc;
-        border-radius: 8px;
+        border-radius: 4px;
         background-color: #f6f6f6;
       }
     }
@@ -916,7 +916,7 @@ export default {
         width: 100%;
         .el-input__inner {
           border: 1px solid #ccc;
-          border-radius: 8px;
+          border-radius: 4px;
           background-color: #f6f6f6;
         }
       }

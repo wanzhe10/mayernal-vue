@@ -158,7 +158,7 @@ export default {
       .wire {
         width: 80px;
         height: 7px;
-        border-radius: 10px 10px 10px 10px;
+           border-radius: 4px;
         background-color: #68b6e7;
         display: inline-block;
         position: absolute;
@@ -197,7 +197,7 @@ export default {
         height: 40px;
         background-color: #f6f6f6;
         margin-left: 14px;
-        border-radius: 10px;
+        border-radius: 4px;
         padding-left: 14px;
       }
       .main_child_password {
@@ -210,7 +210,7 @@ export default {
         width: 258px;
         height: 40px;
         background-color: #68b6e7;
-        border-radius: 10px;
+        border-radius: 4px;
         color: #fff;
         font-size: 14px;
         line-height: 40px;
@@ -245,7 +245,7 @@ export default {
   }
   .el-input--suffix .el-input__inner {
     padding-right: 30px;
-    border-radius: 10px;
+    border-radius: 4px;
   }
   .area-select.large {
     width: 128px;

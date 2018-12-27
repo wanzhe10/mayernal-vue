@@ -130,12 +130,16 @@
       class="newlyLayer"
       :close-on-click-modal='false'
       :lock-scroll='true'
+      @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <el-form :model="form">
         <el-form-item label="科室名称">
           <el-input
             v-model="form.name"
             autocomplete="off"
+              placeholder="请输入科室名称"
+              class="aaa"
           ></el-input>
         </el-form-item>
         <el-form-item label="激活状态">
@@ -435,7 +439,15 @@ export default {
             this.$message.error("编辑失败，请稍后重试");
           });
       }
-    }
+    },
+    // 禁止滑动
+    banSliding(){
+    document.documentElement.style.overflow='hidden';
+    },
+    // 允许滑动
+    allowSliding(){
+       document.documentElement.style.overflow='scroll';
+    },
   }
 };
 </script>
@@ -470,7 +482,7 @@ export default {
     width: 99px;
     height: 36px;
     background-color: #68b6e7;
-    border-radius: 6px;
+    border-radius: 4px;
     color: #fff;
     cursor: pointer;
   }
@@ -565,7 +577,7 @@ export default {
     padding: 0px 34px;
     .el-input__inner {
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 4px;
       background-color: #f6f6f6;
     }
     .el-select {
@@ -576,7 +588,7 @@ export default {
     }
   }
   .el-textarea__inner {
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #ccc;
   }
   .el-dialog__header {

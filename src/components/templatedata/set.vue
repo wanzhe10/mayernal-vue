@@ -587,7 +587,7 @@ export default {
     width: 99px;
     height: 36px;
     background-color: #68b6e7;
-    border-radius: 6px;
+    border-radius: 4px;
     color: #fff;
     cursor: pointer;
   }
@@ -700,14 +700,14 @@ export default {
 .setBox {
   .modolNameBox {
     .el-input__inner {
-      border-radius: 8px;
+      border-radius: 4px;
     }
     .el-textarea__inner:focus {
       border-color: #68b6e7;
     }
   }
   .el-textarea__inner {
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #ccc;
   }
   .el-dialog__header {
