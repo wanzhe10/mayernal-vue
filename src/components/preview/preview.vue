@@ -22,7 +22,7 @@
         <p><i>手&nbsp;&nbsp;机&nbsp;&nbsp;号：</i><span>{{essentialInformation.telephone}}</span></p>
         <p><i>证件类型：</i><span v-show="essentialInformation.idCardType == 0">身份证</span><span v-show="essentialInformation.idCardType == 1">护照</span></p>
         <p><i>身份证号：</i><span>{{essentialInformation.idCard}}</span></p>
-        <p><i>出生年月：</i><span>{{essentialInformation.birthdayDate}}{{essentialInformation.age}}<span v-show="essentialInformation.sex == 0">男</span><span v-show="essentialInformation.sex == 1">女</span></span></p>
+        <p><i>出生年月：</i><span >{{essentialInformation.birthdayDate}}</span><span class="jobBox mgl20">{{essentialInformation.age}}岁</span><span v-show="essentialInformation.sex == 0" class="jobBox mgl20">男</span><span v-show="essentialInformation.sex == 1" class="jobBox mgl20">女</span></p>
         <p><i>结婚年龄：</i><span>{{essentialInformation.marryAge}}岁</span></p>
         <p><i>孕前体重：</i><span>{{essentialInformation.lastWeight}}kg</span></p>
         <div class="wire"></div>
@@ -309,7 +309,7 @@ export default {
           id: this.checkId
         })
         .then(res => {
-          // console.log(res);
+          console.log(res);
           if (res.status === "20200") {
             this.essentialInformation = res;
           } else if (res.status === "20209") {
@@ -351,7 +351,7 @@ export default {
           patientCenterId: this.id
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             this.pregnancyNewsInformation = res;
             this.PregnancyInformation =
@@ -487,7 +487,7 @@ export default {
       height: 12px;
       width: 1px;
       background-color: #ccc;
-      top: 2px;
+      top: 4px;
       left: -10px;
     }
   }

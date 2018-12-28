@@ -2,9 +2,9 @@
   <div class="managementBox">
     <div class="topBox clearfix">
       <div class="btnsBOx">
-        <!-- <router-link :to="{path: 'newfile'}"> -->
-        <div class="newBtn">新建孕妇档案</div>
-        <!-- </router-link> -->
+        <router-link :to="{path: 'newfile'}">
+          <div class="newBtn">新建孕妇档案</div>
+        </router-link>
       </div>
       <div class="selectBox clearfix">
         <div class="pdl20 fl w170">
@@ -13,6 +13,7 @@
             v-model="filingType"
             placeholder="请选择"
             class="recordSelect"
+            @change="recordSelect"
           >
             <el-option
               size='126px'
@@ -54,7 +55,7 @@
           <p>就诊目的</p>
           <el-select
             v-model="secondCheckType"
-             clearable
+            clearable
             placeholder="请选择"
             class="seeSelect"
           >
@@ -89,16 +90,20 @@
         >查询</el-button>
       </div>
     </div>
-    <div class="bottomBoxAll">
+    <div
+      class="bottomBoxAll"
+      :class="{'active':backActtive}"
+    >
       <img
-        src="../../assets/noDataIcon.png"
+        src="../../assets/indexBackgroung.png"
         alt="暂无数据"
         class="noDataIcon"
         v-show='imgShow'
       >
       <div
         class="bottomBox"
-        v-show='tableShow'>
+        v-show='tableShow'
+      >
         <!-- <div class="tableBox"> -->
         <el-table
           :data="tableData"
@@ -199,28 +204,33 @@
             width="100px"
           >
             <template slot-scope="scope">
-              <p
-                class="greenStrip"
-                v-show="scope.row.highRiskClass !=0"
-              >
-                绿色（{{scope.row.colorNumGreen}}）项
-              </p>
-              <p
-                class="yellowStrip"
-                v-show="scope.row.highRiskClass !=1"
-              >黄色（{{scope.row.colorNumYellow}}）项</p>
-              <p
-                class="orangeStrip"
-                v-show="scope.row.highRiskClass !=2"
-              >橙色（{{scope.row.colorNumOrange}}）项</p>
-              <p
-                class="proponStrip"
-                v-show="scope.row.highRiskClass !=3"
-              >紫色（{{scope.row.colorNumPurple}}）项</p>
-              <p
-                class="redStrip"
-                v-show="scope.row.highRiskClass !=4"
-              >红色（{{scope.row.colorNumRed}}）项</p>
+              <div v-show="scope.row.isFiling == 1">
+                <p
+                  class="greenStrip"
+                  v-show="scope.row.highRiskClass !=0"
+                >
+                  绿色（{{scope.row.colorNumGreen}}）项
+                </p>
+                <p
+                  class="yellowStrip"
+                  v-show="scope.row.highRiskClass !=1"
+                >黄色（{{scope.row.colorNumYellow}}）项</p>
+                <p
+                  class="orangeStrip"
+                  v-show="scope.row.highRiskClass !=2"
+                >橙色（{{scope.row.colorNumOrange}}）项</p>
+                <p
+                  class="proponStrip"
+                  v-show="scope.row.highRiskClass !=3"
+                >紫色（{{scope.row.colorNumPurple}}）项</p>
+                <p
+                  class="redStrip"
+                  v-show="scope.row.highRiskClass !=4"
+                >红色（{{scope.row.colorNumRed}}）项</p>
+              </div>
+              <div v-show="scope.row.isFiling == 0">
+                <p>暂无数据</p>
+              </div>
             </template>
           </el-table-column>
           <el-table-column
@@ -229,15 +239,26 @@
             width="58px"
           >
             <template slot-scope="scope">
-              <router-link :to="{path: 'personalCenter'}">
-                <el-button
-                  type="text"
-                  size="small"
-                  style="text-align: center;"
-                  @click="handleEdit(scope.$index, scope.row)"
-                >查看</el-button>
-              </router-link>
-              <!-- <el-button type="text" size="small">编辑</el-button> -->
+              <div v-show="scope.row.isFiling == 0">
+                <router-link :to="{path: 'newfile'}">
+                  <el-button
+                    type="text"
+                    size="small"
+                    style="text-align: center;"
+                    @click="handleEdit(scope.$index, scope.row)"
+                  >去补充</el-button>
+                </router-link>
+              </div>
+              <div v-show="scope.row.isFiling == 1">
+                <router-link :to="{path: 'personalCenter'}">
+                  <el-button
+                    type="text"
+                    size="small"
+                    style="text-align: center;"
+                    @click="handleEdit(scope.$index, scope.row)"
+                  >查看</el-button>
+                </router-link>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -252,13 +273,14 @@
             :current-page.sync="currentPageOfice"
             :page-sizes="[10, 20, 30, 40]"
             :page-size.sync="cur_page"
-            layout="prev,pager,next,sizes"
+            layout="sizes, prev, pager, next"
             background
             :page-count='pagerCount'
             prev-text='上一页'
             next-text='下一页'
           >
           </el-pagination>
+          <span class="total">总共{{total}}人</span>
         </div>
       </div>
     </div>
@@ -331,7 +353,9 @@ export default {
       cur_page: 10, //分页条数
       pagerCount: 0, //总页数
       tableShow: false,
-      imgShow: false
+      imgShow: false,
+      backActtive: false,
+      total: ""
     };
   },
   mounted() {
@@ -347,11 +371,16 @@ export default {
       }
     };
   },
+    beforeRouteLeave(to, from, next) {
+         // 设置下一个路由的 meta
+        to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
+        next();
+    },
   methods: {
     // 建档管理
-    // filingManagement(){
-    //    this.indexInquire();
-    // },
+    recordSelect(){
+       this.indexInquire();
+    },
     // 风险评估选择
     riskAssessment() {
       this.indexInquire();
@@ -387,7 +416,6 @@ export default {
       } else {
         paramType = 1;
       }
-      // console.log(paramType)
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
       this.$api
@@ -426,22 +454,29 @@ export default {
               }
             }
             self.tableData = res.pcPatientCenterBeans;
-              self.tableShow = true;
-               self.imgShow = false;
-             this.colorNum = colorNum
-          } else {
+            self.tableShow = true;
+            self.imgShow = false;
+            self.backActtive = false;
+            this.colorNum = colorNum;
+            this.total = res.total;
+          } else if (res.status === "20209") {
             this.officeTableData = [];
             self.tableShow = false;
             self.imgShow = true;
+            self.backActtive = true;
+          } else {
+            this.$message.error("档案管理查询错误，请稍后重试");
           }
         })
         .catch(error => {
-          // this.$message.error("档案管理查询错误，请稍后重试");
+          this.$message.error("档案管理查询错误，请稍后重试");
         });
     },
     indexMethod(index) {
       return index + 1;
-    }
+    },
+   
+
   }
 };
 </script>
@@ -601,6 +636,27 @@ export default {
     border-radius: 50%;
   }
 }
+// 右侧下面块
+.bottomBoxAll {
+  position: relative;
+  min-height: 650px;
+  background-color: #fff;
+  margin-top: 10px;
+  padding-bottom: 20px;
+  .noDataIcon {
+    width: 131px;
+    height: 135px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    // display: none;
+    z-index: 111;
+    transform: translate(-50%, -50%);
+  }
+}
+.active {
+  background-color: #fcfcfc;
+}
 </style>
 <style lang="less">
 .el-pagination.is-background .el-pager li:not(.disabled).active {
@@ -611,8 +667,8 @@ export default {
 .managementBox {
   width: 100%;
   height: 100%; //右侧上面块
-  .el-button.is-round{
-   padding: 10px 23px;
+  .el-button.is-round {
+    padding: 10px 23px;
   }
   .topBox {
     width: 100%;
@@ -696,27 +752,12 @@ export default {
         margin-top: 20px;
         background-color: #68b6e7 !important;
         border: none;
-        margin-top: 20px;
+        margin-top: 28px;
       }
     }
   }
   // 右侧下面块
   .bottomBoxAll {
-    position: relative;
-    min-height:650px;
-    background-color: #fff;
-      margin-top: 10px;
-      padding-bottom: 20px;
-    .noDataIcon {
-      width: 153px;
-      height: 141px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      // display: none;
-      z-index: 111;
-      transform: translate(-50%, -50%);
-    }
     .bottomBox {
       //  display: none;
       thead {
@@ -737,6 +778,7 @@ export default {
       tbody {
         td {
           padding: 0px;
+          height:54px;
         }
         td:nth-child(1),
         td:nth-child(5),
@@ -760,7 +802,13 @@ export default {
       }
       width: 100%;
       background-color: #fff;
-    
+      .block {
+        height: 30px;
+        line-height: 30px;
+        div {
+          display: inline-block;
+        }
+      }
     }
   }
 }

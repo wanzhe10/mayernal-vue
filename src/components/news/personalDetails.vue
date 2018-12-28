@@ -51,7 +51,7 @@
         value="保 存"
         class="personalDetailsBox_btn"
         @click="doctorUpdateSelf"
-        :disabled='btnStatas'
+         disabled
         :class="{ 'active': select }"
       >
 
@@ -79,8 +79,7 @@
 
 </template>
 <script>
-import { AreaCascader } from "vue-area-linkage";
-import { pca, pcaa } from "area-data";
+import $ from "jquery";
 export default {
   data() {
     return {
@@ -110,11 +109,8 @@ export default {
       contactsModel: "", //激活状态
       classModel: "", //机构等级
       userNewsData: {}, //用户个人信息维护数据
-      pca: pca,
-      pcaa: pcaa,
       telephone: "",
       emails: "",
-      btnStatas: false, //按钮点击状态
       select: false
     };
   },
@@ -137,13 +133,12 @@ export default {
           console.log(res);
           if (res.status === "20200") {
             this.userNewsData = res;
-            // this.telephone = res.telephone;
-            // this.emails = res.emails;
-          } else {
+          }else if(res.status === "20209") {
+               this.$message.error("暂无个人信息");
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+            this.$message.error("查询失败，请稍后重试");
         });
     },
     doctorUpdateSelf() {
@@ -198,8 +193,8 @@ export default {
       }
     },
     getInputValue() {
-      this.btnStatas = false;
       this.select = true;
+        $(".personalDetailsBox_btn").removeAttr("disabled");
     }
   }
 };

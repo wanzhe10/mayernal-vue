@@ -5,6 +5,7 @@
       <div class="characterBoxTop_left">
         <span class="mgr18">激活状态</span>
         <el-select
+         clearable
           v-model="characterModel"
           placeholder="请选择"
           clear="characterModel"
@@ -27,7 +28,7 @@
         @click="dialogVisible = true"
       >
     </div>
-    <div class="characterBoxContant">
+    <div class="characterBoxContant" :class="{'active':backActtive}">
       <img
         src="../../assets/noDataIcon.png"
         alt="暂无数据"
@@ -116,6 +117,7 @@
             :page-count='pagerCount'
           >
           </el-pagination>
+            <span class="total">总共{{total}}人</span>
         </div>
       </div>
 
@@ -127,12 +129,15 @@
       width="458px"
       :before-close="handleClose"
       class="newlyLayer"
+          @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <el-form :model="form">
         <el-form-item label="角色名称">
           <el-input
             v-model="form.name"
             autocomplete="off"
+              placeholder="请输入角色名称"
           ></el-input>
         </el-form-item>
         <el-form-item label="激活状态">
@@ -158,6 +163,7 @@
               :autosize="{ minRows: 2, maxRows: 10}"
               v-model="form.remarks"
               maxlength='100'
+                placeholder="请输入角色描述......."
               @input="descInput2"
             >
             </el-input>
@@ -183,6 +189,8 @@
       width="458px"
       :before-close="handleClose"
       class="newlyLayer"
+          @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <el-form :model="form2">
         <el-form-item label="角色名称">
@@ -212,7 +220,7 @@
             <el-input
               type="textarea"
               :autosize="{ minRows: 2, maxRows: 10}"
-              placeholder="输入模板自觉不适描述......."
+              placeholder="请输入角色描述......."
               v-model="form2.remarks"
               maxlength='100'
               @input="editdescInput2"
@@ -294,6 +302,7 @@ export default {
       dialogVisible: false,
       tableShow: false,
       imgShow: false,
+       backActtive:false,
       newlyLayerInput: "",
       remnantFont: 100,
       remnantFontContant: "", //角色描述
@@ -305,25 +314,20 @@ export default {
       editremnantFontContant: 1, //角色描述
       currentPageOfice: 1, //分页
       pagerCount: 1, // 分页总页数
-      cur_page: 10 // 每页条数
+      cur_page: 10, // 每页条数
+         total:"" //总人数
     };
   },
   mounted() {
-    let token1 = window.localStorage.getItem("mayernal-web-token");
-    this.getUser(token1, 1, 10);
+    this.getUser();
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-      let token1 = window.localStorage.getItem("mayernal-web-token");
       this.currentPageOfice = 1;
-      this.getUser(token1, 1, `${val}`);
+      this.getUser();
     },
     handleCurrentChange(val) {
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      this.currentPageOfice = val;
-
-      this.getUser(token1, `${val}`, this.cur_page);
+      this.getUser();
     },
     descInput2() {
       var remnantFontVal = this.form.remarks.length;
@@ -342,16 +346,22 @@ export default {
         .catch(_ => {});
     },
     // 查询
-    getUser(token, pageNum, pageSIze, isProhibit) {
+    getUser() {
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
+         let  occupationFindListData={}
+      if ( this.characterModel == '') {
+          occupationFindListData.token=token1;
+          occupationFindListData.pageNum=this.currentPageOfice;
+          occupationFindListData.pageSize=this.cur_page;
+      }else{
+ occupationFindListData.token=token1;
+          occupationFindListData.pageNum=this.currentPageOfice;
+          occupationFindListData.pageSize=this.cur_page;
+          occupationFindListData.isProhibit=this.characterModel;
+      }
       this.$api
-        .occupationFindList({
-          token: token,
-          pageNum: pageNum,
-          pageSize: pageSIze,
-          isProhibit: isProhibit
-        })
+        .occupationFindList(occupationFindListData)
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
@@ -359,9 +369,14 @@ export default {
             this.pagerCount = res.pageNum;
             self.imgShow = false;
             self.tableShow = true;
+            self.backActtive = false;
+             self.total =res.total;
           } else if (res.status === "20209") {
             self.tableShow = false;
             self.imgShow = true;
+            self.backActtive = true;
+          }else{
+             this.$message.error("查询失败，请稍后重试");
           }
         })
         .catch(error => {
@@ -370,8 +385,7 @@ export default {
     },
     // 激活状态查询
     isProhibitSelect() {
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      this.getUser(token1, 1, 10, this.characterModel);
+      this.getUser();
     },
     // 新建
     radioEvent() {
@@ -399,7 +413,7 @@ export default {
               this.form.isProhibit = '';
               this.form.remarks = '';
               this.dialogVisible = false;
-               this.getUser(token, 1, 10);
+               this.getUser();
             }  else if (res.status === "20210") {
               this.$message.error('信息重复，请勿重复添加');
             }else {
@@ -419,6 +433,7 @@ export default {
     },
     // 编辑确认按钮
     editRadioBtn() {
+      let self = this;
       if (this.form2.name == "") {
         this.$message({
           showClose: true,
@@ -436,10 +451,11 @@ export default {
             name: this.form2.name
           })
           .then(res => {
+            console.log(res)
             if (res.status === "20200") {
-                this.$message.success("编辑成功");
-              this.editdialogVisible = false;
-               this.getUser(token, 1, 10);
+                self.$message.success("编辑成功");
+              self.editdialogVisible = false;
+               this.getUser();
             } else {
               this.$message.error("编辑失败，请稍后重试");
             }
@@ -448,7 +464,15 @@ export default {
             this.$message.error("编辑失败，请稍后重试");
           });
       }
-    }
+    },
+            // 禁止滑动
+    banSliding(){
+    document.documentElement.style.overflow='hidden';
+    },
+    // 允许滑动
+    allowSliding(){
+       document.documentElement.style.overflow='scroll';
+    },
   }
 };
 </script>
@@ -493,6 +517,16 @@ export default {
     table {
       width: 100%;
     }
+    .characterBoxBlock{
+       height: 30px;
+        line-height: 30px;
+        div {
+          display: inline-block;
+        }
+    }
+  }
+    .active{
+    background-color: #fcfcfc;
   }
   .hideBox {
     // display: none;
@@ -528,9 +562,11 @@ export default {
 .characterBox .characterBoxTop_left .el-select {
   width: 128px;
   height: 32px;
-  background-color: #f6f6f6;
   display: inline-block;
   position: relative;
+  .el-input__inner{
+    background-color: #f6f6f6;
+  }
 }
 .el-select-dropdown__item.selected {
   color: #68b6e7;
@@ -596,10 +632,13 @@ export default {
     .el-input__inner {
       border: 1px solid #ccc;
       border-radius: 4px;
-      background-color: #f6f6f6;
+    
     }
     .el-select {
       width: 100%;
+       .el-input__inner {
+           background-color: #f6f6f6;
+       }
     }
     p {
       margin: 16px 0px;

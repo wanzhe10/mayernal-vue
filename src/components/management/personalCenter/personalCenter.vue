@@ -641,7 +641,11 @@ export default {
       BMLValue: false
     };
   },
-
+    beforeRouteLeave(to, from, next) {
+         // 设置下一个路由的 meta
+        to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
+        next();
+    },
   mounted() {
     var tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
@@ -654,6 +658,7 @@ export default {
     this.assessInquire();
     this.patientFourtyTwo();
     // this.drawLine();
+  
   },
   methods: {
     // 弹框关闭按钮
@@ -906,7 +911,7 @@ export default {
           // this.$Message.info(error);
         });
     },
-    drawLine() {}
+  
   }
 };
 </script>

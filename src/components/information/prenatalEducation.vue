@@ -112,6 +112,8 @@
       width="450px"
       :before-close="handleClose"
       class="newlyLayer"
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <p>标签名称</p>
       <el-input
@@ -136,6 +138,8 @@
       width="450px"
       :before-close="handleClose"
       class="newlyLayer"
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <p>标签名称</p>
       <el-input
@@ -162,6 +166,8 @@
       class="newlyLayer"
       :lock-scroll='true'
       :close-on-click-modal='false'
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <p>标题名称</p>
       <el-input
@@ -216,6 +222,8 @@
       class="newlyLayer"
       :lock-scroll='true'
       :close-on-click-modal='false'
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <p>标题名称</p>
       <el-input
@@ -682,7 +690,15 @@ export default {
         .catch(error => {
           this.$message.error("编辑失败，请稍后重试");
         });
-    }
+    },
+            // 禁止滑动
+    banSliding(){
+    document.documentElement.style.overflow='hidden';
+    },
+    // 允许滑动
+    allowSliding(){
+       document.documentElement.style.overflow='scroll';
+    },
   }
 };
 </script>

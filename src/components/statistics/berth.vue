@@ -138,7 +138,7 @@
           <el-button round @click="exportExcel">导出</el-button>
         </div>
       </div>
-      <div class="administrativeBoxContant" id="printTest">
+      <div class="administrativeBoxContant" id="printTest" :class="{'active':backActtive}">
         <img
           src="../../assets/noDataIcon.png"
           alt="暂无数据"
@@ -699,7 +699,8 @@ export default {
       startDateStr: "", //建档起始时间
       endDateStr: "", //建档截止时间
       tableShow: true, //表格显示隐藏
-      imgShow: false //图片显示隐藏
+      imgShow: false, //图片显示隐藏
+       backActtive:false
     };
   },
   mounted() {
@@ -885,15 +886,18 @@ export default {
             this.pagerCount = res.pages;
               self.imgShow = false;
             self.tableShow = true;
-          } else {
-             this.officeTableData = [];
+            self.backActtive = false;
+          } else if (res.status === "20209") {
+                this.officeTableData = [];
             self.tableShow = false;
             self.imgShow = true;
-            // this.$Message.info(res.desc);
+             self.backActtive = true;
+          } else{
+             this.$message.error("查询失败，请稍后重试");
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+            this.$message.error("查询失败，请稍后重试");
         });
     }
   }
@@ -1056,6 +1060,9 @@ export default {
     .TableDataBox {
       padding-bottom: 26px;
     }
+  }
+   .active{
+    background-color: #fcfcfc;
   }
 }
 </style>

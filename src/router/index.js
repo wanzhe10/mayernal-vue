@@ -43,14 +43,16 @@ export default new Router({
           name: 'management',
           component: management,
           meta: {
-            title: '档案管理'
+            title: '档案管理',
+             keepAlive: true // 需要被缓存
           }
         }, {
           path: '/newfile',
           name: 'newfile',
           component: newfile,
           meta: {
-            title: '新建孕妇档案'
+            title: '新建孕妇档案',
+               keepAlive: true // 需要被缓存
           }
         }, {
 
@@ -59,6 +61,7 @@ export default new Router({
           component: organization,
           meta: {
             title: '机构信息维护'
+            ,keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -67,6 +70,7 @@ export default new Router({
           component: administrative,
           meta: {
             title: '科室信息维护'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -75,6 +79,7 @@ export default new Router({
           component: personnel,
           meta: {
             title: '人员信息维护'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -83,6 +88,7 @@ export default new Router({
           component: character,
           meta: {
             title: '角色信息维护'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -91,6 +97,7 @@ export default new Router({
           component: report,
           meta: {
             title: '报告单解读维护'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -99,6 +106,7 @@ export default new Router({
           component: antenatalcare,
           meta: {
             title: '产检信息维护'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -107,6 +115,7 @@ export default new Router({
           component: prenatalEducation,
           meta: {
             title: '孕期宣教维护'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -115,6 +124,7 @@ export default new Router({
           component: set,
           meta: {
             title: '模板信息维护'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -123,6 +133,7 @@ export default new Router({
           component: today,
           meta: {
             title: '今日复检人数'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -131,6 +142,7 @@ export default new Router({
           component: documented,
           meta: {
             title: '已建孕妇档案'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -139,6 +151,7 @@ export default new Router({
           component: overtime,
           meta: {
             title: '复检超时'
+              , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -147,6 +160,7 @@ export default new Router({
           component: berth,
           meta: {
             title: '预分娩床位统计'
+              , keepAlive: true //此组件需要被缓存
           }
         },
 
@@ -156,6 +170,7 @@ export default new Router({
           component: personalDetails,
           meta: {
             title: '用户个人信息'
+               , keepAlive: true //此组件需要被缓存
           }
         },
         {
@@ -164,6 +179,8 @@ export default new Router({
           component: changePassword,
           meta: {
             title: '修改密码'
+              , keepAlive: true //此组件需要被缓存
+
           }
         },
         {
@@ -172,6 +189,8 @@ export default new Router({
           component: personalCenter,
           meta: {
             title: '个人中心'
+              , keepAlive: true //此组件需要被缓存
+
           }
         },
         {
@@ -180,6 +199,8 @@ export default new Router({
           component: preview,
           meta: {
             title: '预览'
+              , keepAlive: true //此组件需要被缓存
+
           }
         },
         {
@@ -188,6 +209,8 @@ export default new Router({
           component: recordNews,
           meta: {
             title: '新增复检记录'
+              , keepAlive: true //此组件需要被缓存
+
           }
         },
         {
@@ -196,6 +219,8 @@ export default new Router({
           component: spouseNews,
           meta: {
             title: '新增高危评估'
+              , keepAlive: true //此组件需要被缓存
+
           }
         },
         {
@@ -204,6 +229,8 @@ export default new Router({
           component: fortyTwoDay,
           meta: {
             title: '新增产后42天'
+              , keepAlive: true //此组件需要被缓存
+
           }
         },
       ]

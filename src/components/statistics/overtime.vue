@@ -90,7 +90,7 @@
           <el-button round   @click="exportExcel">导出</el-button>
         </div>
       </div>
-      <div class="administrativeBoxContant">
+      <div class="administrativeBoxContant" :class="{'active':backActtive}">
         <img
           src="../../assets/noDataIcon.png"
           alt="暂无数据"
@@ -220,6 +220,7 @@
               :page-count='pagerCount'
             >
             </el-pagination>
+             <span class="total">总共{{total}}人</span>
           </div>
         </div>
 
@@ -293,6 +294,8 @@ export default {
       searching: "", //检索类型countType
       tableShow:true,
       imgShow:false,
+      backActtive:false,
+      total:''//总共人数
     };
   },
   mounted() {
@@ -488,14 +491,19 @@ export default {
             this.pagerCount = res.pages;
              self.imgShow = false;
             self.tableShow = true;
+            self.backActtive = false;
+             self.total =res.total;
           } else if (res.status === "20209") {
             this.officeTableData = [];
             self.tableShow = false;
-            self.imgShow = true;
+            self.imgShow = true; 
+            self.backActtive = true;
+          }else{
+              this.$message.error("查询失败，请稍后重试");
           }
         })
         .catch(error => {
-          // this.$Message.info(error);
+            this.$message.error("查询失败，请稍后重试");
         });
     }
   }
@@ -635,6 +643,13 @@ export default {
     position: relative;
     padding: 0 24px;
     background-color: #fff;
+    .administrativeBoxBlock{
+          height: 30px;
+        line-height: 30px;
+        div {
+          display: inline-block;
+        }
+    }
     .noDataIcon {
       // display: none;
       position: absolute;
@@ -649,6 +664,9 @@ export default {
     .TableDataBox {
       padding-bottom: 26px;
     }
+  }
+    .active{
+    background-color: #fcfcfc;
   }
 }
 </style>

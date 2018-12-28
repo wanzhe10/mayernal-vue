@@ -1,5 +1,5 @@
 <template>
-  <div class="antenatalcareBox">
+  <div class="antenatalcareBox" >
     <h2 class="antenatalcareBoxTittle">产检信息维护</h2>
     <!-- 基本信息块 -->
     <div class="antenatalcareTable">
@@ -13,8 +13,7 @@
       </ul>
       <div
         class="hideBox"
-        v-show='tableShow'
-      >
+        v-show='tableShow'>
         <ul class="tableContant">
           <li
             v-for="(item,index) in tableContantData"
@@ -122,6 +121,8 @@
       width="710px"
       :before-close="handleClose"
       class="newlyLayer"
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <div class="addTemplateLayer">
         <div class="addTemplateLayer_top">
@@ -223,6 +224,8 @@
       width="710px"
       :before-close="handleClose"
       class="newlyLayer"
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <div class="addTemplateLayer">
         <div class="addTemplateLayer_top">
@@ -863,6 +866,14 @@ export default {
           });
       }
     },
+            // 禁止滑动
+    banSliding(){
+    document.documentElement.style.overflow='hidden';
+    },
+    // 允许滑动
+    allowSliding(){
+       document.documentElement.style.overflow='scroll';
+    },
 
     // 判断是激活还是未激活
     ishtml(val) {
@@ -928,7 +939,6 @@ export default {
       }
     }
     .hideBox {
-      // display: none;
       .tableContant {
         li {
           .positonBox {

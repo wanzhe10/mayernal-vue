@@ -2,8 +2,8 @@ export default {
     method: 'get',
     // 基础url前缀
     // baseURL: 'http://www.wcqxzs.com/pregnant/',
-    // baseURL: 'http://192.168.0.6:8763/',
-    baseURL: 'http://192.168.0.6:8080/pregnant/',
+    baseURL: 'http://192.168.0.6:8763/',
+    // baseURL: 'http://192.168.0.6:8080/pregnant/',
 
    
     // 请求头信息

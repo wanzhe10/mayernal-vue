@@ -7,7 +7,7 @@
           src="../assets/login.png"
           alt="围产期建档评估管理系统"
         >
-        <span class="characterFont">档案管理</span>
+        <span class="characterFont">{{tittleName}}</span>
         <div class="headerrightBox">
           <p class="welcome">欢迎<i
               class="doctorName"
@@ -37,7 +37,7 @@
             :unique-opened='true'
           >
             <el-menu-item index="1">
-              <router-link :to="{path: 'management'}">
+              <router-link :to="{path: 'management'}" v-if="$route.meta.keepAlive">
                 <div
                   class=" headline headline1"
                   @click="seticon()"
@@ -62,16 +62,24 @@
               </template>
               <el-menu-item-group>
                 <router-link :to="{path: 'organization'}">
-                  <el-menu-item index="2-1" > 机构信息维护</el-menu-item>
+                  <li @click="backgroundConfiguration">
+                    <el-menu-item index="2-1">机构信息维护</el-menu-item>
+                  </li>
                 </router-link>
                 <router-link :to="{path: 'administrative'}">
-                  <el-menu-item index="2-2">科室信息维护</el-menu-item>
+                  <li @click="backgroundConfiguration">
+                    <el-menu-item index="2-2">科室信息维护</el-menu-item>
+                  </li>
                 </router-link>
                 <router-link :to="{path: 'personnel'}">
-                  <el-menu-item index="2-3">人员信息维护</el-menu-item>
+                  <li @click="backgroundConfiguration">
+                    <el-menu-item index="2-3">人员信息维护</el-menu-item>
+                  </li>
                 </router-link>
                 <router-link :to="{path: 'character'}">
-                  <el-menu-item index="2-4">角色信息维护</el-menu-item>
+                  <li @click="backgroundConfiguration">
+                    <el-menu-item index="2-4">角色信息维护</el-menu-item>
+                  </li>
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
@@ -86,13 +94,22 @@
               </template>
               <el-menu-item-group>
                 <router-link :to="{path: 'report'}">
-                  <el-menu-item index="3-1"> 报告单解读维护</el-menu-item>
+                  <li @click="basicData">
+                    <el-menu-item index="3-1"> 报告单解读维护</el-menu-item>
+                  </li>
                 </router-link>
                 <router-link :to="{path: 'antenatalcare'}">
-                  <el-menu-item index="3-2">产检信息维护</el-menu-item>
+
+                  <li @click="basicData">
+                    <el-menu-item index="3-2">产检信息维护</el-menu-item>
+                  </li>
+
                 </router-link>
                 <router-link :to="{path: 'prenatalEducation'}">
-                  <el-menu-item index="3-3">孕期宣教维护</el-menu-item>
+                  <li @click="basicData">
+                    <el-menu-item index="3-3">孕期宣教维护</el-menu-item>
+                  </li>
+
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
@@ -107,9 +124,9 @@
               </template>
               <el-menu-item-group>
                 <router-link :to="{path: 'set'}">
-                    <li @click="templateStatistics"> 
-                  <el-menu-item index="4-1">模板信息维护</el-menu-item>
-                    </li>
+                  <li @click="templateStatistics">
+                    <el-menu-item index="4-1">模板信息维护</el-menu-item>
+                  </li>
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
@@ -124,24 +141,24 @@
               </template>
               <el-menu-item-group>
                 <router-link :to="{path: 'today'}">
-                     <li @click="dataStatistics"> 
-                  <el-menu-item index="5-1">今日复检人数</el-menu-item>
-                     </li>
+                  <li @click="dataStatistics">
+                    <el-menu-item index="5-1">今日复检人数</el-menu-item>
+                  </li>
                 </router-link>
                 <router-link :to="{path: 'documented'}">
-                    <li @click="dataStatistics"> 
-                  <el-menu-item index="5-2">已建孕妇档案</el-menu-item>
-                   </li>
+                  <li @click="dataStatistics">
+                    <el-menu-item index="5-2">已建孕妇档案</el-menu-item>
+                  </li>
                 </router-link>
                 <router-link :to="{path: 'overtime'}">
-                    <li @click="dataStatistics"> 
-                  <el-menu-item index="5-3">复检超时</el-menu-item>
-                   </li>
+                  <li @click="dataStatistics">
+                    <el-menu-item index="5-3">复检超时</el-menu-item>
+                  </li>
                 </router-link>
                 <router-link :to="{path: 'berth'}">
-                    <li @click="dataStatistics"> 
-                  <el-menu-item index="5-4"> 预分娩床位统计</el-menu-item>
-                   </li>
+                  <li @click="dataStatistics">
+                    <el-menu-item index="5-4"> 预分娩床位统计</el-menu-item>
+                  </li>
                 </router-link>
               </el-menu-item-group>
             </el-submenu>
@@ -156,13 +173,13 @@
               </template>
               <el-menu-item-group>
                 <router-link :to="{path: 'personalDetails'}">
-                    <li @click="informationBtn"> 
-                  <el-menu-item index="6-1">用户个人信息</el-menu-item>
-                </li>
+                  <li @click="informationBtn">
+                    <el-menu-item index="6-1">用户个人信息</el-menu-item>
+                  </li>
                 </router-link>
                 <router-link :to="{path: 'changePassword'}">
-                  <li @click="informationBtn"> 
-                  <el-menu-item index="6-2">修改密码</el-menu-item>
+                  <li @click="informationBtn">
+                    <el-menu-item index="6-2">修改密码</el-menu-item>
                   </li>
                 </router-link>
               </el-menu-item-group>
@@ -173,7 +190,10 @@
       <!-- 右部分（组件部分） -->
       <el-container>
         <el-main>
-          <router-view />
+          <!-- <router-view /> -->
+          <keep-alive>
+<router-view v-if="$route.meta.keepAlive"></router-view>
+</keep-alive>
 
         </el-main>
         <!-- 底部 -->
@@ -191,7 +211,8 @@ export default {
   name: "home",
   data() {
     return {
-      userName: ""
+      userName: "",
+      tittleName: "档案管理"
     };
   },
   mounted() {
@@ -199,14 +220,23 @@ export default {
     this.userName = username;
   },
   methods: {
-    templateStatistics(){
-      $(".characterFont").html('模板数据统计');
+    backgroundConfiguration() {
+      this.tittleName = "后台配置";
     },
-    dataStatistics(){
-       $(".characterFont").html('数据统计');
+    basicData() {
+      this.tittleName = "基础数据维护";
     },
-    informationBtn(){
-      $(".characterFont").html('信息管理');
+    templateStatistics() {
+      this.tittleName = "模板数据统计";
+      // $(".characterFont").html('模板数据统计');
+    },
+    dataStatistics() {
+      this.tittleName = "数据统计";
+      //  $(".characterFont").html('数据统计');
+    },
+    informationBtn() {
+      this.tittleName = "信息管理";
+      // $(".characterFont").html('信息管理');
     },
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
@@ -216,7 +246,9 @@ export default {
       // console.log(key, keyPath);
     },
     tittleFont(event) {
-      $(".characterFont").html(event.target.innerHTML);
+      // var event = event || window.event;
+      this.tittleName = event.target.innerHTML;
+      // $(".characterFont").html(event.target.innerHTML);
     },
     seticon() {
       $(".seticon").attr("src");
@@ -224,7 +256,7 @@ export default {
     },
     logOut() {
       let self = this;
-     let token = localStorage.getItem("mayernal-web-token");
+      let token = localStorage.getItem("mayernal-web-token");
       this.$api
         .signOut({
           token: token
@@ -302,7 +334,7 @@ export default {
     font-size: 16px;
     line-height: 16px;
     margin-right: 30px;
-    padding-right:10px;
+    padding-right: 10px;
   }
   .doctorName {
     font-style: normal;
@@ -427,15 +459,14 @@ body > .el-container {
 }
 .el-submenu__title * {
   font-size: 16px;
-   -moz-user-select: none; /*火狐*/
-    -webkit-user-select: none; /*webkit浏览器*/
-    -ms-user-select: none; /*IE10*/
-    -khtml-user-select: none; /*早期浏览器*/
-    user-select: none;
+  -moz-user-select: none; /*火狐*/
+  -webkit-user-select: none; /*webkit浏览器*/
+  -ms-user-select: none; /*IE10*/
+  -khtml-user-select: none; /*早期浏览器*/
+  user-select: none;
 }
 .router-link-active {
   color: red;
   background-color: #ccc;
 }
-
 </style>

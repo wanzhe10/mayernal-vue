@@ -45,7 +45,7 @@
           >导出</el-button>
         </div>
       </div>
-      <div class="administrativeBoxContant">
+      <div class="administrativeBoxContant" :class="{'active':backActtive}">
         <img
           src="../../assets/noDataIcon.png"
           alt="暂无数据"
@@ -178,6 +178,7 @@
               :page-count='pagerCount'
             >
             </el-pagination>
+                <span class="total">总共{{numToggle}}人</span>
           </div>
         </div>
       </div>
@@ -217,6 +218,7 @@ export default {
       pagerCount: 0, //分页 --总条数
       tableShow: true, //今日预约表格显示隐藏
       imgShow: false, //图片显示隐藏
+     backActtive:false, //图片显示隐藏
       numToggle: 0, //今日总预约人数
       strTime: "", //开始时间
       endTime: "" //结束时间
@@ -460,10 +462,12 @@ export default {
             this.pagerCount = res.pages;
             this.tableShow = true;
             this.imgShow = false;
+            this.backActtive = false;
             this.numToggle = res.total;
           } else if (res.status === "20209") {
             this.tableShow = false;
             this.imgShow = true;
+             self.backActtive = true;
             this.numToggle = 0;
           }else{
                this.$message.error('今日全部复检统计查询错误，请稍后重试');
@@ -647,6 +651,13 @@ export default {
     position: relative;
     padding: 0 24px;
     background-color: #fff;
+    .administrativeBoxBlock{
+          height: 30px;
+        line-height: 30px;
+        div {
+          display: inline-block;
+        }
+    }
     .noDataIcon {
       // display: none;
       position: absolute;
@@ -661,6 +672,9 @@ export default {
     .TableDataBox {
       padding-bottom: 26px;
     }
+  }
+    .active{
+    background-color: #fcfcfc;
   }
 }
 </style>

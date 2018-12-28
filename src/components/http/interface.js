@@ -316,7 +316,7 @@ export const patientFourtyTwoFindByCenterId = data => {
 //基本信息-查询
 export const patientCheckControllerFindForFiling = data => {
   return axios({
-    url: 'v1/web/pc/patientCheckController/findForFiling',
+    url: 'v1/web/pc/patientCheck/findForFiling',
     method: 'post',
     data
   })

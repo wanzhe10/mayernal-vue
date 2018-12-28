@@ -5,6 +5,7 @@
       <div class="administrativeBoxTop_left">
         <span class="mgr18">激活状态</span>
         <el-select
+        clearable
           v-model="contactsModel"
           placeholder="请选择"
           clear="contactsModel"
@@ -27,7 +28,7 @@
         @click="dialogVisible = true"
       >
     </div>
-    <div class="administrativeBoxContant">
+    <div class="administrativeBoxContant" :class="{'active':backActtive}">
       <img
         src="../../assets/noDataIcon.png"
         alt="暂无数据"
@@ -117,6 +118,7 @@
             :page-count='pagerCount'
           >
           </el-pagination>
+            <span class="total">总共{{total}}人</span>
         </div>
       </div>
     </div>
@@ -191,6 +193,8 @@
       width="458px"
       :before-close="handleClose"
       class="newlyLayer"
+        @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <el-form :model="form2">
         <el-form-item label="科室名称">
@@ -273,6 +277,7 @@ export default {
       editdialogVisible: false, // 编辑按钮弹框
       tableShow: false,
       imgShow: false,
+       backActtive:false,
       // 新建科室
       form: {
         isProhibit: "", //激活状态
@@ -292,25 +297,21 @@ export default {
       },
       currentPageOfice: 1, //分页
       cur_page: 10, //分页
-      pagerCount: 3 //分页
+      pagerCount: 3, //分页
+      total:"" //总人数
     };
   },
   mounted() {
-    let token1 = window.localStorage.getItem("mayernal-web-token");
-    this.getUser(token1, 1, 10);
+    this.getUser();
   },
   methods: {
+     // 选择每页条数 页数切换到1页
     handleSizeChange(val) {
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      console.log(`每页 ${val} 条`);
-      this.currentPageOfice = 1;
-      this.getUser(token1, 1, `${val}`);
+      this.currentPageOfice =1;
+      this.getUser();
     },
     handleCurrentChange(val) {
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      console.log(`当前页: ${val}`);
-      this.currentPageOfice = val;
-      this.getUser(token1, `${val}`, this.cur_page);
+      this.getUser();
     },
     descInput2() {
       var remnantFontVal = this.form.remarks.length;
@@ -330,16 +331,23 @@ export default {
         .catch(_ => {});
     },
     // 查询
-    getUser(token, pageNum, pageSize, isProhibit) {
+    getUser() {
+      
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
+          let  deptSimpleFindListData={}
+      if ( this.contactsModel == '') {
+          deptSimpleFindListData.token=token1;
+          deptSimpleFindListData.pageNum=this.currentPageOfice;
+          deptSimpleFindListData.pageSize=this.cur_page;
+      }else{
+ deptSimpleFindListData.token=token1;
+          deptSimpleFindListData.pageNum=this.currentPageOfice;
+          deptSimpleFindListData.pageSize=this.cur_page;
+          deptSimpleFindListData.isProhibit=this.contactsModel;
+      }
       this.$api
-        .deptSimpleFindList({
-          token: token1,
-          pageNum: pageNum,
-          pageSize: pageSize,
-          isProhibit: isProhibit
-        })
+        .deptSimpleFindList(deptSimpleFindListData)
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
@@ -348,9 +356,12 @@ export default {
             this.pagerCount = res.pageNum;
             self.imgShow = false;
             self.tableShow = true;
+            self.backActtive = false;
+            self.total =res.total;
           } else if (res.status === "20209") {
             self.tableShow = false;
             self.imgShow = true;
+              self.backActtive = true;
           }
         })
         .catch(error => {
@@ -359,8 +370,7 @@ export default {
     },
     // 激活状态查询
     isProhibitSelect() {
-      let token1 = window.localStorage.getItem("mayernal-web-token");
-      this.getUser(token1, 1, 10, this.contactsModel);
+      this.getUser();
     },
     // 新建
     radioEvent() {
@@ -377,9 +387,14 @@ export default {
           type: "warning"
         });
       } else {
-        var token = localStorage.getItem("mayernal-web-token");
+        var token1 = localStorage.getItem("mayernal-web-token");
+        let newly ={};
+        newly.token = token1;
+        newly.name = this.form.name;
+        newly.isProhibit = this.form.isProhibit;
+        newly.remarks = this.form.remarks;
         this.$api
-          .deptSimpleInsert(this.form)
+          .deptSimpleInsert(newly)
           .then(res => {
             console.log(res);
             if (res.status === "20200") {
@@ -390,7 +405,7 @@ export default {
               this.dialogVisible = false;
               console.log(res);
               let token1 = window.localStorage.getItem("mayernal-web-token");
-              this.getUser(token1, 1, 10);
+              this.getUser();
             } else if (res.status === "20210") {
               this.$message.error("信息重复，请勿重复添加");
             }
@@ -430,7 +445,7 @@ export default {
                 this.$message.success("编辑成功");
               // console.log(res);
               this.editdialogVisible = false;
-              this.getUser(token, 1, self.cur_page);
+              this.getUser();
             } else {
               this.$message.error("编辑失败，请稍后重试");
             }
@@ -489,10 +504,20 @@ export default {
   .administrativeBoxContant {
     .hideBox {
       padding-bottom: 30px;
+      .administrativeBoxBlock{
+          height: 30px;
+        line-height: 30px;
+        div {
+          display: inline-block;
+        }
+      }
     }
     table {
       width: 100%;
     }
+  }
+  .active{
+    background-color: #fcfcfc;
   }
 
   .noDataIcon {
@@ -514,6 +539,12 @@ export default {
   background-color: #f6f6f6;
   display: inline-block;
   position: relative;
+}
+.administrativeBox.el-button--primary{
+  border:none;
+}
+.administrativeBox .el-select  .el-input__inner{
+    background-color: #f6f6f6 !important;
 }
 .el-select-dropdown__item.selected {
   color: #68b6e7;
@@ -578,7 +609,15 @@ export default {
     .el-input__inner {
       border: 1px solid #ccc;
       border-radius: 4px;
-      background-color: #f6f6f6;
+      // background-color: #f6f6f6;
+    }
+    .newlyLayer{
+      .el-select{
+           .el-input__inner {
+   
+    }
+      }
+    
     }
     .el-select {
       width: 100%;

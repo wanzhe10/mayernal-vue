@@ -5,6 +5,7 @@
       <div class="setBoxTop_left">
         <span class="mgr18">激活状态</span>
         <el-select
+         clearable
           v-model="contactsModel"
           placeholder="请选择"
           clear="contactsModel"
@@ -27,7 +28,7 @@
         @click="dialogVisible = true"
       >
     </div>
-    <div class="setBoxContant">
+    <div class="setBoxContant" :class="{'active':backActtive}">
       <img
         src="../../assets/noDataIcon.png"
         alt="暂无数据"
@@ -118,6 +119,7 @@
             :page-count='pagerCount'
           >
           </el-pagination>
+           <span class="total">总共{{total}}人</span>
         </div>
       </div>
 
@@ -129,6 +131,8 @@
       width="820px"
       :before-close="handleClose"
       class="newlyLayer"
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <div class="addTemplateLayer">
         <div class="addTemplateLayer_top">
@@ -211,6 +215,8 @@
       width="820px"
       :before-close="handleClose2"
       class="newlyLayer"
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <div class="editaddTemplateLayer">
         <div class="addTemplateLayer_top">
@@ -334,9 +340,11 @@ export default {
       dialogVisible2: false,
       tableShow: false,
       imgShow: false,
+       backActtive:false,
       currentPageOfice: 1, //页码
       cur_page: 10, //分页条数
-      pagerCount: 0 //总页数
+      pagerCount: 0, //总页数
+      total:"" //总人数
     };
   },
   mounted() {
@@ -344,14 +352,10 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
       this.currentPageOfice = 1;
-      this.cur_page = val;
       this.templateFindList();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
-      this.currentPageOfice = val;
       this.templateFindList();
     },
     descInput() {
@@ -419,10 +423,13 @@ export default {
             self.pagerCount = parseInt(res.pages);
             self.imgShow = false;
             self.tableShow = true;
+            self.backActtive = false;
+              self.total =res.total;
           } else if (res.status === "20209") {
             self.officeTableData = [];
             self.tableShow = false;
             self.imgShow = true;
+              self.backActtive = true;
           } else {
             this.$message.error("查询失败，请稍后重试");
           }
@@ -472,10 +479,7 @@ export default {
               this.form1.remarks = "";
               this.form1.isProhibit = "";
               this.dialogVisible = false;
-            } else if (res.status === "20209") {
-              self.tableShow = false;
-              self.imgShow = true;
-            } else {
+            }  else {
               this.$message.error("新增失败，请稍后重试");
             }
           })
@@ -529,10 +533,7 @@ export default {
                this.$message.success("编辑成功");
               this.templateFindList();
               this.dialogVisible2 = false;
-            } else if (res.status === "20209") {
-              self.tableShow = false;
-              self.imgShow = true;
-            } else {
+            }else {
               this.$message.error("编辑失败，请稍后重试");
             }
           })
@@ -540,7 +541,14 @@ export default {
             this.$message.error("编辑失败，请稍后重试");
           });
       }
-    }
+    },           // 禁止滑动
+    banSliding(){
+    document.documentElement.style.overflow='hidden';
+    },
+    // 允许滑动
+    allowSliding(){
+       document.documentElement.style.overflow='scroll';
+    },
   }
 };
 </script>
@@ -593,11 +601,21 @@ export default {
   }
   .setBoxContant {
     .hideBox {
-      padding-bottom: 30px;
+    padding-bottom:30px;
+    .setBoxBlock{
+        height: 30px;
+        line-height: 30px;
+        div {
+          display: inline-block;
+        }
+    }
     }
     table {
       width: 100%;
     }
+  }
+    .active{
+    background-color: #fcfcfc;
   }
 
   .noDataIcon {
@@ -679,9 +697,12 @@ export default {
 .setBox .setBoxTop_left .el-select {
   width: 128px;
   height: 32px;
-  background-color: #f6f6f6;
   display: inline-block;
   position: relative;
+  .el-input__inner{
+  background-color: #f6f6f6;
+
+  }
 }
 .el-select-dropdown__item.selected {
   color: #68b6e7;
@@ -690,6 +711,8 @@ export default {
   padding-right: 30px;
   border-radius: 10px;
   border: 1px solid #ccc;
+  background-color: #f6f6f6;
+
 }
 .setBox .area-select.large {
   width: 160px;
@@ -790,12 +813,6 @@ export default {
     height: 13px;
     line-height: 13px;
     padding-left: 12px;
-  }
-  div {
-    padding: 0px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
   width: 100%;
   background-color: #fff;

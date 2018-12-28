@@ -96,6 +96,8 @@
       width="450px"
       :before-close="handleClose"
       class="newlyLayer"
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <p>标签名称</p>
       <el-input
@@ -120,6 +122,8 @@
       width="450px"
       :before-close="handleClose"
       class="modificationlyLayer"
+           @opened = 'banSliding'
+        @closed = 'allowSliding'
     >
       <p>标签名称</p>
       <el-input
@@ -363,7 +367,15 @@ export default {
         .catch(error => {
           this.$message.error("修改错误，请稍后重试");
         });
-    }
+    },
+            // 禁止滑动
+    banSliding(){
+    document.documentElement.style.overflow='hidden';
+    },
+    // 允许滑动
+    allowSliding(){
+       document.documentElement.style.overflow='scroll';
+    },
   }
 };
 </script>
@@ -585,7 +597,6 @@ export default {
   .el-input__inner {
     border-radius: 4px;
     border-color: #ccc;
-    background-color: #f6f6f6;
   }
   .el-dialog__body {
     padding: 0px 20px;
