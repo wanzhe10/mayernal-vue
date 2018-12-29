@@ -8,6 +8,7 @@
         label="孕妇基本信息"
         name="first"
       >
+
         <!-- 孕妇基本信息 -->
         <div class="pregnantNewsBox">
           <div class="mgr70">
@@ -16,6 +17,7 @@
               type="text"
               class="pregnantName"
               placeholder="请输入姓名"
+              v-model="essentialInformation.name"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -25,6 +27,7 @@
               type="text"
               class="pregnantFN"
               placeholder="请输入就诊卡号"
+              v-model="essentialInformation.number"
             >
             <p class="redFont">此项为必填项！</p>
             <div class="bindingBtn">卡号绑定</div>
@@ -35,13 +38,14 @@
               type="text"
               class="pregnantPhone"
               placeholder="请输入手机号"
+              v-model="essentialInformation.telephone"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
           <div class="mgr70">
             <h3>证件类型（必填）</h3>
             <el-select
-              v-model="idCardTypeModel"
+              v-model="essentialInformation.idCardType"
               placeholder="请选择"
             >
               <el-option
@@ -61,6 +65,8 @@
               type="tel"
               class="pregnantIdCard"
               placeholder="请输入身份证号码"
+              v-model="essentialInformation.idCard"
+              @blur='pregnantIdCarda'
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -72,9 +78,20 @@
               placeholder=""
               id="test1"
               readonly="readonly"
+              v-model="essentialInformation.birthdayDate"
             >
+            <!-- <h5 class="birth">
+              <span class="birth_sex" v-model="essentialInformation.sex">女</span>
+            </h5> -->
             <h5 class="birth">
-              <span class="birth_sex">女</span>
+              <span
+                class="birth_sex"
+                v-model="essentialInformation.sex"
+              >{{essentialInformation.sex}}</span>
+              <span
+                class="birth_age"
+                v-model="essentialInformation.age"
+              >{{essentialInformation.age}}岁</span>
             </h5>
           </div>
           <div class="mgr70">
@@ -83,6 +100,7 @@
               type="text"
               class="pregnantMarriageAge"
               placeholder="请输入结婚年龄"
+              v-model="essentialInformation.marryAge"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -92,6 +110,7 @@
               type="text"
               class="pregnantWeight"
               placeholder="请输入年龄"
+              v-model="essentialInformation.lastWeight"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -99,7 +118,7 @@
           <div class="mgr70">
             <h3>婚姻状况</h3>
             <el-select
-              v-model="marryTypeeModel"
+              v-model="essentialInformation.marryType"
               placeholder="请选择"
             >
               <el-option
@@ -114,7 +133,7 @@
           <div class="mgr70">
             <h3>婚检</h3>
             <el-select
-              v-model="marryCheckModel"
+              v-model="essentialInformation.marryCheck"
               placeholder="请选择"
             >
               <el-option
@@ -129,7 +148,7 @@
           <div class="mgr0">
             <h3>近半年避孕方法</h3>
             <el-select
-              v-model="contraceptionModel"
+              v-model="essentialInformation.contraception"
               placeholder="请选择"
             >
               <el-option
@@ -144,7 +163,7 @@
           <div class="mgr70">
             <h3>文化程度</h3>
             <el-select
-              v-model="educationModel"
+              v-model="essentialInformation.education"
               placeholder="请选择"
             >
               <el-option
@@ -159,7 +178,7 @@
           <div class="mgr70">
             <h3>民族</h3>
             <el-select
-              v-model="nationModel"
+              v-model="essentialInformation.nation"
               placeholder="请选择"
               @change="aaa"
             >
@@ -225,7 +244,7 @@
           <div class="mgr70">
             <h3>职业</h3>
             <el-select
-              v-model="jobModel"
+              v-model="essentialInformation.job"
               placeholder="请选择"
             >
               <el-option
@@ -243,35 +262,41 @@
               type="text"
               class="work"
               placeholder="请输入工作单位"
+              v-model="essentialInformation.jobCompanyName"
             >
           </div>
           <div class="wire"></div>
           <div class="mgr70">
             <h3>户口所在地</h3>
-            <area-cascader
-              type='text'
-              v-model="registeredModel"
-              :level='1'
-              :data="pcaa"
-              @change="registeredModelResidence()"
-            ></area-cascader>
+            <el-cascader
+              :options="options"
+              v-model="selectedOptions1"
+              @change="handleChange1"
+            ></el-cascader>
           </div><br>
           <div class="mgr70">
             <h3>现住地址</h3>
-            <area-cascader
-              type='text'
-              v-model="presentAddressModel"
-              :level='1'
-              :data="pcaa"
-              @change="registeredModelPresentAddressModel()"
-            ></area-cascader>
+            <el-cascader
+              :options="options"
+              v-model="selectedOptions2"
+              @change="handleChange2"
+            ></el-cascader>
             <input
               type="text"
               placeholder="请输入详细地址"
               class="presentAddress mgl16"
             >
           </div>
-
+          <div class="flaxBox">
+            <div class="flaxBoxPart">
+              <input
+                type="button"
+                @click="basicBtn"
+                value="保 存"
+                class="basicBtn"
+              >
+            </div>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane
@@ -538,18 +563,26 @@
           <div class="wire"></div>
           <div class="mgr76 spouseSiteBox">
             <p>现住地址</p>
-            <area-cascader
-              type='text'
-              v-model="spousePresentAddressModel"
-              :level='1'
-              :data="pcaa"
-              @change="spousePresentAddressModelAddressModel()"
-            ></area-cascader>
+            <el-cascader
+              :options="options"
+              v-model="selectedOptions3"
+              @change="handleChange3"
+            ></el-cascader>
             <input
               type="text"
               placeholder="请输入详细地址"
               class="mgl16 spouseResidenceAddress"
             >
+          </div>
+          <div class="flaxBox">
+            <div class="flaxBoxPart">
+              <input
+                type="button"
+                @click="mateBtn"
+                value="保 存"
+                class="mateBtn"
+              >
+            </div>
           </div>
         </div>
       </el-tab-pane>
@@ -972,6 +1005,16 @@
               >
             </div>
           </div>
+          <div class="flaxBox">
+            <div class="flaxBoxPart">
+              <input
+                type="button"
+                @click="pregnancyBtn"
+                value="保 存"
+                class="pregnancyBtn"
+              >
+            </div>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane
@@ -1359,6 +1402,16 @@
             </div>
           </h2>
           <textarea class="disposal"></textarea>
+          <div class="flaxBox">
+            <div class="flaxBoxPart">
+              <input
+                type="button"
+                @click="physiqueBtn"
+                value="保 存"
+                class="physiqueBtn"
+              >
+            </div>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane
@@ -1745,8 +1798,7 @@
   </div>
 </template>
 <script>
-import { AreaCascader } from "vue-area-linkage";
-import { pca, pcaa } from "area-data";
+import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
   data() {
     // return {
@@ -2269,31 +2321,23 @@ export default {
           label: "5"
         }
       ],
-
-      idCardTypeModel: "", //基本信息-0证件类型
-      marryTypeeModel: "",//基本信息-婚姻状况
-      marryCheckModel: "",//基本信息-婚检
-      contraceptionModel: "",//基本信息-近半年避孕方法
-      educationModel: "",//基本信息-文化程度
-      nationModel: "", //基本信息-民族
-      jobModel: "",//基本信息-职业
       presentAddressModel: [], // 孕妇基本信息现住地址数组
       spouseIdCardTypeModel: "", //配偶基本信息-证件类型
-      spouseMarryTypeModel: "",//配偶基本信息-婚姻状况
-      spouseMarryCheckModel: "",//配偶基本信息-婚检
-      healthTypeModel: "",//配偶基本信息-健康状态
-      spouseEducationModel: "",//配偶基本信息-文化程度
-      spouseJobModel: "",//配偶基本信息-职业
+      spouseMarryTypeModel: "", //配偶基本信息-婚姻状况
+      spouseMarryCheckModel: "", //配偶基本信息-婚检
+      healthTypeModel: "", //配偶基本信息-健康状态
+      spouseEducationModel: "", //配偶基本信息-文化程度
+      spouseJobModel: "", //配偶基本信息-职业
       spousePresentAddressModel: [], // 配偶现住地址数组
       pregnanciesModel: "", //孕产信息-怀孕次数
-      lastMenstrual: "",//孕产信息-末次月经
-      parturitionFrontPharmacyModel: "",//孕产信息-孕期用药
-      ketosisModel: "",//孕产信息-尿酮体
-      morningSicknessModel: "",//孕产信息-早孕反应程度
-      animalContactModel: "",//孕产信息-宠物接触
-      contactRadioactiveRaysModel: "",//孕产信息-接触放射性
-      baseHeartRateModel: "",//孕产信息-心 率
-      baseLungModel: "",//孕产信息-末次月经
+      lastMenstrual: "", //孕产信息-末次月经
+      parturitionFrontPharmacyModel: "", //孕产信息-孕期用药
+      ketosisModel: "", //孕产信息-尿酮体
+      morningSicknessModel: "", //孕产信息-早孕反应程度
+      animalContactModel: "", //孕产信息-宠物接触
+      contactRadioactiveRaysModel: "", //孕产信息-接触放射性
+      baseHeartRateModel: "", //孕产信息-心 率
+      baseLungModel: "", //孕产信息-末次月经
       baseAbdomenLiverModel: "",
       baseAbdomenSpleenModel: "",
       baseSpinalLimbsDeformityModel: "",
@@ -2313,34 +2357,167 @@ export default {
       historyAssessModel: "",
       registeredModel: [], // 孕妇基本信息现户口所在地数组
       //selected[0]省。selected[1]市。selected[2]区。
-      pca: pca,
-      pcaa: pcaa,
       //  isshow:false,// 配偶一般信息 吸烟
-      isShow: false
+      isShow: false,
+      options: regionData, //省市区联动
+      selectedOptions1: [], //基本信息-户口所在地
+      selectedOptions2: [], //基本信息-现住地址
+      selectedOptions3: [], //配偶信息-现住地址
+      xq1: [],
+      xq2: [],
+      xq3: [],
+      //孕妇基本信息数据
+      essentialInformation: {
+        name: "", //		姓名
+        number: "", //		就诊号
+        idCardType: "", //		身份类型
+        idCard: "", //		证件号码
+        telephone: "", //		电话
+        birthdayDate: "", //		出生日期
+        age: "", //		年龄
+        sex: "", //		性别
+        education: "", //		教育程度
+        marryAge: "", //		结婚年龄
+        nation: "", //		民族
+        lastWeight: "", //		孕前体重
+        contraception: "", //		孕检
+        job: "", //		工作
+        marryType: "", //		婚姻状况
+        marryCheck: "", //		婚检
+        jobCompanyName: "", //		工作单位
+        idCardAddressProvince: "", //		身份证所在地-省
+        idCardAddressCity: "", //		身份证所在地-市
+        idCardAddressCounty: "", //		身份证所在地-县
+        idCardAddressRemarks: "", //		身份证所在地-其他
+        newAddressProvince: "", //		现住址-省
+        newAddressCity: "", //		现住址-市
+        newAddressCounty: "", //		现住址-县
+        newAddressRemarks: "" //		现住址-其他
+      }
     };
   },
   methods: {
-    aaa(){
-      console.log(this.nationModel)
+    // 测试年龄
+    analyzeIDCard(IDCard,requestData) {
+      // var sexAndAge = {};
+    let  self = this;
+      var babySex = ''
+      //获取用户身份证号码
+      var userCard = IDCard;
+      
+      //如果身份证号码为undefind则返回空
+      if (!userCard) {
+        return requestData(false,null,null);
+      }else if (reg.test(userCard) === false) {
+       
+         return requestData(false,null,null);
+      }
+      //获取性别
+      if (parseInt(userCard.substr(16, 1)) % 2 == 1) {
+       babySex = "男";
+      } else {
+       babySex= "女";
+      }
+      //获取出生年月日
+      //userCard.substring(6,10) + "-" + userCard.substring(10,12) + "-" + userCard.substring(12,14);
+      var yearBirth = userCard.substring(6, 10);
+      var monthBirth = userCard.substring(10, 12);
+      var dayBirth = userCard.substring(12, 14);
+      //获取当前年月日并计算年龄
+      var myDate = new Date();
+      var monthNow = myDate.getMonth() + 1;
+      var dayNow = myDate.getDay();
+      var age = myDate.getFullYear() - yearBirth;
+      if (
+        monthNow < monthBirth ||
+        (monthNow == monthBirth && dayNow < dayBirth)
+      ) {
+        age--;
+      }
+      //得到年龄
+      return requestData(true,babySex,age);
+    },
+    pregnantIdCarda(){
+          var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
+         let self = this;
+      this.analyzeIDCard(this.essentialInformation.idCard, function requestData(isNull,sex,age) {
+           if (reg.test(self.essentialInformation.idCard) === false) {
+            
+          }
+        self.essentialInformation.age = age;
+        self.essentialInformation.sex = sex;
+      if (isNull == false) {
+          return
+      }else{
+          self.essentialInformation.age = age;
+        self.essentialInformation.sex = sex;
+      }
+      });
+    
+    },
+    // 孕妇一般信息保存按钮
+    basicBtn() {
+      alert(1);
+    },
+    //配偶信息保存按钮
+    mateBtn() {
+      alert(2);
+    },
+    //孕产信息保存按钮
+    pregnancyBtn() {
+      alert(3);
+    },
+    physiqueBtn() {
+      alert(4);
+    },
+    handleChange1(value) {
+      console.log(value);
+      this.xq1 =
+        CodeToText[this.selectedOptions1[0]] +
+        "" +
+        CodeToText[this.selectedOptions1[1]] +
+        "" +
+        CodeToText[this.selectedOptions1[2]];
+    },
+    handleChange2(value) {
+      console.log(value);
+      this.xq2 =
+        CodeToText[this.selectedOptions2[0]] +
+        "" +
+        CodeToText[this.selectedOptions2[1]] +
+        "" +
+        CodeToText[this.selectedOptions2[2]];
+    },
+    handleChange3(value) {
+      console.log(value);
+      this.xq3 =
+        CodeToText[this.selectedOptions3[0]] +
+        "" +
+        CodeToText[this.selectedOptions3[1]] +
+        "" +
+        CodeToText[this.selectedOptions3[2]];
+    },
+    aaa() {
+      console.log(this.nationModel);
     },
     modifyButton: function() {},
     // 配偶一般信息吸烟
     handleCheckAllChange() {
       //  this.isshow= false;
       console.log(this.smoking);
-    },
-    //孕妇基本信息户口所在地
-    registeredModelResidence() {
-      console.log(this.registeredModel);
-    },
-    //孕妇基本信息现住地址
-    registeredModelPresentAddressModel() {
-      console.log(this.presentAddressModel);
-    },
-    //匹配欧一般信息现住地址
-    spousePresentAddressModelAddressModel() {
-      console.log(this.spousePresentAddressModel);
     }
+    // //孕妇基本信息户口所在地
+    // registeredModelResidence() {
+    //   console.log(this.registeredModel);
+    // },
+    // //孕妇基本信息现住地址
+    // registeredModelPresentAddressModel() {
+    //   console.log(this.presentAddressModel);
+    // },
+    // //匹配欧一般信息现住地址
+    // spousePresentAddressModelAddressModel() {
+    //   console.log(this.spousePresentAddressModel);
+    // }
   }
 };
 </script>
@@ -2390,10 +2567,36 @@ export default {
 .w260 {
   width: 260px;
 }
-
+.newfileBox {
+  // padding-bottom:30px;
+}
 // 孕妇基本信息
 .pregnantNewsBox {
-  padding: 14px 24px 24px 26px;
+  padding: 14px 24px 60px 26px;
+  .flaxBox {
+    height: 88px;
+    width: 100%;
+    position: fixed; // background-color: #fff;
+    opacity: 1;
+    bottom: 0px;
+    left: 0;
+    text-align: center;
+    background-color: #f6f6f6;
+    .flaxBoxPart {
+      height: 88px;
+      line-height: 88px;
+      width: 1200px;
+      background-color: #86c5ec;
+      text-align: right;
+      .basicBtn {
+        background-color: #f3f9fd;
+        width: 160px;
+        padding: 0px;
+        border: none;
+        margin-right: 126px;
+      }
+    }
+  }
   .wire {
     width: 100%;
     height: 1px;
@@ -2459,24 +2662,32 @@ export default {
       color: #666666;
       .birth_age {
         position: relative;
-        margin-right: 10px;
-      }
-      .birth_sex {
-        margin-right: 8px;
         &:before {
           content: " ";
           position: absolute;
           top: -10px;
-          right: 36px;
+          right: 34px;
           width: 1px;
-          height: 40px;
+          height: 38px;
+          background: #cccccc;
+        }
+      }
+      .birth_sex {
+        margin-right: 16px;
+        &:before {
+          content: " ";
+          position: absolute;
+          top: -10px;
+          right: 66px;
+          width: 1px;
+          height: 38px;
           background: #cccccc;
         }
       }
     }
   }
   .presentAddress {
-    position: absolute;
+    // position: absolute;
     bottom: 25px;
     left: 300px;
   }
@@ -2490,7 +2701,31 @@ export default {
 
 // 配偶一般信息模块
 .spouseNewsBox {
-  padding: 14px 24px 24px 26px;
+  padding: 14px 24px 60px 26px;
+  .flaxBox {
+    height: 88px;
+    width: 100%;
+    position: fixed; // background-color: #fff;
+    opacity: 1;
+    bottom: 0px;
+    left: 0;
+    text-align: center;
+    background-color: #f6f6f6;
+    .flaxBoxPart {
+      height: 88px;
+      line-height: 88px;
+      width: 1200px;
+      background-color: #86c5ec;
+      text-align: right;
+      .mateBtn {
+        background-color: #f3f9fd;
+        width: 160px;
+        padding: 0px;
+        border: none;
+        margin-right: 126px;
+      }
+    }
+  }
   div {
     display: inline-block;
     .displayNo {
@@ -2525,22 +2760,23 @@ export default {
     border-bottom: 1px dashed #ccc;
     margin-top: 24px;
   } // 绑定卡号
-  .bindingBox {
-    position: relative;
-    .bindingBtn {
-      position: absolute;
-      top: 38px;
-      right: -76px;
-      width: 72px;
-      height: 40px;
-      background-color: #68b6e7;
-      color: #fff;
-      font-size: 14px;
-      line-height: 40px;
-      text-align: center;
-      border-radius: 4px;
-    }
-  } // 出生年月
+  // .bindingBox {
+  //   position: relative;
+  //   .bindingBtn {
+  //     position: absolute;
+  //     top: 38px;
+  //     right: -76px;
+  //     width: 72px;
+  //     height: 40px;
+  //     background-color: #68b6e7;
+  //     color: #fff;
+  //     font-size: 14px;
+  //     line-height: 40px;
+  //     text-align: center;
+  //     border-radius: 4px;
+  //   }
+  // }
+  // 出生年月
   .birthBox {
     position: relative;
     .birth {
@@ -2566,7 +2802,8 @@ export default {
         }
       }
     }
-  } //吸烟等三个模块
+  }
+  //吸烟等三个模块
   .somkingBox {
     margin-top: 24px;
     margin-right: 70px;
@@ -2746,7 +2983,6 @@ export default {
     }
   }
   .spouseResidenceAddress {
-    position: absolute;
     bottom: 25px;
     left: 300px;
   }
@@ -2761,7 +2997,31 @@ export default {
 
 // 孕产信息模块
 .pregnancyNewsBox {
-  padding: 14px 24px 24px 26px;
+  padding: 14px 24px 60px 26px;
+  .flaxBox {
+    height: 88px;
+    width: 100%;
+    position: fixed; // background-color: #fff;
+    opacity: 1;
+    bottom: 0px;
+    left: 0;
+    text-align: center;
+    background-color: #f6f6f6;
+    .flaxBoxPart {
+      height: 88px;
+      line-height: 88px;
+      width: 1200px;
+      background-color: #86c5ec;
+      text-align: right;
+      .pregnancyBtn {
+        background-color: #f3f9fd;
+        width: 160px;
+        padding: 0px;
+        border: none;
+        margin-right: 126px;
+      }
+    }
+  }
   .dynamicTable {
     th {
       text-align: center;
@@ -3002,7 +3262,7 @@ export default {
     .modificationLayerNav {
       height: 50px;
       width: 100%;
-      background-color: #ededed;
+      background-color: #f6f6f6;
       padding-top: 16px;
       padding-left: 24px;
       .parity {
@@ -3047,7 +3307,31 @@ export default {
 }
 // 体格检查模块
 .healthCheckupBox {
-  padding: 14px 24px 24px 26px;
+  padding: 14px 24px 60px 26px;
+  .flaxBox {
+    height: 88px;
+    width: 100%;
+    position: fixed; // background-color: #fff;
+    opacity: 1;
+    bottom: 0px;
+    left: 0;
+    text-align: center;
+    background-color: #f6f6f6;
+    .flaxBoxPart {
+      height: 88px;
+      line-height: 88px;
+      width: 1200px;
+      background-color: #86c5ec;
+      text-align: right;
+      .physiqueBtn {
+        background-color: #f3f9fd;
+        width: 160px;
+        padding: 0px;
+        border: none;
+        margin-right: 126px;
+      }
+    }
+  }
   .healthCheckTittle {
     font-size: 16px;
     color: #333333;
@@ -3425,6 +3709,7 @@ export default {
     bottom: 0px;
     left: 0;
     text-align: center;
+    background-color: #f6f6f6;
     .flaxBoxPart {
       width: 1200px;
       background-color: #86c5ec;
@@ -3700,28 +3985,28 @@ export default {
 /* // 孕妇基本信息组件样式修改 */
 .pregnantNewsBox .el-input__inner {
   width: 260px;
-  border-radius: 8px;
+  border-radius: 4px;
   border-color: #ccc;
   background-color: #f6f6f6;
 }
 /* // 配偶一般信息组件样式修改 */
 .spouseNewsBox .el-input__inner {
   width: 260px;
-  border-radius: 8px;
+  border-radius: 4px;
   border-color: #ccc;
   background-color: #f6f6f6;
 }
 /* // 孕产信息组件样式修改 */
 .pregnancyNewsBox .el-input__inner {
   width: 260px;
-  border-radius: 8px;
+  border-radius: 4px;
   border-color: #ccc;
   background-color: #f6f6f6;
 }
 /* // 体格检查组件样式修改 */
 .healthCheckupBox .el-input__inner {
   width: 108px;
-  border-radius: 8px;
+  border-radius: 4px;
   border-color: #ccc;
   background-color: #f6f6f6;
 }
@@ -3729,7 +4014,7 @@ export default {
 .riskAssessmentBox .el-input__inner {
   width: 152px;
   height: 30px;
-  border-radius: 8px;
+  border-radius: 4px;
   border-color: #ccc;
   background-color: #f6f6f6;
 }
