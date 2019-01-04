@@ -31,7 +31,7 @@
           ></span>
         </div>
         <div class="newsBox">
-          <span class="mgr20">机构联系人</span>
+          <span class="mgr22">机构联系人</span>
           <input
             type="text"
             class='userName'
@@ -39,6 +39,7 @@
             v-model="arr.userName"
             readonly='true'
             @keyup="registeredModelResidence()"
+            maxlength="14" 
           >
         </div>
         <div class="newsBox">
@@ -50,6 +51,7 @@
             v-model="arr.userTelephone"
             readonly='true'
             @keyup="registeredModelResidence()"
+             maxlength="11" 
           >
         </div>
         <div class="newsBox">
@@ -107,7 +109,7 @@
           >
         </div>
         <div class="InformationBox">
-          <span class="mgr36">机构等级</span>
+          <span class="mgr24">机构等级</span>
           <el-select
             v-model="arr.types"
             placeholder="请选择"
@@ -125,7 +127,7 @@
           </el-select>
         </div>
         <div class="InformationBoxS">
-          <span class="mgr36">所在地区</span>
+          <span class="mgr22">所在地区</span>
         <el-cascader
           :options="options"
           v-model="selectedOptions"
@@ -140,7 +142,7 @@
           >
         </div>
         <div class="InformationBoxS ">
-          <span class="mgr36 fl">机构简介</span>
+          <span class="mgr26 fl">机构简介</span>
           <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 10}"
@@ -387,15 +389,25 @@ export default {
 .fl {
   float: left;
 }
+.mgr10{
+  margin-right: 10px;
+}
 .mgr20 {
   margin-right: 20px;
+}
+.mgr22{
+  margin-right: 22px;
 }
 .mgr24 {
   margin-right: 24px;
 }
+.mgr26 {
+  margin-right: 26px;
+}
 .mgr30 {
   margin-right: 30px;
 }
+
 .mgr36 {
   margin-right: 36px;
 }
@@ -415,6 +427,9 @@ export default {
   width: 100%;
   min-height: 600px;
   background-color: #fff;
+  input{
+    width: 320px;
+  }
 
   .organizationBoxTittle {
     display: block;
@@ -534,6 +549,9 @@ export default {
       textarea {
         width: 833px;
         text-align: left;
+      }
+      .el-cascader__label{
+        padding:0px;
       }
     }
     .organizationBox_btn {

@@ -358,7 +358,7 @@ export default {
       total: ""
     };
   },
-  mounted() {
+  activated() {
     this.indexInquire();
     // this.colorNum = this.tableData.highRiskTotalNum
   },

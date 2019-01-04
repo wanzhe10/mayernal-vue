@@ -260,7 +260,7 @@
 
         </div>
         <!-- 新增复检记录按钮 -->
-        <!-- <div class="recordNewsNav">
+        <div class="recordNewsNav">
           <router-link :to="{path:'recordNews'}">
             <input
               type="button"
@@ -269,7 +269,7 @@
               @click="recordNewsBtn()"
             >
           </router-link>
-        </div> -->
+        </div>
       </el-tab-pane>
       <el-tab-pane
         label="高危评估记录"
@@ -414,7 +414,7 @@
           </div>
         </div>
         <!-- 新增高危评估按钮 -->
-        <!-- <div
+        <div
           class="spouseNewsnav"
           style="display:flax;"
         >
@@ -426,7 +426,7 @@
               @click="spouseNewsBtn()"
             >
           </router-link>
-        </div> -->
+        </div>
       </el-tab-pane>
       <el-tab-pane
         label="产后42天检查记录"
@@ -606,7 +606,7 @@ require("echarts/lib/component/title");
 export default {
   data() {
     return {
-      tableDataParticulars: [], // 头部详情
+      tableDataParticulars: {}, // 头部详情
       activeName: "recheck", // recheck 复检记录，evaluate高危评估记录，record产后42天记录
       isShow1: true,
       isShow2: true,
@@ -646,7 +646,7 @@ export default {
         to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
         next();
     },
-  mounted() {
+  activated() {
     var tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
     );

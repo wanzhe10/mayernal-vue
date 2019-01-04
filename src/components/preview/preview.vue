@@ -265,7 +265,7 @@ export default {
       healthCheckup: {} //体格检查数据
     };
   },
-  mounted() {
+  activated() {
     let tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
     );
@@ -277,27 +277,23 @@ export default {
     //基本信息查询
     //  直接调接口
     this.essentialInquire();
-    this.patientHusbandsFindForFiling();
-    this.patientParturitionDetailFindForFiling();
-    this.patientHealthCheckFindById();
+    // this.patientHusbandsFindForFiling();
+    // this.patientParturitionDetailFindForFiling();
+    // this.patientHealthCheckFindById();
   },
   methods: {
     // 点击teb切换在调接口
     handleClick(tab) {
-      //   var _val = tab.index;
-      //   if (_val == 0) {
-      //     this.essentialInquire();
-      //     console.log(0);
-      //   } else if (_val == 1) {
-      //     this.patientHusbandsFindForFiling();
-      //     console.log(1);
-      //   } else if (_val == 2) {
-      //     this.patientParturitionDetailFindForFiling();
-      //     console.log(2);
-      //   } else {
-      //       this.patientHealthCheckFindById();
-      //     console.log(3);
-      //   }
+        var _val = tab.index;
+        if (_val == 0) {
+          this.essentialInquire();
+        } else if (_val == 1) {
+          this.patientHusbandsFindForFiling();
+        } else if (_val == 2) {
+          this.patientParturitionDetailFindForFiling();
+        } else {
+            this.patientHealthCheckFindById();
+        }
     },
     //基本信息查询
     essentialInquire() {

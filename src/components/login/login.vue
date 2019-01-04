@@ -84,8 +84,8 @@ export default {
     };
     return {
       ruleForm2: {
-        username: "",
-        password: ""
+        username: "13511111111",
+        password: "a123456789"
       },
       rules2: {
         username: [{ validator: validateUser, trigger: "blur" }],

@@ -709,15 +709,21 @@ export default {
 
   let yearData =   myDate.getFullYear(); 
   this.yearSelctModel = yearData;
-
+console.log(this.yearSelctModel+1)
    let mouthData = myDate.getMonth()+1;
+   let endMouthData = myDate.getMonth()+2;
     this.current =mouthData-1;
+    console.log(endMouthData)
    if (mouthData<10) {
      mouthData = '0' +mouthData
    }
-   console.log(mouthData)
-   this.startDateStr = yearData +'-'+mouthData
-   console.log(this.startDateStr)
+      if (endMouthData<10) {
+     endMouthData = '0' +endMouthData
+   }
+   this.startDateStr = yearData +'-'+mouthData+'-'+'01';
+   this.endDateStr = yearData +'-'+endMouthData+'-'+'01';
+  //  console.log(this.startDateStr)
+  //  console.log(this.endDateStr)
     this.bedStatistics();
   },
   methods: {
@@ -852,8 +858,18 @@ export default {
     aaa(event) {
       var mouthTime = event.target.getAttribute("value");
       var yearTime = this.yearSelctModel;
-      this.startDateStr = yearTime + "-" + mouthTime;
-      console.log(this.startDateStr);
+      var endYearTime = yearTime;
+      this.startDateStr = yearTime + "-" + mouthTime+'-'+'01';
+
+      // console.log(yearTime);
+      var endMouthTime = parseInt(mouthTime)+1;
+      if (endMouthTime<10) {
+       endMouthTime = '0'+endMouthTime;
+      }else if (endMouthTime ==13) {
+          endMouthTime = '01';
+          endYearTime=endYearTime+1
+      }
+      this.endDateStr = endYearTime + "-" + endMouthTime+'-'+'01';
        this.bedStatistics();
     },
    // 刷新/搜索
@@ -868,7 +884,7 @@ export default {
         .countEntityForOthersWithDueDate({
           token: token1,
           startDateStr: this.startDateStr,
-          endDateStr: "",
+          endDateStr:this.endDateStr,
           startWeek: this.startWeek,
           endWeek: this.endWeek,
           smallAge: this.smallAge,

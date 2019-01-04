@@ -8,7 +8,7 @@
         <div class="positionWire"></div>
       </div>
       <div class="newsBox">
-        <span class="mgr50">登录名</span>
+        <span class="mgr34">登录名</span>
         <span>{{userNewsData.userName}}</span>
       </div>
       <div class="newsBox">
@@ -29,7 +29,7 @@
         class="newsBox"
         style="margin-bottom:18px;"
       >
-        <span class="mgr50">邮箱</span>
+        <span class="mgr34">邮箱</span>
         <input
           type="text"
           class='hospitalId'
@@ -210,6 +210,9 @@ export default {
 .mgr30 {
   margin-right: 30px;
 }
+.mgr34{
+  margin-right: 34px;
+}
 .mgr36 {
   margin-right: 36px;
 }
@@ -294,6 +297,7 @@ export default {
       width: 100%;
       height: 40px;
       line-height: 40px;
+      padding-left: 30px;
       border-bottom: 1px solid #ccc;
     }
 

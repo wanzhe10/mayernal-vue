@@ -370,6 +370,71 @@ export const patientBMI = data => {
     data
   })
 }
+// 基本信息-新增
+export const patientCheckInsertForFiling = data => {
+    return axios({
+      url: 'v1/web/pc/patientCheck/insertForFiling',
+      method: 'post',
+      data
+    })
+  }
+// 基本信息-更新
+export const patientCheckUpdateForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientCheck/updateForFiling',
+    method: 'post',
+    data
+  })
+}
+// 配偶信息-新增
+export const patientHusbandsInsertForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientHusbands/insertForFiling',
+    method: 'post',
+    data
+  })
+}
+// 配偶信息-更新
+export const patientHusbandsUpdateForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientHusbands/updateForFiling',
+    method: 'post',
+    data
+  })
+}
+// 孕检信息 - 添加（ 包含孕产史）
+export const patientParturitionDetailInsertForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientParturitionDetail/insertForFiling',
+    method: 'post',
+    data
+  })
+}
+//孕检信息-更新（包含孕产史）
+export const patientParturitionDetailUpdateForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientParturitionDetail/updateForFiling',
+    method: 'post',
+    data
+  })
+}
+//体格检查-新增
+export const patientHealthCheckInsertForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientHealthCheck/insertForFiling',
+    method: 'post',
+    data
+  })
+}
+//体格检查-更新
+export const patientHealthCheckUpdateForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientHealthCheck/updateForFiling',
+    method: 'post',
+    data
+  })
+}
+
 
 // 默认全部导出
 export default {
@@ -415,5 +480,15 @@ export default {
   patientBMI,
   pregnantPrenatalEducationClassAndCellFindList,
   pregnantPrenatalEducationClassUpdate,
-  pregnantPrenatalEducationCellUpdate
+  pregnantPrenatalEducationCellUpdate,
+  patientCheckInsertForFiling,
+  patientCheckUpdateForFiling,
+  patientHusbandsFindForFiling,
+  patientHusbandsInsertForFiling,
+  patientHusbandsUpdateForFiling,
+  patientParturitionDetailInsertForFiling,
+  patientParturitionDetailUpdateForFiling,
+  patientHealthCheckInsertForFiling,
+  patientHealthCheckUpdateForFiling
+
 }

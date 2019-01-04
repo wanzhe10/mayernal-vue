@@ -8,9 +8,12 @@
         label="孕妇基本信息"
         name="first"
       >
-
         <!-- 孕妇基本信息 -->
-        <div class="pregnantNewsBox">
+        <div
+          class="pregnantNewsBox"
+          :id="essentialid"
+          :checkId='checkId'
+        >
           <div class="mgr70">
             <h3>孕妇姓名（必填）</h3>
             <input
@@ -180,7 +183,6 @@
             <el-select
               v-model="essentialInformation.nation"
               placeholder="请选择"
-              @change="aaa"
             >
               <el-option value="汉族">汉族</el-option>
               <el-option value="蒙古族">蒙古族</el-option>
@@ -285,6 +287,7 @@
               type="text"
               placeholder="请输入详细地址"
               class="presentAddress mgl16"
+              v-model="essentialInformation.newAddressRemarks"
             >
           </div>
           <div class="flaxBox">
@@ -311,6 +314,7 @@
               type="text"
               class="spouseName"
               placeholder="请输入姓名"
+              v-model="spouseInformation.name"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -320,6 +324,7 @@
               type="number"
               class="spousePhone"
               placeholder="请输入手机号"
+              v-model="spouseInformation.telephone"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -329,13 +334,14 @@
               type="number"
               class="spouseMarriageAge"
               placeholder="请输入结婚年龄"
+              v-model="spouseInformation.marryAge"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
           <div class="mgr70">
             <h3>证件类型</h3>
             <el-select
-              v-model="spouseIdCardTypeModel"
+              v-model="spouseInformation.idCardType"
               placeholder="请选择"
             >
               <el-option
@@ -355,6 +361,8 @@
               type="tel"
               class="spouseIdCard"
               placeholder="请输入身份证号码"
+              v-model="spouseInformation.idCard"
+              @blur='spouseInformationIdCarda'
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -363,6 +371,7 @@
             <input
               type="number"
               class="spouseAge"
+              v-model="spouseInformation.age"
             >
             <h5 class="birth">
               <span class="birth_sex">男</span>
@@ -373,7 +382,7 @@
           <div class="mgr70">
             <h3>婚姻状况</h3>
             <el-select
-              v-model="spouseMarryTypeModel"
+              v-model="spouseInformation.marryType"
               placeholder="请选择"
             >
               <el-option
@@ -389,7 +398,7 @@
           <div class="mgr70">
             <h3>婚检</h3>
             <el-select
-              v-model="spouseMarryCheckModel"
+              v-model="spouseInformation.marryCheck"
               placeholder="请选择"
             >
               <el-option
@@ -404,7 +413,7 @@
           <div class="mgr0">
             <h3>健康状态</h3>
             <el-select
-              v-model="healthTypeModel"
+              v-model="spouseInformation.healthType"
               placeholder="请选择"
             >
               <el-option
@@ -419,7 +428,7 @@
           <div class="mgr70">
             <h3>文化程度</h3>
             <el-select
-              v-model="spouseEducationModel"
+              v-model="spouseInformation.education"
               placeholder="请选择"
             >
               <el-option
@@ -434,7 +443,7 @@
           <div class="mgr70">
             <h3>职业</h3>
             <el-select
-              v-model="spouseJobModel"
+              v-model="spouseInformation.job"
               placeholder="请选择"
             >
               <el-option
@@ -452,20 +461,16 @@
             <div class="somkingBoxTop">
               <div class="somkingFont">吸烟</div>
               <div class="somkingSelect clearfix">
-                <!-- <el-radio v-model="smoking" label="1">是</el-radio>
-                <el-radio v-model="smoking" label="0" @change='handleCheckAllChange'>否</el-radio> -->
-                <el-radio-group
-                  v-model="smoking"
-                  @change='handleCheckAllChange'
-                >
-                  <el-radio :label="3">是</el-radio>
-                  <el-radio :label="6">否</el-radio>
+                <el-radio-group v-model="spouseInformation.smoke">
+                  <el-radio :label="1">是</el-radio>
+                  <el-radio :label="0">否</el-radio>
                 </el-radio-group>
               </div>
 
             </div>
             <!-- 吸烟隐藏显示块 -->
-            <div :class="['somkingCirculationBox',{displayNo : smoking == 6}]">
+
+            <div :class="['somkingCirculationBox',{displayNo : spouseInformation.smoke == 0}]">
               <p>请您输入每天的支数</p>
               <input
                 type="text"
@@ -482,26 +487,26 @@
             <div class="somkingBoxTop">
               <div class="somkingFont">饮酒</div>
               <div class="somkingSelect clearfix">
-                <el-radio
-                  v-model="drink"
-                  label="1"
-                >是</el-radio>
-                <el-radio
-                  v-model="drink"
-                  label="0"
-                >否</el-radio>
+                <el-radio-group v-model=" drinks">
+                  <el-radio :label="1">是</el-radio>
+                  <el-radio :label="0">否</el-radio>
+                </el-radio-group>
               </div>
             </div>
             <!-- 饮酒隐藏块 -->
-            <div class="drinkCirculationBox">
+            <div :class="['drinkCirculationBox',{displayNo : drinks == 0}]">
               <p>请选择饮酒习惯</p>
               <a
                 href="jsvascript:;"
                 class="drinkOccasionally"
+                :class="{'active':tab === 1}"
+                @click="addNameClick(1)"
               >偶尔</a>
               <a
                 href="jsvascript:;"
                 class="drinkOften"
+                :class="{'active':tab === 2}"
+                @click="addNameClick(2)"
               >经常</a>
             </div>
           </div>
@@ -513,51 +518,38 @@
             <div class="somkingBoxTop">
               <div class="somkingFont">家族史</div>
               <div class="somkingSelect clearfix">
-                <el-radio
-                  v-model="history1"
-                  label="1"
-                >是</el-radio>
-                <el-radio
-                  v-model="history1"
-                  label="0"
-                >否</el-radio>
+                <el-radio-group v-model="familyHistory">
+                  <el-radio :label="1">是</el-radio>
+                  <el-radio :label="0">否</el-radio>
+                </el-radio-group>
               </div>
             </div>
             <!-- 配偶家族史隐藏快 -->
             <div
-              class="history1CirculationBox"
               style="margin-right:0px;"
+              :class="['history1CirculationBox',{displayNo : familyHistory == 0}]"
             >
-              <input
-                type="email"
-                class="inquire"
-                placeholder="请输入拼音首字母"
-                onKeyUp="value=value.replace(/[\W]/g,'')"
-              >
-              <i class="seekIcon"></i>
-              <p>已选择</p>
-              <ul class="hideBox clearfix">
-                <li>糖尿病1</li>
-                <li>糖尿病2</li>
-                <li>糖尿病3</li>
-                <li>糖尿病4</li>
-                <li>糖尿病5</li>
-                <li>糖尿病6</li>
-              </ul>
-              <div class="history1Select">
-                <ul>
-                  <li>选择1</li>
-                  <li>选择2</li>
-                  <li>选择3</li>
-                  <li>选择4</li>
-                  <li>选择5</li>
-                  <li>选择6</li>
-                  <li>选择7</li>
-                  <li>选择8</li>
-                  <li>选择9</li>
-                  <li>选择10</li>
-                </ul>
-              </div>
+              <template>
+                <el-select
+                  v-model="value9"
+                  multiple
+                  filterable
+                  remote
+                  reserve-keyword
+                  placeholder="请输入关键词"
+                  :remote-method="remoteMethod"
+                  :loading="loading"
+                >
+                  <el-option
+                    v-for="item in options4"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </template>
+
             </div>
           </div>
           <div class="wire"></div>
@@ -572,6 +564,7 @@
               type="text"
               placeholder="请输入详细地址"
               class="mgl16 spouseResidenceAddress"
+              v-model="spouseInformation.newAddressRemarks"
             >
           </div>
           <div class="flaxBox">
@@ -597,19 +590,20 @@
             <input
               type="text"
               class="mgl30 firstCheckDate"
-              placeholder=""
               id="test2"
               readonly="readonly"
-              disabled="disabled"
+              v-model="maternalInformation.firstCheckDate"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
           <div class="mgr76 fl w260">
             <h3>末次月经</h3>
             <el-date-picker
-              v-model="lastMenstrual"
+              v-model="maternalInformation.lastMenstruation"
               type="date"
               placeholder="选择日期"
+              value-format="yyyy-MM-dd"
+              @change="lastMenstrualPeriod"
             >
             </el-date-picker>
             <p class="redFont">此项为必填项！</p>
@@ -621,14 +615,15 @@
               class="mgl30 dueDate"
               placeholder="自动计算"
               readonly='readonly'
+              v-model="maternalInformation.dueDate"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
           <div class="mgr76 fl">
             <h3>孕周</h3>
             <div class="gestationalWeeksBox clearfix">
-              <div class="newAgeOfMenarche">孕周</div>
-              <div class="newAgeOfMenarcheDay">孕天</div>
+              <div class="newAgeOfMenarche"> <span v-show="maternalInformation.newAgeOfMenarche !==''">{{maternalInformation.newAgeOfMenarche}}</span><span v-show="maternalInformation.newAgeOfMenarche ==''">孕周</span></div>
+              <div class="newAgeOfMenarcheDay"><span v-show="maternalInformation.newAgeOfMenarcheDay !==''">{{maternalInformation.newAgeOfMenarcheDay}}</span><span v-show="maternalInformation.newAgeOfMenarcheDay ==''">孕天</span></div>
             </div>
           </div>
           <div class="mgr76 fl">
@@ -637,6 +632,7 @@
               type="text"
               class="menstrualHistoryAge"
               placeholder="初潮"
+              v-model="maternalInformation.menstrualHistoryAge"
             >
           </div>
           <div class="mgr0 fl">
@@ -645,13 +641,14 @@
               type="text"
               placeholder="周期"
               class="menstrualHistoryDay"
+              v-model="maternalInformation.menstrualHistoryDay"
             >
           </div>
           <div class="wire"></div>
           <div class="mgr76 mgb12">
             <h3>怀孕次数</h3>
             <el-select
-              v-model="pregnanciesModel"
+              v-model="maternalInformation.pregnancyNumber"
               placeholder="请选择"
             >
               <el-option
@@ -735,7 +732,7 @@
           <div class="mgr76">
             <h3>孕期用药</h3>
             <el-select
-              v-model="parturitionFrontPharmacyModel"
+              v-model="maternalInformation.parturitionFrontPharmacy"
               placeholder="请选择"
             >
               <el-option
@@ -750,7 +747,7 @@
           <div class="mgr76">
             <h3>尿酮体</h3>
             <el-select
-              v-model="ketosisModel"
+              v-model="maternalInformation.ketosis"
               placeholder="请选择"
             >
               <el-option
@@ -765,7 +762,7 @@
           <div class="mgr0">
             <h3>早孕反应程度</h3>
             <el-select
-              v-model="morningSicknessModel"
+              v-model="maternalInformation.morningSickness"
               placeholder="请选择"
             >
               <el-option
@@ -780,7 +777,7 @@
           <div class="mgr76">
             <h3>宠物接触</h3>
             <el-select
-              v-model="animalContactModel"
+              v-model="maternalInformation.animalContact"
               placeholder="请选择"
             >
               <el-option
@@ -795,7 +792,7 @@
           <div class="mgr76">
             <h3>接触放射性</h3>
             <el-select
-              v-model="contactRadioactiveRaysModel"
+              v-model="maternalInformation.contactRadioactiveRays"
               placeholder="请选择"
             >
               <el-option
@@ -817,6 +814,7 @@
               disabled="disabled"
               readonly="readonly"
               onfocus="this.blur();"
+              v-model="maternalInformation.contactRadioactiveRaysDate"
             >
           </div>
           <div class="wire"></div>
@@ -825,19 +823,14 @@
             <div class="somkingBoxTop">
               <div class="somkingFont">接触毒物</div>
               <div class="somkingSelect clearfix">
-                <el-radio
-                  v-model="contact"
-                  label="1"
-                >是</el-radio>
-                <el-radio
-                  v-model="contact"
-                  label="0"
-                >否</el-radio>
+                <el-radio-group v-model="maternalInformation.contactToxic">
+                  <el-radio :label="1">是</el-radio>
+                  <el-radio :label="0">否</el-radio>
+                </el-radio-group>
               </div>
             </div>
             <!-- 孕产信息接触毒物-隐藏显示块 -->
-            <div class="contactPoisonBox">
-              <p>请您输入每天的支数</p>
+            <div :class="['contactPoisonBox',{displayNo :maternalInformation.contactToxic == 0}]">
               <input
                 type="text"
                 placeholder="请输入毒物名称"
@@ -855,18 +848,14 @@
             <div class="somkingBoxTop">
               <div class="somkingFont">病毒感染</div>
               <div class="somkingSelect clearfix">
-                <el-radio
-                  v-model="virus"
-                  label="1"
-                >是</el-radio>
-                <el-radio
-                  v-model="virus"
-                  label="0"
-                >否</el-radio>
+                <el-radio-group v-model="maternalInformation.virusInfection">
+                  <el-radio :label="1">是</el-radio>
+                  <el-radio :label="0">否</el-radio>
+                </el-radio-group>
               </div>
             </div>
             <!-- 孕产信息病毒感染-隐藏显示块 -->
-            <div class="virusInfectionBox">
+            <div :class="['virusInfectionBox',{displayNo :maternalInformation.virusInfection == 0}]">
               <p>请选择感染类型</p>
               <ul class="clearfix">
                 <li>流感</li>
@@ -883,128 +872,121 @@
             <div class="somkingBoxTop">
               <div class="somkingFont">家族史</div>
               <div class="somkingSelect clearfix">
-                <el-radio
-                  v-model="history2"
-                  label="1"
-                >是</el-radio>
-                <el-radio
-                  v-model="history2"
-                  label="0"
-                >否</el-radio>
+                <el-radio-group v-model="pregnancyFamilyHistory">
+                  <el-radio :label="1">是</el-radio>
+                  <el-radio :label="0">否</el-radio>
+                </el-radio-group>
               </div>
             </div>
             <!-- 孕产信息家族史-隐藏显示块 -->
             <div
-              class="familyHistoryBox"
               style="margin-right:0px;"
+              :class="['familyHistoryBox',{displayNo : pregnancyFamilyHistory == 0}]"
             >
-              <input
-                type="email"
-                class="inquire"
-                placeholder="请输入拼音首字母"
-                onKeyUp="value=value.replace(/[\W]/g,'')"
-              >
-              <i class="seekIcon"></i>
-              <p>已选择</p>
-              <ul class="hideBox clearfix">
-                <li>糖尿病1</li>
-                <li>糖尿病2</li>
-                <li>糖尿病3</li>
-                <li>糖尿病4</li>
-                <li>糖尿病5</li>
-                <li>糖尿病6</li>
-
-              </ul>
-              <div class="familyHistorySelect">
-                <ul>
-                  <li>选择1</li>
-                  <li>选择2</li>
-                  <li>选择3</li>
-                  <li>选择4</li>
-                  <li>选择5</li>
-                  <li>选择6</li>
-                  <li>选择7</li>
-                  <li>选择8</li>
-                  <li>选择9</li>
-                  <li>选择10</li>
-                </ul>
-              </div>
+              <template>
+                <el-select
+                  v-model="value9"
+                  multiple
+                  filterable
+                  remote
+                  reserve-keyword
+                  placeholder="请输入关键词"
+                  :remote-method="remoteMethod"
+                  :loading="loading"
+                >
+                  <el-option
+                    v-for="item in options4"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </template>
             </div>
+
           </div>
           <!-- 孕产史修改弹框 -->
-          <div class="modificationLayer">
-            <div class="modificationLayerNav">
-              <span class="parity">胎次一</span>
-            </div>
-            <div class="modificationLayerMain clearfix">
-              <div class="mgr30 fl">
-                <h3>孕周</h3>
-                <input
-                  type="text"
-                  class="layui-input mgl30 layerWeeks"
-                  placeholder=""
-                  id="test2"
-                  readonly="readonly"
-                  disabled="disabled"
-                >
-              </div>
-              <div class="mgr30 fl">
-                <h3>年月日</h3>
-                <input
-                  type="text"
-                  class="layui-input mgl30 layerDate"
-                  placeholder=""
-                  id="test2"
-                  readonly="readonly"
-                  disabled="disabled"
-                >
-              </div>
-              <div class="mgr0 fl">
-                <h3>年龄</h3>
-                <input
-                  type="text"
-                  class="layui-input mgl30 layerAge"
-                  placeholder=""
-                  id="test2"
-                  readonly="readonly"
-                  disabled="disabled"
-                >
-              </div>
-              <div class="mgr30">
-                <h3>分娩方式</h3>
-                <select class="layerDelivery">
-                  <option value="0">自然分娩</option>
-                  <option value="1">剖宫产</option>
-                </select>
-              </div>
-              <div class="mgr30">
-                <h3>性别</h3>
-                <select class="layerSex">
-                  <option value="0">男</option>
-                  <option value="1">女</option>
-                </select>
-              </div>
-              <div class="mgr0">
-                <h3>健否</h3>
-                <select class="layerSpleen">
-                  <option value="0">健康</option>
-                  <option value="1">死亡</option>
-                </select>
-              </div>
-              <h3>备注</h3>
-              <textarea class="layerRemark"></textarea>
-              <input
-                type="button"
-                value="取消"
-                class="cancelBtn"
+          <el-dialog
+            title="编辑信息"
+            :visible.sync="editdialogVisible"
+            width="590px"
+            :before-close="handleClose"
+            class="newlyLayer"
+            @opened='banSliding'
+            @closed='allowSliding'>
+            <p>用户姓名</p>
+            <el-input placeholder="请输入用户姓名"></el-input>
+            <p>手机号</p>
+            <el-input placeholder="请输入用户手机号"></el-input> 
+
+             <div class="addTemplateLayer_bottom clearfix">
+              <div
+                class="fl"
+                style="width:45%"
               >
-              <input
-                type="button"
-                value="保存"
-                class="saveBtn"
+                <p>科室</p>
+                 <el-select
+              v-model="maternalInformation.contactRadioactiveRays"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in contactRadioactiveRays"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               >
+              </el-option>
+            </el-select>
+              </div>
+              <div
+                class="fr"
+                style="width:45%"
+              >
+                <div>
+                  <p>角色名称</p>
+                   <el-select
+              v-model="maternalInformation.contactRadioactiveRays"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in contactRadioactiveRays"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+                </div>
+              </div>
             </div>
-          </div>
+            <div class="addTemplateLayer_bottom_select">
+              <p>激活状态</p>
+              <el-select
+              v-model="maternalInformation.contactRadioactiveRays"
+              placeholder="请选择"
+            >
+              <el-option
+                v-for="item in contactRadioactiveRays"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+            </div>
+
+            <span
+              slot="footer"
+              class="dialog-footer"
+            >
+              <el-button @click="editdialogVisible = false">取 消</el-button>
+              <el-button
+                type="primary"
+                @click="patientCenterUpdateBtn()"
+              >保 存</el-button>
+            </span>
+          </el-dialog>
           <div class="flaxBox">
             <div class="flaxBoxPart">
               <input
@@ -1044,7 +1026,7 @@
             <input
               type="number"
               class="height"
-              placeholder="请输入姓名"
+              placeholder="请输入身高"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1053,7 +1035,7 @@
             <input
               type="number"
               class="weight"
-              placeholder="请输入姓名"
+              placeholder="请输入体重"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1272,6 +1254,7 @@
             <input
               type="number"
               class="assayUrineProtein"
+              placeholder="请输入尿蛋白"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1280,6 +1263,7 @@
             <input
               type="number"
               class="assayHemoglobin"
+              placeholder="请输入血红蛋白"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1288,6 +1272,7 @@
             <input
               type="number"
               class="assayBloodPlatelet"
+              placeholder="请输入血小板"
             >
           </div>
           <div class="mgr0">
@@ -1315,6 +1300,7 @@
             <input
               type="number"
               class="obstetricsHeight"
+              placeholder="请输入宫高"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1323,6 +1309,7 @@
             <input
               type="number"
               class="obstetricsAbdominalGirth"
+              placeholder="请输入腹围"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1346,6 +1333,7 @@
             <input
               type="number"
               class="obstetricsFetalHeart"
+              placeholder="请输入胎心率"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1353,7 +1341,8 @@
             <h3>盆骨出口横径</h3>
             <input
               type="number"
-              class="mgl10 obstetricsTransversePelvicDiameter"
+              class="obstetricsTransversePelvicDiameter"
+              placeholder="请输入盆骨出口横径"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1799,16 +1788,19 @@
 </template>
 <script>
 import { regionData, CodeToText, TextToCode } from "element-china-area-data";
+import { RegExpObj, analyzeIDCard } from "../../../static/root";
 export default {
   data() {
     // return {
 
     // }
     return {
-      activeName: "first",
-      smoking: 6,
-      drink: "0",
-      history1: "0",
+      activeName: "third",
+      drinks: 0, //配偶一般信息饮酒显示隐藏
+      tab: 1,
+      familyHistory: 0, //配偶一般信息家族史
+      pregnancyFamilyHistory: 0, //孕产信息家族史
+      editdialogVisible: true, //编辑信息弹框
       contact: "0",
       virus: "0",
       history2: "0",
@@ -2322,13 +2314,6 @@ export default {
         }
       ],
       presentAddressModel: [], // 孕妇基本信息现住地址数组
-      spouseIdCardTypeModel: "", //配偶基本信息-证件类型
-      spouseMarryTypeModel: "", //配偶基本信息-婚姻状况
-      spouseMarryCheckModel: "", //配偶基本信息-婚检
-      healthTypeModel: "", //配偶基本信息-健康状态
-      spouseEducationModel: "", //配偶基本信息-文化程度
-      spouseJobModel: "", //配偶基本信息-职业
-      spousePresentAddressModel: [], // 配偶现住地址数组
       pregnanciesModel: "", //孕产信息-怀孕次数
       lastMenstrual: "", //孕产信息-末次月经
       parturitionFrontPharmacyModel: "", //孕产信息-孕期用药
@@ -2393,75 +2378,165 @@ export default {
         newAddressCity: "", //		现住址-市
         newAddressCounty: "", //		现住址-县
         newAddressRemarks: "" //		现住址-其他
+      },
+      essentialid: "", //patientCenterId
+      checkId: "", //基本信息id
+
+      //配偶一般信息
+      spouseInformation: {
+        patientCenterId: "", //	patientCenterId
+        name: "", //	名称
+        idCardType: "", //	证件类型 0身份证-默认 1护照
+        idCard: "", //	证件号
+        age: "", //	年龄
+        telephone: "", //	电话
+        healthType: "", //	健康状况 0 健康-默认 1 一般 2 软弱
+        education: "", //	教育程度 0 硕士以上 1本科-默认 2大专 3中专及高中 4初中 5文盲
+        job: "", //	工作 0 无-默认 1.农、牧、渔 2.干部、职员 3.医院、科技 4.工人 5.个体 6.家务
+        marryAge: "", //	结婚年龄
+        marryType: "", //	婚姻状况 0 初婚-默认 1再婚 2其他
+        marryCheck: "", //	婚检 0 没有-默认 1.有
+        smoke: 0, //	吸烟
+        drink: "", //	饮酒 0 否-默认 1.偶尔 2.经常
+        patientHistory: "", //	家族史
+        newAddressProvince: "", //	现住址-省
+        newAddressCity: "", //	现住址-市
+        newAddressCounty: "", //	现住址-区
+        newAddressRemarks: "" //	现住址-详情
+      },
+      options4: [],
+      value9: [],
+      list: [],
+      loading: false,
+      states: [
+        "Alabama",
+        "Alaska",
+        "Arizona",
+        "Arkansas",
+        "California",
+        "Colorado",
+        "Connecticut",
+        "Delaware",
+        "Florida",
+        "Georgia",
+        "Hawaii",
+        "Idaho",
+        "Illinois",
+        "Indiana",
+        "Iowa",
+        "Kansas",
+        "Kentucky",
+        "Louisiana",
+        "Maine",
+        "Maryland",
+        "Massachusetts",
+        "Michigan",
+        "Minnesota",
+        "Mississippi",
+        "Missouri",
+        "Montana",
+        "Nebraska",
+        "Nevada",
+        "New Hampshire",
+        "New Jersey",
+        "New Mexico",
+        "New York",
+        "North Carolina",
+        "North Dakota",
+        "Ohio",
+        "Oklahoma",
+        "Oregon",
+        "Pennsylvania",
+        "Rhode Island",
+        "South Carolina",
+        "South Dakota",
+        "Tennessee",
+        "Texas",
+        "Utah",
+        "Vermont",
+        "Virginia",
+        "Washington",
+        "West Virginia",
+        "Wisconsin",
+        "Wyoming"
+      ],
+      // 孕产信息
+      maternalInformation: {
+        patientCenterId: "", //	centerId
+        firstCheckDate: "", //	初诊日期	展开
+        lastMenstruation: "", //	末次月经	展开
+        dueDate: "", //	预产期	展开
+        newAgeOfMenarche: "", //	现孕周
+        newAgeOfMenarcheDay: "", //	现孕周-天
+        menstrualHistoryAge: "", //	初潮-岁
+        menstrualHistoryDay: "", //	月经史-周次
+        pregnancyNumber: "", //	怀孕次数
+        morningSickness: "", //	早孕反应程度
+        ketosis: "", //	酮症
+        parturitionFrontPharmacy: "", //	孕前是否用药
+        animalContact: "", //	宠物接触
+        contactRadioactiveRays: "", //	接触放射线
+        contactRadioactiveRaysDate: "", //	接触放射线-时间	展开
+        contactToxic: 0, //	接触毒物
+        contactToxicName: "", //	接触毒物-名称
+        contactToxicDate: "", //	接触毒物-时间	展开
+        virusInfection: 0, //	病毒感染
+        virusInfectionOther: "", //	病毒感染-其他
+        familyHistory: "", //	家族史
+        nowHistory: "", //	现病史
+        historyList: "", //	孕产历史json	展开
+        token: "" //
       }
     };
   },
+  mounted() {
+    this.list = this.states.map(item => {
+      return { value: item, label: item };
+    });
+    this.format();
+  },
   methods: {
-    // 测试年龄
-    analyzeIDCard(IDCard,requestData) {
-      // var sexAndAge = {};
-    let  self = this;
-      var babySex = ''
-      //获取用户身份证号码
-      var userCard = IDCard;
-      
-      //如果身份证号码为undefind则返回空
-      if (!userCard) {
-        return requestData(false,null,null);
-      }else if (reg.test(userCard) === false) {
-       
-         return requestData(false,null,null);
-      }
-      //获取性别
-      if (parseInt(userCard.substr(16, 1)) % 2 == 1) {
-       babySex = "男";
+    // ------------------------孕妇基本信息------------------------------------
+    // 孕妇基本信息-身份证号计算年龄、性别、出生年月
+    pregnantIdCarda() {
+      if (!RegExpObj.Reg_IDCardNo.test(this.essentialInformation.idCard)) {
+        this.$message.error("证件格式错误");
+        this.essentialInformation.age = "";
+        this.essentialInformation.sex = "";
+        this.essentialInformation.birthdayDate = "";
+        return;
       } else {
-       babySex= "女";
-      }
-      //获取出生年月日
-      //userCard.substring(6,10) + "-" + userCard.substring(10,12) + "-" + userCard.substring(12,14);
-      var yearBirth = userCard.substring(6, 10);
-      var monthBirth = userCard.substring(10, 12);
-      var dayBirth = userCard.substring(12, 14);
-      //获取当前年月日并计算年龄
-      var myDate = new Date();
-      var monthNow = myDate.getMonth() + 1;
-      var dayNow = myDate.getDay();
-      var age = myDate.getFullYear() - yearBirth;
-      if (
-        monthNow < monthBirth ||
-        (monthNow == monthBirth && dayNow < dayBirth)
-      ) {
-        age--;
-      }
-      //得到年龄
-      return requestData(true,babySex,age);
-    },
-    pregnantIdCarda(){
-          var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
-         let self = this;
-      this.analyzeIDCard(this.essentialInformation.idCard, function requestData(isNull,sex,age) {
-           if (reg.test(self.essentialInformation.idCard) === false) {
-            
-          }
-        self.essentialInformation.age = age;
-        self.essentialInformation.sex = sex;
-      if (isNull == false) {
-          return
-      }else{
+        let self = this;
+        analyzeIDCard(this.essentialInformation.idCard, function requestData(
+          isNull,
+          sex,
+          age,
+          birth
+        ) {
+          self.essentialInformation.birthdayDate = birth;
           self.essentialInformation.age = age;
-        self.essentialInformation.sex = sex;
+          self.essentialInformation.sex = sex;
+          if (isNull == false) {
+            return;
+          } else {
+            self.essentialInformation.age = age;
+            self.essentialInformation.sex = sex;
+          }
+        });
       }
-      });
-    
     },
     // 孕妇一般信息保存按钮
     basicBtn() {
-      alert(1);
-    },
-    //配偶信息保存按钮
-    mateBtn() {
-      alert(2);
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.essentialInformation.idCardAddressProvince = this.selectedOptions1[0];
+      this.essentialInformation.idCardAddressCity = this.selectedOptions1[1];
+      this.essentialInformation.idCardAddressCounty = this.selectedOptions1[2];
+      this.essentialInformation.newAddressProvince = this.selectedOptions2[0];
+      this.essentialInformation.newAddressCity = this.selectedOptions2[1];
+      this.essentialInformation.newAddressCounty = this.selectedOptions2[2];
+      this.essentialInformation.token = token1;
+      console.log(this.essentialInformation);
+      this.patientCheckInsertForFiling(this.essentialInformation);
     },
     //孕产信息保存按钮
     pregnancyBtn() {
@@ -2470,6 +2545,7 @@ export default {
     physiqueBtn() {
       alert(4);
     },
+    // 孕妇基本信息 --》户口所在地
     handleChange1(value) {
       console.log(value);
       this.xq1 =
@@ -2478,7 +2554,10 @@ export default {
         CodeToText[this.selectedOptions1[1]] +
         "" +
         CodeToText[this.selectedOptions1[2]];
+
+      console.log(this.xq1);
     },
+    // 孕妇基本信息 --》现住地址
     handleChange2(value) {
       console.log(value);
       this.xq2 =
@@ -2488,6 +2567,49 @@ export default {
         "" +
         CodeToText[this.selectedOptions2[2]];
     },
+    modifyButton: function() {},
+    // 基本信息-新增接口
+    patientCheckInsertForFiling(obj) {
+      this.$api
+        .patientCheckInsertForFiling(obj)
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.essentialid = res.id;
+            this.checkId = res.checkId;
+          } else {
+            $message.error("新增失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("新增失败，请稍后重试");
+        });
+    },
+    // ------------------------配偶一般信息------------------------------------
+    // 配偶一般信息-身份证号计算年龄
+    spouseInformationIdCarda() {
+      if (!RegExpObj.Reg_IDCardNo.test(this.spouseInformation.idCard)) {
+        this.$message.error("证件格式错误");
+        this.spouseInformation.age = "";
+        return;
+      } else {
+        let self = this;
+        analyzeIDCard(this.spouseInformation.idCard, function requestData(
+          isNull,
+          sex,
+          age,
+          birth
+        ) {
+          self.spouseInformation.age = age;
+          if (isNull == false) {
+            return;
+          } else {
+            self.spouseInformation.age = age;
+          }
+        });
+      }
+    },
+    // 配偶一般信息 --》现住地址
     handleChange3(value) {
       console.log(value);
       this.xq3 =
@@ -2497,27 +2619,106 @@ export default {
         "" +
         CodeToText[this.selectedOptions3[2]];
     },
-    aaa() {
-      console.log(this.nationModel);
+    //配偶信息保存按钮
+    mateBtn() {
+      if (this.drinks == 0) {
+        this.spouseInformation.drink = 0;
+      } else if (this.drinks == 1) {
+        if (this.tab == 1) {
+          this.spouseInformation.drink = 1;
+        } else if (this.tab == 2) {
+          this.spouseInformation.drink = 2;
+        }
+      }
+      this.spouseInformation.patientCenterId = this.essentialid;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.spouseInformation.newAddressProvince = this.selectedOptions3[0];
+      this.spouseInformation.newAddressCity = this.selectedOptions3[1];
+      this.spouseInformation.newAddressCounty = this.selectedOptions3[2];
+      this.spouseInformation.token = token1;
+      console.log(this.spouseInformation);
     },
-    modifyButton: function() {},
-    // 配偶一般信息吸烟
-    handleCheckAllChange() {
-      //  this.isshow= false;
-      console.log(this.smoking);
+    // 饮酒 偶尔经常切换
+    addNameClick(index) {
+      let tebIndex = index;
+      this.tab = tebIndex;
+    },
+    // 配偶一般信息---家族史
+    remoteMethod(query) {
+      if (query !== "") {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          this.options4 = this.list.filter(item => {
+            return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
+          });
+        }, 200);
+      } else {
+        this.options4 = [];
+      }
+    },
+    // ------------------------孕产信息------------------------------------
+    // 末次月经
+    lastMenstrualPeriod(val) {
+      this.lastMenstrual = val;
+      console.log(this.lastMenstrual);
+      if (this.lastMenstrual == null) {
+        this.maternalInformation.newAgeOfMenarche = "";
+        this.maternalInformation.newAgeOfMenarcheDay = "";
+        this.maternalInformation.dueDate = "";
+      } else {
+        var newDate = new Date().getTime();
+        var oldDate = new Date(this.lastMenstrual).getTime();
+        var countDay = parseInt((newDate - oldDate) / 1000 / 3600 / 24);
+        var weeks = parseInt(countDay / 7); // 孕周
+        var day = countDay % 7; // 孕天
+        var expectedDate = new Date(oldDate + 3600 * 24 * 1000 * 280);
+        var expectedText =
+          expectedDate.getFullYear() +
+          "-" +
+          this.doubleZero(expectedDate.getMonth() + 1) +
+          "-" +
+          this.doubleZero(expectedDate.getDate());
+        this.maternalInformation.newAgeOfMenarche = weeks;
+        this.maternalInformation.newAgeOfMenarcheDay = day;
+        this.maternalInformation.dueDate = expectedText;
+      }
+    },
+    // 孕产信息--初诊日期
+    format() {
+      let day2 = new Date();
+      day2.setTime(day2.getTime());
+      let s2 =
+        day2.getFullYear() +
+        "-" +
+        this.doubleZero(day2.getMonth() + 1) +
+        "-" +
+        this.doubleZero(day2.getDate());
+      this.maternalInformation.firstCheckDate = s2;
+    },
+    // 预产期
+    doubleZero(num) {
+      return num < 10 ? "0" + num : num;
+    },
+    patientCenterUpdateBtn() {
+      alert(1);
+    },
+    // 弹框右上角关闭按钮
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
+    // 禁止滑动
+    banSliding() {
+      document.documentElement.style.overflow = "hidden";
+    },
+    // 允许滑动
+    allowSliding() {
+      document.documentElement.style.overflow = "scroll";
     }
-    // //孕妇基本信息户口所在地
-    // registeredModelResidence() {
-    //   console.log(this.registeredModel);
-    // },
-    // //孕妇基本信息现住地址
-    // registeredModelPresentAddressModel() {
-    //   console.log(this.presentAddressModel);
-    // },
-    // //匹配欧一般信息现住地址
-    // spousePresentAddressModelAddressModel() {
-    //   console.log(this.spousePresentAddressModel);
-    // }
   }
 };
 </script>
@@ -2566,9 +2767,6 @@ export default {
 }
 .w260 {
   width: 260px;
-}
-.newfileBox {
-  // padding-bottom:30px;
 }
 // 孕妇基本信息
 .pregnantNewsBox {
@@ -2914,15 +3112,16 @@ export default {
     }
   } // 配偶显示隐藏家族史块
   .history1CirculationBox {
-    padding: 10px 14px 5px 14px;
-    position: relative;
-    input {
-      width: 226px;
-      height: 32px;
-    }
-    p {
-      margin-top: 12px;
-    }
+    //  padding-top:24px;
+    // padding: 10px 14px 5px 14px;
+    // position: relative;
+    // input {
+    //   width: 226px;
+    //   height: 32px;
+    // }
+    // p {
+    //   margin-top: 12px;
+    // }
     .seekIcon {
       background: url("/maternal-web/images/seek.png") no-repeat 0 0;
       width: 14px;
@@ -2997,7 +3196,7 @@ export default {
 
 // 孕产信息模块
 .pregnancyNewsBox {
-  padding: 14px 24px 60px 26px;
+  padding: 14px 24px 120px 26px;
   .flaxBox {
     height: 88px;
     width: 100%;
@@ -3032,6 +3231,9 @@ export default {
   }
   div {
     display: inline-block;
+    .displayNo {
+      display: none;
+    }
     h3 {
       font-size: 14px;
       color: #666666;
@@ -3189,38 +3391,8 @@ export default {
       }
     }
     .familyHistoryBox {
-      padding: 10px 14px 5px 14px;
-      position: relative;
-      input {
-        width: 226px;
-        height: 32px;
-      }
-      p {
-        margin-top: 12px;
-      }
-      .seekIcon {
-        background: url("/maternal-web/images/seek.png") no-repeat 0 0;
-        width: 14px;
-        height: 14px;
-        background-size: 14px 14px;
-        position: absolute;
-        top: 20px;
-        right: 30px;
-      }
-      .hideBox {
-        li {
-          float: left;
-          width: 65px;
-          height: 30px;
-          background-color: #68b6e7;
-          color: #fff;
-          text-align: center;
-          line-height: 30px;
-          border-radius: 4px;
-          margin-right: 12px;
-          margin-bottom: 8px;
-        }
-      }
+      // padding: 10px 14px 5px 14px;
+      padding: 0px;
       .familyHistorySelect {
         // display: none;
         width: 226px;
@@ -3258,7 +3430,7 @@ export default {
     transform: translate(-50%, -50%);
     width: 590px;
     background-color: #fff;
-    display: none;
+    // display: none;
     .modificationLayerNav {
       height: 50px;
       width: 100%;
@@ -4063,5 +4235,21 @@ export default {
   background-color: #f5f7fa;
   color: #68b6e7;
   font-weight: 700;
+}
+
+.spouseNewsBox .el-radio__input.is-checked + .el-radio__label,
+.pregnancyNewsBox .el-radio__input.is-checked + .el-radio__label {
+  color: #68b6e7;
+}
+.spouseNewsBox .el-radio__input.is-checked .el-radio__inner,
+.pregnancyNewsBox .el-radio__input.is-checked .el-radio__inner {
+  border-color: #68b6e7;
+  background: #68b6e7;
+}
+.pregnancyNewsBox .el-button--text {
+  color: #68b6e7;
+}
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: #68b6e7;
 }
 </style>
