@@ -582,8 +582,7 @@
       <!--孕产信息 -->
       <el-tab-pane
         label="孕产信息"
-        name="third"
-      >
+        name="third">
         <div class="pregnancyNewsBox  clearfix">
           <div class="mgr76 fl">
             <h3>初诊日期</h3>
@@ -629,7 +628,7 @@
           <div class="mgr76 fl">
             <h3>月经史-初潮（岁）</h3>
             <input
-              type="text"
+              type="number"
               class="menstrualHistoryAge"
               placeholder="初潮"
               v-model="maternalInformation.menstrualHistoryAge"
@@ -638,7 +637,7 @@
           <div class="mgr0 fl">
             <h3>月经史—周期（天）</h3>
             <input
-              type="text"
+              type="number"
               placeholder="周期"
               class="menstrualHistoryDay"
               v-model="maternalInformation.menstrualHistoryDay"
@@ -650,6 +649,7 @@
             <el-select
               v-model="maternalInformation.pregnancyNumber"
               placeholder="请选择"
+              @change="numberPregnancy"
             >
               <el-option
                 v-for="item in pregnancies"
@@ -670,6 +670,7 @@
               prop="number"
               label="胎次"
               width="80"
+              type="index"
             >
             </el-table-column>
             <el-table-column
@@ -677,6 +678,11 @@
               label="孕周"
               width="124"
             >
+              <template slot-scope="scope">
+                <div v-show="scope.row.ageOfMenarche == '0'">早产</div>
+                <div v-show="scope.row.ageOfMenarche == '1'">足月妊娠</div>
+                <div v-show="scope.row.ageOfMenarche == '2'">过期妊娠</div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="productionDate"
@@ -695,24 +701,40 @@
               label="分娩方式"
               width="120"
             >
+              <template slot-scope="scope">
+                <div v-show="scope.row.productionAbortion == '0'">自然</div>
+                <div v-show="scope.row.productionAbortion == '1'">剖宫产</div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="babySex"
               label="性别"
               width="84"
             >
+              <template slot-scope="scope">
+                <div v-show="scope.row.babySex == '0'">男</div>
+                <div v-show="scope.row.babySex == '1'">女</div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="babyHealthType"
               label="健否"
               width="84"
             >
+              <template slot-scope="scope">
+                <div v-show="scope.row.babyHealthType == '0'">健康</div>
+                <div v-show="scope.row.babyHealthType == '1'">死亡</div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="remarks"
               label="备注"
               width="114"
             >
+              <template slot-scope="scope">
+                <div v-show="scope.row.remarks == ''"></div>
+                <div v-show="scope.row.remarks !== ''">{{scope.row.remarks}}</div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="modifyButton"
@@ -721,7 +743,7 @@
             >
               <template slot-scope="scope">
                 <el-button
-                  @click="modifyButton()"
+                  @click="modifyButton(scope.$index, scope.row)"
                   type="text"
                   size="small"
                 >修改</el-button>
@@ -794,6 +816,7 @@
             <el-select
               v-model="maternalInformation.contactRadioactiveRays"
               placeholder="请选择"
+              @change="radioactivity"
             >
               <el-option
                 v-for="item in contactRadioactiveRays"
@@ -806,16 +829,14 @@
           </div>
           <div class="mgr0">
             <h3>接触放射性时间</h3>
-            <input
-              type="text"
-              class="mgl30 contactRadioactiveRaysDate"
-              placeholder="请输入时间"
-              id="test4"
-              disabled="disabled"
-              readonly="readonly"
-              onfocus="this.blur();"
+            <el-date-picker
               v-model="maternalInformation.contactRadioactiveRaysDate"
+              type="date"
+              placeholder="选择日期"
+              value-format="yyyy-MM-dd"
+              :disabled="disabledInput"
             >
+            </el-date-picker>
           </div>
           <div class="wire"></div>
           <!--孕产信息接触毒物 -->
@@ -835,12 +856,21 @@
                 type="text"
                 placeholder="请输入毒物名称"
                 class="contactToxicName mgb12"
+                v-model="maternalInformation.contactToxicName"
               >
-              <input
+              <!-- <input
                 type="text"
                 placeholder="请输入接触时间"
                 class="contactToxicDate"
+                 v-model="maternalInformation.contactToxicDate"
+              > -->
+              <el-date-picker
+                v-model="maternalInformation.contactToxicDate"
+                type="date"
+                placeholder="选择日期"
+                value-format="yyyy-MM-dd"
               >
+              </el-date-picker>
             </div>
           </div>
           <!-- 孕产信息病毒感染 -->
@@ -858,12 +888,11 @@
             <div :class="['virusInfectionBox',{displayNo :maternalInformation.virusInfection == 0}]">
               <p>请选择感染类型</p>
               <ul class="clearfix">
-                <li>流感</li>
-                <li>风疹</li>
-                <li>疱疹</li>
-                <li class="mgb0">肝炎</li>
-                <li class="mgb0">腮腺炎</li>
-                <li class="mgb0">其他</li>
+                <li
+                  v-for="(item,index) in infectionType"
+                  :class="{'active':item.active}"
+                  @click="changeClass(item,index)"
+                >{{item.value}}</li>
               </ul>
             </div>
           </div>
@@ -872,7 +901,7 @@
             <div class="somkingBoxTop">
               <div class="somkingFont">家族史</div>
               <div class="somkingSelect clearfix">
-                <el-radio-group v-model="pregnancyFamilyHistory">
+                <el-radio-group v-model="maternalInformation.familyHistory">
                   <el-radio :label="1">是</el-radio>
                   <el-radio :label="0">否</el-radio>
                 </el-radio-group>
@@ -881,7 +910,46 @@
             <!-- 孕产信息家族史-隐藏显示块 -->
             <div
               style="margin-right:0px;"
-              :class="['familyHistoryBox',{displayNo : pregnancyFamilyHistory == 0}]"
+              :class="['familyHistoryBox',{displayNo : maternalInformation.familyHistory == 0}]"
+            >
+              <template>
+                <el-select
+                  v-model="value9"
+                  multiple
+                  filterable
+                  remote
+                  reserve-keyword
+                  placeholder="请输入关键词"
+                  :remote-method="remoteMethod"
+                  :loading="loading"
+                >
+                  <el-option
+                    v-for="item in options4"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </template>
+            </div>
+
+          </div>
+          <!-- 孕产信息家族史 -->
+          <div class="somkingBox clearfix mgr0">
+            <div class="somkingBoxTop">
+              <div class="somkingFont">现病史</div>
+              <div class="somkingSelect clearfix">
+                <el-radio-group v-model="maternalInformation.nowHistory">
+                  <el-radio :label="1">是</el-radio>
+                  <el-radio :label="0">否</el-radio>
+                </el-radio-group>
+              </div>
+            </div>
+            <!-- 孕产信息家族史-隐藏显示块 -->
+            <div
+              style="margin-right:0px;"
+              :class="['familyHistoryBox',{displayNo : maternalInformation.nowHistory == 0}]"
             >
               <template>
                 <el-select
@@ -908,74 +976,101 @@
           </div>
           <!-- 孕产史修改弹框 -->
           <el-dialog
-            title="编辑信息"
+            title="胎次一"
             :visible.sync="editdialogVisible"
             width="590px"
             :before-close="handleClose"
             class="newlyLayer"
             @opened='banSliding'
-            @closed='allowSliding'>
-            <p>用户姓名</p>
-            <el-input placeholder="请输入用户姓名"></el-input>
-            <p>手机号</p>
-            <el-input placeholder="请输入用户手机号"></el-input> 
+            @closed='allowSliding'
+          >
 
-             <div class="addTemplateLayer_bottom clearfix">
-              <div
-                class="fl"
-                style="width:45%"
-              >
-                <p>科室</p>
-                 <el-select
-              v-model="maternalInformation.contactRadioactiveRays"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in contactRadioactiveRays"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
+            <div class="addTemplateLayer_bottom clearfix">
+              <div class="fl mgr36">
+                <p>孕周</p>
+                <el-select
+                  v-model="historyLayer.ageOfMenarche"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in ageOfMenarche"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+                <p>分娩方式</p>
+                <el-select
+                  v-model="historyLayer.productionAbortion"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in productionAbortion"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
               </div>
-              <div
-                class="fr"
-                style="width:45%"
-              >
-                <div>
-                  <p>角色名称</p>
-                   <el-select
-              v-model="maternalInformation.contactRadioactiveRays"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in contactRadioactiveRays"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-                </div>
+              <div class="fl mgr36">
+                <p>年月日</p>
+                <el-date-picker
+                  v-model="historyLayer.productionDate"
+                  type="date"
+                  :clearable="false"
+                  placeholder="选择日期"
+                  value-format="yyyy-MM-dd"
+                >
+                </el-date-picker>
+                <p>性别</p>
+                <el-select
+                  v-model="historyLayer.babySex"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in babySex"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
               </div>
-            </div>
-            <div class="addTemplateLayer_bottom_select">
-              <p>激活状态</p>
-              <el-select
-              v-model="maternalInformation.contactRadioactiveRays"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in contactRadioactiveRays"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+              <div class="fl">
+                <p>年龄</p>
+                <el-input
+                  placeholder="年龄"
+                  v-model="historyLayer.productionOfAge"
+                  type="number"
+                  min='18'
+                  max='50'
+                ></el-input>
+                <p>健否</p>
+                <el-select
+                  v-model="historyLayer.babyHealthType"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in babyHealthType"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
+              <p style="display:inline-block;">备注（可不填）</p>
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 2, maxRows: 10}"
+                placeholder="请输入备注......."
+                maxlength='100'
+                v-model="historyLayer.remarks"
               >
-              </el-option>
-            </el-select>
+              </el-input>
             </div>
-
             <span
               slot="footer"
               class="dialog-footer"
@@ -983,7 +1078,7 @@
               <el-button @click="editdialogVisible = false">取 消</el-button>
               <el-button
                 type="primary"
-                @click="patientCenterUpdateBtn()"
+                @click="patientCenterUpdateBtn(historyLayer)"
               >保 存</el-button>
             </span>
           </el-dialog>
@@ -1001,8 +1096,7 @@
       </el-tab-pane>
       <el-tab-pane
         label="体格检查"
-        name="fourth"
-      >
+        name="fourth" >
         <div class="healthCheckupBox">
           <h2 class="healthCheckTittle">一般检查</h2>
           <div class="mgr76">
@@ -1012,11 +1106,13 @@
                 type="number"
                 placeholder="低压"
                 class="lowTension"
+                v-model="healthCheckup.baseBloodPressureLow"
               >
               <input
                 type="number"
                 placeholder="高压"
                 class="hyperpiesia"
+                   v-model="healthCheckup.baseBloodPressureHigh"
               >
             </div>
             <p class="redFont">此项为必填项！</p>
@@ -1027,6 +1123,7 @@
               type="number"
               class="height"
               placeholder="请输入身高"
+                 v-model="healthCheckup.baseHeight"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1036,14 +1133,16 @@
               type="number"
               class="weight"
               placeholder="请输入体重"
+                 v-model="healthCheckup.baseWeight"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
+           
           <div class="healthCheckupBox_firstBox">
             <div class="mgr38">
               <h3>心 率</h3>
               <el-select
-                v-model="baseHeartRateModel"
+                v-model="healthCheckup.baseHeartRate"
                 placeholder="请选择"
               >
                 <el-option
@@ -1058,7 +1157,7 @@
             <div class="mgr77">
               <h3>肺</h3>
               <el-select
-                v-model="baseLungModel"
+                v-model="healthCheckup.baseLung"
                 placeholder="请选择"
               >
                 <el-option
@@ -1073,7 +1172,7 @@
             <div class="mgr38">
               <h3>肝</h3>
               <el-select
-                v-model="baseAbdomenLiverModel"
+                v-model="healthCheckup.baseAbdomenLiver"
                 placeholder="请选择"
               >
                 <el-option
@@ -1088,7 +1187,7 @@
             <div class="mgr77">
               <h3>脾</h3>
               <el-select
-                v-model="baseAbdomenSpleenModel"
+                v-model="healthCheckup.baseAbdomenSpleen"
                 placeholder="请选择"
               >
                 <el-option
@@ -1103,7 +1202,7 @@
             <div class="mgr38">
               <h3>脊 柱</h3>
               <el-select
-                v-model="baseSpinalLimbsDeformityModel"
+                v-model="healthCheckup.baseSpinalLimbsDeformity"
                 placeholder="请选择"
               >
                 <el-option
@@ -1118,7 +1217,7 @@
             <div class="mgr0">
               <h3>四肢水肿</h3>
               <el-select
-                v-model="baseSpinalLimbsEdemaModel"
+                v-model="healthCheckup.baseSpinalLimbsEdema"
                 placeholder="请选择"
               >
                 <el-option
@@ -1133,7 +1232,7 @@
             <div class="mgr38">
               <h3>乳 房</h3>
               <el-select
-                v-model="baseBreastsModel"
+                v-model="healthCheckup.baseBreasts"
                 placeholder="请选择"
               >
                 <el-option
@@ -1148,7 +1247,7 @@
             <div class="mgr77">
               <h3>乳 头</h3>
               <el-select
-                v-model="baseNippleModel"
+                v-model="healthCheckup.baseNipple"
                 placeholder="请选择"
               >
                 <el-option
@@ -1161,16 +1260,18 @@
               </el-select>
             </div>
           </div>
+
           <div
             class="wire"
             style="margin-bottom: 16px;"
           ></div>
           <h2 class="healthCheckTittle">妇科检查</h2>
+
           <div class="healthCheckupBox_firstBox">
             <div class="mgr38">
               <h3>外阴</h3>
               <el-select
-                v-model="obstetricsVulvaModel"
+                v-model="healthCheckup.obstetricsVulva"
                 placeholder="请选择"
               >
                 <el-option
@@ -1186,7 +1287,7 @@
             <div class="mgr77">
               <h3>阴道</h3>
               <el-select
-                v-model="obstetricsVaginaModel"
+                v-model="healthCheckup.obstetricsVagina"
                 placeholder="请选择"
               >
                 <el-option
@@ -1201,7 +1302,7 @@
             <div class="mgr38">
               <h3>宫颈</h3>
               <el-select
-                v-model="obstetricsCervixModel"
+                v-model="healthCheckup.obstetricsCervix"
                 placeholder="请选择"
               >
                 <el-option
@@ -1216,7 +1317,7 @@
             <div class="mgr77">
               <h3>宫体</h3>
               <el-select
-                v-model="obstetricsCorpusModel"
+                v-model="healthCheckup.obstetricsCorpus"
                 placeholder="请选择"
               >
                 <el-option
@@ -1231,7 +1332,7 @@
             <div class="mgr0  accessory">
               <h3>附件</h3>
               <el-select
-                v-model="obstetricsPairsAttachmentModel"
+                v-model="healthCheckup.obstetricsPairsAttachment"
                 placeholder="请选择"
               >
                 <el-option
@@ -1244,6 +1345,7 @@
               </el-select>
             </div>
           </div>
+
           <div
             class="wire"
             style="margin-bottom: 16px;"
@@ -1255,6 +1357,7 @@
               type="number"
               class="assayUrineProtein"
               placeholder="请输入尿蛋白"
+              v-model="healthCheckup.assayUrineProtein"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1264,6 +1367,7 @@
               type="number"
               class="assayHemoglobin"
               placeholder="请输入血红蛋白"
+              v-model="healthCheckup.assayHemoglobin"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1273,12 +1377,13 @@
               type="number"
               class="assayBloodPlatelet"
               placeholder="请输入血小板"
+              v-model="healthCheckup.assayBloodPlatelet"
             >
           </div>
           <div class="mgr0">
             <h3>血型</h3>
             <el-select
-              v-model="assayBloodTypeModel"
+              v-model="healthCheckup.assayBloodType"
               placeholder="请选择"
             >
               <el-option
@@ -1301,6 +1406,7 @@
               type="number"
               class="obstetricsHeight"
               placeholder="请输入宫高"
+              v-model="healthCheckup.obstetricsHeight"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1310,13 +1416,14 @@
               type="number"
               class="obstetricsAbdominalGirth"
               placeholder="请输入腹围"
+              v-model="healthCheckup.obstetricsAbdominalGirth"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
           <div class="mgr0">
             <h3>先露</h3>
             <el-select
-              v-model="obstetricsFirstDewModel"
+              v-model="healthCheckup.obstetricsFirstDew"
               placeholder="请选择"
             >
               <el-option
@@ -1334,6 +1441,7 @@
               type="number"
               class="obstetricsFetalHeart"
               placeholder="请输入胎心率"
+              v-model="healthCheckup.obstetricsFetalHeart"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
@@ -1343,13 +1451,14 @@
               type="number"
               class="obstetricsTransversePelvicDiameter"
               placeholder="请输入盆骨出口横径"
+              v-model="healthCheckup.obstetricsTransversePelvicDiameter"
             >
             <p class="redFont">此项为必填项！</p>
           </div>
           <div class="mgr0">
             <h3>胎方位</h3>
             <el-select
-              v-model="obstetricsPlacentalModel"
+              v-model="healthCheckup.obstetricsPlacental"
               placeholder="请选择"
             >
               <el-option
@@ -1405,16 +1514,12 @@
       </el-tab-pane>
       <el-tab-pane
         label="高危评估"
-        name="fifth"
-      >
+        name="fifth" >
         <!-- 高危评估模块 -->
         <div class="riskAssessmentBox ">
           <span>项目类型</span>
           <div class="mgl10">
-            <el-select
-              v-model="projectTypeModel1"
-              placeholder="请选择"
-            >
+            <el-select placeholder="请选择"  v-model="riskAssessment.projectType1">
               <el-option
                 v-for="item in projectType1"
                 :key="item.value"
@@ -1425,12 +1530,9 @@
             </el-select>
           </div>
           <div class="mgl24">
-            <el-select
-              v-model="projectTypeModel2"
-              placeholder="请选择"
-            >
+            <el-select placeholder="请选择"   v-model="riskAssessment.obstetricsPlacental">
               <el-option
-                v-for="item in projectType2"
+                v-for="item in obstetricsPlacental"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -1440,10 +1542,7 @@
           </div>
           <span class="mgl174">历史评估记录</span>
           <div class="mgl10">
-            <el-select
-              v-model="historyAssessModel"
-              placeholder="请选择"
-            >
+            <el-select placeholder="请选择"  v-model="riskAssessment.historyAssess">
               <el-option
                 v-for="item in historyAssess"
                 :key="item.value"
@@ -1723,7 +1822,7 @@
               <i class="el-icon-arrow-down"></i>
             </div>
           </div>
-          <div class="violetConcealBox topicBox">
+           <div class="violetConcealBox topicBox">
             <a
               class="topicItem"
               href="javascript:;"
@@ -1747,46 +1846,13 @@
         </div>
 
       </el-tab-pane>
-      <el-tab-pane
-        label="检查确认"
-        name="sixth"
-      >
-        <div class="checkAffirmBox">
-          <div class="checkAffirmBox_top clearfix">
-            <div class="fl assessmentInformation">
-              <p>评估信息</p>
-              <span class="greenStrip">绿色（12）项</span>
-              <span class="yellowStrip">黄色（12）项</span>
-              <span class="orangeStrip">橙色（12）项</span>
-              <span class="redStrip">红色（12）项</span>
-              <span class="proponStrip">紫色（12）项</span>
-            </div>
-            <div class="fr gradeInformation">
-              <h2><span class="grade">56</span><i>分</i></h2>
-              <p>初次筛查与评分</p>
-            </div>
-          </div>
-          <div class="wire4"></div>
-          <div class="affirmBox2">
-            <h3>评估详情</h3>
-            <span class="greenStrip">绿色(低风险)</span>
-            <div class="greenDiv"></div>
-            <span class="yellowStrip">黄色(一般风险)</span>
-            <div class="yellowDiv"></div>
-            <span class="orangeStrip">橙色(较高风险)</span>
-            <div class="orangeDiv"></div>
-            <span class="redStrip">红色(高风险)</span>
-            <div class="redDiv"></div>
-            <span class="proponStrip">紫色(传染病)</span>
-            <div class="purpleDiv"></div>
-          </div>
-          <h1 class="operator">操作人：<span>周晓晓</span></h1>
-        </div>
-      </el-tab-pane>
+   
     </el-tabs>
   </div>
 </template>
 <script>
+import Vue from "vue";
+import $ from "jquery";
 import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 import { RegExpObj, analyzeIDCard } from "../../../static/root";
 export default {
@@ -1799,8 +1865,7 @@ export default {
       drinks: 0, //配偶一般信息饮酒显示隐藏
       tab: 1,
       familyHistory: 0, //配偶一般信息家族史
-      pregnancyFamilyHistory: 0, //孕产信息家族史
-      editdialogVisible: true, //编辑信息弹框
+      editdialogVisible: false, //编辑信息弹框
       contact: "0",
       virus: "0",
       history2: "0",
@@ -1967,27 +2032,53 @@ export default {
           label: "5"
         }
       ],
-      // 怀孕次数信息
-      PregnancyInformation: [
+
+      // 孕产史-健否
+      babyHealthType: [
         {
-          number: "1",
-          ageOfMenarche: "28",
-          productionDate: "2016-05-02",
-          productionOfAge: "30",
-          productionAbortion: "自然分娩",
-          babySex: "男",
-          babyHealthType: "健康",
-          remarks: "备注信息"
+          value: "0",
+          label: "健康"
         },
         {
-          number: "2",
-          ageOfMenarche: "28",
-          productionDate: "2016-05-02",
-          productionOfAge: "30",
-          productionAbortion: "自然分娩",
-          babySex: "女",
-          babyHealthType: "健康",
-          remarks: "备注信息"
+          value: "1",
+          label: "死亡"
+        }
+      ],
+      // 孕产史-分娩方式
+      productionAbortion: [
+        {
+          value: "0",
+          label: "自然"
+        },
+        {
+          value: "1",
+          label: "剖宫产"
+        }
+      ],
+      // 孕产史-孕周
+      ageOfMenarche: [
+        {
+          value: "0",
+          label: "早产"
+        },
+        {
+          value: "1",
+          label: "足月妊娠"
+        },
+        {
+          value: "2",
+          label: "过期妊娠"
+        }
+      ],
+      // 孕产史-性别
+      babySex: [
+        {
+          value: "0",
+          label: "男"
+        },
+        {
+          value: "1",
+          label: "女"
         }
       ],
       // 孕期用药
@@ -2167,6 +2258,33 @@ export default {
           label: "通畅"
         }
       ],
+      //
+      infectionType: [
+        {
+          value: "流感",
+          label: "流感"
+        },
+        {
+          value: "风疹",
+          label: "风疹"
+        },
+        {
+          value: "疱疹",
+          label: "疱疹"
+        },
+        {
+          value: "肝炎",
+          label: "肝炎"
+        },
+        {
+          value: "腮腺炎",
+          label: "腮腺炎"
+        },
+        {
+          value: "其他",
+          label: "其他"
+        }
+      ],
       //宫颈
       obstetricsCervix: [
         {
@@ -2313,36 +2431,6 @@ export default {
           label: "5"
         }
       ],
-      presentAddressModel: [], // 孕妇基本信息现住地址数组
-      pregnanciesModel: "", //孕产信息-怀孕次数
-      lastMenstrual: "", //孕产信息-末次月经
-      parturitionFrontPharmacyModel: "", //孕产信息-孕期用药
-      ketosisModel: "", //孕产信息-尿酮体
-      morningSicknessModel: "", //孕产信息-早孕反应程度
-      animalContactModel: "", //孕产信息-宠物接触
-      contactRadioactiveRaysModel: "", //孕产信息-接触放射性
-      baseHeartRateModel: "", //孕产信息-心 率
-      baseLungModel: "", //孕产信息-末次月经
-      baseAbdomenLiverModel: "",
-      baseAbdomenSpleenModel: "",
-      baseSpinalLimbsDeformityModel: "",
-      baseSpinalLimbsEdemaModel: "",
-      baseBreastsModel: "",
-      baseNippleModel: "",
-      obstetricsVulvaModel: "",
-      obstetricsVaginaModel: "",
-      obstetricsCervixModel: "",
-      obstetricsCorpusModel: "",
-      obstetricsPairsAttachmentModel: "",
-      assayBloodTypeModel: "",
-      obstetricsFirstDewModel: "",
-      obstetricsPlacentalModel: "",
-      projectTypeModel1: "",
-      projectTypeModel2: "",
-      historyAssessModel: "",
-      registeredModel: [], // 孕妇基本信息现户口所在地数组
-      //selected[0]省。selected[1]市。selected[2]区。
-      //  isshow:false,// 配偶一般信息 吸烟
       isShow: false,
       options: regionData, //省市区联动
       selectedOptions1: [], //基本信息-户口所在地
@@ -2475,18 +2563,67 @@ export default {
         ketosis: "", //	酮症
         parturitionFrontPharmacy: "", //	孕前是否用药
         animalContact: "", //	宠物接触
-        contactRadioactiveRays: "", //	接触放射线
+        contactRadioactiveRays: "0", //	接触放射线
         contactRadioactiveRaysDate: "", //	接触放射线-时间	展开
         contactToxic: 0, //	接触毒物
         contactToxicName: "", //	接触毒物-名称
         contactToxicDate: "", //	接触毒物-时间	展开
         virusInfection: 0, //	病毒感染
         virusInfectionOther: "", //	病毒感染-其他
-        familyHistory: "", //	家族史
-        nowHistory: "", //	现病史
-        historyList: "", //	孕产历史json	展开
+        familyHistory: 0, //	家族史
+        nowHistory: 0, //	现病史
+        historyList: ""
+      },
+      disabledInput: true, //技术放射性时间
+      PregnancyInformation: [], //怀孕史数据
+      // 孕产史数组列表
+      historyListArr: [],
+      // 孕产史对象
+      historyLayer: {},
+      historyLayerNum: 0, //孕产史下标
+      deleteHistory: [],
+      isChoose: false,
+      //  体格检查
+      healthCheckup: {
+        patientCenterId: "", //	centerId
+        baseBloodPressureHigh: "", //	收缩压
+        baseBloodPressureLow: "", //	舒张压
+        baseHeight: "", //	身高
+        baseWeight: "", //	体重
+        baseSpinalLimbsDeformity: "", //	脊柱四肢-畸形 0正常-默认 1畸形
+        baseSpinalLimbsEdema: "", //	脊柱四肢-水肿 0无-默认 1轻 2中 3重
+        baseHeartRate: "", //	心率 0.未填写
+        baseLung: "", //	肺部 0.未见异常-默认
+        baseAbdomenLiver: "", //	腹部-肝 0.未见异常-默认
+        baseAbdomenSpleen: "", //	腹部-脾 0.未见异常-默认
+        baseBreasts: "", //	乳房 0.丰满-默认 1.扁平
+        baseNipple: "", //	乳头 0.凸-默认 1.凹
+        obstetricsVulva: "", //	妇科检查-外阴 0.正常-默认 1.异常
+        obstetricsVagina: "", //	妇科检查-阴道 0.通畅-默认
+        obstetricsCervix: "", //	妇科检查-宫颈 0.光滑-默认
+        obstetricsCorpus: "", //	妇科检查-宫体 0.未见异常-默认
+        obstetricsPairsAttachment: "", //	妇科检查-双附件 0.未见异常-默认
+        assayUrineProtein: "", //	化验检查-尿蛋白 未填写-默认
+        assayHemoglobin: "", //	化验检查-血红蛋白 未填写-默认
+        assayBloodPlatelet: "", //	化验检查-血小板 未填写-默认
+        assayBloodType: "", //	化验检查-血型 0.O型-默认 1.A型 2.B型 3.AB型 4.RH型
+        obstetricsHeight: "", //	产科检查-宫底高度
+        obstetricsAbdominalGirth: "", //	产科检查-腹围
+        obstetricsFirstDew: "", //	产科检查-先露 0.未填-默认 1.先头露 2.臀先露
+        obstetricsPlacental: "", //	产科检查-胎位 0.未填-默认 1.枕左前位 2.枕右横位 3.枕右前位
+        obstetricsFetalHeart: "", //	产科检查-胎心（次/分）
+        obstetricsTransversePelvicDiameter: "", //	产科检查-骨盆口横径
+        primaryDiagnosis: "", //	初步诊断
+        disposal: "", //	处置
         token: "" //
-      }
+      },
+      // 高危评估
+      riskAssessment:{
+
+projectType1:'',
+obstetricsPlacental:'',
+historyAssess:'',
+      } 
     };
   },
   mounted() {
@@ -2538,10 +2675,7 @@ export default {
       console.log(this.essentialInformation);
       this.patientCheckInsertForFiling(this.essentialInformation);
     },
-    //孕产信息保存按钮
-    pregnancyBtn() {
-      alert(3);
-    },
+
     physiqueBtn() {
       alert(4);
     },
@@ -2567,7 +2701,7 @@ export default {
         "" +
         CodeToText[this.selectedOptions2[2]];
     },
-    modifyButton: function() {},
+
     // 基本信息-新增接口
     patientCheckInsertForFiling(obj) {
       this.$api
@@ -2700,8 +2834,54 @@ export default {
     doubleZero(num) {
       return num < 10 ? "0" + num : num;
     },
-    patientCenterUpdateBtn() {
-      alert(1);
+    // 怀孕次数选择
+    numberPregnancy() {
+      let tempPregnancyNum = this.maternalInformation.pregnancyNumber;
+      var _html = {};
+      _html.number = "";
+      _html.ageOfMenarche = "";
+      _html.productionDate = "";
+      _html.productionOfAge = "";
+      _html.productionAbortion = "";
+      _html.babySex = "";
+      _html.babyHealthType = "";
+      _html.remarks = "";
+      var mycars = new Array();
+      for (let i = 0; i < tempPregnancyNum; i++) {
+        mycars.push(_html);
+        this.PregnancyInformation = mycars;
+      }
+      console.log(this.PregnancyInformation);
+    },
+    // 点击孕产史编辑
+    modifyButton(index, row) {
+      this.historyLayerNum = index;
+      this.historyLayer = Object.assign({}, row);
+      this.historyLayer.number = index + 1;
+      // console.log(this.historyLayer)
+      this.editdialogVisible = true;
+    },
+    // 孕产史弹框保存按钮
+    patientCenterUpdateBtn(historyLayer) {
+      Vue.set(this.PregnancyInformation, this.historyLayerNum, historyLayer);
+      //  console.log(this.PregnancyInformation)
+      this.editdialogVisible = false;
+    },
+    // 接触放射性
+    radioactivity() {
+      if (this.maternalInformation.contactRadioactiveRays == 0) {
+        this.disabledInput = true;
+        this.maternalInformation.contactRadioactiveRaysDate = "";
+      } else {
+        this.disabledInput = false;
+      }
+    },
+    changeClass(item, index) {
+      if (item.active) {
+        Vue.set(item, "active", false); //为item添加不存在的属性，需要使用vue提供的Vue.set( object, key, value )方法。
+      } else {
+        Vue.set(item, "active", true);
+      }
     },
     // 弹框右上角关闭按钮
     handleClose(done) {
@@ -2711,6 +2891,19 @@ export default {
         })
         .catch(_ => {});
     },
+    //孕产信息保存按钮
+    pregnancyBtn() {
+      // console.log(this.PregnancyInformation);
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.maternalInformation.historyList = this.PregnancyInformation;
+      this.maternalInformation.token = token1;
+      // this.maternalInformation.familyHistory = token1; //家族史
+      this.patientCenterId = this.essentialid;
+      // this.maternalInformation.nowHistory = nowHistory; // 现病史
+      // this.maternalInformation.virusInfectionOther = virusInfectionOther; // 病毒感染-其他
+      console.log(this.maternalInformation);
+    },
+
     // 禁止滑动
     banSliding() {
       document.documentElement.style.overflow = "hidden";
@@ -2742,9 +2935,14 @@ export default {
 .mgr0 {
   margin-right: 0px !important;
 }
-
+.mgr32 {
+  margin-right: 32px !important;
+}
 .mgr34 {
   margin-right: 34px !important;
+}
+.mgr36 {
+  margin-right: 38px !important;
 }
 .mgr38 {
   margin-right: 40px !important;
@@ -3387,6 +3585,12 @@ export default {
           color: #999999;
           margin-right: 12px;
           margin-bottom: 10px;
+          cursor: pointer;
+        }
+        .active {
+          border: none;
+          background-color: #68b6e7;
+          color: #fff;
         }
       }
     }
@@ -3423,57 +3627,15 @@ export default {
     }
   }
   // 修改怀孕次数弹框
-  .modificationLayer {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 590px;
-    background-color: #fff;
-    // display: none;
-    .modificationLayerNav {
-      height: 50px;
-      width: 100%;
+  .addTemplateLayer_bottom {
+    .el-input__inner {
+      border: 1px solid #ccc;
+      border-radius: 4px;
       background-color: #f6f6f6;
-      padding-top: 16px;
-      padding-left: 24px;
-      .parity {
-        font-size: 16px;
-        color: #333333;
-      }
     }
-    .modificationLayerMain {
-      padding: 20px 24px;
-      input {
-        width: 156px;
-      }
-      .layerRemark {
-        height: 108px;
-        width: 100%;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding-left: 30px;
-      }
-      .cancelBtn,
-      .saveBtn {
-        width: 160px;
-        height: 40px;
-        font-size: 14px;
-        line-height: 40px;
-        text-align: center;
-        margin-top: 30px;
-        padding: 0px !important;
-      }
-      .cancelBtn {
-        float: left;
-        background-color: #cccccc;
-        color: #666666;
-      }
-      .saveBtn {
-        float: right;
-        background-color: #68b6e7;
-        color: #fff;
-      }
+    p {
+      margin-bottom: 14px;
+      margin-top: 22px;
     }
   }
 }
@@ -4174,6 +4336,58 @@ export default {
   border-radius: 4px;
   border-color: #ccc;
   background-color: #f6f6f6;
+}
+/* // 孕产信息组件样式修改 */
+/*孕产信息修改孕产史弹框演示修改 */
+
+.pregnancyNewsBox .addTemplateLayer_bottom .el-input__inner {
+  width: 156px;
+  border-radius: 4px;
+  border-color: #ccc;
+  background-color: #fff;
+}
+.pregnancyNewsBox .addTemplateLayer_bottom .el-select .el-input__inner {
+  width: 156px;
+  border-radius: 4px;
+  border-color: #ccc;
+  background-color: #f6f6f6;
+}
+.pregnancyNewsBox .el-dialog__header {
+  background-color: #ededed;
+}
+.pregnancyNewsBox .addTemplateLayer_bottom .el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 122px;
+}
+.pregnancyNewsBox .el-dialog__body {
+  padding: 0 22px 0px 22px;
+}
+.contactPoisonBox .el-input__inner {
+  width: 224px;
+  height: 32px;
+}
+.contactPoisonBox .el-input__icon {
+  line-height: 32px;
+  cursor: pointer;
+}
+.pregnancyNewsBox .el-dialog__footer {
+  padding: 15px 22px;
+  overflow: hidden;
+}
+
+.pregnancyNewsBox .el-dialog__footer .el-button--default {
+  float: left;
+  width: 122px;
+  height: 40px;
+  background-color: #cccccc;
+  color: #999999;
+}
+.pregnancyNewsBox .el-dialog__footer .el-button--primary {
+  width: 122px;
+  height: 40px;
+  background-color: #68b6e7;
+  color: #fff;
+  border: none;
 }
 /* // 体格检查组件样式修改 */
 .healthCheckupBox .el-input__inner {

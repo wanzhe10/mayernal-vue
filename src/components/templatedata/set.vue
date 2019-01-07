@@ -494,8 +494,8 @@ export default {
       this.dialogVisible2 = true;
       this.form2 = JSON.parse(JSON.stringify(row));
       this.form2.token = token1;
-      console.log(this.form2);
-      console.log(this.form1);
+      // console.log(this.form2);
+      // console.log(this.form1);
     },
     // 修改
     templateUpdate() {

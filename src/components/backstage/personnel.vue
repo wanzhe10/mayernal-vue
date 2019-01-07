@@ -271,8 +271,7 @@
       :before-close="handleClose"
       class="newlyLayer"
         @opened = 'banSliding'
-        @closed = 'allowSliding'
-    >
+        @closed = 'allowSliding'>
       <p>用户姓名</p>
       <el-input
         v-model="arr2.name"
