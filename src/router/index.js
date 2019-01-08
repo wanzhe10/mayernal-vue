@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login/login'
+import login2 from '@/components/login/login2'
 import index from '@/components/index'
 import organization from '@/components/backstage/organization' /**vuex */
 import administrative from '@/components/backstage/administrative' /**vuex */
@@ -30,6 +31,12 @@ export default new Router({
       name: 'login',
       component: login,
     },
+    {
+      path: '/',
+      name: 'login2',
+      component: login2,
+    },
+
     { /* 首页(默认路由地址) */
       path: '/index',
       name: 'index',

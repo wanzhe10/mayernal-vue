@@ -48,5 +48,6 @@ var RegExpObj = {
   };
 export{
     RegExpObj,
-    analyzeIDCard
-}
+    analyzeIDCard,
+};
+  
