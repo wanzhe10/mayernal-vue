@@ -45,7 +45,7 @@
 									<span class="mgl28">黄色（一般风险）</span>
 								</div>
 								<div class="fivepartBox topicBox">
-									<el-checkbox label="年龄≤35岁或≥18 A"></el-checkbox>
+									<el-checkbox label="年龄≤35岁或≥18年龄≤35岁或≥18年龄≤35岁或≥18 A"></el-checkbox>
 									<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
 									<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
 									<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>

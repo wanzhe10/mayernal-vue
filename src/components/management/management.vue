@@ -340,6 +340,10 @@ export default {
         {
           value: "1",
           label: "异常复检"
+        },
+         {
+          value: "2",
+          label: "无复检"
         }
       ],
 
@@ -428,7 +432,7 @@ export default {
           paramDetail: this.fileSearch,
           paramType: paramType,
           highClass: this.highClass,
-          secondCheckType: 1
+          secondCheckType: this.secondCheckType
         })
         .then(res => {
           console.log(res);

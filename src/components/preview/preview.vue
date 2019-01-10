@@ -2,7 +2,6 @@
   <div class="newfileBox">
     <el-tabs
       v-model="activeName"
-      class="aaaa"
       @tab-click="handleClick"
     >
       <!-- 孕妇基本信息 -->
@@ -262,7 +261,12 @@ export default {
       pregnancyNewsInformation: {}, //孕产信息数据
       PregnancyInformation: [], //怀孕次数数据
       PregnancyNum: '', //怀孕次数数据
-      healthCheckup: {} //体格检查数据
+      healthCheckup: {}, //体格检查数据
+      // 查询状态 - 第一次查询 以后点击不查询
+      times1:1,
+      times2:1,
+      times3:1,
+      times4:1,
     };
   },
   activated() {
@@ -286,13 +290,33 @@ export default {
     handleClick(tab) {
         var _val = tab.index;
         if (_val == 0) {
-          this.essentialInquire();
+          if (this.times1 == 1) {
+                  //  this.essentialInquire();
+                   this.times1 =2;
+          }else{
+            return;
+          }
         } else if (_val == 1) {
-          this.patientHusbandsFindForFiling();
+             if (this.times2 == 1) {
+                this.patientHusbandsFindForFiling();
+                   this.times2 =2;
+          }else{
+            return;
+          }
         } else if (_val == 2) {
-          this.patientParturitionDetailFindForFiling();
+           if (this.times3 == 1) {
+                 this.patientParturitionDetailFindForFiling();
+                   this.times3 =2;
+          }else{
+            return;
+          }
         } else {
-            this.patientHealthCheckFindById();
+           if (this.times4 == 1) {
+                 this.patientHealthCheckFindById();
+                   this.times4 =2;
+          }else{
+            return;
+          }
         }
     },
     //基本信息查询
@@ -308,6 +332,7 @@ export default {
           console.log(res);
           if (res.status === "20200") {
             this.essentialInformation = res;
+            this.times1 =2;
           } else if (res.status === "20209") {
           }
         })
@@ -315,7 +340,6 @@ export default {
           this.$message.error('基本信息查询错误，请稍后重试');
         });
     },
-
     // 配偶信息查询
     patientHusbandsFindForFiling() {
       let self = this;
@@ -372,7 +396,7 @@ export default {
         .then(res => {
           // console.log(res);
           if (res.status === "20200") {
-            this.pregnancyNewsInformation = res;
+            // this.pregnancyNewsInformation = res;
             this.healthCheckup = res;
             // console.log(this.healthCheckup);
           } else if (res.status === "20209") {
