@@ -3,7 +3,7 @@
     <div class="topBox clearfix">
       <div class="btnsBOx">
         <router-link :to="{path: 'newfile'}">
-          <div class="newBtn">新建孕妇档案</div>
+          <div class="newBtn" @click="newFecord">新建孕妇档案</div>
         </router-link>
       </div>
       <div class="selectBox clearfix">
@@ -479,6 +479,9 @@ export default {
     indexMethod(index) {
       return index + 1;
     },
+    newFecord(){
+       localStorage.removeItem('tableDataParticulars');
+    }
    
 
   }
