@@ -304,6 +304,14 @@ export const patientHighRiskGradeFindList = data => {
     data
   })
 }
+// 高高危评估-模板查询
+export const highRiskGradeTemplateDetailFindTreeList = data => {
+  return axios({
+    url: 'v1/web/pc/highRiskGradeTemplateDetail/findTreeList',
+    method: 'post',
+    data
+  })
+}
 // 产后42天查询
 export const patientFourtyTwoFindByCenterId = data => {
   return axios({
@@ -489,6 +497,7 @@ export default {
   patientParturitionDetailInsertForFiling,
   patientParturitionDetailUpdateForFiling,
   patientHealthCheckInsertForFiling,
-  patientHealthCheckUpdateForFiling
+  patientHealthCheckUpdateForFiling,
+  highRiskGradeTemplateDetailFindTreeList
 
 }

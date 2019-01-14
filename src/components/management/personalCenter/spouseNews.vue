@@ -1054,4 +1054,15 @@ export default {
   background-color: #68b6e7;
   border-color: #68b6e7;
 }
+// .el-checkbox__label {
+//   display: inline;
+// }
+
+// .el-checkbox, .el-checkbox__input {
+//   white-space: normal;
+// }
+.el-checkbox, .el-checkbox__input {
+  white-space: normal;
+  word-break: break-all;
+}
 </style>

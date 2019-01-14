@@ -1855,10 +1855,9 @@
           </el-form>
         </div>
       </el-tab-pane>
-      <el-tab-pane
+        <el-tab-pane
         label="高危评估"
-        name="fifth"
-      >
+        name="fifth">
         <!-- 高危评估模块 -->
         <div class="riskAssessmentBox">
           <span>项目类型</span>
@@ -1912,13 +1911,17 @@
           >
           <div class="wire"></div>
           <!-- 基本情况 -->
-          <div class="lookAtallBtnBox">
-            <h2>基本情况</h2>
+          <div v-for="(item,index) in highRiskGradeCatalogueBeanList">
+                   <div class="lookAtallBtnBox">
+            <h2>{{item.details}}</h2>
             <div class="positionWire"></div>
             <div
               class="basicLookAtallBtn"
-              @click="toggle1()"
-            >
+               @click="toggle1(index)"
+               
+              :key="index"
+              >
+
               <span>查看全部</span>
               <i
                 class="el-icon-arrow-down"
@@ -1930,299 +1933,107 @@
               ></i>
             </div>
           </div>
+          <!-- 基本信息隐藏藏快 -->
           <el-collapse-transition>
             <div
-              class="basicInformationBox"
-              v-show="isShow1"
-            >
-              <div class="partBox mgr34">
+              class="basicInformationBox" 
+              >
+           <div>
+               <ul class="pregnancySelectBox" v-show="item.number ==2">
+             <li  class="selectAllBtn"  v-for="(item3,index) in assessArr"  @click="selectAllBtnClick(item3,index)" :class="{active:index ==isActive}">{{item3.details}}</li>
+           </ul>
+           </div>
+              <div class="partBox mgr34" v-show='item.number != 4'>
                 <div class="partBox_top">
                   <i>5</i>
                   <span class="fen">分</span>
                   <span class="mgl28">黄色（一般风险）</span>
                 </div>
                 <div class="fivepartBox topicBox">
-                  <!-- <el-checkbox label="年龄≤35岁或≥18年龄≤35岁或≥18 A年龄≤35岁或≥18 A年龄≤35岁或≥18 A年龄≤35岁或≥18 A A"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox> -->
-
                   <a
                     href="javascript:;"
-                    @click="assessDataBtn(item,index)"
-                    :class="{'active':item.active}"
+                    v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                    @click="assessDataBtn(items,index)"
+                    :class="{'active':items.active}"
                     class="topicItem"
-                    v-for="(item,index) in riskAssessment.assessData"
-                  >{{item.value}}</a>
+                    v-show='items.cellGrades ==5'
+                  >{{items.cellDetails}}</a>
+                    <a
+                    href="javascript:;"
+                    v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
+                    @click="assessDataBtn(item4,index)"
+                    :class="{'active':item4.active}"
+                    class="topicItem"
+                    v-show='item4.cellGrades ==5 && item.number == 2'
+                  >{{item4.cellDetails}}</a>
                 </div>
               </div>
               <div class="partBox mgr34">
-                <div class="partBox_top">
+                <div class="partBox_top" v-show='item.number != 4'>
                   <i>10</i>
                   <span class="fen">分</span>
                   <span class="mgl28">橙色（较高风险）</span>
                 </div>
                 <div class="tenpartBox topicBox">
-                  <a
-                    class="topicItem"
+                <a
                     href="javascript:;"
-                  >年龄≤35岁或≥18</a>
-                  <a
+                    v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                    @click="assessDataBtn(items,index)"
+                    :class="{'active':items.active}"
                     class="topicItem"
+                    v-show='items.cellGrades ==10'
+                  >{{items.cellDetails}}</a>
+                     <a
                     href="javascript:;"
-                  >年龄≤35岁或≥18</a>
-                  <a
+                    v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
+                    @click="assessDataBtn(item4,index)"
+                    :class="{'active':item4.active}"
                     class="topicItem"
-                    href="javascript:;"
-                  >年龄≤35岁或≥18</a>
-                  <a
-                    class="topicItem"
-                    href="javascript:;"
-                  >年龄≤35岁或≥18</a>
+                    v-show='item4.cellGrades ==10 && item.number == 2'
+                  >{{item4.cellDetails}}</a>
                 </div>
               </div>
-              <div class="partBox">
+              <div class="partBox" v-show='item.number != 4'>
                 <div class="partBox_top">
                   <i>20</i>
                   <span class="fen">分</span>
                   <span class="mgl28">红色（高风险）</span>
                 </div>
                 <div class="twentypartBox topicBox">
-                  <a
-                    class="topicItem"
+                    <a
                     href="javascript:;"
-                  >年龄≤35岁或≥18</a>
-                  <a
+                    v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                    @click="assessDataBtn(items,index)"
+                    :class="{'active':items.active}"
                     class="topicItem"
+                    v-show='items.cellGrades ==20'
+                  >{{items.cellDetails}}</a>
+                     <a
                     href="javascript:;"
-                  >年龄≤35岁或≥18</a>
-                  <a
+                    v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
+                    @click="assessDataBtn(item4,index)"
+                    :class="{'active':item4.active}"
                     class="topicItem"
-                    href="javascript:;"
-                  >年龄≤35岁或≥18</a>
-                  <a
-                    class="topicItem"
-                    href="javascript:;"
-                  >年龄≤35岁或≥18</a>
+                    v-show='item4.cellGrades ==20 && item.number == 2'
+                  >{{item4.cellDetails}}</a>
                 </div>
               </div>
             </div>
           </el-collapse-transition>
 
-          <!-- 孕期合并发症块 -->
-          <div class="lookAtallBtnBox">
-            <h2>孕期合并发症</h2>
-            <div class="positionWire2"></div>
-            <div
-              class="pregnancyAllBtn"
-              @click="toggle2()"
-            >
-              <span>查看全部</span>
-              <i
-                class="el-icon-arrow-down"
-                v-show="downIcon2"
-              ></i>
-              <i
-                class="el-icon-arrow-up"
-                v-show="!downIcon2"
-              ></i>
-            </div>
+              <div  v-show='item.number == 4'>
+                <div class="topicBox">
+                    <a
+                    href="javascript:;"
+                    v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                    @click="assessDataBtn(items,index)"
+                    :class="{'active':items.active}"
+                  >{{items.cellDetails}}</a>
+                </div>
+              </div>
+
           </div>
-          <el-collapse-transition>
-            <div
-              class="pregnancyAllBox"
-              v-show="isShow2"
-            >
-              <ul class="pregnancySelectBox">
-                <li class="selectAllBtn">全部</li>
-                <li>心血管系统疾病</li>
-                <li>呼吸系统疾病</li>
-                <li>消化系统疾病</li>
-                <li>泌尿系统疾病</li>
-                <li>内分泌系统疾病</li>
-                <li style="margin-right:0px;">精神神经系统疾病</li>
-                <li>血液系统疾病</li>
-                <li>性传播疾病</li>
-                <li>免疫系统疾病</li>
-                <li>肿瘤</li>
-                <li>吸毒史</li>
-                <li>其他</li>
-              </ul>
-
-              <div class="basicInformationBox">
-                <div class="partBox mgr34">
-                  <div class="partBox_top">
-                    <i>5</i>
-                    <span class="fen">分</span>
-                    <span class="mgl28">黄色（一般风险）</span>
-                  </div>
-                  <div class="twentypartBox topicBox">
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                  </div>
-                </div>
-                <div class="partBox mgr34">
-                  <div class="partBox_top">
-                    <i>10</i>
-                    <span class="fen">分</span>
-                    <span class="mgl28">橙色（较高风险）</span>
-                  </div>
-                  <div class="twentypartBox topicBox">
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                  </div>
-                </div>
-                <div class="partBox">
-                  <div class="partBox_top">
-                    <i>20</i>
-                    <span class="fen">分</span>
-                    <span class="mgl28">红色（高风险）</span>
-                  </div>
-                  <div class="twentypartBox topicBox">
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="contentBox">
-                <div class="lookAtallBtnBox">
-                  <h2>呼吸系统疾病</h2>
-                  <div class="positionWire2"></div>
-                </div>
-                <div class="partBox mgr34">
-                  <div class="fivepartBox topicBox">
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                  </div>
-                </div>
-                <div class="partBox mgr34">
-                  <div class="tenpartBox topicBox">
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                  </div>
-                </div>
-                <div class="partBox">
-                  <div class="twentypartBox topicBox">
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                    <a
-                      class="topicItem"
-                      href="javascript:;"
-                    >年龄≤35岁或≥18</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </el-collapse-transition>
-
-          <!-- 紫色块 -->
-          <div class="lookAtallBtnBox">
-            <h2>紫色</h2>
-            <div class="positionWire3"></div>
-            <div
-              class="violetBtn"
-              @click="toggle3()"
-            >
-              <span>查看全部</span>
-              <i
-                class="el-icon-arrow-down"
-                v-show="downIcon3"
-              ></i>
-              <i
-                class="el-icon-arrow-up"
-                v-show="!downIcon3"
-              ></i>
-            </div>
-          </div>
-          <el-collapse-transition>
-            <div
-              class="violetConcealBox topicBox"
-              v-show="isShow3"
-            >
-              <el-checkbox label="所有妊娠合传染性疾病--如毒性肝炎、霉素、HIV感染及艾滋病、结核病、重症感染性肺炎、特殊病毒感染（H1N7/塞卡等）"></el-checkbox>
-            </div>
-          </el-collapse-transition>
+   
 
           <div class="flaxBox">
             <div class="flaxBoxPart">
@@ -2236,12 +2047,14 @@
                 type="button"
                 value="完  成"
                 class="finishBtn"
+                @click="finishBtn"
               >
             </div>
           </div>
         </div>
 
       </el-tab-pane>
+  
       <el-tab-pane
         label="检查确认"
         name="sixth"
@@ -2278,6 +2091,7 @@
           <h1 class="operator">操作人：<span>周晓晓</span></h1>
         </div>
       </el-tab-pane>
+   
     </el-tabs>
   </div>
 </template>
@@ -2453,7 +2267,12 @@ export default {
     };
 
     return {
-      activeName: "first", // first、second、third、fourth、fifth、sixth
+      show3:true,
+      topicArr:[], // 孕产期合并症x选项数组
+      isActive:0, //孕产期合并症 选项切换
+      highRiskGradeCatalogueBeanList:[], //高危所有数组
+      assessArr:[], //  孕产期合并症数组
+      activeName: "fifth", // first、second、third、fourth、fifth、sixth
       drinks: 0, //配偶一般信息饮酒显示隐藏
       tab: 1,
       spouseSmoke: 0, //配偶-吸烟数量
@@ -3282,7 +3101,7 @@ export default {
         projectType1: "",
         obstetricsPlacental: "",
         historyAssess: "",
-        assessData: [
+        fiveArr: [
           { value: "年龄A" },
           { value: "年龄B" },
           { value: "年龄C" },
@@ -3290,6 +3109,27 @@ export default {
           { value: "年龄E" },
           { value: "年龄F" },
           { value: "年龄G" }
+        ],
+         tenArr: [
+          { value: "年龄A" },
+          { value: "年龄B" },
+          { value: "年龄C" },
+          { value: "年龄D" },
+          { value: "年龄E" },
+          { value: "年龄F" },
+          { value: "年龄G" }
+        ],
+         twentyArr: [
+          { value: "年龄A" },
+          { value: "年龄B" },
+          { value: "年龄C" },
+          { value: "年龄D" },
+          { value: "年龄E" },
+          { value: "年龄F" },
+          { value: "年龄G" }
+        ],
+        purpleArr:[
+
         ]
       },
       // 时间范围限制，不可选择今天以后
@@ -3517,6 +3357,8 @@ export default {
     };
   },
   activated() {
+    // 高危评估查询
+    this.highRiskGradeTemplateDetailFindTreeList();
     this.list = this.states.map(item => {
       return { value: item, label: item };
     });
@@ -3528,13 +3370,17 @@ export default {
     if (tableDataParticulars == null || tableDataParticulars == '') {
      return false;
     }else{
+        this.buttonHide = true;
+        this.buttonShow = false;
         this.checkId = tableDataParticulars.checkId;
         this.patientCenterId = tableDataParticulars.id;
      this.essentialInquire();
+  
     }
   
    
   },
+
   methods: {
     // 保存按钮
     basicBtn(formName) {
@@ -4036,26 +3882,72 @@ export default {
     //   ------------------------体格检查end------------------------------------
     //   ------------------------高危评估star------------------------------------
     // 基本情况点击显示隐藏
-    toggle1: function() {
+    toggle1: function(index) {
+      this.show3 = !this.show3;
+      console.log(index)
       this.isShow1 = !this.isShow1;
       this.downIcon = !this.downIcon;
     },
-    // 孕期合并发症显示隐藏
-    toggle2: function() {
-      this.isShow2 = !this.isShow2;
-      this.downIcon2 = !this.downIcon2;
-    },
-    // 紫色显示隐藏
-    toggle3: function() {
-      this.isShow3 = !this.isShow3;
-      this.downIcon3 = !this.downIcon3;
-    },
+    // // 孕期合并发症显示隐藏
+    // toggle2: function() {
+    //   this.isShow2 = !this.isShow2;
+    //   this.downIcon2 = !this.downIcon2;
+    // },
+    // // 紫色显示隐藏
+    // toggle3: function() {
+    //   this.isShow3 = !this.isShow3;
+    //   this.downIcon3 = !this.downIcon3;
+    // },
     assessDataBtn(item, index) {
+      console.log(index)
       if (item.active) {
         Vue.set(item, "active", false); //为item添加不存在的属性，需要使用vue提供的Vue.set( object, key, value )方法。
       } else {
         Vue.set(item, "active", true);
       }
+    },
+finishBtn(){
+
+},
+    // 孕产期合并症选项切换
+    selectAllBtnClick(item,index){
+      this.isActive = index;
+      console.log(index)
+      console.log()
+      this.topicArr = item;
+      console.log(this.topicArr)
+    },
+ 
+      //高危评估查询
+    highRiskGradeTemplateDetailFindTreeList() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      let templateIdTalbe = window.localStorage.getItem("mayernal-web-highRiskGradesTable");
+      this.$api
+        .highRiskGradeTemplateDetailFindTreeList({
+          token: token1,
+          templateId:templateIdTalbe
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.status === "20200") {
+         this.highRiskGradeCatalogueBeanList = res.highRiskGradeCatalogueBeanList;
+         let tempArr = this.highRiskGradeCatalogueBeanList
+      for (let i = 0; i < tempArr.length; i++) {
+         if (tempArr[i].sonList.length !== 0) {
+             this.assessArr =tempArr[i].sonList;
+             console.log(this.assessArr)
+         this.topicArr = this.assessArr[0];
+         }
+    
+        
+      }
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          this.$message.error("高危评估查询错误，请稍后重试");
+        });
     },
     //   ------------------------高危评估end------------------------------------
     // ------------------------公共js-----------------------------------
@@ -4124,7 +4016,7 @@ export default {
   margin-right: 32px !important;
 }
 .mgr34 {
-  margin-right: 34px !important;
+  margin-right: 24px !important;
 }
 .mgr36 {
   margin-right: 38px !important;
@@ -4957,7 +4849,7 @@ export default {
 
 // 高危评估模块
 .riskAssessmentBox {
-  padding: 14px 24px 24px 26px;
+  padding: 14px 24px 84px 26px;
   div {
     display: inline-block;
     h3 {
@@ -5004,16 +4896,22 @@ export default {
     position: relative;
     margin-top: 16px;
     h2 {
-      font-size: 16px;
-      display: inline-block;
-      padding-right: 14px;
+   font-size: 16px;
+    display: inline-block;
+    padding-right: 14px;
+    display: block;
+    position: absolute;
+    top: -10px;
+    background: #fff;
+    z-index: 2;
+    color:#333333;
     }
     .positionWire {
       position: absolute;
       display: inline-block;
       top: 50%;
       right: 0px;
-      width: 860px;
+      width: 100%;
       height: 1px;
       background-color: black;
     }
@@ -5031,7 +4929,7 @@ export default {
       padding: 0px 5px;
       position: absolute;
       right: 28px;
-      top: 0px;
+      top: -10px;
       background-color: #fff;
       cursor: pointer;
       i {
@@ -5043,7 +4941,7 @@ export default {
     }
   }
   .basicInformationBox {
-    .partBox {
+    .partBox ,.partBox2{
       margin-top: 26px;
       width: 284px;
       .partBox_top {
@@ -5086,13 +4984,17 @@ export default {
           &.active {
             background: url("../../assets/radio_true.png") no-repeat left center;
             background-size: 16px 16px;
+          color: #68b6e7;
           }
         }
       }
     }
+    .partBox2{
+      width: 100%;
+    }
   } // 孕期合并发症选择块
   .pregnancySelectBox {
-    margin-top: 20px;
+    margin-top: 24px;
     li {
       font-size: 14px;
       color: #666666;
@@ -5107,20 +5009,24 @@ export default {
       cursor: pointer;
     }
     .selectAllBtn {
-      width: 64px;
-      height: 32px;
       line-height: 32px;
-      border-radius: 50px;
+      border-radius: 10px;
       text-align: center;
       margin-right: 14px;
-      padding: 0px;
+      padding: 4px 10px;
+    }
+    .active{
+      background-color: #68b6e7;
+      color:#fff;
+      border:none;
+
     }
   } // 添加内容块
   .contentBox {
     .lookAtallBtnBox {
       width: 100%;
       position: relative;
-      margin-top: 16px;
+      margin-top: 26px;
       h2 {
         font-size: 14px;
         display: inline-block;
@@ -5145,7 +5051,7 @@ export default {
         background-color: #cccccc;
       }
     }
-    .partBox {
+    .partBox,.partBox2{
       width: 284px;
       .topicBox {
         margin-top: 16px;
@@ -5162,9 +5068,13 @@ export default {
           &.active {
             background: url("../../assets/radio_true.png") no-repeat left center;
             background-size: 16px 16px;
+              color: #68b6e7;
           }
         }
       }
+    }
+    .partBox2{
+      width: 100%;
     }
   }
   .violetBtn {
@@ -5707,4 +5617,5 @@ export default {
 .newfileBox .el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus{
       border-color: #ccc;
 }
+
 </style>

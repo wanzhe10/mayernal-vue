@@ -111,8 +111,10 @@ export default {
       this.$api
         .login(this.ruleForm2)
         .then(res => {
+          console.log(res)
           if (res.status === "20200") {
             localStorage.setItem("mayernal-web-token", res.token);
+            localStorage.setItem("mayernal-web-highRiskGradesTable", res.highRiskGradesTable);
             localStorage.setItem("mayernal-web-userName", res.name);
             localStorage.setItem("mayernal-web-loginName", res.userName);
             self.$router.push({ name: "management" });

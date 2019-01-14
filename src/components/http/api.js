@@ -117,17 +117,13 @@ export default function $axios(options) {
         }
  
         // 根据返回的code值来做不同的处理
-        switch (data.rc) {
-          case 1:
-            console.log(data.desc)
+        switch (data.status) {
+          case "20250":
+           router.push('/')
             break;
-          case 0:
-            store.commit('changeState')
-            // console.log('登录成功')
-            break;
-           case 20250:
-            //  store.commit('changeState')
-           console.log('未登录')
+          //  case "20250":
+          //   //  store.commit('changeState')
+          //  console.log('未登录')
            default:
         }
         // 若不是正确的返回code，且已经登录，就抛出错误
