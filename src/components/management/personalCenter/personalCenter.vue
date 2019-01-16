@@ -676,7 +676,7 @@ export default {
       console.log("新增高危记录");
     },
     recordNewsBtn() {
-      console.log("新增复检记录");
+      window.localStorage.setItem('mayernal-web-recordNum',this.examineNum);
     },
     fortyTwoDayBtn() {
       console.log("新增产后42天");

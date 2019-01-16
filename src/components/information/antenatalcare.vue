@@ -685,6 +685,8 @@ export default {
       this.$confirm("确认关闭？")
         .then(_ => {
           done();
+          this.allowSliding();
+
         })
         .catch(_ => {});
     },
@@ -692,6 +694,8 @@ export default {
       this.$confirm("确认关闭？")
         .then(_ => {
           done();
+          this.allowSliding();
+
         })
         .catch(_ => {});
     },

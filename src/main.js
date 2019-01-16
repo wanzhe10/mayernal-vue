@@ -16,6 +16,7 @@ import api from './components/http/index'
 import Print from 'vue-print-nb'
 Vue.use(Print); //注册
  import echarts from 'echarts'
+Vue.use(echarts)
 Vue.use(api)
 Vue.use(Element);
 Vue.use(VueAreaLinkage);

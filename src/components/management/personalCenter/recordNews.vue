@@ -4,270 +4,482 @@
       <div class="recordNewsBox_tittle clearfix">
         <h2>新增复检记录</h2>
         <p class="fl fortyTwoTittle_left">
-          <span class="fake">检查日期：<i>2018-11-11</i></span>
-          <span>复健次数：<i>2次</i></span>
+          <span class="fake">检查日期：<i v-model="reviewOfNew.checkDate">{{reviewOfNew.checkDate}}</i></span>
+          <span>复健次数：<i>{{examineNum}}次</i></span>
         </p>
         <p class="fr"><span>操作医生：<i class="doctorName">周晓晓</i></span></p>
       </div>
-      <div class="pregnantNewsBox">
-        <div class="mgr70">
-          <h3>孕周（必填）</h3>
-          <div class="separateBox">
-            <input type="text" class="" placeholder="孕周">
-            <input type="text" class="" placeholder="孕天">
-          </div>
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70">
-          <h3>当前体重（kg）</h3>
-          <input type="text" class="pregnantPhone" placeholder="请输入当前体重">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr0">
-          <h3>血压（mmHg）</h3>
-          <div class="separateBox">
-            <input type="text" class="" placeholder="低压">
-            <input type="text" class="" placeholder="高压">
-          </div>
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70">
-          <h3>宫高（cm）</h3>
-          <input type="tel" class="" placeholder="请输入宫高">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <div class="mgr70">
-          <h3>腹围（cm）</h3>
-          <input type="tel" class="" placeholder="请输入腹围">
-          <p class="redFont">此项为必填项！</p>
-        </div>
-        <!-- </div> -->
-        <div class="wire"></div>
-        <!-- <div class="recordNewSelectBox"> -->
-        <div class="mgr70">
-          <h3>胎方位</h3>
-          <el-select v-model="marryTypeeModel" placeholder="请选择">
-            <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr70">
-          <h3>先露</h3>
-          <el-select v-model="marryTypeeModel" placeholder="请选择">
-            <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr0">
-          <h3>胎心率</h3>
-          <el-select v-model="marryTypeeModel" placeholder="请选择">
-            <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr70">
-          <h3>衔接</h3>
-          <el-select v-model="marryTypeeModel" placeholder="请选择">
-            <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr70">
-          <h3>尿蛋白</h3>
-          <el-select v-model="marryTypeeModel" placeholder="请选择">
-            <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="mgr0">
-          <h3>浮肿</h3>
-          <el-select v-model="marryTypeeModel" placeholder="请选择">
-            <el-option v-for="item in marryType" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <div class="wire"></div>
-        <p style="margin-top:24px;margin-bottom:12px;"><i style='color:red;margin-right:5px;'>*</i>预约下次日期</p>
-        <div class="bindingBox">
+      <el-form
+        :model="reviewOfNew"
+        :rules="rules"
+        ref="reviewOfNew"
+        label-position='top'
+        label-width="100px"
+        :hide-required-asterisk='true'
+      >
+        <div class="pregnantNewsBox clearfix">
 
-          <input type="text" class="pregnantFN" placeholder="请输入年月日">
-          <div class="bindingBtn" @click="dialogVisible = true">预约记录</div>
-        </div>
-        <span class="recordNewsFont"><i>第二次产检</i>|<i>孕13-4周</i></span>
-      </div>
-      <div class="wire"></div>
+          <div class="mgr70">
+            <el-form-item
+              label="孕周（必填）"
+              prop="gestationalWeek"
+              autocomplete="off"
+            >
+              <el-input
+                type="number"
+                min='18'
+                max='50'
+                class="gestationalWeek"
+                placeholder="请输入孕周"
+                v-model="reviewOfNew.gestationalWeek"
+              > </el-input>
+            </el-form-item>
+          </div>
+          <div class="mgr70">
+            <el-form-item
+              label="当前体重（kg）"
+              prop="bodyWeight"
+            >
+              <el-input
+                type="bodyWeight"
+                class="pregnantPhone"
+                placeholder="请输入当前体重"
+                v-model.number="reviewOfNew.bodyWeight"
+              >
+              </el-input>
+            </el-form-item>
+          </div>
+          <div class="mgr74">
+            <p
+              slot="label"
+              style="height:34px;line-height:34px; color: #666666; display:block;"
+            >血 压（mmHg）</p>
+            <div class="bloodBox">
+              <div class="lowTension">
+                <el-form-item prop="bloodPressureLow">
+                  <el-input
+                    type="bloodPressureLow"
+                    placeholder="低压"
+                    v-model.number="reviewOfNew.bloodPressureLow"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="hyperpiesia">
+                <el-form-item prop="bloodPressureHigh">
+                  <el-input
+                    type="bloodPressureHigh"
+                    placeholder="高压"
+                    v-model.number="reviewOfNew.bloodPressureHigh"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+          </div>
+          <div class="mgr70">
+            <el-form-item
+              label="宫高"
+              prop="highPalace"
+            >
+              <el-input
+                type="highPalace"
+                class="pregnantWeight"
+                placeholder="请输入宫高"
+                v-model.number="reviewOfNew.highPalace"
+              >
+              </el-input>
+            </el-form-item>
+          </div>
+          <div class="mgr70">
+            <el-form-item
+              label="腹围"
+              prop="abdominalGirth"
+            >
+              <el-input
+                type="abdominalGirth"
+                class="pregnantWeight"
+                placeholder="请输入腹围"
+                v-model.number="reviewOfNew.abdominalGirth"
+              >
+              </el-input>
+            </el-form-item>
+          </div>
+          <div class="wire"></div>
+          <div class="mgr70">
+            <el-form-item
+              label="胎方位"
+              prop="position"
+            >
+              <el-select
+                v-model="reviewOfNew.position"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in position"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div class="mgr70">
+            <el-form-item
+              label="先露"
+              prop="presentation"
+            >
+              <el-select
+                v-model="reviewOfNew.presentation"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in presentation"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div class="mgr0">
+            <el-form-item
+              label="胎心率"
+              prop="cardiac"
+            >
+              <el-select
+                v-model="reviewOfNew.cardiac"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in cardiac"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div class="mgr70">
+            <el-form-item
+              label="衔接"
+              prop="cohesion"
+            >
+              <el-select
+                v-model="reviewOfNew.cohesion"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in cohesion"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
 
-      <div>
-        <div class="importDatabase1">
-          <span>自觉不适</span>
-          <i class="joinIco"></i>
-          <span>导入模板</span>
+          </div>
+          <div class="mgr70">
+            <el-form-item
+              label="尿蛋白"
+              prop="urineProtein"
+            >
+              <el-select
+                v-model="reviewOfNew.urineProtein"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in urineProtein"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div class="mgr0">
+            <el-form-item
+              label="浮肿"
+              prop="edema"
+            >
+              <el-select
+                v-model="reviewOfNew.edema"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in edema"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <el-form-item>
+            <el-button
+              type="primary"
+              @click="submitForm('reviewOfNew')"
+            >立即创建</el-button>
+          </el-form-item>
+          <div class="wire"></div>
+          <div
+            class="clearfix"
+            style="height:120px; "
+          >
+            <p style="margin-top:24px;margin-bottom:12px; display:block; color:#666666;"><i style='color:red;margin-right:5px;'>*</i>预约下次日期</p>
+            <el-form-item prop="makeAppointmentTime">
+              <div
+                class="bindingBox"
+                @click="dialogVisible = true"
+              >
+                <div
+                  class="bindingBoxTime"
+                  v-model="reviewOfNew.makeAppointmentTime"
+                >{{reviewOfNew.makeAppointmentTime}}</div>
+                <div class="bindingBtn">预约记录</div>
+              </div>
+            </el-form-item>
+            <span class="recordNewsFont"><i>{{pcCheckCellsBean.name}}</i>|<i>孕{{pcCheckCellsBean.gestationalWeekStart}}-{{pcCheckCellsBean.gestationalWeekEnd}}周</i></span>
+          </div>
         </div>
-        <input type="text" class="malaise">
-      </div>
-      <div>
-        <div class="importDatabase1">
-          <span>指导处理意见</span>
-          <i class="joinIco2"></i>
-          <span>导入模板</span>
+        <div class="wire"></div>
+        <div class="malaiseBox">
+          <div class="importDatabase1">
+            <span>自觉不适</span>
+            <i class="joinIco"></i>
+            <span>导入模板</span>
+          </div>
+          <el-form-item prop="malaise">
+            <el-input
+              type="textarea"
+              autosize
+              v-model="reviewOfNew.malaise"
+              style='width:930px; border-bottom:1px solid #a7a7a7; height: 34px;line-height:34px;'
+            ></el-input>
+          </el-form-item>
         </div>
-        <input type="text" class="guideTheProcessing">
-      </div>
-      <!-- 图片上传 -->
-      <div class="imageUploadBox">
-        <span>检查结果</span>
-        <i>注：请您不要上传模糊图，影响检查结果，最多上传不得超过20张</i>
-        <div class="imageBox">
+        <div>
+          <div class="importDatabase1">
+            <span>指导处理意见</span>
+            <i class="joinIco2"></i>
+            <span>导入模板</span>
+          </div>
+          <el-form-item prop="guideTheProcessing">
+            <el-input
+              type="textarea"
+              autosize
+              v-model="reviewOfNew.guideTheProcessing"
+              style='width:930px; border-bottom:1px solid #a7a7a7; height: 34px;line-height:34px;'
+            ></el-input>
+          </el-form-item>
         </div>
-      </div>
+        <!-- 图片上传 -->
+        <div class="imageUploadBox">
+          <span>检查结果</span>
+          <i>注：请您不要上传模糊图，影响检查结果，最多上传不得超过20张</i>
+          <div class="imageBox">
+            <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :multiple='true'
+              :auto-upload='false'
+              :limit='20'
+              :on-change='changeUpload'
+              :http-request='imgFinshBtn'
+              :on-remove="handleRemove"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload>
+          </div>
+
+          <el-dialog
+            :visible.sync="dialogVisibleImg"
+            :show-close='false'
+          >
+            <img
+              width="100%"
+              :src="dialogImageUrl"
+              alt=""
+            >
+          </el-dialog>
+        </div>
+      </el-form>
+
     </div>
 
     <div class="BtnBox clearfix">
-      <input type="button" value="放弃本次编辑" class="abandonBtn">
-      <input type="button" value="完 成" class="finishBtn">
+      <input
+        type="button"
+        value="放弃本次编辑"
+        class="abandonBtn"
+      >
+      <input
+        type="button"
+        value="完 成"
+        class="finishBtn"
+        @click="patientSecondCheckInsert"
+      >
     </div>
 
     <!-- // 预约下次时间弹框 -->
-    <el-dialog :visible.sync="dialogVisible" width="1010px" :before-close="handleClose">
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="1010px"
+      :before-close="handleClose"
+      custom-class='dialogVisibleClass'
+      @opened='banSliding'
+      @closed='allowSliding'
+      :show-close='false'
+    >
       <div class="appointmentLayer clearfix">
         <div class="fl appointmentLayer_left">
-          <p>选择下次预约时间</p>
+          <p style="margin-bottom: 20px;">选择下次预约时间</p>
+          <Calendar
+            v-on:choseDay="clickDay"
+            v-on:changeMonth="changeDate"
+          ></Calendar>
+
         </div>
         <div class="fr  appointmentLayer_rigth">
-          <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="正常复检" name="normal">
+          <el-tabs
+            v-model="activeName"
+            @tab-click="handleClick"
+          >
+            <el-tab-pane
+              label="正常复检"
+              name="normal"
+            >
               <div class="reviewNumBox">
-                <el-carousel arrow="hover" :autoplay="false" height="150px">
-                  <el-carousel-item>
-                    <ul class="clearfix reviewNum">
-                      <li>
-                        <p>第一次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第二次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第三次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第四次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第五次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第六次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第七次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第八次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第九次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第十次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                    </ul>
-
-                  </el-carousel-item>
-                  <el-carousel-item>
-                    <ul class="clearfix reviewNum">
-                      <li>
-                        <p>第一次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第二次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第三次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第四次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第五次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第六次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第七次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第八次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第九次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                      <li>
-                        <p>第十次复检</p>
-                        <span>孕3+14周</span>
-                      </li>
-                    </ul>
-                  </el-carousel-item>
-                </el-carousel>
+                <ul class="clearfix reviewNum">
+                  <li
+                    v-for="(item,index) in pcCheckForWeekBeanList"
+                    @click="toggleClass(index)"
+                    :class="{active:index==clickActive} "
+                  >
+                    <p>{{item.name}}</p>
+                    <span>孕{{item.gestationalWeekStart}}-{{item.gestationalWeekEnd}}周</span>
+                  </li>
+                </ul>
               </div>
               <div class="wier">
               </div>
               <div class="normalRecheckCtant">
                 <h3>产检项目</h3>
-                <textarea>建立妊娠保健手册、确定孕周、推算预产期、评估妊娠高危因素，血压、体重指数、胎心率、血常规
-                  血型（ABO和Rh）、空腹血糖、刚功能和肾功能、乙型肝炎病毒表面抗原、梅毒螺旋
-                  体、HIV筛查、心电图</textarea>
+                <textarea>{{pcCheckCellsBean.checkDetail}}</textarea>
               </div>
               <div class="dotted"></div>
               <div class="normalRecheckCtant">
                 <h3>温馨提示</h3>
-                <textarea name="" id="" style="height:74px;">第3次产检，最重要的项目是B超胎儿畸形筛查，在孕期20周做超声波检查，主要是看胎儿外观发育上
-                  是否有较大问，医生会仔细量胎儿的头围、腹围、看大腿骨长度及检查脊柱是否有先天性异常。如果
-                  准妈妈照的是思维彩超，还可以看到宝宝的实时面部表情呢。照彩超之前，准妈妈要做的是保持平和
-                  的心态，如果过于紧张会影响胎儿的活动呢</textarea>
+                <textarea
+                  name=""
+                  id=""
+                  style="height:74px;"
+                >{{pcCheckCellsBean.remarks}}</textarea>
               </div>
             </el-tab-pane>
-            <el-tab-pane label="异常复检" name="abnormal" class="abnormalRecheckBox clearfix">
+            <el-tab-pane
+              label="异常复检"
+              name="abnormal"
+              class="abnormalRecheckBox clearfix"
+            >
               <span>异常名称：</span>
-              <input type="text" placeholder="请输入异常复检名称">
+              <input
+                type="text"
+                placeholder="请输入异常复检名称"
+              >
               <div class="dotted"></div>
               <span class="fl">异常备注：</span>
-              <el-input type="textarea" autosize placeholder="请输入内容" v-model="textarea2" clear="abnormalNote">
+              <el-input
+                type="textarea"
+                autosize
+                placeholder="请输入内容"
+                v-model="textarea2"
+                clear="abnormalNote"
+              >
               </el-input>
             </el-tab-pane>
           </el-tabs>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="finishiBtn"
+        >确 定</el-button>
       </span>
     </el-dialog>
- 
+
   </div>
 </template>
 <script>
+import Calendar from "vue-calendar-component";
 export default {
   data() {
+    //  体重
+    var baseWeightVerify = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请输入体重"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else if (value < 30 || value > 200) {
+        callback(new Error("体重取值范围 30 ~ 200"));
+      } else {
+        callback();
+      }
+    };
+    // 宫高
+    var obstetricsHeightVerify = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请输入宫高"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else if (value < 16 || value > 40) {
+        callback(new Error("宫高取值范围 16 ~ 40"));
+      } else {
+        callback();
+      }
+    };
+    // 腹围
+    var obstetricsAbdominalGirthVerify = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请输入腹围"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else if (value < 50 || value > 100) {
+        callback(new Error("腹围取值范围 50 ~ 100"));
+      } else {
+        callback();
+      }
+    };
+    // 预约下次日期
+    let contactRadioactiveRaysDateVerify = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请填写预约下次日期"));
+      } else {
+        callback();
+      }
+    };
+    // 血压
+    var baseBloodVerify = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("血压不能为空"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else if (value < 0 || value > 300) {
+        callback(new Error("血压取值范围 0 ~ 300"));
+      } else {
+        callback();
+      }
+    };
     return {
       // 孕妇婚姻状况
       marryType: [
@@ -284,23 +496,358 @@ export default {
           label: "其他"
         }
       ],
+      // 胎方位
+      position: [
+        {
+          value: "0",
+          label: "未填写"
+        },
+        {
+          value: "1",
+          label: "枕左前位"
+        },
+        {
+          value: "2",
+          label: "枕右横位"
+        },
+        {
+          value: "3",
+          label: "枕右前位"
+        }
+      ],
+      // 先露
+      presentation: [
+        {
+          value: "0",
+          label: "未填写"
+        },
+        {
+          value: "1",
+          label: "先头露"
+        },
+        {
+          value: "2",
+          label: "臀先露"
+        }
+      ],
+      // 胎心率
+      cardiac: [
+        {
+          value: "0",
+          label: "未填写"
+        },
+        {
+          value: "1",
+          label: "正常"
+        },
+        {
+          value: "2",
+          label: "异常"
+        }
+      ],
+      // 衔接
+      cohesion: [
+        {
+          value: "2",
+          label: "未填写"
+        },
+        {
+          value: "0",
+          label: "未衔接"
+        },
+        {
+          value: "1",
+          label: "已衔接"
+        }
+      ],
+      // 尿蛋白
+      urineProtein: [
+        {
+          value: "0",
+          label: "正常"
+        },
+        {
+          value: "1",
+          label: "+1"
+        },
+        {
+          value: "2",
+          label: "+2"
+        },
+        {
+          value: "3",
+          label: "+3"
+        }
+      ],
+      // 浮肿
+      edema: [
+        {
+          value: "0",
+          label: "无"
+        },
+        {
+          value: "1",
+          label: "轻"
+        },
+        {
+          value: "2",
+          label: "中"
+        },
+        {
+          value: "3",
+          label: "重"
+        }
+      ],
       marryTypeeModel: "",
       dialogVisible: false,
       activeName: "normal", //正常复检异常复检
-      textarea2: ""
+      textarea2: "",
+      // 复检新增数据
+      reviewOfNew: {
+        patientCenterId: "", //	centerId
+        healthCheckId: "", //	体格检查-id 档案列表可获取
+        checkDate: "", //	检查日期	展开
+        gestationalWeek: "", //	孕周-周
+        bloodPressureHigh: "", //	血压-高
+        bloodPressureLow: "", //	血压-低
+        bodyWeight: "", //	体重
+        highPalace: "", //	宫高
+        abdominalGirth: "", //	腹围
+        position: "", //	胎位	展开
+        presentation: "", //	先露	展开
+        cardiac: "", //	胎心	展开
+        cohesion: "", //	衔接	展开
+        edema: "", //	浮肿	展开
+        urineProtein: "", //	尿蛋白	展开
+        malaise: "", //	自觉不适
+        makeAppointmentTime: "", //	预约时间	展开
+        guideTheProcessing: "", //	指导处理
+        patientName: "", //	患者名称
+        name: "", //	产检须知-名称
+        number: "", //	产检须知-编号
+        checkDetail: "", //	产检须知-产检提醒
+        gestationalWeekStart: "", //	产检须知-孕周-start
+        gestationalWeekEnd: "", //	产检须知-孕周-end
+        remarks: "", //	产检须知-产检须知
+        weekId: "", //	产检须知-产检须知id
+        newAgeOfMenarche: "", //	现孕周
+        newAgeOfMenarcheDay: "" //	现孕周-天
+      },
+      rules: {
+        gestationalWeek: [
+          { required: true, message: "请输入孕周", trigger: "blur" }
+          // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+        ],
+        bodyWeight: [{ trigger: "blur", validator: baseWeightVerify }],
+        highPalace: [{ trigger: "blur", validator: obstetricsHeightVerify }],
+        abdominalGirth: [
+          { trigger: "blur", validator: obstetricsAbdominalGirthVerify }
+        ],
+        position: [
+          { required: true, message: "请选择胎方位", trigger: "change" }
+        ],
+        presentation: [
+          { required: true, message: "请选择先露", trigger: "change" }
+        ],
+        cardiac: [
+          { required: true, message: "请选择胎心率", trigger: "change" }
+        ],
+        cohesion: [
+          { required: true, message: "请选择衔接", trigger: "change" }
+        ],
+        urineProtein: [
+          { required: true, message: "请选择尿蛋白", trigger: "change" }
+        ],
+        edema: [{ required: true, message: "请选择浮肿", trigger: "change" }],
+        makeAppointmentTime: [
+          { trigger: "change", validator: contactRadioactiveRaysDateVerify }
+        ],
+        malaise: [
+          { required: true, message: "请输入自觉不适", trigger: "blur" }
+        ],
+        guideTheProcessing: [
+          { required: true, message: "请输入指导处理意见", trigger: "blur" }
+        ],
+        bloodPressureLow: [{ trigger: "blur", validator: baseBloodVerify }],
+        bloodPressureHigh: [{ trigger: "blur", validator: baseBloodVerify }]
+      },
+      dialogImageUrl: "",
+      imageUrl: "",
+      dialogVisibleImg: false,
+      myDate: "",
+      pcCheckForWeekBeanList: [], //孕检信息
+      pcCheckCellsBean: {},
+      clickActive: 0,
+      examineNum:''//复检次数
     };
   },
+  components: {
+    Calendar
+  },
+  mounted() {
+    this.getUser();
+    this.format();
+       this.examineNum = parseInt (window.localStorage.getItem('mayernal-web-recordNum'))+1;
+  },
+
   methods: {
+    // 禁止滑动
+    banSliding() {
+      document.documentElement.style.overflow = "hidden";
+    },
+    // 允许滑动
+    allowSliding() {
+      document.documentElement.style.overflow = "scroll";
+    },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then(_ => {
           done();
+          // this.allowSliding();
         })
         .catch(_ => {});
     },
     handleClick(tab, event) {
       console.log(tab, event);
-    }
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    // 图片上传
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file, fileList) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisibleImg = true;
+    },
+    imgFinshBtn(file, fileList) {
+      console.log(file, fileList);
+    },
+    // 选择图片
+    changeUpload(file, fileList) {
+      console.log(fileList);
+    },
+    // 保存按钮
+    finishBtn() {
+      this.imgFinshBtn();
+    },
+    clickDay(data) {
+      var reg = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+      let year = data.match(reg)[1];
+      let mouth = data.match(reg)[2];
+      let day = data.match(reg)[3];
+      if (mouth < 10) {
+        mouth = "0" + mouth;
+      }
+      if (day < 10) {
+        day = "0" + day;
+      }
+      console.log(year + "-" + mouth + "-" + day);
+      this.reviewOfNew.makeAppointmentTime = year + "-" + mouth + "-" + day;
+    },
+       format() {
+      let day2 = new Date();
+      day2.setTime(day2.getTime());
+      let s2 =
+        day2.getFullYear() +
+        "-" +
+        this.doubleZero(day2.getMonth() + 1) +
+        "-" +
+        this.doubleZero(day2.getDate());
+      this.reviewOfNew.checkDate = s2;
+    },
+    // 预产期 补0
+    doubleZero(num) {
+      return num < 10 ? "0" + num : num;
+    },
+    clickToday(data) {
+      console.log("跳到了本月今天", data); //跳到了本月
+    },
+    changeDate(data) {
+      console.log("左右点击切换月份", data); //左右点击切换月份
+    },
+    // 正常复检产检切换
+    toggleClass(index) {
+      this.clickActive = index;
+      this.pcCheckCellsBean = this.pcCheckForWeekBeanList[index];
+      console.log(this.pcCheckCellsBean)
+    },
+    // 孕产信息查询
+    getUser(token) {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .checkForWeekFindList({
+          token: token1
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            this.pcCheckForWeekBeanList = res.pcCheckForWeekBeanList;
+            this.pcCheckCellsBean = this.pcCheckForWeekBeanList[0];
+          }
+        })
+        .catch(error => {
+          this.$message.error("查询错误，请稍后重试");
+        });
+    },
+    finishiBtn(){
+     if (this.reviewOfNew.makeAppointmentTime == '') {
+        this.$message({
+          showClose: true,
+          message: '请选择下次预约时间',
+          type: 'error'
+        });
+     }else{
+       this.reviewOfNew.name = this.pcCheckCellsBean.name;
+       this.reviewOfNew.number = this.pcCheckCellsBean.number;
+       this.reviewOfNew.checkDetail = this.pcCheckCellsBean.checkDetail;
+       this.reviewOfNew.gestationalWeekStart = this.pcCheckCellsBean.gestationalWeekStart;
+       this.reviewOfNew.gestationalWeekEnd = this.pcCheckCellsBean.gestationalWeekEnd;
+       this.reviewOfNew.remarks = this.pcCheckCellsBean.remarks;
+       this.reviewOfNew.weekId = this.pcCheckCellsBean.id;
+       this.dialogVisible = false;
+      var tableDataParticulars = eval(
+      "(" + localStorage.getItem("tableDataParticulars") + ")"
+    );
+     this.reviewOfNew.patientName = tableDataParticulars.checkName;
+     this.reviewOfNew.patientCenterId = tableDataParticulars.id;
+     this.reviewOfNew.healthCheckId = tableDataParticulars.healthCheckId;
+     this.reviewOfNew.newAgeOfMenarche = tableDataParticulars.newAgeOfMenarche;
+     this.reviewOfNew.newAgeOfMenarcheDay = tableDataParticulars.newAgeOfMenarcheDay;
+     }
+    },
+    // // 复检记录新增
+      patientSecondCheckInsert() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+       this.reviewOfNew.makeAppointmentTime = this.reviewOfNew.makeAppointmentTime + " 10:00";
+      this.reviewOfNew.token =token1;
+      console.log(this.reviewOfNew)
+      this.$api
+        .patientSecondCheckInsert(this.reviewOfNew)
+        .then(res => {
+          console.log(res)
+          if (res.status === "20200") {
+            // self.$router.push({path:'/personalCenter'})
+          } else {
+            $message.error("新增失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("新增错误，请稍后重试");
+        });
+    },
   }
 };
 </script>
@@ -309,10 +856,10 @@ export default {
 .appointmentLayer {
   width: 980px;
   height: 500px;
-  padding: 16px;
+  // padding: 16px;
   .appointmentLayer_left {
-    width: 290px;
-    padding: 16px 20px;
+    width: 330px;
+    padding: 16px;
     background: #fff;
     height: 100%;
     background-color: #fff;
@@ -324,27 +871,47 @@ export default {
   }
   .appointmentLayer_rigth {
     width: 627px;
+    padding: 0 16px;
     background-color: #fff;
     height: 100%;
     .reviewNumBox {
+      width: 580px;
+      position: relative;
+      overflow: hidden;
+      height: 174px;
+      border: 1px solid #ccc;
+      margin-left: 10px;
+      margin-bottom: 15px;
       .reviewNum {
-        width: 580px;
         margin: auto;
-        border-left: 1px solid #ccc;
-        border-right: 1px solid #ccc;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: -17px;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        padding: 6px;
         li {
           cursor: pointer;
           float: left;
           margin: 2px 7px;
-          width: 102px;
+          width: 100px;
           height: 56px;
+          line-height: 26px;
+          text-align: center;
           background-color: #f9f9f9;
+          border-radius: 4px;
           p {
             font-size: 14px;
           }
           span {
             font-size: 12px;
           }
+        }
+        .active {
+          background-color: #68b6e7;
+          color: #fff;
         }
         li:nth-child(5n) {
           margin-right: 0px;
@@ -499,7 +1066,8 @@ export default {
       // 孕妇基本信息块
       div {
         // margin-right: 70px;
-        display: inline-block;
+        // display: inline-block;
+        float: left;
         h3 {
           font-size: 14px;
           color: #666666;
@@ -537,18 +1105,20 @@ export default {
       }
       // 绑定卡号
       .bindingBox {
-        width: 252px;
+        // width: 252px;
         line-height: 40px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        input {
+        .bindingBoxTime {
           width: 154px;
-          border: none;
+          height: 40px;
+          padding-left: 30px;
+          cursor: pointer;
         }
         .bindingBtn {
           cursor: pointer;
           height: 40px;
-          width: 92px;
+          width: 90px;
           background-color: #f6f6f6;
           color: #333333;
           font-size: 14px;
@@ -559,6 +1129,7 @@ export default {
       }
     }
     .recordNewsFont {
+      line-height: 40px;
       margin-left: 6px;
       i {
         margin: 0 10px;
@@ -620,53 +1191,78 @@ export default {
         margin-left: 12px;
       }
       .imageBox {
-        background-color: #ccc;
         width: 100%;
-        height: 100px;
         margin-top: 22px;
       }
     }
-  
   }
-    .BtnBox {
-      height: 78px;
-      margin-top: 20px;
-      box-shadow: 0px -4px 8px 0px rgba(51, 51, 51, 0.08);
-      .finishBtn,
-      .abandonBtn {
-        margin-top: 18px;
-        width: 187px;
-        height: 42px;
-        border-radius: 4px;
-        font-size: 14px;
-      }
-      .finishBtn {
-        background-color: #68b6e7;
-        color: #ffffff;
-        float: right;
-        margin-right:30px;
-      }
-      .abandonBtn {
-        background-color: #e0e0e0;
-        color: #878787;
-        float: left;
-        margin-left: 80px;
-      }
+  .BtnBox {
+    height: 78px;
+    margin-top: 20px;
+    box-shadow: 0px -4px 8px 0px rgba(51, 51, 51, 0.08);
+    .finishBtn,
+    .abandonBtn {
+      margin-top: 18px;
+      width: 187px;
+      height: 42px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
     }
+    .finishBtn {
+      background-color: #68b6e7;
+      color: #ffffff;
+      float: right;
+      margin-right: 30px;
+    }
+    .abandonBtn {
+      background-color: #e0e0e0;
+      color: #878787;
+      float: left;
+      margin-left: 80px;
+    }
+  }
+}
+.bloodBox {
+  width: 260px;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  .lowTension,
+  .hyperpiesia {
+    float: left;
+  }
+  .lowTension {
+    border-right: 1px solid #ccc;
+  }
 }
 </style>
 <style lang="less">
+.dialogVisibleClass {
+  background-color: #f9f9f9;
+}
 .el-select-dropdown__item.selected {
   color: #68b6e7;
 }
 /* // 孕妇基本信息组件样式修改 */
 .recordNewsBox .el-input__inner {
   width: 260px;
-  border-radius: 8px;
+  border-radius: 4px;
   border-color: #ccc;
-  background-color: #f6f6f6;
 }
 .recordNewsBox {
+  .el-dialog__header {
+    padding: 0px;
+  }
+  .el-dialog__body {
+    padding: 15px;
+  }
+  .el-select {
+    .el-input__inner {
+      background-color: #f6f6f6;
+    }
+  }
   #recordNewsBox_top {
     .el-tabs__nav-scroll {
       height: 47px;
@@ -674,9 +1270,7 @@ export default {
       background-color: #fff;
       color: #333333;
     }
-    .el-tabs__item.is-active {
-      color: #68b6e7;
-    }
+
     .el-tabs__item:hover {
       color: #68b6e7;
       cursor: pointer;
@@ -758,6 +1352,49 @@ export default {
         color: #fff;
       }
     }
+    .bloodBox {
+      .el-input__inner {
+        width: 128px;
+        border-radius: 4px;
+        border: none;
+        height: 34px;
+      }
+      .el-form-item {
+        margin-bottom: 0px;
+      }
+    }
+
+    .bindingBox {
+      .el-date-editor.el-input,
+      .el-date-editor.el-input__inner {
+        width: 154px;
+      }
+      .el-form-item {
+        margin-bottom: 0px;
+      }
+      .el-input__inner {
+        width: 154px;
+        border: none;
+      }
+    }
+    .malaiseBox .el-textarea__inner {
+      height: 32px;
+      line-height: 32px;
+    }
+  }
+  .el-tabs__item.is-active {
+    color: #68b6e7;
+  }
+  .el-button--primary {
+    background-color: #68b6e7;
+    border: none;
+  }
+  .el-tabs__active-bar {
+    background-color: #68b6e7;
+  }
+  .el-form--label-top .el-form-item__label {
+    height: 34px;
+    line-height: 34px;
   }
 }
 </style>

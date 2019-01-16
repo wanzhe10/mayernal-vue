@@ -295,11 +295,26 @@ export const patientSecondCheckFindListByCenterId = data => {
     data
   })
 }
-
+// 复检记录新增
+export const patientSecondCheckInsert = data => {
+  return axios({
+    url: 'v1/web/pc/patientSecondCheck/insert',
+    method: 'post',
+    data
+  })
+}
 // 高危评估记录-查询
 export const patientHighRiskGradeFindList = data => {
   return axios({
     url: 'v1/web/pc/patientHighRiskGrade/findList',
+    method: 'post',
+    data
+  })
+}
+// 高危评估记录-新增
+export const patientHighRiskGradeInsert = data => {
+  return axios({
+    url: 'v1/web/pc/patientHighRiskGrade/insert',
     method: 'post',
     data
   })
@@ -498,6 +513,8 @@ export default {
   patientParturitionDetailUpdateForFiling,
   patientHealthCheckInsertForFiling,
   patientHealthCheckUpdateForFiling,
-  highRiskGradeTemplateDetailFindTreeList
+  highRiskGradeTemplateDetailFindTreeList,
+  patientSecondCheckInsert,
+  patientHighRiskGradeInsert
 
 }

@@ -1330,7 +1330,6 @@
                       ></el-input>
                     </el-form-item>
                   </div>
-
                 </div>
               </div>
 
@@ -1788,8 +1787,6 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <h3></h3>
-
             </div>
             <div
               class="wire"
@@ -1855,185 +1852,207 @@
           </el-form>
         </div>
       </el-tab-pane>
-        <el-tab-pane
+      <el-tab-pane
         label="高危评估"
-        name="fifth">
+        name="fifth"
+      >
         <!-- 高危评估模块 -->
         <div class="riskAssessmentBox">
-          <span>项目类型</span>
-          <div class="mgl10">
-            <el-select
-              v-model="projectTypeModel1"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in projectType1"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+          <div class="riskAssessmentBoxTop">
+            <span>项目类型</span>
+            <div class="mgl10">
+              <el-select
+                v-model="projectTypeModel1"
+                placeholder="请选择"
+                @change="projectTypeModel1Select"
+                clearable
               >
-              </el-option>
-            </el-select>
-          </div>
-          <div class="mgl24">
-            <el-select
-              v-model="projectTypeModel2"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in projectType2"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                <el-option
+                  v-for="item in projectType1"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </div>
+            <div class="mgl24">
+              <el-select
+                v-model="projectTypeModel2"
+                placeholder="请选择"
               >
-              </el-option>
-            </el-select>
-          </div>
-          <span class="mgl174">历史评估记录</span>
-          <div class="mgl10">
-            <el-select
-              v-model="historyAssessModel"
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in historyAssess"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                <el-option
+                  v-for="item in projectType2"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </div>
+            <span class="mgl174">历史评估记录</span>
+            <div class="mgl10">
+              <el-select
+                v-model="historyAssessModel"
+                placeholder="请选择"
               >
-              </el-option>
-            </el-select>
+                <el-option
+                  v-for="item in historyAssess"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </div>
+            <input
+              type="button"
+              value="套用"
+              class="useBtn mgl16"
+            >
           </div>
-          <input
-            type="button"
-            value="套用"
-            class="useBtn mgl16"
-          >
+
           <div class="wire"></div>
           <!-- 基本情况 -->
           <div v-for="(item,index) in highRiskGradeCatalogueBeanList">
-                   <div class="lookAtallBtnBox">
-            <h2>{{item.details}}</h2>
-            <div class="positionWire"></div>
-            <div
-              class="basicLookAtallBtn"
-               @click="toggle1(index)"
-               
-              :key="index"
+            <div class="lookAtallBtnBox">
+              <h2>{{item.details}}</h2>
+              <div class="positionWire"></div>
+              <div
+                class="basicLookAtallBtn"
+                @click="toggle1(index)"
+                :key="index"
               >
 
-              <span>查看全部</span>
-              <i
-                class="el-icon-arrow-down"
-                v-show="downIcon"
-              ></i>
-              <i
-                class="el-icon-arrow-up"
-                v-show="!downIcon"
-              ></i>
+                <span>查看全部</span>
+                <i
+                  class="el-icon-arrow-down"
+                  v-show="downIcon"
+                ></i>
+                <i
+                  class="el-icon-arrow-up"
+                  v-show="!downIcon"
+                ></i>
+              </div>
             </div>
-          </div>
-          <!-- 基本信息隐藏藏快 -->
-          <el-collapse-transition>
-            <div
-              class="basicInformationBox" 
+            <!-- 基本信息隐藏藏快 -->
+
+            <el-collapse-transition>
+              <div
+                class="basicInformationBox"
+                :id="'template'+index"
               >
-           <div>
-               <ul class="pregnancySelectBox" v-show="item.number ==2">
-             <li  class="selectAllBtn"  v-for="(item3,index) in assessArr"  @click="selectAllBtnClick(item3,index)" :class="{active:index ==isActive}">{{item3.details}}</li>
-           </ul>
-           </div>
-              <div class="partBox mgr34" v-show='item.number != 4'>
-                <div class="partBox_top">
-                  <i>5</i>
-                  <span class="fen">分</span>
-                  <span class="mgl28">黄色（一般风险）</span>
+                <div>
+                  <ul
+                    class="pregnancySelectBox"
+                    v-show="item.number ==2"
+                  >
+                    <li
+                      class="selectAllBtn"
+                      v-for="(item3,index) in assessArr"
+                      @click="selectAllBtnClick(item3,index)"
+                      :class="{active:index ==isActive}"
+                    >{{item3.details}}</li>
+                  </ul>
                 </div>
-                <div class="fivepartBox topicBox">
-                  <a
-                    href="javascript:;"
-                    v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
-                    @click="assessDataBtn(items,index)"
-                    :class="{'active':items.active}"
-                    class="topicItem"
-                    v-show='items.cellGrades ==5'
-                  >{{items.cellDetails}}</a>
+                <div
+                  class="partBox mgr34"
+                  v-show='item.number != 4'
+                >
+                  <div class="partBox_top">
+                    <i>5</i>
+                    <span class="fen">分</span>
+                    <span class="mgl28">黄色（一般风险）</span>
+                  </div>
+                  <div class="fivepartBox topicBox">
                     <a
-                    href="javascript:;"
-                    v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
-                    @click="assessDataBtn(item4,index)"
-                    :class="{'active':item4.active}"
-                    class="topicItem"
-                    v-show='item4.cellGrades ==5 && item.number == 2'
-                  >{{item4.cellDetails}}</a>
-                </div>
-              </div>
-              <div class="partBox mgr34">
-                <div class="partBox_top" v-show='item.number != 4'>
-                  <i>10</i>
-                  <span class="fen">分</span>
-                  <span class="mgl28">橙色（较高风险）</span>
-                </div>
-                <div class="tenpartBox topicBox">
-                <a
-                    href="javascript:;"
-                    v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
-                    @click="assessDataBtn(items,index)"
-                    :class="{'active':items.active}"
-                    class="topicItem"
-                    v-show='items.cellGrades ==10'
-                  >{{items.cellDetails}}</a>
-                     <a
-                    href="javascript:;"
-                    v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
-                    @click="assessDataBtn(item4,index)"
-                    :class="{'active':item4.active}"
-                    class="topicItem"
-                    v-show='item4.cellGrades ==10 && item.number == 2'
-                  >{{item4.cellDetails}}</a>
-                </div>
-              </div>
-              <div class="partBox" v-show='item.number != 4'>
-                <div class="partBox_top">
-                  <i>20</i>
-                  <span class="fen">分</span>
-                  <span class="mgl28">红色（高风险）</span>
-                </div>
-                <div class="twentypartBox topicBox">
+                      href="javascript:;"
+                      v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(items,index)"
+                      :class="{'active':items.active}"
+                      class="topicItem"
+                      v-show='items.cellGrades ==5'
+                    >{{items.cellDetails}}</a>
                     <a
-                    href="javascript:;"
-                    v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
-                    @click="assessDataBtn(items,index)"
-                    :class="{'active':items.active}"
-                    class="topicItem"
-                    v-show='items.cellGrades ==20'
-                  >{{items.cellDetails}}</a>
-                     <a
-                    href="javascript:;"
-                    v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
-                    @click="assessDataBtn(item4,index)"
-                    :class="{'active':item4.active}"
-                    class="topicItem"
-                    v-show='item4.cellGrades ==20 && item.number == 2'
-                  >{{item4.cellDetails}}</a>
+                      href="javascript:;"
+                      v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(item4,index)"
+                      :class="{'active':item4.active}"
+                      class="topicItem"
+                      v-show='item4.cellGrades ==5 && item.number == 2'
+                    >{{item4.cellDetails}}</a>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </el-collapse-transition>
-
-              <div  v-show='item.number == 4'>
-                <div class="topicBox">
+                <div class="partBox mgr34">
+                  <div
+                    class="partBox_top"
+                    v-show='item.number != 4'
+                  >
+                    <i>10</i>
+                    <span class="fen">分</span>
+                    <span class="mgl28">橙色（较高风险）</span>
+                  </div>
+                  <div class="tenpartBox topicBox">
                     <a
-                    href="javascript:;"
-                    v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
-                    @click="assessDataBtn(items,index)"
-                    :class="{'active':items.active}"
-                  >{{items.cellDetails}}</a>
+                      href="javascript:;"
+                      v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(items,index)"
+                      :class="{'active':items.active}"
+                      class="topicItem"
+                      v-show='items.cellGrades ==10'
+                    >{{items.cellDetails}}</a>
+                    <a
+                      href="javascript:;"
+                      v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(item4,index)"
+                      :class="{'active':item4.active}"
+                      class="topicItem"
+                      v-show='item4.cellGrades ==10 && item.number == 2'
+                    >{{item4.cellDetails}}</a>
+                  </div>
+                </div>
+                <div
+                  class="partBox"
+                  v-show='item.number != 4'
+                >
+                  <div class="partBox_top">
+                    <i>20</i>
+                    <span class="fen">分</span>
+                    <span class="mgl28">红色（高风险）</span>
+                  </div>
+                  <div class="twentypartBox topicBox">
+                    <a
+                      href="javascript:;"
+                      v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(items,index)"
+                      :class="{'active':items.active}"
+                      class="topicItem"
+                      v-show='items.cellGrades ==20'
+                    >{{items.cellDetails}}</a>
+                    <a
+                      href="javascript:;"
+                      v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(item4,index)"
+                      :class="{'active':item4.active}"
+                      class="topicItem"
+                      v-show='item4.cellGrades ==20 && item.number == 2'
+                    >{{item4.cellDetails}}</a>
+                  </div>
+                </div>
+                <div v-show='item.number == 4'>
+                  <div class="topicBox">
+                    <a
+                      href="javascript:;"
+                      v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(items,index)"
+                      :class="{'active':items.active}"
+                    >{{items.cellDetails}}</a>
+                  </div>
                 </div>
               </div>
+            </el-collapse-transition>
 
           </div>
-   
 
           <div class="flaxBox">
             <div class="flaxBoxPart">
@@ -2054,7 +2073,7 @@
         </div>
 
       </el-tab-pane>
-  
+
       <el-tab-pane
         label="检查确认"
         name="sixth"
@@ -2091,7 +2110,7 @@
           <h1 class="operator">操作人：<span>周晓晓</span></h1>
         </div>
       </el-tab-pane>
-   
+
     </el-tabs>
   </div>
 </template>
@@ -2267,11 +2286,11 @@ export default {
     };
 
     return {
-      show3:true,
-      topicArr:[], // 孕产期合并症x选项数组
-      isActive:0, //孕产期合并症 选项切换
-      highRiskGradeCatalogueBeanList:[], //高危所有数组
-      assessArr:[], //  孕产期合并症数组
+      show3: true,
+      topicArr: [], // 孕产期合并症x选项数组
+      isActive: 0, //孕产期合并症 选项切换
+      highRiskGradeCatalogueBeanList: [], //高危所有数组
+      assessArr: [], //  孕产期合并症数组
       activeName: "fifth", // first、second、third、fourth、fifth、sixth
       drinks: 0, //配偶一般信息饮酒显示隐藏
       tab: 1,
@@ -2289,13 +2308,13 @@ export default {
       maternalId: "", //孕检信息id
       healthCheckId: "", //体格检查id
       buttonShow: true, //基本信息按钮
-      buttonHide: false,//基本信息按钮
-       buttonShow1: true, //配偶信息按钮
-      buttonHide1: false,//配偶信息按钮
-       buttonShow2: true, //产检信息按钮
-      buttonHide2: false,//产检信息按钮
-       buttonShow3: true, //体格检查按钮
-      buttonHide3: false,//体格检查按钮
+      buttonHide: false, //基本信息按钮
+      buttonShow1: true, //配偶信息按钮
+      buttonHide1: false, //配偶信息按钮
+      buttonShow2: true, //产检信息按钮
+      buttonHide2: false, //产检信息按钮
+      buttonShow3: true, //体格检查按钮
+      buttonHide3: false, //体格检查按钮
       // 孕妇基本信息证件类型
       idCardSelect: [
         {
@@ -2845,23 +2864,19 @@ export default {
       projectType1: [
         {
           value: "1",
-          label: "1"
+          label: "基本情况"
         },
         {
           value: "2",
-          label: "2"
+          label: "孕产期合并症"
         },
         {
           value: "3",
-          label: "3"
+          label: "孕期并发症"
         },
         {
           value: "4",
-          label: "4"
-        },
-        {
-          value: "5",
-          label: "5"
+          label: "紫色"
         }
       ],
       //项目类型2
@@ -3110,7 +3125,7 @@ export default {
           { value: "年龄F" },
           { value: "年龄G" }
         ],
-         tenArr: [
+        tenArr: [
           { value: "年龄A" },
           { value: "年龄B" },
           { value: "年龄C" },
@@ -3119,7 +3134,7 @@ export default {
           { value: "年龄F" },
           { value: "年龄G" }
         ],
-         twentyArr: [
+        twentyArr: [
           { value: "年龄A" },
           { value: "年龄B" },
           { value: "年龄C" },
@@ -3128,9 +3143,8 @@ export default {
           { value: "年龄F" },
           { value: "年龄G" }
         ],
-        purpleArr:[
-
-        ]
+        purpleArr: [],
+        tempList: []
       },
       // 时间范围限制，不可选择今天以后
       pickerOptions: {
@@ -3363,22 +3377,19 @@ export default {
       return { value: item, label: item };
     });
     this.format();
-   
-     var tableDataParticulars = eval(
+
+    var tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
     );
-    if (tableDataParticulars == null || tableDataParticulars == '') {
-     return false;
-    }else{
-        this.buttonHide = true;
-        this.buttonShow = false;
-        this.checkId = tableDataParticulars.checkId;
-        this.patientCenterId = tableDataParticulars.id;
-     this.essentialInquire();
-  
+    if (tableDataParticulars == null || tableDataParticulars == "") {
+      return false;
+    } else {
+      this.buttonHide = true;
+      this.buttonShow = false;
+      this.checkId = tableDataParticulars.checkId;
+      this.patientCenterId = tableDataParticulars.id;
+      this.essentialInquire();
     }
-  
-   
   },
 
   methods: {
@@ -3714,7 +3725,7 @@ export default {
         this.doubleZero(day2.getDate());
       this.maternalInformation.firstCheckDate = s2;
     },
-    // 预产期
+    // 预产期 补0
     doubleZero(num) {
       return num < 10 ? "0" + num : num;
     },
@@ -3883,65 +3894,56 @@ export default {
     //   ------------------------高危评估star------------------------------------
     // 基本情况点击显示隐藏
     toggle1: function(index) {
-      this.show3 = !this.show3;
-      console.log(index)
-      this.isShow1 = !this.isShow1;
+      var tempIndex = "#" + "template" + index;
+      $(tempIndex).toggle(300);
       this.downIcon = !this.downIcon;
     },
-    // // 孕期合并发症显示隐藏
-    // toggle2: function() {
-    //   this.isShow2 = !this.isShow2;
-    //   this.downIcon2 = !this.downIcon2;
-    // },
-    // // 紫色显示隐藏
-    // toggle3: function() {
-    //   this.isShow3 = !this.isShow3;
-    //   this.downIcon3 = !this.downIcon3;
-    // },
     assessDataBtn(item, index) {
-      console.log(index)
+      console.log(index);
       if (item.active) {
         Vue.set(item, "active", false); //为item添加不存在的属性，需要使用vue提供的Vue.set( object, key, value )方法。
       } else {
         Vue.set(item, "active", true);
       }
     },
-finishBtn(){
-
-},
+    finishBtn() {},
     // 孕产期合并症选项切换
-    selectAllBtnClick(item,index){
+    selectAllBtnClick(item, index) {
       this.isActive = index;
-      console.log(index)
-      console.log()
+      console.log(index);
       this.topicArr = item;
-      console.log(this.topicArr)
+      console.log(this.topicArr);
     },
- 
-      //高危评估查询
+
+    //高危评估查询
     highRiskGradeTemplateDetailFindTreeList() {
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
-      let templateIdTalbe = window.localStorage.getItem("mayernal-web-highRiskGradesTable");
+      let templateIdTalbe = window.localStorage.getItem(
+        "mayernal-web-highRiskGradesTable"
+      );
       this.$api
         .highRiskGradeTemplateDetailFindTreeList({
           token: token1,
-          templateId:templateIdTalbe
+          templateId: templateIdTalbe
         })
         .then(res => {
-          // console.log(res);
+          console.log(res)
           if (res.status === "20200") {
-         this.highRiskGradeCatalogueBeanList = res.highRiskGradeCatalogueBeanList;
-         let tempArr = this.highRiskGradeCatalogueBeanList
-      for (let i = 0; i < tempArr.length; i++) {
-         if (tempArr[i].sonList.length !== 0) {
-             this.assessArr =tempArr[i].sonList;
-             console.log(this.assessArr)
-         this.topicArr = this.assessArr[0];
-         }
-    
+                window.localStorage.setItem('highRiskGradeCatalogueBeanList',JSON.stringify(res.highRiskGradeCatalogueBeanList));
         
-      }
+            // this.tempList = res.highRiskGradeCatalogueBeanList;
+            // console.log(this.tempList);
+            // this.tempList.splice(1,3);
+            // this.highRiskGradeCatalogueBeanList = this.tempList;
+            this.highRiskGradeCatalogueBeanList =res.highRiskGradeCatalogueBeanList;
+            let tempArr = this.highRiskGradeCatalogueBeanList;
+            for (let i = 0; i < tempArr.length; i++) {
+              if (tempArr[i].sonList.length !== 0) {
+                this.assessArr = tempArr[i].sonList;
+                this.topicArr = this.assessArr[0];
+              }
+            }
           } else if (res.status === "20209") {
           }
         })
@@ -3949,35 +3951,38 @@ finishBtn(){
           this.$message.error("高危评估查询错误，请稍后重试");
         });
     },
+     projectTypeModel1Select(){
+      var lcalJson = window.localStorage.getItem('highRiskGradeCatalogueBeanList')
+       var jsonObj =  JSON.parse(lcalJson)
+        this.highRiskGradeCatalogueBeanList = jsonObj;
+            let projectTypeModel1 =this.projectTypeModel1;
+          // this.tempList =   this.highRiskGradeCatalogueBeanList;
+      if (projectTypeModel1 ==1) {
+            jsonObj.splice(1,3);
+             this.highRiskGradeCatalogueBeanList = jsonObj;
+      }else if (projectTypeModel1==2) {
+            jsonObj.splice(2,3);
+            jsonObj.shift();
+             this.highRiskGradeCatalogueBeanList = jsonObj;
+      }else if (projectTypeModel1 ==3) {
+            jsonObj.splice(0,2);
+            jsonObj.pop();
+             this.highRiskGradeCatalogueBeanList = jsonObj;
+      }else  if (projectTypeModel1 ==4){
+            jsonObj.splice(0,3);
+             this.highRiskGradeCatalogueBeanList = jsonObj;
+      }
+    },
     //   ------------------------高危评估end------------------------------------
     // ------------------------公共js-----------------------------------
-
-    // 点击teb切换在调接口
-    // handleClick(tab) {
-    //     var _val = tab.index;
-    //     if (_val == 0) {
-    //       if (this.checkId == '') {
-    //        return;
-    //       }else{
-    //       this.essentialInquire();
-    //       }
-    //     } else if (_val == 1) {
-    //         alert('2')
-    //       // this.patientHusbandsFindForFiling();
-    //     } else if (_val == 2) {
-    //         alert('3')
-    //       // this.patientParturitionDetailFindForFiling();
-    //     } else if(_val == 3) {
-    //         alert('4')
-    //         // this.patientHealthCheckFindById();
-    //     }
-    // },
 
     // 弹框右上角关闭按钮
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then(_ => {
           done();
+          this.allowSliding();
+
         })
         .catch(_ => {});
     },
@@ -4064,13 +4069,6 @@ finishBtn(){
       width: 1200px;
       background-color: #86c5ec;
       text-align: right;
-      // .basicBtn {
-      //   background-color: #f3f9fd;
-      //   width: 160px;
-      //   padding: 0px;
-      //   border: none;
-      //   margin-right: 126px;
-      // }
     }
   }
   .wire {
@@ -4850,31 +4848,34 @@ finishBtn(){
 // 高危评估模块
 .riskAssessmentBox {
   padding: 14px 24px 84px 26px;
-  div {
-    display: inline-block;
-    h3 {
-      font-size: 14px;
-      color: #666666;
-      margin: 10px 0;
-    }
-    input {
-      width: 154px;
-      height: 40px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      padding-left: 16px;
-    }
-    .redFont {
-      color: #fd4242;
-      display: none;
-    }
-    .layui-unselect,
-    .layui-form-select {
+  .riskAssessmentBoxTop {
+    div {
+      display: inline-block;
+      h3 {
+        font-size: 14px;
+        color: #666666;
+        margin: 10px 0;
+      }
       input {
-        background-color: #f6f6f6;
+        width: 154px;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding-left: 16px;
+      }
+      .redFont {
+        color: #fd4242;
+        display: none;
+      }
+      .layui-unselect,
+      .layui-form-select {
+        input {
+          background-color: #f6f6f6;
+        }
       }
     }
   }
+
   .wire {
     width: 100%;
     height: 2px;
@@ -4895,32 +4896,26 @@ finishBtn(){
     width: 100%;
     position: relative;
     margin-top: 16px;
-    h2 {
-   font-size: 16px;
-    display: inline-block;
-    padding-right: 14px;
     display: block;
-    position: absolute;
-    top: -10px;
-    background: #fff;
-    z-index: 2;
-    color:#333333;
+    height: 60px;
+    line-height: 60px;
+    h2 {
+      font-size: 16px;
+      display: inline-block;
+      padding-right: 14px;
+      display: block;
+      position: absolute;
+      top: -10px;
+      background: #fff;
+      z-index: 2;
+      color: #333333;
     }
     .positionWire {
       position: absolute;
       display: inline-block;
-      top: 50%;
+      top: 34%;
       right: 0px;
       width: 100%;
-      height: 1px;
-      background-color: black;
-    }
-    .positionWire2 {
-      position: absolute;
-      display: inline-block;
-      top: 50%;
-      right: 0px;
-      width: 830px;
       height: 1px;
       background-color: black;
     }
@@ -4941,8 +4936,11 @@ finishBtn(){
     }
   }
   .basicInformationBox {
-    .partBox ,.partBox2{
-      margin-top: 26px;
+    div {
+      display: inline-block;
+    }
+    .partBox,
+    .partBox2 {
       width: 284px;
       .partBox_top {
         padding-bottom: 10px;
@@ -4984,17 +4982,16 @@ finishBtn(){
           &.active {
             background: url("../../assets/radio_true.png") no-repeat left center;
             background-size: 16px 16px;
-          color: #68b6e7;
+            color: #68b6e7;
           }
         }
       }
     }
-    .partBox2{
+    .partBox2 {
       width: 100%;
     }
   } // 孕期合并发症选择块
   .pregnancySelectBox {
-    margin-top: 24px;
     li {
       font-size: 14px;
       color: #666666;
@@ -5015,43 +5012,46 @@ finishBtn(){
       margin-right: 14px;
       padding: 4px 10px;
     }
-    .active{
+    .active {
       background-color: #68b6e7;
-      color:#fff;
-      border:none;
-
+      color: #fff;
+      border: none;
     }
   } // 添加内容块
   .contentBox {
-    .lookAtallBtnBox {
-      width: 100%;
-      position: relative;
-      margin-top: 26px;
-      h2 {
-        font-size: 14px;
-        display: inline-block;
-        padding-right: 14px;
-      }
-      .positionWire {
-        position: absolute;
-        display: inline-block;
-        top: 50%;
-        right: 0px;
-        width: 860px;
-        height: 1px;
-        background-color: black;
-      }
-      .positionWire2 {
-        position: absolute;
-        display: inline-block;
-        top: 50%;
-        right: 0px;
-        width: 830px;
-        height: 1px;
-        background-color: #cccccc;
-      }
-    }
-    .partBox,.partBox2{
+    // .lookAtallBtnBox {
+    //   width: 100%;
+    //   position: relative;
+    //   margin-top: 26px;
+    //    height: 60px;
+    // line-height: 60px;
+    // display: block;
+    //   h2 {
+    //     font-size: 14px;
+    //     display: inline-block;
+    //     padding-right: 14px;
+    //   }
+    //   .positionWire {
+    //     position: absolute;
+    //     display: inline-block;
+    //     top: 34%;
+    //     right: 0px;
+    //     width: 860px;
+    //     height: 1px;
+    //     background-color: black;
+    //   }
+    //   // .positionWire2 {
+    //   //   position: absolute;
+    //   //   display: inline-block;
+    //   //   top: 50%;
+    //   //   right: 0px;
+    //   //   width: 830px;
+    //   //   height: 1px;
+    //   //   background-color: #cccccc;
+    //   // }
+    // }
+    .partBox,
+    .partBox2 {
       width: 284px;
       .topicBox {
         margin-top: 16px;
@@ -5068,12 +5068,12 @@ finishBtn(){
           &.active {
             background: url("../../assets/radio_true.png") no-repeat left center;
             background-size: 16px 16px;
-              color: #68b6e7;
+            color: #68b6e7;
           }
         }
       }
     }
-    .partBox2{
+    .partBox2 {
       width: 100%;
     }
   }
@@ -5129,6 +5129,7 @@ finishBtn(){
     .flaxBoxPart {
       width: 1200px;
       background-color: #86c5ec;
+      display: inline-block;
       .totalPoints {
         position: relative;
         font-size: 24px;
@@ -5160,6 +5161,8 @@ finishBtn(){
         padding: 0px;
         border: none;
         margin-left: 60px;
+        height: 40px;
+        color: black;
       }
     }
   }
@@ -5614,8 +5617,10 @@ finishBtn(){
   margin-left: 0px;
   padding: 6px 0px;
 }
-.newfileBox .el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus{
-      border-color: #ccc;
+.newfileBox .el-form-item.is-success .el-input__inner,
+.el-form-item.is-success .el-input__inner:focus,
+.el-form-item.is-success .el-textarea__inner,
+.el-form-item.is-success .el-textarea__inner:focus {
+  border-color: #ccc;
 }
-
 </style>

@@ -178,7 +178,7 @@ export default {
       antenatalCareNums: [], //产检次数列表
       showActive: "0",
       compile: true, // 介绍和解释说明是否能编辑编辑
-      clickActive: -1,
+      clickActive: -0,
       types: 0 //激活状态
     };
   },
@@ -223,6 +223,8 @@ export default {
       this.$confirm("确认关闭？")
         .then(_ => {
           done();
+          this.allowSliding();
+
         })
         .catch(_ => {});
     },

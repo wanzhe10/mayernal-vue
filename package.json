@@ -32,6 +32,7 @@
     "sweet-modal-vue": "^2.0.0",
     "vue": "^2.5.2",
     "vue-area-linkage": "^5.1.0",
+    "vue-calendar-component": "^2.7.4",
     "vue-json-schema": "^1.1.1",
     "vue-print-nb": "^1.0.3",
     "vue-router": "^3.0.1",
