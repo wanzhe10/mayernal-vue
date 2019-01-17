@@ -123,12 +123,12 @@
               <el-form-item
                 label="结婚年龄（岁）"
                 prop="marryAge"
-              >
+               >
                 <el-input
-                  type="text"
+                  type="marryAge"
                   class="pregnantMarriageAge"
                   placeholder="请输入结婚年龄"
-                  v-model="essentialInformation.marryAge"
+                  v-model.number="essentialInformation.marryAge"
                 >
                 </el-input>
               </el-form-item>
@@ -381,7 +381,7 @@
               <el-form-item
                 label="结婚年龄（岁）"
                 prop="marryAge"
-              >
+             >
                 <el-input
                   type="marryAge"
                   class="pregnantMarriageAge"
@@ -2139,7 +2139,7 @@ export default {
         callback();
       }
     };
-    // 结婚年龄
+        // 结婚年龄
       let marryAgeVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("年龄不能为空"));
@@ -3189,8 +3189,8 @@ export default {
           { required: true, message: "请输入就诊卡号", trigger: "blur" }
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
-          marryAge: [{ trigger: "blur", validator: marryAgeVerify2 }],
         telephone: [{ trigger: "blur", validator: telephoneVerify }],
+           marryAge: [{ trigger: "blur", validator: marryAgeVerify }],
         // 证件类型
         idCardType: [
           { required: true, message: "请选择证件类型", trigger: "change" }
@@ -3353,7 +3353,7 @@ export default {
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         telephone: [{ trigger: "blur", validator: telephoneVerify }],
-          marryAge: [{ trigger: "blur", validator: marryAgeVerify }],
+           marryAge: [{ trigger: "blur", validator: marryAgeVerify2 }],
         // 证件类型
         idCardType: [
           { required: true, message: "请选择证件类型", trigger: "change" }
@@ -3423,6 +3423,19 @@ export default {
       return { value: item, label: item };
     });
     this.format();
+
+    var tableDataParticulars = eval(
+      "(" + localStorage.getItem("tableDataParticulars") + ")"
+    );
+    if (tableDataParticulars == null || tableDataParticulars == "") {
+      return false;
+    } else {
+      this.buttonHide = true;
+      this.buttonShow = false;
+      this.checkId = tableDataParticulars.checkId;
+      this.patientCenterId = tableDataParticulars.id;
+      this.essentialInquire();
+    }
   },
   mounted() {
     let doctorName = localStorage.getItem("mayernal-web-userName");
@@ -3444,7 +3457,7 @@ export default {
             this.essentialInformation.newAddressCounty = this.selectedOptions2[2];
             this.essentialInformation.token = token1;
             console.log(this.essentialInformation);
-            if ( this.buttonHide == false) {
+              if ( this.buttonHide == false) {
                  this.patientCheckInsertForFiling(this.essentialInformation);
             }else{
               this.essentialInformation.patientCenterId = this.patientCenterId;
@@ -3598,6 +3611,26 @@ export default {
       this.essentialInformation.newAddressCity = this.selectedOptions2[1];
       this.essentialInformation.newAddressCounty = this.selectedOptions2[2];
     },
+    // 基本信息查询
+    essentialInquire() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .patientCheckControllerFindForFiling({
+          token: token1,
+          id: this.checkId
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.essentialInformation = res;
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          this.$message.error("基本信息查询错误，请稍后重试");
+        });
+    },
     // 基本信息-新增接口
     patientCheckInsertForFiling(obj) {
       this.$api
@@ -3610,6 +3643,7 @@ export default {
             this.activeName = "second";
             this.buttonHide = true;
             this.buttonShow = false;
+            // this.essentialInquire(); //新建成功后查询
           } else {
             $message.error("新增失败，请稍后重试");
           }
@@ -3618,7 +3652,7 @@ export default {
           this.$message.error("新增失败，请稍后重试");
         });
     },
-     // 基本信息-修改
+        // 基本信息-修改
     patientCheckUpdateForFiling(obj) {
       this.$api
         .patientCheckUpdateForFiling(obj)
@@ -3707,6 +3741,26 @@ export default {
       this.spouseInformation.patientHistory = characterPatientHistory1;
       console.log(this.spouseInformation.patientHistory);
     },
+    // 配偶信息查询
+    patientHusbandsFindForFiling() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .patientHusbandsFindForFiling({
+          token: token1,
+          id: this.superId
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.status === "20200") {
+            this.spouseInformation = res;
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          this.$message.error("配偶信息查询错误，请稍后重试");
+        });
+    },
     // 配偶信息新增
     patientHusbandsInsertForFiling(obj) {
       this.$api
@@ -3718,6 +3772,7 @@ export default {
             this.activeName = "third";
             this.buttonHide1 = true;
             this.buttonShow1 = false;
+            // this.patientHusbandsFindForFiling(); //新建成功后查询
           } else {
             $message.error("新增失败，请稍后重试");
           }
@@ -3726,7 +3781,7 @@ export default {
           this.$message.error("新增失败，请稍后重试");
         });
     },
-      // 配偶信息修改
+       // 配偶信息修改
     patientHusbandsUpdateForFiling(obj) {
       this.$api
         .patientHusbandsUpdateForFiling(obj)
@@ -3797,19 +3852,12 @@ export default {
       _html.babySex = "";
       _html.babyHealthType = "";
       _html.remarks = "";
-      // var mycars = new Array();
+      var mycars = new Array();
       for (let i = 0; i < tempPregnancyNum; i++) {
-        // mycars.push(_html);
-      //   let tempTR =  this.PregnancyInformation.length +1;
-      //   console.log(tempTR >tempPregnancyNum)
-      //  if (tempTR >tempPregnancyNum) {
-         
-      //  }
-        this.PregnancyInformation.push(_html);
-        // this.PregnancyInformation = mycars;
+        mycars.push(_html);
+        this.PregnancyInformation = mycars;
       }
-
-      console.log(this.PregnancyInformation);
+      // console.log(this.PregnancyInformation);
     },
     // 点击孕产史编辑
     modifyButton(index, row) {
@@ -3822,7 +3870,7 @@ export default {
     // 孕产史弹框保存按钮
     patientCenterUpdateBtn(historyLayer) {
       Vue.set(this.PregnancyInformation, this.historyLayerNum, historyLayer);
-  console.log(this.PregnancyInformation);
+
       this.editdialogVisible = false;
     },
     // 接触放射性
@@ -3865,6 +3913,32 @@ export default {
       this.maternalInformation.nowHistory = characterPatientHistory1;
       console.log(this.maternalInformation.nowHistory);
     },
+
+    // 孕产信息查询
+    patientParturitionDetailFindForFiling() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .patientParturitionDetailFindForFiling({
+          token: token1,
+          id: this.maternalId,
+          patientCenterId: this.parturitionDetailId
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.status === "20200") {
+            this.maternalInformation = res;
+            this.PregnancyInformation =
+              res.patientParturitionDetailHistoryBeanList;
+            this.PregnancyNum =
+              res.patientParturitionDetailHistoryBeanList.length;
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          this.$message.error("孕产信息查询错误，请稍后重试");
+        });
+    },
     //孕产信息新增
     patientParturitionDetailInsertForFiling(obj) {
       this.$api
@@ -3884,9 +3958,29 @@ export default {
           this.$message.error("新增失败，请稍后重试");
         });
     },
-
     // ------------------------孕产信息end------------------------------------
     //   ------------------------体格检查star------------------------------------
+    // 体格检查查询
+    patientHealthCheckFindById() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .patientHealthCheckFindById({
+          token: token1,
+          id: this.healthCheckId
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.status === "20200") {
+            this.pregnancyNewsInformation = res;
+            this.healthCheckup = res;
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          this.$message.error("体格检查查询错误，请稍后重试");
+        });
+    },
     //体格检查新增
     patientHealthCheckInsertForFiling(obj) {
       this.$api
@@ -3953,6 +4047,9 @@ export default {
       for (let i = 0; i < purpleObjArr.length; i++) {
         purpleArr.push(purpleObjArr.eq(i).html());
       }
+      // console.log(uniq(fiveArr));
+      // console.log(uniq(tenArr));
+      // console.log(uniq(twentyArr));
       console.log(uniq(purpleArr));
       $(".fiveLength").html(uniq(fiveArr).length);
       $(".tenLength").html(uniq(tenArr).length);
@@ -4081,10 +4178,10 @@ export default {
     //   ------------------------高危评估end------------------------------------
     /* ****************************检查确认star******************************** */
 
-    signatureConfirmationForFilingPort(obj) {
+    signatureConfirmationForFilingPort() {
       let self = this;
       this.$api
-        .signatureConfirmationForFiling(obj)
+        .signatureConfirmationForFiling()
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
@@ -4119,6 +4216,7 @@ export default {
   }
 };
 </script>
+
 <style lang="less" scoped>
 .mgl10 {
   margin-left: 10px;
@@ -4831,7 +4929,7 @@ export default {
     height: 88px;
     width: 100%;
     position: fixed; // background-color: #fff;
-    opacity: 0.8;
+    opacity:0.8;
     bottom: 0px;
     left: 0;
     z-index: 10000;

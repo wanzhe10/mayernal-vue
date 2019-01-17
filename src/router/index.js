@@ -19,6 +19,7 @@ import management from '@/components/management/management'
 import personalDetails from '@/components/news/personalDetails'
 import changePassword from '@/components/news/changePassword'
 import newfile from '@/components/management/newfile'
+import supplement from '@/components/management/supplement'
 import personalCenter from '@/components/management/personalCenter/personalCenter'
 import recordNews from '@/components/management/personalCenter/recordNews'
 import spouseNews from '@/components/management/personalCenter/spouseNews'
@@ -61,7 +62,17 @@ export default new Router({
             title: '新建孕妇档案',
                keepAlive: true // 需要被缓存
           }
-        }, {
+        },
+          {
+            path: '/supplement',
+            name: 'supplement',
+            component: supplement,
+            meta: {
+              title: '补充孕妇档案',
+              keepAlive: true // 需要被缓存
+            }
+          },
+        {
 
           path: '/organization',
           name: 'organization',

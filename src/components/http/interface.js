@@ -319,6 +319,15 @@ export const patientHighRiskGradeInsert = data => {
     data
   })
 }
+// 新建档案-确认签字
+export const signatureConfirmationForFiling = data => {
+  return axios({
+    url: 'v1/web/pc/patientCenter/signatureConfirmationForFiling',
+    method: 'post',
+    data
+  })
+}
+
 // 高高危评估-模板查询
 export const highRiskGradeTemplateDetailFindTreeList = data => {
   return axios({
@@ -515,6 +524,7 @@ export default {
   patientHealthCheckUpdateForFiling,
   highRiskGradeTemplateDetailFindTreeList,
   patientSecondCheckInsert,
-  patientHighRiskGradeInsert
+  patientHighRiskGradeInsert,
+  signatureConfirmationForFiling
 
 }

@@ -12,7 +12,7 @@
           <p class="welcome">欢迎<i
               class="doctorName"
               v-html="userName"
-            ></i>医生
+            ></i>
           </p>
           <div
             class="exitBtn"

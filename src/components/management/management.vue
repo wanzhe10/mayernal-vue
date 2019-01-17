@@ -240,7 +240,7 @@
           >
             <template slot-scope="scope">
               <div v-show="scope.row.isFiling == 0">
-                <router-link :to="{path: 'newfile'}">
+                <router-link :to="{path: 'supplement'}">
                   <el-button
                     type="text"
                     size="small"
@@ -481,6 +481,7 @@ export default {
     },
     newFecord(){
        localStorage.removeItem('tableDataParticulars');
+
     }
    
 
