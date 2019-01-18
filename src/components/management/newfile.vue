@@ -1,6 +1,6 @@
 <template>
   <div class="newfileBox">
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="activeName" >
       <el-tab-pane
         label="孕妇基本信息"
         name="first"
@@ -125,10 +125,10 @@
                 prop="marryAge"
               >
                 <el-input
-                  type="text"
+                  type="marryAge"
                   class="pregnantMarriageAge"
                   placeholder="请输入结婚年龄"
-                  v-model="essentialInformation.marryAge"
+                  v-model.number="essentialInformation.marryAge"
                 >
                 </el-input>
               </el-form-item>
@@ -288,6 +288,7 @@
                   :options="options"
                   v-model="selectedOptions1"
                   @change="handleChange1"
+
                 ></el-cascader>
               </el-form-item>
 
@@ -582,13 +583,13 @@
                 <a
                   href="jsvascript:;"
                   class="drinkOccasionally"
-                  :class="{'active':tab === 1}"
+                  :class="{'active':tab == 1}"
                   @click="addNameClick(1)"
                 >偶尔</a>
                 <a
                   href="jsvascript:;"
                   class="drinkOften"
-                  :class="{'active':tab === 2}"
+                  :class="{'active':tab == 2}"
                   @click="addNameClick(2)"
                 >经常</a>
               </div>
@@ -748,12 +749,7 @@
             <div class="mgr76 fl">
               <el-form-item
                 label="月经史-初潮（岁）"
-                prop="menstrualHistoryAge"
-                :rules="[
-      { required: true, message: '初潮年龄不能为空', trigger: 'blur'},
-      { type: 'number', message: '初潮年龄必须为数字值', trigger: 'blur'}
-    ]"
-              >
+                prop="menstrualHistoryAge">
                 <el-input
                   type="marryAge"
                   class="menstrualHistoryAge"
@@ -766,12 +762,7 @@
             <div class="mgr0 fl">
               <el-form-item
                 label="月经史—周期（天）"
-                prop="menstrualHistoryDay"
-                :rules="[
-      { required: true, message: '周期不能为空', trigger: 'blur'},
-      { type: 'number', message: '周期必须为数字值', trigger: 'blur'}
-    ]"
-              >
+                prop="menstrualHistoryDay" >
                 <el-input
                   type="marryAge"
                   class="menstrualHistoryDay"
@@ -885,6 +876,12 @@
                     type="text"
                     size="small"
                   >修改</el-button>
+                    <!-- <el-button
+          @click.native.prevent="deleteRow(scope.$index, PregnancyInformation)"
+          type="text"
+          size="small">
+          移除
+        </el-button> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -2112,7 +2109,7 @@
             <div class="flaxBoxPart">
               <el-button
                 type="primary"
-                @click="basicBtn('essentialInformation')"
+                 @click="examineAffirm"
               >完 成</el-button>
             </div>
           </div>
@@ -2139,14 +2136,41 @@ export default {
         callback();
       }
     };
-    // 结婚年龄
+
+      // 初潮年龄 月经史
+     let menstrualHistoryAge = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("初潮年龄不能为空"));
+      }else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      }   else {
+        callback();
+      }
+    };
+    let menstrualHistoryDay = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("周期不能为空"));
+      }else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      }   else {
+        callback();
+      }
+    };
+         // 结婚年龄
       let marryAgeVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("年龄不能为空"));
-      } else if (value > this.essentialInformation.age) {
-        console.log(this.essentialInformation.age)
-       return callback(new Error("结婚年龄不能大于实际年龄"));
-      } else {
+      }else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else if (this.essentialInformation.age !=='') {
+        let age = Number(this.essentialInformation.age)
+        if ( value >= age ) {
+           return callback(new Error("结婚年龄不能大于实际年龄"));
+        }else{
+           callback();
+        }
+      } 
+      else {
         callback();
       }
     };
@@ -2154,10 +2178,17 @@ export default {
       let marryAgeVerify2 = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("年龄不能为空"));
-      } else if (value > this.spouseInformation.age) {
-        console.log(this.spouseInformation.age)
-       return callback(new Error("结婚年龄不能大于实际年龄"));
-      } else {
+      }else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      }else if (this.spouseInformation.age !=='') {
+        let age = Number(this.spouseInformation.age)
+       if ( value >= age ) {
+           return callback(new Error("结婚年龄不能大于实际年龄"));
+        }else{
+           callback();
+        }
+      } 
+      else {
         callback();
       }
     };
@@ -2223,8 +2254,8 @@ export default {
     var baseWeightVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("体重不能为空"));
-      } else if (!Number.isInteger(value)) {
-        callback(new Error("请输入数字值"));
+      }else if (!RegExpObj.Reg_figure.test(value)) {
+        callback(new Error("格式错误"));
       } else if (value < 30 || value > 200) {
         callback(new Error("体重取值范围 30 ~ 200"));
       } else {
@@ -2320,7 +2351,7 @@ export default {
       isActive: 0, //孕产期合并症 选项切换
       highRiskGradeCatalogueBeanList: [], //高危所有数组
       assessArr: [], //  孕产期合并症数组
-      activeName: "first", // first、second、third、fourth、fifth、sixth
+      activeName: "third", // first、second、third、fourth、fifth、sixth
       drinks: 0, //配偶一般信息饮酒显示隐藏
       tab: 1,
       spouseSmoke: 0, //配偶-吸烟数量
@@ -2334,7 +2365,7 @@ export default {
       patientCenterId: "", //patientCenterId
       checkId: "", //基本信息id
       superId: "", //配偶id
-      maternalId: "", //孕检信息id
+      parturitionDetailId: "", //孕检信息id
       healthCheckId: "", //体格检查id
       buttonShow: true, //基本信息按钮
       buttonHide: false, //基本信息按钮
@@ -2479,6 +2510,10 @@ export default {
       ],
       // 孕产信息怀孕次数
       pregnancies: [
+        {
+          value: "0",
+          label: "0"
+        },
         {
           value: "1",
           label: "1"
@@ -3092,7 +3127,8 @@ export default {
         virusInfectionOther: "", //	病毒感染-其他
         familyHistory: 0, //	家族史
         nowHistory: 0, //	现病史
-        historyList: ""
+        historyList: "",
+        deleteList:''
       },
       pregnancyPatientHistory: [], //孕产信息家族史数组
       pregnancyNewHistory: [], //孕产信息现病史数组
@@ -3104,7 +3140,8 @@ export default {
       // 孕产史对象
       historyLayer: {},
       historyLayerNum: 0, //孕产史下标
-      deleteHistory: [],
+      deleteHistory: [], //孕产史删除数组
+      tempPregnancyNum:0,
       isChoose: false,
       //  体格检查
       healthCheckup: {
@@ -3145,33 +3182,9 @@ export default {
         projectType1: "",
         obstetricsPlacental: "",
         historyAssess: "",
-        fiveArr: [
-          { value: "年龄A" },
-          { value: "年龄B" },
-          { value: "年龄C" },
-          { value: "年龄D" },
-          { value: "年龄E" },
-          { value: "年龄F" },
-          { value: "年龄G" }
-        ],
-        tenArr: [
-          { value: "年龄A" },
-          { value: "年龄B" },
-          { value: "年龄C" },
-          { value: "年龄D" },
-          { value: "年龄E" },
-          { value: "年龄F" },
-          { value: "年龄G" }
-        ],
-        twentyArr: [
-          { value: "年龄A" },
-          { value: "年龄B" },
-          { value: "年龄C" },
-          { value: "年龄D" },
-          { value: "年龄E" },
-          { value: "年龄F" },
-          { value: "年龄G" }
-        ]
+        fiveArr: [],
+        tenArr: [],
+        twentyArr: []
       },
       // 时间范围限制，不可选择今天以后
       pickerOptions: {
@@ -3190,6 +3203,8 @@ export default {
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
           marryAge: [{ trigger: "blur", validator: marryAgeVerify2 }],
+               menstrualHistoryAge: [{ trigger: "blur", validator: menstrualHistoryAge }],
+             menstrualHistoryDay: [{ trigger: "blur", validator: menstrualHistoryDay }],
         telephone: [{ trigger: "blur", validator: telephoneVerify }],
         // 证件类型
         idCardType: [
@@ -3507,31 +3522,26 @@ export default {
             this.maternalInformation.patientCenterId = this.patientCenterId;
             this.maternalInformation.token = token1;
             console.log(this.maternalInformation);
-            this.patientParturitionDetailInsertForFiling(
-              this.maternalInformation
-            );
+                if ( this.buttonHide2 == false) {
+            this.patientParturitionDetailInsertForFiling(this.maternalInformation);
+            }else{
+              this.maternalInformation.patientCenterId = this.patientCenterId;
+              this.maternalInformation.id = this.parturitionDetailId;
+              console.log(this.essentialInformation)
+             this.patientParturitionDetailUpdateForFiling(this.maternalInformation);
+            }
           } else if (this.activeName == "fourth") {
             // 体格检查保存按钮
             this.healthCheckup.patientCenterId = this.patientCenterId;
             this.healthCheckup.token = token1;
             console.log(this.healthCheckup);
-            this.patientHealthCheckInsertForFiling(this.healthCheckup);
-          } else if (this.activeName == "sixth") {
-            // 检查确认按钮
-            this.signatureConfirmationForFiling.token = token1;
-            this.signatureConfirmationForFiling.patientCenterId = this.patientCenterId;
-            this.signatureConfirmationForFiling.patientName = this.essentialInformation.name;
-            let highRiskGradeTemplateId = window.localStorage.getItem(
-              "mayernal-web-highRiskGradesTable"
-            );
-            this.signatureConfirmationForFiling.highRiskGradeTemplateId = highRiskGradeTemplateId;
-            this.signatureConfirmationForFiling.high = this.healthCheckup.baseHeight;
-            this.signatureConfirmationForFiling.weight = this.healthCheckup.baseWeight;
-            this.signatureConfirmationForFiling.newAgeOfMenarche = this.maternalInformation.newAgeOfMenarche;
-            this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.maternalInformation.newAgeOfMenarcheDay;
-            console.log(this.signatureConfirmationForFiling);
-            this.signatureConfirmationForFilingPort(this.signatureConfirmationForFiling);
-          }
+             if (this.buttonHide3 == false) {
+                   this.patientHealthCheckInsertForFiling(this.healthCheckup);
+            }else{
+                this.healthCheckup.id = this.healthCheckId;
+this.patientHealthCheckUpdateForFiling(this.healthCheckup)
+            }
+          } 
         } else {
           // console.log("error submit!!");
           return false;
@@ -3572,7 +3582,6 @@ export default {
     },
     // 孕妇基本信息 --》户口所在地
     handleChange1(value) {
-      console.log(value);
       this.xq1 =
         CodeToText[this.selectedOptions1[0]] +
         "" +
@@ -3580,7 +3589,7 @@ export default {
         "" +
         CodeToText[this.selectedOptions1[2]];
 
-      console.log(this.xq1);
+      console.log(this.selectedOptions1);
       this.essentialInformation.idCardAddressProvince = this.selectedOptions1[0];
       this.essentialInformation.idCardAddressCity = this.selectedOptions1[1];
       this.essentialInformation.idCardAddressCounty = this.selectedOptions1[2];
@@ -3787,29 +3796,32 @@ export default {
     },
     // 怀孕次数选择
     numberPregnancy() {
-      let tempPregnancyNum = this.maternalInformation.pregnancyNumber;
-      var _html = {};
-      _html.number = "";
-      _html.ageOfMenarche = "";
-      _html.productionDate = "";
-      _html.productionOfAge = "";
-      _html.productionAbortion = "";
-      _html.babySex = "";
-      _html.babyHealthType = "";
-      _html.remarks = "";
-      // var mycars = new Array();
-      for (let i = 0; i < tempPregnancyNum; i++) {
-        // mycars.push(_html);
-      //   let tempTR =  this.PregnancyInformation.length +1;
-      //   console.log(tempTR >tempPregnancyNum)
-      //  if (tempTR >tempPregnancyNum) {
-         
-      //  }
-        this.PregnancyInformation.push(_html);
-        // this.PregnancyInformation = mycars;
+      let vaule = this.maternalInformation.pregnancyNumber;
+      // let tempPregnancyNum = this.tempPregnancyNum;
+      // let i = tempPregnancyNum * 1;
+      this.historyLayer ={};
+      let tempNum = vaule-this.PregnancyInformation.length;
+      if (tempNum > 0) {
+        // 添加
+        for (let i = 0; i < tempNum; i++) {
+          this.PregnancyInformation.push(this.historyLayer);
+        }
+      }else{
+        // 删除
+        let tempNum1 = tempNum * (-1);
+        let tempEntity;
+        for (let i = tempNum1; i > 0 ; i--) {
+          // 1.取出对象
+          tempEntity = this.PregnancyInformation[tempNum1];
+          console.log(tempEntity)
+          // 2.判断对象有没有id
+          // if (tempEntity.id) {
+          //   // 3.添加到删除json中
+          //   this.deleteHistory.push(tempEntity);
+          // }
+          this.PregnancyInformation.pop(tempNum1);
+        }
       }
-
-      console.log(this.PregnancyInformation);
     },
     // 点击孕产史编辑
     modifyButton(index, row) {
@@ -3819,6 +3831,9 @@ export default {
       // console.log(this.historyLayer)
       this.editdialogVisible = true;
     },
+      deleteRow(index, rows) {
+        rows.splice(index, 1);
+      },
     // 孕产史弹框保存按钮
     patientCenterUpdateBtn(historyLayer) {
       Vue.set(this.PregnancyInformation, this.historyLayerNum, historyLayer);
@@ -3872,7 +3887,7 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
-            this.maternalId = res.id; //孕检信息id
+            this.parturitionDetailId = res.id; //孕检信息id
             this.activeName = "fourth";
             this.buttonHide2 = true;
             this.buttonShow2 = false;
@@ -3882,6 +3897,22 @@ export default {
         })
         .catch(error => {
           this.$message.error("新增失败，请稍后重试");
+        });
+    },
+      //孕产信息修改
+    patientParturitionDetailUpdateForFiling(obj) {
+      this.$api
+        .patientParturitionDetailUpdateForFiling(obj)
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+          
+          } else {
+            $message.error("修改失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("修改失败，请稍后重试");
         });
     },
 
@@ -3904,6 +3935,22 @@ export default {
         })
         .catch(error => {
           this.$message.error("新增失败，请稍后重试");
+        });
+    },
+        //体格检查修改
+    patientHealthCheckUpdateForFiling(obj) {
+      this.$api
+        .patientHealthCheckUpdateForFiling(obj)
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            this.activeName = "fifth";
+          } else {
+            $message.error("修改失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("修改失败，请稍后重试");
         });
     },
     //   ------------------------体格检查end------------------------------------
@@ -4095,9 +4142,26 @@ export default {
           this.$message.error("新增错误，请稍后重试");
         });
     },
+        examineAffirm(){
+        // 检查确认按钮
+          let token1 = window.localStorage.getItem("mayernal-web-token");
+            this.signatureConfirmationForFiling.token = token1;
+            this.signatureConfirmationForFiling.patientCenterId = this.patientCenterId;
+            this.signatureConfirmationForFiling.patientName = this.essentialInformation.name;
+            let highRiskGradeTemplateId = window.localStorage.getItem(
+              "mayernal-web-highRiskGradesTable"
+            );
+            this.signatureConfirmationForFiling.highRiskGradeTemplateId = highRiskGradeTemplateId;
+            this.signatureConfirmationForFiling.high = this.healthCheckup.baseHeight;
+            this.signatureConfirmationForFiling.weight = this.healthCheckup.baseWeight;
+            this.signatureConfirmationForFiling.newAgeOfMenarche = this.maternalInformation.newAgeOfMenarche;
+            this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.maternalInformation.newAgeOfMenarcheDay;
+            console.log(this.signatureConfirmationForFiling);
+            this.signatureConfirmationForFilingPort(this.signatureConfirmationForFiling);
+    },
 
     /* ****************************检查确认end******************************** */
-    // ------------------------公共js-----------------------------------
+   /*  // ------------------------公共js----------------------------------- */
 
     // 弹框右上角关闭按钮
     handleClose(done) {
@@ -4115,7 +4179,10 @@ export default {
     // 允许滑动
     allowSliding() {
       document.documentElement.style.overflow = "scroll";
-    }
+    },
+  
+   /*  // ------------------------公共js----------------------------------- */
+
   }
 };
 </script>
