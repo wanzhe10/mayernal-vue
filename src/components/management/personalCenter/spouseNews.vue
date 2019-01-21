@@ -2,331 +2,285 @@
 	<div class="personalCenterSpouseNewsBox">
 		<el-tabs v-model="activeName" class="aaaa">
 			<el-tab-pane label="高危评估" name="fifth">
-				<!-- 高危评估模块 -->
-				<div class="riskAssessmentBox ">
-					<span>项目类型</span>
-					<div class="mgl10">
-						<el-select v-model="projectTypeModel1" placeholder="请选择">
-							<el-option v-for="item in projectType1" :key="item.value" :label="item.label" :value="item.value">
-							</el-option>
-						</el-select>
-					</div>
-					<div class="mgl24">
-						<el-select v-model="projectTypeModel2" placeholder="请选择">
-							<el-option v-for="item in projectType2" :key="item.value" :label="item.label" :value="item.value">
-							</el-option>
-						</el-select>
-					</div>
-					<span class="mgl174">历史评估记录</span>
-					<div class="mgl10">
-						<el-select v-model="historyAssessModel" placeholder="请选择">
-							<el-option v-for="item in historyAssess" :key="item.value" :label="item.label" :value="item.value">
-							</el-option>
-						</el-select>
-					</div>
-					<input type="button" value="套用" class="useBtn mgl16">
-					<div class="wire"></div>
-					<!-- 基本情况 -->
-					<div class="lookAtallBtnBox">
-						<h2>基本情况</h2>
-						<div class="positionWire"></div>
-						<div class="basicLookAtallBtn" @click="toggle1()">
-							<span>查看全部</span>
-							<i class="el-icon-arrow-down" v-show="downIcon"></i>
-							<i class="el-icon-arrow-up" v-show="!downIcon"></i>
-						</div>
-					</div>
-					<el-collapse-transition>
-						<div class="basicInformationBox" v-show="isShow1">
-							<div class="partBox mgr34">
-								<div class="partBox_top">
-									<i>5</i>
-									<span class="fen">分</span>
-									<span class="mgl28">黄色（一般风险）</span>
-								</div>
-								<div class="fivepartBox topicBox">
-									<el-checkbox label="年龄≤35岁或≥18年龄≤35岁或≥18年龄≤35岁或≥18 A"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>
+		  <!-- 高危评估模块 -->
+        <div class="riskAssessmentBox">
+          <div class="riskAssessmentBoxTop">
+            <span>项目类型</span>
+            <div class="mgl10">
+              <el-select
+                v-model="projectTypeModel1"
+                placeholder="请选择"
+                @change="projectTypeModel1Select"
+                clearable
+              >
+                <el-option
+                  v-for="item in projectType1"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </div>
+            <!-- <div class="mgl24">
+              <el-select
+                v-model="projectTypeModel2"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in projectType2"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </div> -->
+            <!-- <span class="mgl174">历史评估记录</span>
+            <div class="mgl10">
+              <el-select
+                v-model="historyAssessModel"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in historyAssess"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </div>
+            <input
+              type="button"
+              value="套用"
+              class="useBtn mgl16"
+            > -->
+          </div>
 
-									<!-- <a class="topicItem" href="javascript:;"></a>
-									<a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-									<a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a>
-									<a class="topicItem" href="javascript:;">年龄≤35岁或≥18</a> -->
-								</div>
-							</div>
-							<div class="partBox mgr34">
-								<div class="partBox_top">
-									<i>10</i>
-									<span class="fen">分</span>
-									<span class="mgl28">橙色（较高风险）</span>
-								</div>
-								<div class="tenpartBox topicBox">
-									<el-checkbox label="年龄≤35岁或≥18 A"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>
-								</div>
-							</div>
-							<div class="partBox">
-								<div class="partBox_top">
-									<i>20</i>
-									<span class="fen">分</span>
-									<span class="mgl28">红色（高风险）</span>
-								</div>
-								<div class="twentypartBox topicBox">
-									<el-checkbox label="年龄≤35岁或≥18 A"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-									<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>
-								</div>
-							</div>
-						</div>
-					</el-collapse-transition>
+          <div class="wire"></div>
+          <!-- 基本情况 -->
+          <div v-for="(item,index) in highRiskGradeCatalogueBeanList">
+            <div class="lookAtallBtnBox">
+              <h2>{{item.details}}</h2>
+              <div class="positionWire"></div>
+              <div
+                class="basicLookAtallBtn"
+                @click="toggle1(index)"
+                :key="index"
+              >
 
-					<!-- 孕期合并发症块 -->
-					<div class="lookAtallBtnBox">
-						<h2>孕期合并发症</h2>
-						<div class="positionWire2"></div>
-						<div class="pregnancyAllBtn" @click="toggle2()">
-							<span>查看全部</span>
-							<i class="el-icon-arrow-down" v-show="downIcon2"></i>
-							<i class="el-icon-arrow-up" v-show="!downIcon2"></i>
-						</div>
-					</div>
-					<el-collapse-transition>
-						<div class="pregnancyAllBox" v-show="isShow2">
-							<ul class="pregnancySelectBox">
-								<li class="selectAllBtn">全部</li>
-								<li>心血管系统疾病</li>
-								<li>呼吸系统疾病</li>
-								<li>消化系统疾病</li>
-								<li>泌尿系统疾病</li>
-								<li>内分泌系统疾病</li>
-								<li style="margin-right:0px;">精神神经系统疾病</li>
-								<li>血液系统疾病</li>
-								<li>性传播疾病</li>
-								<li>免疫系统疾病</li>
-								<li>肿瘤</li>
-								<li>吸毒史</li>
-								<li>其他</li>
-							</ul>
+                <span>查看全部</span>
+                <i
+                  class="el-icon-arrow-down"
+                  v-show="downIcon"
+                ></i>
+                <i
+                  class="el-icon-arrow-up"
+                  v-show="!downIcon"
+                ></i>
+              </div>
+            </div>
+            <!-- 基本信息隐藏藏快 -->
 
-							<div class="basicInformationBox">
-								<div class="partBox mgr34">
-									<div class="partBox_top">
-										<i>5</i>
-										<span class="fen">分</span>
-										<span class="mgl28">黄色（一般风险）</span>
-									</div>
-									<div class="fivepartBox topicBox">
-										<el-checkbox label="年龄≤35岁或≥18 A"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>
-									</div>
-								</div>
-								<div class="partBox mgr34">
-									<div class="partBox_top">
-										<i>10</i>
-										<span class="fen">分</span>
-										<span class="mgl28">橙色（较高风险）</span>
-									</div>
-									<div class="tenpartBox topicBox">
-										<el-checkbox label="年龄≤35岁或≥18 A"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>
-									</div>
-								</div>
-								<div class="partBox">
-									<div class="partBox_top">
-										<i>20</i>
-										<span class="fen">分</span>
-										<span class="mgl28">红色（高风险）</span>
-									</div>
-									<div class="twentypartBox topicBox">
-										<el-checkbox label="年龄≤35岁或≥18 A"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>
-									</div>
-								</div>
-							</div>
+            <el-collapse-transition>
+              <div
+                class="basicInformationBox"
+                :id="'template'+index"
+              >
+                <div>
+                  <ul
+                    class="pregnancySelectBox"
+                    v-show="item.number ==2"
+                  >
+                    <li
+                      class="selectAllBtn"
+                      v-for="(item3,index) in assessArr"
+                      @click="selectAllBtnClick(item3,index)"
+                      :class="{active:index ==isActive}"
+                    >{{item3.details}}</li>
+                  </ul>
+                </div>
+                <div
+                  class="partBox mgr34"
+                  v-show='item.number != 4'
+                >
+                  <div class="partBox_top">
+                    <i>5</i>
+                    <span class="fen">分</span>
+                    <span class="mgl28">黄色（一般风险）</span>
+                  </div>
+                  <div class="fivepartBox topicBox">
+                    <a
+                      href="javascript:;"
+                      v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(items,index)"
+                      :class="{'active':items.active}"
+                      :cellgrades='items.cellGrades'
+                      class="topicItem"
+                      v-show='items.cellGrades ==5'
+                    >{{items.cellDetails}}</a>
+                    <a
+                      href="javascript:;"
+                      v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(item4,index)"
+                      :class="{'active':item4.active}"
+                      :cellgrades='item4.cellGrades'
+                      class="topicItem"
+                      v-show='item4.cellGrades ==5 && item.number == 2'
+                    >{{item4.cellDetails}}</a>
+                  </div>
+                </div>
+                <div class="partBox mgr34">
+                  <div
+                    class="partBox_top"
+                    v-show='item.number != 4'
+                  >
+                    <i>10</i>
+                    <span class="fen">分</span>
+                    <span class="mgl28">橙色（较高风险）</span>
+                  </div>
+                  <div class="tenpartBox topicBox">
+                    <a
+                      href="javascript:;"
+                      v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(items,index)"
+                      :class="{'active':items.active}"
+                      class="topicItem"
+                      :cellgrades='items.cellGrades'
+                      v-show='items.cellGrades ==10'
+                    >{{items.cellDetails}}</a>
+                    <a
+                      href="javascript:;"
+                      v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(item4,index)"
+                      :class="{'active':item4.active}"
+                      class="topicItem"
+                      :cellgrades='item4.cellGrades'
+                      v-show='item4.cellGrades ==10 && item.number == 2'
+                    >{{item4.cellDetails}}</a>
+                  </div>
+                </div>
+                <div
+                  class="partBox"
+                  v-show='item.number != 4'
+                >
+                  <div class="partBox_top">
+                    <i>20</i>
+                    <span class="fen">分</span>
+                    <span class="mgl28">红色（高风险）</span>
+                  </div>
+                  <div class="twentypartBox topicBox">
+                    <a
+                      href="javascript:;"
+                      v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(items,index)"
+                      :class="{'active':items.active}"
+                      class="topicItem"
+                      :cellgrades='items.cellGrades'
+                      v-show='items.cellGrades ==20'
+                    >{{items.cellDetails}}</a>
+                    <a
+                      href="javascript:;"
+                      v-for="(item4,index) in topicArr.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(item4,index)"
+                      :class="{'active':item4.active}"
+                      class="topicItem"
+                      :cellgrades='item4.cellGrades'
+                      v-show='item4.cellGrades ==20 && item.number == 2'
+                    >{{item4.cellDetails}}</a>
+                  </div>
+                </div>
+                <div
+                  v-show='item.number == 4'
+                  class="topicBoxBox"
+                >
 
-							<div class="contentBox">
-								<div class="lookAtallBtnBox">
-									<h2>呼吸系统疾病</h2>
-									<div class="positionWire2"></div>
-								</div>
-								<div class="partBox mgr34">
-									<div class="fivepartBox topicBox">
-										<el-checkbox label="年龄≤35岁或≥18 A"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>
-									</div>
-								</div>
-								<div class="partBox mgr34">
-									<div class="tenpartBox topicBox">
-										<el-checkbox label="年龄≤35岁或≥18 A"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>
-									</div>
-								</div>
-								<div class="partBox">
-									<div class="twentypartBox topicBox">
-										<el-checkbox label="年龄≤35岁或≥18 A"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 B"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 C"></el-checkbox>
-										<el-checkbox label="年龄≤35岁或≥18 D"></el-checkbox>
-									</div>
-								</div>
-							</div>
-						</div>
-					</el-collapse-transition>
+                  <div class="topicBox">
+                    <a
+                      href="javascript:;"
+                      v-for="(items,index) in item.highRiskGradeTemplateDetailBeanList"
+                      @click="assessDataBtn(items,index)"
+                      :class="[{'active':items.active},{'purpleItem':item.number == 4}]"
+                    >{{items.cellDetails}}</a>
+                  </div>
+                </div>
+              </div>
+            </el-collapse-transition>
+          </div>
 
-					<!-- 紫色块 -->
-					<div class="lookAtallBtnBox">
-						<h2>紫色</h2>
-						<div class="positionWire3"></div>
-						<div class="violetBtn" @click="toggle3()">
-							<span>查看全部</span>
-							<i class="el-icon-arrow-down" v-show="downIcon3"></i>
-							<i class="el-icon-arrow-up" v-show="!downIcon3"></i>
-						</div>
-					</div>
-					<el-collapse-transition>
-						<div class="violetConcealBox topicBox" v-show="isShow3">
-							<el-checkbox label="所有妊娠合传染性疾病--如毒性肝炎、霉素、HIV感染及艾滋病、结核病、重症感染性肺炎、特殊病毒感染（H1N7/塞卡等）"></el-checkbox>
-						</div>
-					</el-collapse-transition>
-
-					<div class="flaxBox">
-						<div class="flaxBoxPart">
-							<span class="totalPoints">65分</span>
-							<span>绿色（<i>0</i>）项</span>
-							<span>黄色（<i class="fiveLength">0</i>）项</span>
-							<span>橙色（<i class="tenLength">0</i>）项</span>
-							<span>红色（<i class="twentyLength">0</i>）项</span>
-							<span>紫色（<i class="purpleLength">0</i>）项</span>
-							<input type="button" value="完  成" class="finishBtn">
-						</div>
-					</div>
-				</div>
+          <div class="flaxBox">
+            <div class="flaxBoxPart">
+              <span class="totalPoints">{{signatureConfirmationForFiling.totalPoints}}分</span>
+              <span>绿色（<i>0</i>）项</span>
+              <span>黄色（<i class="fiveLength">0</i>）项</span>
+              <span>橙色（<i class="tenLength">0</i>）项</span>
+              <span>红色（<i class="twentyLength">0</i>）项</span>
+              <span>紫色（<i class="purpleLength">0</i>）项</span>
+              <input
+                type="button"
+                value="完  成"
+                class="finishBtn"
+                @click="finishBtn"
+              >
+            </div>
+          </div>
+        </div>
 
 			</el-tab-pane>
 			<el-tab-pane label="检查确认" name="sixth">
-				<div class="checkAffirmBox">
-					<div class="checkAffirmBox_top clearfix">
-						<div class="fl assessmentInformation">
-							<p>评估信息</p>
-							<span class="greenStrip">绿色（12）项</span>
-							<span class="yellowStrip">黄色（12）项</span>
-							<span class="orangeStrip">橙色（12）项</span>
-							<span class="redStrip">红色（12）项</span>
-							<span class="proponStrip">紫色（12）项</span>
-						</div>
-						<div class="fr gradeInformation">
-							<h2><span class="grade">56</span><i>分</i></h2>
-							<p>初次筛查与评分</p>
-						</div>
-					</div>
-					<div class="wire4"></div>
-					<div class="affirmBox2">
-						<h3>评估详情</h3>
-						<span class="greenStrip">绿色(低风险)</span>
-						<div class="greenDiv"></div>
-						<span class="yellowStrip">黄色(一般风险)</span>
-						<div class="yellowDiv"></div>
-						<span class="orangeStrip">橙色(较高风险)</span>
-						<div class="orangeDiv"></div>
-						<span class="redStrip">红色(高风险)</span>
-						<div class="redDiv"></div>
-						<span class="proponStrip">紫色(传染病)</span>
-						<div class="purpleDiv"></div>
-					</div>
-					<h1 class="operator">操作人：<span>周晓晓</span></h1>
-				</div>
+			  <div class="checkAffirmBox">
+          <div class="checkAffirmBox_top clearfix">
+            <div class="fl assessmentInformation">
+              <p>评估信息</p>
+              <span class="greenStrip">绿色（<i>0</i>）项</span>
+              <span class="yellowStrip">黄色（<i class="fiveLength">0</i>）项</span>
+              <span class="orangeStrip">橙色（<i class="tenLength">0</i>）项</span>
+              <span class="redStrip">红色（<i class="twentyLength">0</i>）项</span>
+              <span class="proponStrip">紫色（<i class="purpleLength">0</i>）项</span>
+            </div>
+            <div class="fr gradeInformation">
+              <h2><span class="grade totalPoints">{{signatureConfirmationForFiling.totalPoints}}分</span></h2>
+              <p>初次筛查与评分</p>
+            </div>
+          </div>
+          <div class="wire4"></div>
+          <div class="affirmBox2">
+            <h3>评估详情</h3>
+            <span class="greenStrip">绿色(低风险)</span>
+            <div class="greenDiv"></div>
+            <span class="yellowStrip">黄色(一般风险)</span>
+            <div class="yellowDiv"></div>
+            <span class="orangeStrip">橙色(较高风险)</span>
+            <div class="orangeDiv"></div>
+            <span class="redStrip">红色(高风险)</span>
+            <div class="redDiv"></div>
+            <span class="proponStrip">紫色(传染病)</span>
+            <div class="purpleDiv"></div>
+          </div>
+          <h1 class="operator">操作人：<span>{{doctorName}}</span></h1>
+          <div class="flaxBox">
+            <div class="flaxBoxPart">
+              <el-button
+                type="primary"
+                @click="examineAffirm"
+              >完 成</el-button>
+            </div>
+          </div>
+        </div>
 			</el-tab-pane>
 		</el-tabs>
 	</div>
 </template>
 <script>
+import Vue from "vue";
+import $ from "jquery";
 export default {
   data() {
     return {
       activeName: "fifth",
-      // 项目类型
-      projectType1: [
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        },
-        {
-          value: "5",
-          label: "5"
-        }
-      ],
-      //项目类型2
-      projectType2: [
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        },
-        {
-          value: "5",
-          label: "5"
-        }
-      ],
-      historyAssess: [
-        {
-          value: "1",
-          label: "1"
-        },
-        {
-          value: "2",
-          label: "2"
-        },
-        {
-          value: "3",
-          label: "3"
-        },
-        {
-          value: "4",
-          label: "4"
-        },
-        {
-          value: "5",
-          label: "5"
-        }
-      ],
+        highRiskGradeCatalogueBeanList: [], //高危所有数组
+           isActive: 0, //孕产期合并症 选项切换
       baseHeartRateModel: "",
       baseLungModel: "",
       baseAbdomenLiverModel: "",
@@ -346,48 +300,271 @@ export default {
       projectTypeModel1: "",
       projectTypeModel2: "",
       historyAssessModel: "",
-      isShow1: true,
+         // 检查确认
+      signatureConfirmationForFiling: {
+        token: "", //
+        patientCenterId: "", //
+        patientName: "", //	患者姓名
+        highRiskGradeTemplateId: "", //	高危模板
+        totalNum: "", //	评项细则	展开
+        totalPoints: "", //	评分
+        details: "", //	高危详情	展开
+        gradeType: "", //	高危等级
+        newAgeOfMenarche: "", //	现孕周
+        newAgeOfMenarcheDay: "", // 复制
+        checkNumber:'' //次数
+      },
+        isShow1: true,
       isShow2: true,
       isShow3: true,
       downIcon: true,
       downIcon2: true,
-      downIcon3: true
+      downIcon3: true,
+            // 项目类型
+      projectType1: [
+        {
+          value: "1",
+          label: "基本情况"
+        },
+        {
+          value: "2",
+          label: "孕产期合并症"
+        },
+        {
+          value: "3",
+          label: "孕期并发症"
+        },
+        {
+          value: "4",
+          label: "紫色"
+        }
+      ],
+         doctorName: "", //操作人
+         tableDataParticulars:{},
+          checkNumber:''
     };
   },
+    activated() {
+       let checkNumber = this.$route.query.checkNumber;
+ this.checkNumber = checkNumber;
+ console.log(this.checkNumber)
+    var tableDataParticulars = eval(
+      "(" + localStorage.getItem("tableDataParticulars") + ")"
+    );
+    this.tableDataParticulars = tableDataParticulars;
+    console.log(this.tableDataParticulars )
+    let doctorName = localStorage.getItem("mayernal-web-userName");
+    this.doctorName = doctorName;
+  this.highRiskGradeTemplateDetailFindTreeList();
+  
+  },
   methods: {
-    modifyButton: function() {},
-    // 配偶一般信息吸烟
-    handleCheckAllChange() {
-      //  this.isshow= false;
-      console.log(this.smoking);
-    },
-    //孕妇基本信息户口所在地
-    registeredModelResidence() {
-      console.log(this.registeredModel);
-    },
-    //孕妇基本信息现住地址
-    registeredModelPresentAddressModel() {
-      console.log(this.presentAddressModel);
-    },
-    //匹配欧一般信息现住地址
-    spousePresentAddressModelAddressModel() {
-      console.log(this.spousePresentAddressModel);
-    },
+    //   ------------------------高危评估star------------------------------------
     // 基本情况点击显示隐藏
-    toggle1: function() {
-      this.isShow1 = !this.isShow1;
+    toggle1: function(index) {
+      var tempIndex = "#" + "template" + index;
+      $(tempIndex).toggle(300);
       this.downIcon = !this.downIcon;
     },
-    // 孕期合并发症显示隐藏
-    toggle2: function() {
-      this.isShow2 = !this.isShow2;
-      this.downIcon2 = !this.downIcon2;
+    // 多选
+    assessDataBtn(item, index) {
+      if (item.active) {
+        Vue.set(item, "active", false); //为item添加不存在的属性，需要使用vue提供的Vue.set( object, key, value )方法。
+      } else {
+        Vue.set(item, "active", true);
+      }
     },
-    // 紫色显示隐藏
-    toggle3: function() {
-      this.isShow3 = !this.isShow3;
-      this.downIcon3 = !this.downIcon3;
-    }
+    // 数据统计
+    dataStatistics() {
+      // 数组去重
+      function uniq(array) {
+        let temp = []; //一个新的临时数组
+        for (let i = 0; i < array.length; i++) {
+          if (temp.indexOf(array[i]) == -1) {
+            temp.push(array[i]);
+          }
+        }
+        return temp;
+      }
+      let objArr = $(".topicItem.active");
+      let fiveArr = [];
+      let tenArr = [];
+      let twentyArr = [];
+      let purpleArr = []; // 紫色数组
+      for (let i = 0; i < objArr.length; i++) {
+        if (objArr.eq(i).attr("cellgrades") == 5) {
+          fiveArr.push(objArr.eq(i).html());
+        } else if (objArr.eq(i).attr("cellgrades") == 10) {
+          tenArr.push(objArr.eq(i).html());
+        } else if (objArr.eq(i).attr("cellgrades") == 20) {
+          twentyArr.push(objArr.eq(i).html());
+        }
+      }
+      let purpleObjArr = $(".purpleItem.active");
+      console.log(purpleObjArr);
+      for (let i = 0; i < purpleObjArr.length; i++) {
+        purpleArr.push(purpleObjArr.eq(i).html());
+      }
+      console.log(uniq(purpleArr));
+      $(".fiveLength").html(uniq(fiveArr).length);
+      $(".tenLength").html(uniq(tenArr).length);
+      $(".twentyLength").html(uniq(twentyArr).length);
+      $(".purpleLength").html(uniq(purpleArr).length);
+      let _newsJson = {
+        green: 0,
+        yellow: $(".fiveLength").html(),
+        orange: $(".tenLength").html(),
+        red: $(".twentyLength").html(),
+        purple: $(".purpleLength").html()
+      };
+      this.signatureConfirmationForFiling.totalNum = JSON.stringify(_newsJson);
+      var _detailsJson = {
+        green: [],
+        yellow: uniq(fiveArr),
+        orange: uniq(tenArr),
+        red: uniq(twentyArr),
+        purple: uniq(purpleArr)
+      };
+      this.signatureConfirmationForFiling.details = JSON.stringify(
+        _detailsJson
+      );
+      let gradeType = 0;
+      if (uniq(purpleArr).length > 0) {
+        gradeType = 4;
+      } else if (uniq(twentyArr).length > 0) {
+        gradeType = 3;
+      } else if (uniq(tenArr).length > 0) {
+        gradeType = 2;
+      } else if (uniq(fiveArr).length > 0) {
+        gradeType = 1;
+      } else {
+        gradeType = 0;
+      }
+      this.signatureConfirmationForFiling.gradeType = gradeType;
+
+      for (let i = 0; i < uniq(fiveArr).length; i++) {
+        $(".yellowDiv").append("<p>" + fiveArr[i] + "</p>");
+      }
+      for (let i = 0; i < uniq(tenArr).length; i++) {
+        $(".orangeDiv").append("<p>" + uniq(tenArr)[i] + "</p>");
+      }
+      for (let i = 0; i < uniq(twentyArr).length; i++) {
+        $(".redDiv").append("<p>" + uniq(twentyArr)[i] + "</p>");
+      }
+      for (let i = 0; i < uniq(purpleArr).length; i++) {
+        $(".purpleDiv").html("<p>" + uniq(purpleArr)[i] + "</p>");
+      }
+      this.signatureConfirmationForFiling.totalPoints =
+        uniq(fiveArr).length * 5 +
+        uniq(tenArr).length * 10 +
+        uniq(twentyArr).length * 20;
+    },
+    finishBtn() {
+      this.dataStatistics();
+      this.activeName = "sixth";
+    },
+
+    // 孕产期合并症选项切换
+    selectAllBtnClick(item, index) {
+      this.isActive = index;
+      console.log(index);
+      this.topicArr = item;
+      console.log(this.topicArr);
+    },
+
+    //高危评估查询
+    highRiskGradeTemplateDetailFindTreeList() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      let templateIdTalbe = window.localStorage.getItem(
+        "mayernal-web-highRiskGradesTable"
+      );
+      this.$api
+        .highRiskGradeTemplateDetailFindTreeList({
+          token: token1,
+          templateId: templateIdTalbe
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            window.localStorage.setItem(
+              "highRiskGradeCatalogueBeanList",
+              JSON.stringify(res.highRiskGradeCatalogueBeanList)
+            );
+            this.highRiskGradeCatalogueBeanList =
+              res.highRiskGradeCatalogueBeanList;
+            let tempArr = this.highRiskGradeCatalogueBeanList;
+            for (let i = 0; i < tempArr.length; i++) {
+              if (tempArr[i].sonList.length !== 0) {
+                this.assessArr = tempArr[i].sonList;
+                this.topicArr = this.assessArr[0];
+              }
+            }
+          } else if (res.status === "20209") {
+          }
+        })
+        .catch(error => {
+          this.$message.error("高危评估查询错误，请稍后重试");
+        });
+    },
+    projectTypeModel1Select() {
+      var lcalJson = window.localStorage.getItem(
+        "highRiskGradeCatalogueBeanList"
+      );
+      var jsonObj = JSON.parse(lcalJson);
+      this.highRiskGradeCatalogueBeanList = jsonObj;
+      let projectTypeModel1 = this.projectTypeModel1;
+      if (projectTypeModel1 == 1) {
+        jsonObj.splice(1, 3);
+        this.highRiskGradeCatalogueBeanList = jsonObj;
+      } else if (projectTypeModel1 == 2) {
+        jsonObj.splice(2, 3);
+        jsonObj.shift();
+        this.highRiskGradeCatalogueBeanList = jsonObj;
+      } else if (projectTypeModel1 == 3) {
+        jsonObj.splice(0, 2);
+        jsonObj.pop();
+        this.highRiskGradeCatalogueBeanList = jsonObj;
+      } else if (projectTypeModel1 == 4) {
+        jsonObj.splice(0, 3);
+        this.highRiskGradeCatalogueBeanList = jsonObj;
+      }
+    },
+      /* ****************************检查确认star******************************** */
+
+    signatureConfirmationForFilingPort(obj) {
+      let self = this;
+      this.$api
+        .signatureConfirmationForFiling(obj)
+        .then(res => {
+          console.log(res);
+          if (res.status === "20200") {
+            self.$router.push({ path: "/personalCenter" });
+          }
+        })
+        .catch(error => {
+          this.$message.error("新增错误，请稍后重试");
+        });
+    },
+    examineAffirm() {
+        // 检查确认按钮
+        let token1 = window.localStorage.getItem("mayernal-web-token");
+        this.signatureConfirmationForFiling.token = token1;
+        this.signatureConfirmationForFiling.patientCenterId = this.tableDataParticulars.id;
+        this.signatureConfirmationForFiling.patientName = this.tableDataParticulars.checkName;
+        let highRiskGradeTemplateId = window.localStorage.getItem(
+          "mayernal-web-highRiskGradesTable"
+        );
+        this.signatureConfirmationForFiling.highRiskGradeTemplateId = highRiskGradeTemplateId;
+        this.signatureConfirmationForFiling.newAgeOfMenarche = this.tableDataParticulars.newAgeOfMenarche;
+        this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.tableDataParticulars.newAgeOfMenarcheDay;
+        this.signatureConfirmationForFiling.checkNumber =Number(this.checkNumber)+1;
+        console.log(this.signatureConfirmationForFiling);
+        this.signatureConfirmationForFilingPort(
+          this.signatureConfirmationForFiling
+        );
+      }
+    /* ****************************检查确认end******************************** */
   }
 };
 </script>
@@ -413,7 +590,7 @@ export default {
 }
 
 .mgr34 {
-  margin-right: 34px !important;
+  margin-right: 24px !important;
 }
 .mgr38 {
   margin-right: 40px !important;
@@ -445,32 +622,35 @@ export default {
 }
 // 高危评估模块
 .riskAssessmentBox {
-  padding: 14px 24px 70px 26px;
-  div {
-    display: inline-block;
-    h3 {
-      font-size: 14px;
-      color: #666666;
-      margin: 10px 0;
-    }
-    input {
-      width: 154px;
-      height: 40px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      padding-left: 16px;
-    }
-    .redFont {
-      color: #fd4242;
-      display: none;
-    }
-    .layui-unselect,
-    .layui-form-select {
+  padding: 14px 24px 84px 26px;
+  .riskAssessmentBoxTop {
+    div {
+      display: inline-block;
+      h3 {
+        font-size: 14px;
+        color: #666666;
+        margin: 10px 0;
+      }
       input {
-        background-color: #f6f6f6;
+        width: 154px;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding-left: 16px;
+      }
+      .redFont {
+        color: #fd4242;
+        display: none;
+      }
+      .layui-unselect,
+      .layui-form-select {
+        input {
+          background-color: #f6f6f6;
+        }
       }
     }
   }
+
   .wire {
     width: 100%;
     height: 2px;
@@ -491,26 +671,26 @@ export default {
     width: 100%;
     position: relative;
     margin-top: 16px;
+    display: block;
+    height: 60px;
+    line-height: 60px;
     h2 {
       font-size: 16px;
       display: inline-block;
       padding-right: 14px;
+      display: block;
+      position: absolute;
+      top: -10px;
+      background: #fff;
+      z-index: 2;
+      color: #333333;
     }
     .positionWire {
       position: absolute;
       display: inline-block;
-      top: 50%;
+      top: 34%;
       right: 0px;
-      width: 860px;
-      height: 1px;
-      background-color: black;
-    }
-    .positionWire2 {
-      position: absolute;
-      display: inline-block;
-      top: 50%;
-      right: 0px;
-      width: 830px;
+      width: 100%;
       height: 1px;
       background-color: black;
     }
@@ -519,14 +699,9 @@ export default {
       padding: 0px 5px;
       position: absolute;
       right: 28px;
-      top: 0px;
+      top: -10px;
       background-color: #fff;
       cursor: pointer;
-        -moz-user-select: none; /*火狐*/
-        -webkit-user-select: none; /*webkit浏览器*/
-        -ms-user-select: none; /*IE10*/
-        -khtml-user-select: none; /*早期浏览器*/
-      user-select: none;
       i {
         color: #68b6e7;
       }
@@ -536,8 +711,11 @@ export default {
     }
   }
   .basicInformationBox {
-    .partBox {
-      margin-top: 26px;
+    div {
+      display: inline-block;
+    }
+    .partBox,
+    .partBox2 {
       width: 284px;
       .partBox_top {
         padding-bottom: 10px;
@@ -569,25 +747,26 @@ export default {
         flex: 1;
         flex-wrap: wrap;
         > a {
-          font-size: 14px;
+          width: 286px;
+          font-size: 16px;
           color: #666666;
-          margin-right: 40px;
           line-height: 30px;
           padding-left: 26px;
-          background: url("../../../assets/radio_false.png") no-repeat left
-            center;
+          background: url("../../../assets/radio_false.png") no-repeat left center;
           background-size: 16px 16px;
           &.active {
-            background: url("../../../assets/radio_true.png") no-repeat left
-              center;
+            background: url("../../../assets/radio_true.png") no-repeat left center;
             background-size: 16px 16px;
+            color: #68b6e7;
           }
         }
       }
     }
+    .partBox2 {
+      width: 100%;
+    }
   } // 孕期合并发症选择块
   .pregnancySelectBox {
-    margin-top: 20px;
     li {
       font-size: 14px;
       color: #666666;
@@ -602,71 +781,47 @@ export default {
       cursor: pointer;
     }
     .selectAllBtn {
-      width: 64px;
-      height: 32px;
       line-height: 32px;
-      border-radius: 50px;
+      border-radius: 10px;
       text-align: center;
       margin-right: 14px;
-      padding: 0px;
+      padding: 4px 10px;
+    }
+    .active {
+      background-color: #68b6e7;
+      color: #fff;
+      border: none;
     }
   } // 添加内容块
   .contentBox {
-    .lookAtallBtnBox {
-      width: 100%;
-      position: relative;
-      margin-top: 16px;
-      h2 {
-        font-size: 14px;
-        display: inline-block;
-        padding-right: 14px;
-      }
-      .positionWire {
-        position: absolute;
-        display: inline-block;
-        top: 50%;
-        right: 0px;
-        width: 860px;
-        height: 1px;
-        background-color: black;
-      }
-      .positionWire2 {
-        position: absolute;
-        display: inline-block;
-        top: 50%;
-        right: 0px;
-        width: 830px;
-        height: 1px;
-        background-color: #cccccc;
-      }
-    }
-    .partBox {
+    .partBox,
+    .partBox2 {
       width: 284px;
       .topicBox {
         margin-top: 16px;
         display: flex;
         flex: 1;
         flex-wrap: wrap;
-        margin-right: 40px;
         > a {
-          font-size: 14px;
+          font-size: 16px;
           color: #666666;
           line-height: 30px;
           padding-left: 26px;
-          background: url("../../../assets/radio_false.png") no-repeat left
-            center;
+          background: url("../../../assets/radio_false.png") no-repeat left center;
           background-size: 16px 16px;
           &.active {
-            background: url("../../../assets/radio_true.png") no-repeat left
-              center;
+            background: url("../../../assets/radio_true.png") no-repeat left center;
             background-size: 16px 16px;
+            color: #68b6e7;
           }
         }
       }
     }
+    .partBox2 {
+      width: 100%;
+    }
   }
   .violetBtn {
-    cursor: pointer;
     padding: 0px 5px;
     position: absolute;
     right: 28px;
@@ -688,33 +843,37 @@ export default {
     height: 1px;
     background-color: #999;
   }
-  .violetConcealBox {
+  .topicBoxBox {
     margin-top: 10px;
-    > a {
-      font-size: 14px;
-      color: #666666;
-      line-height: 30px;
-      padding-left: 26px;
-      background: url("../../../assets/radio_false.png") no-repeat left center;
-      background-size: 16px 16px;
-      &.active {
-        background: url("../../../assets/radio_true.png") no-repeat left center;
+    .topicBox {
+      > a {
+        font-size: 16px;
+        color: #666666;
+        line-height: 30px;
+        padding-left: 26px;
+        background: url("../../../assets/radio_false.png") no-repeat left center;
         background-size: 16px 16px;
+        &.active {
+          background: url("../../../assets/radio_true.png") no-repeat left center;
+          background-size: 16px 16px;
+        }
       }
     }
   }
   .flaxBox {
+    z-index: 10000;
     height: 88px;
     width: 100%;
     position: fixed; // background-color: #fff;
-    opacity: 1;
+    opacity: 0.8;
     bottom: 0px;
     left: 0;
     text-align: center;
-    z-index: 2;
+    background-color: #f6f6f6;
     .flaxBoxPart {
       width: 1200px;
       background-color: #86c5ec;
+      display: inline-block;
       .totalPoints {
         position: relative;
         font-size: 24px;
@@ -746,6 +905,9 @@ export default {
         padding: 0px;
         border: none;
         margin-left: 60px;
+        height: 40px;
+        color: black;
+        cursor: pointer;
       }
     }
   }
@@ -753,6 +915,25 @@ export default {
 // 检查确认模块
 .checkAffirmBox {
   padding: 14px 24px 24px 26px;
+  min-height: 680px;
+  .flaxBox {
+    height: 88px;
+    width: 100%;
+    position: fixed; // background-color: #fff;
+    opacity: 0.8;
+    bottom: 0px;
+    left: 0;
+    z-index: 10000;
+    background-color: #f6f6f6;
+    .flaxBoxPart {
+      height: 88px;
+      line-height: 88px;
+      width: 1200px;
+      background-color: #86c5ec;
+      text-align: right;
+      margin: auto;
+    }
+  }
   .checkAffirmBox_top {
     .assessmentInformation {
       p {
@@ -764,6 +945,9 @@ export default {
         position: relative;
         margin-right: 20px;
         padding-left: 16px;
+        i {
+          font-style: normal;
+        }
       }
       .greenStrip {
         &:after {
@@ -863,6 +1047,7 @@ export default {
       }
     }
   }
+
   .gradeInformation {
     height: 62px;
     border-left: 1px solid #ccc; // padding-left: 60px;
@@ -902,7 +1087,7 @@ export default {
     span {
       color: #666666;
       margin-top: 16px;
-      margin-bottom: 40px;
+      margin-bottom: 16px;
       position: relative;
       padding-left: 18px;
       display: inline-block;
@@ -910,6 +1095,9 @@ export default {
     div {
       flex: 1;
       border-bottom: 1px solid black;
+      p {
+        margin: 6px;
+      }
     }
     .greenStrip {
       &:after {
@@ -1054,15 +1242,17 @@ export default {
   background-color: #68b6e7;
   border-color: #68b6e7;
 }
-// .el-checkbox__label {
-//   display: inline;
-// }
-
-// .el-checkbox, .el-checkbox__input {
-//   white-space: normal;
-// }
 .el-checkbox, .el-checkbox__input {
   white-space: normal;
   word-break: break-all;
+}
+.personalCenterSpouseNewsBox .el-button--primary {
+  background-color: #f3f9fd;
+  width: 160px;
+  height: 40px;
+  padding: 0px;
+  border: none;
+  margin-right: 126px;
+  color: black;
 }
 </style>

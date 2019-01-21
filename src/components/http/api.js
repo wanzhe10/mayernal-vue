@@ -136,7 +136,8 @@ export default function $axios(options) {
       },
       err => {
         loading.close()
-        console.log(err.response.status)
+        // console.log(err.response.status)
+        console.log(err.response)
         if (err && err.response) {
           if (err.response.status ==503 ) {
             alert(1)

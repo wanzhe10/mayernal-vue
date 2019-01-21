@@ -3439,45 +3439,64 @@ export default {
 
   methods: {
     // 保存按钮
+  // 保存按钮
     basicBtn(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let token1 = window.localStorage.getItem("mayernal-web-token");
           if (this.activeName == "first") {
+            this.essentialInformation.idCardAddressProvince = this.selectedOptions1[0];
+            this.essentialInformation.idCardAddressCity = this.selectedOptions1[1];
+            this.essentialInformation.idCardAddressCounty = this.selectedOptions1[2];
+            this.essentialInformation.newAddressProvince = this.selectedOptions2[0];
+            this.essentialInformation.newAddressCity = this.selectedOptions2[1];
+            this.essentialInformation.newAddressCounty = this.selectedOptions2[2];
             this.essentialInformation.token = token1;
             console.log(this.essentialInformation);
-              if ( this.buttonHide == false) {
-                 this.patientCheckInsertForFiling(this.essentialInformation);
-            }else{
+            if (this.buttonHide == false) {
+              this.patientCheckInsertForFiling(this.essentialInformation);
+            } else {
               this.essentialInformation.patientCenterId = this.patientCenterId;
               this.essentialInformation.id = this.checkId;
-              console.log(this.essentialInformation)
-               this.patientCheckUpdateForFiling(this.essentialInformation);
+              console.log(this.essentialInformation);
+              this.patientCheckUpdateForFiling(this.essentialInformation);
             }
           } else if (this.activeName == "second") {
-            this.spouseInformation.patientCenterId = this.patientCenterId;
-            this.spouseInformation.token = token1;
-            if (this.spouseSmoke == 0) {
-              this.spouseInformation.smoke = 0;
-            }
-            if (this.drinks == 0) {
-              this.spouseInformation.drink = 0;
-            } else if (this.drinks == 1) {
-              this.spouseInformation.drink = this.tab;
-            }
-            if (this.familyHistory == 0) {
-              this.spouseInformation.patientHistory = "";
-            }
-            console.log(this.spouseInformation);
-              if ( this.buttonHide1 == false) {
-            this.patientHusbandsInsertForFiling(this.spouseInformation);
-            }else{
+            if (this.checkId == "" || this.checkId == undefined) {
+              this.$message.error("请先保存孕妇基本信息");
+            } else {
               this.spouseInformation.patientCenterId = this.patientCenterId;
-              this.spouseInformation.id = this.superId;
-              console.log(this.essentialInformation)
-               this.patientHusbandsUpdateForFiling(this.spouseInformation);
+              this.spouseInformation.newAddressProvince = this.selectedOptions3[0];
+              this.spouseInformation.newAddressCity = this.selectedOptions3[1];
+              this.spouseInformation.newAddressCounty = this.selectedOptions3[2];
+              this.spouseInformation.token = token1;
+              if (this.spouseSmoke == 0) {
+                this.spouseInformation.smoke = 0;
+              }
+              if (this.drinks == 0) {
+                this.spouseInformation.drink = 0;
+              } else if (this.drinks == 1) {
+                this.spouseInformation.drink = this.tab;
+              }
+              if (this.familyHistory == 0) {
+                this.spouseInformation.patientHistory = "";
+              }
+              console.log(this.spouseInformation);
+              if (this.buttonHide1 == false) {
+                this.patientHusbandsInsertForFiling(this.spouseInformation);
+              } else {
+                this.spouseInformation.patientCenterId = this.patientCenterId;
+                this.spouseInformation.id = this.superId;
+                console.log(this.essentialInformation);
+                this.patientHusbandsUpdateForFiling(this.spouseInformation);
+              }
             }
           } else if (this.activeName == "third") {
+            if (this.checkId == "" || this.checkId == undefined) {
+              this.$message.error("请先保存孕妇基本信息");
+            } else if (this.superId == "" || this.superId == undefined) {
+              this.$message.error("请先保存配偶一般信息");
+            } else {
             if (this.maternalInformation.contactToxic == 0) {
               this.maternalInformation.contactToxicName = "";
               this.maternalInformation.contactToxicDate = "";
@@ -3499,42 +3518,54 @@ export default {
             if (this.familyHistory3 == 0) {
               this.maternalInformation.nowHistory = "";
             }
-            this.maternalInformation.historyList = JSON.stringify(
-              this.PregnancyInformation
-            );
+            if (this.maternalInformation.contactRadioactiveRays == "0") {
+              this.maternalInformation.historyList = "";
+            } else {
+              this.maternalInformation.historyList = JSON.stringify(
+                this.PregnancyInformation
+              );
+            }
             console.log(this.maternalInformation.historyList);
             this.maternalInformation.patientCenterId = this.patientCenterId;
             this.maternalInformation.token = token1;
             console.log(this.maternalInformation);
-               if ( this.buttonHide2 == false) {
-            this.patientParturitionDetailInsertForFiling(
-              this.maternalInformation
-            );
-            }else{
+            if (this.buttonHide2 == false) {
+              this.patientParturitionDetailInsertForFiling(
+                this.maternalInformation
+              );
+            } else {
               this.maternalInformation.patientCenterId = this.patientCenterId;
               this.maternalInformation.id = this.parturitionDetailId;
-              console.log(this.essentialInformation)
-             this.patientParturitionDetailUpdateForFiling(
-              this.maternalInformation
-            );
+              console.log(this.essentialInformation);
+              this.patientParturitionDetailUpdateForFiling(
+                this.maternalInformation
+              );
+              }
             }
-          
           } else if (this.activeName == "fourth") {
-            // 体格检查保存按钮
-            this.healthCheckup.patientCenterId = this.patientCenterId;
-            this.healthCheckup.id = this.healthCheckId;
-            this.healthCheckup.token = token1;
-            console.log(this.healthCheckup);
-            if (this.buttonHide3 == false) {
-                   this.patientHealthCheckInsertForFiling(this.healthCheckup);
-            }else{
-                  this.healthCheckup.id = this.healthCheckId;
-this.patientHealthCheckUpdateForFiling(this.healthCheckup)
+            if (this.checkId == "" || this.checkId == undefined) {
+              this.$message.error("请先保存孕妇基本信息");
+            } else if (this.superId == "" || this.superId == undefined) {
+              this.$message.error("请先保存配偶一般信息");
+            } else if (
+              this.parturitionDetailId == "" ||
+              this.parturitionDetailId == undefined
+            ) {
+              this.$message.error("请先保存孕检信息");
+            } else {
+              // 体格检查保存按钮
+              this.healthCheckup.patientCenterId = this.patientCenterId;
+              this.healthCheckup.token = token1;
+              console.log(this.healthCheckup);
+              if (this.buttonHide3 == false) {
+                this.patientHealthCheckInsertForFiling(this.healthCheckup);
+              } else {
+                this.healthCheckup.id = this.healthCheckId;
+                this.patientHealthCheckUpdateForFiling(this.healthCheckup);
+              }
             }
-         
-          } 
+          }
         } else {
-          // console.log("error submit!!");
           return false;
         }
       });
@@ -3847,23 +3878,52 @@ this.patientHealthCheckUpdateForFiling(this.healthCheckup)
       return num < 10 ? "0" + num : num;
     },
     // 怀孕次数选择
+    // numberPregnancy() {
+    //   let tempPregnancyNum = this.maternalInformation.pregnancyNumber;
+    //   var _html = {};
+    //   _html.number = "";
+    //   _html.ageOfMenarche = "";
+    //   _html.productionDate = "";
+    //   _html.productionOfAge = "";
+    //   _html.productionAbortion = "";
+    //   _html.babySex = "";
+    //   _html.babyHealthType = "";
+    //   _html.remarks = "";
+    //   var mycars = new Array();
+    //   for (let i = 0; i < tempPregnancyNum; i++) {
+    //     mycars.push(_html);
+    //     this.PregnancyInformation = mycars;
+    //   }
+    //   // console.log(this.PregnancyInformation);
+    // },
+      // 怀孕次数选择
     numberPregnancy() {
-      let tempPregnancyNum = this.maternalInformation.pregnancyNumber;
-      var _html = {};
-      _html.number = "";
-      _html.ageOfMenarche = "";
-      _html.productionDate = "";
-      _html.productionOfAge = "";
-      _html.productionAbortion = "";
-      _html.babySex = "";
-      _html.babyHealthType = "";
-      _html.remarks = "";
-      var mycars = new Array();
-      for (let i = 0; i < tempPregnancyNum; i++) {
-        mycars.push(_html);
-        this.PregnancyInformation = mycars;
+      let vaule = this.maternalInformation.pregnancyNumber;
+      // let tempPregnancyNum = this.tempPregnancyNum;
+      // let i = tempPregnancyNum * 1;
+      this.historyLayer = {};
+      let tempNum = vaule - this.PregnancyInformation.length;
+      if (tempNum > 0) {
+        // 添加
+        for (let i = 0; i < tempNum; i++) {
+          this.PregnancyInformation.push(this.historyLayer);
+        }
+      } else {
+        // 删除
+        let tempNum1 = tempNum * -1;
+        let tempEntity;
+        for (let i = tempNum1; i > 0; i--) {
+          // 1.取出对象
+          tempEntity = this.PregnancyInformation[tempNum1];
+          console.log(tempEntity);
+          // 2.判断对象有没有id
+          // if (tempEntity.id) {
+          //   // 3.添加到删除json中
+          //   this.deleteHistory.push(tempEntity);
+          // }
+          this.PregnancyInformation.pop(tempNum1);
+        }
       }
-      // console.log(this.PregnancyInformation);
     },
     // 点击孕产史编辑
     modifyButton(index, row) {
@@ -3997,7 +4057,7 @@ this.patientHealthCheckUpdateForFiling(this.healthCheckup)
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
-          
+           this.activeName = "fourth";
           } else {
             $message.error("修改失败，请稍后重试");
           }
@@ -4152,7 +4212,6 @@ this.patientHealthCheckUpdateForFiling(this.healthCheckup)
         gradeType = 0;
       }
       this.signatureConfirmationForFiling.gradeType = gradeType;
-
       for (let i = 0; i < uniq(fiveArr).length; i++) {
         $(".yellowDiv").append("<p>" + fiveArr[i] + "</p>");
       }
@@ -4259,6 +4318,18 @@ this.patientHealthCheckUpdateForFiling(this.healthCheckup)
         });
     },
     examineAffirm(){
+        if (this.checkId == "" || this.checkId == undefined) {
+        this.$message.error("请先保存孕妇基本信息");
+      } else if (this.superId == "" || this.superId == undefined) {
+        this.$message.error("请先保存配偶一般信息");
+      } else if (
+        this.parturitionDetailId == "" ||
+        this.parturitionDetailId == undefined
+      ) {
+        this.$message.error("请先保存孕检信息");
+      } else if (this.healthCheckId == "" || this.healthCheckId == undefined) {
+        this.$message.error("请先保存体格检查");
+      } else {
         // 检查确认按钮
           let token1 = window.localStorage.getItem("mayernal-web-token");
             this.signatureConfirmationForFiling.token = token1;
@@ -4274,6 +4345,7 @@ this.patientHealthCheckUpdateForFiling(this.healthCheckup)
             this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.maternalInformation.newAgeOfMenarcheDay;
             console.log(this.signatureConfirmationForFiling);
             this.signatureConfirmationForFilingPort(this.signatureConfirmationForFiling);
+    }
     },
           
 

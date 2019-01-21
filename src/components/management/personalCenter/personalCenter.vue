@@ -418,7 +418,7 @@
           class="spouseNewsnav"
           style="display:flax;"
         >
-          <router-link :to="{path: 'spouseNews'}">
+          <router-link :to="{path: '/spouseNews', query:{checkNumber: spouseNewsNum}}">
             <input
               type="button"
               value="新增高危评估"
