@@ -9,8 +9,7 @@
         <div
           class="pregnantNewsBox"
           :id="patientCenterId"
-          :checkId='checkId'
-        >
+          :checkId='checkId' >
           <el-form
             :model="essentialInformation"
             :rules="rules2"
@@ -741,8 +740,8 @@
             <div class="mgr76 fl">
               <h3>孕周</h3>
               <div class="gestationalWeeksBox clearfix">
-                <div class="newAgeOfMenarche"> <span v-show="maternalInformation.newAgeOfMenarche !==''">{{maternalInformation.newAgeOfMenarche}}</span><span v-show="maternalInformation.newAgeOfMenarche ==''">孕周</span></div>
-                <div class="newAgeOfMenarcheDay"><span v-show="maternalInformation.newAgeOfMenarcheDay !==''">{{maternalInformation.newAgeOfMenarcheDay}}</span><span v-show="maternalInformation.newAgeOfMenarcheDay ==''">孕天</span></div>
+                <div class="newAgeOfMenarche"> <span v-show="maternalInformation.newAgeOfMenarche !==''">{{maternalInformation.newAgeOfMenarche}}</span><span v-show="maternalInformation.newAgeOfMenarche ===''">孕周</span></div>
+                <div class="newAgeOfMenarcheDay"><span v-show="maternalInformation.newAgeOfMenarcheDay !==''">{{maternalInformation.newAgeOfMenarcheDay}}</span><span v-show="maternalInformation.newAgeOfMenarcheDay ===''">孕天</span></div>
               </div>
             </div>
             <div class="mgr76 fl">
@@ -2350,7 +2349,7 @@ export default {
       isActive: 0, //孕产期合并症 选项切换
       highRiskGradeCatalogueBeanList: [], //高危所有数组
       assessArr: [], //  孕产期合并症数组
-      activeName: "third", // first、second、third、fourth、fifth、sixth
+      activeName: "first", // first、second、third、fourth、fifth、sixth
       drinks: 0, //配偶一般信息饮酒显示隐藏
       tab: 1,
       spouseSmoke: 0, //配偶-吸烟数量
@@ -3446,7 +3445,11 @@ export default {
     let doctorName = localStorage.getItem("mayernal-web-userName");
     this.doctorName = doctorName;
   },
-
+ 
+// //  数据清除
+//  deactivated () { //清除keep-alive的缓存
+//     this.$destroy(true)
+//   },
   methods: {
     // 保存按钮
     basicBtn(formName) {
@@ -3506,49 +3509,49 @@ export default {
             } else if (this.superId == "" || this.superId == undefined) {
               this.$message.error("请先保存配偶一般信息");
             } else {
-            if (this.maternalInformation.contactToxic == 0) {
-              this.maternalInformation.contactToxicName = "";
-              this.maternalInformation.contactToxicDate = "";
-            }
-            if (this.maternalInformation.virusInfection == 0) {
-              this.maternalInformation.virusInfectionOther = "";
-            } else if (this.maternalInformation.virusInfection == 1) {
-              for (var i = 0; i < $(".chunks.active").length; i++) {
-                this.maternalInformation.virusInfectionOther +=
-                  $(".chunks.active")
-                    .eq(i)
-                    .text() + "、";
+              if (this.maternalInformation.contactToxic == 0) {
+                this.maternalInformation.contactToxicName = "";
+                this.maternalInformation.contactToxicDate = "";
               }
-              console.log(this.maternalInformation.virusInfectionOther);
-            }
-            if (this.familyHistory2 == 0) {
-              this.maternalInformation.familyHistory = "";
-            }
-            if (this.familyHistory3 == 0) {
-              this.maternalInformation.nowHistory = "";
-            }
-            if (this.maternalInformation.contactRadioactiveRays == "0") {
-              this.maternalInformation.historyList = "";
-            } else {
-              this.maternalInformation.historyList = JSON.stringify(
-                this.PregnancyInformation
-              );
-            }
-            console.log(this.maternalInformation.historyList);
-            this.maternalInformation.patientCenterId = this.patientCenterId;
-            this.maternalInformation.token = token1;
-            console.log(this.maternalInformation);
-            if (this.buttonHide2 == false) {
-              this.patientParturitionDetailInsertForFiling(
-                this.maternalInformation
-              );
-            } else {
+              if (this.maternalInformation.virusInfection == 0) {
+                this.maternalInformation.virusInfectionOther = "";
+              } else if (this.maternalInformation.virusInfection == 1) {
+                for (var i = 0; i < $(".chunks.active").length; i++) {
+                  this.maternalInformation.virusInfectionOther +=
+                    $(".chunks.active")
+                      .eq(i)
+                      .text() + "、";
+                }
+                console.log(this.maternalInformation.virusInfectionOther);
+              }
+              if (this.familyHistory2 == 0) {
+                this.maternalInformation.familyHistory = "";
+              }
+              if (this.familyHistory3 == 0) {
+                this.maternalInformation.nowHistory = "";
+              }
+              if (this.maternalInformation.contactRadioactiveRays == "0") {
+                this.maternalInformation.historyList = "";
+              } else {
+                this.maternalInformation.historyList = JSON.stringify(
+                  this.PregnancyInformation
+                );
+              }
+              console.log(this.maternalInformation.historyList);
               this.maternalInformation.patientCenterId = this.patientCenterId;
-              this.maternalInformation.id = this.parturitionDetailId;
-              console.log(this.essentialInformation);
-              this.patientParturitionDetailUpdateForFiling(
-                this.maternalInformation
-              );
+              this.maternalInformation.token = token1;
+              console.log(this.maternalInformation);
+              if (this.buttonHide2 == false) {
+                this.patientParturitionDetailInsertForFiling(
+                  this.maternalInformation
+                );
+              } else {
+                this.maternalInformation.patientCenterId = this.patientCenterId;
+                this.maternalInformation.id = this.parturitionDetailId;
+                console.log(this.essentialInformation);
+                this.patientParturitionDetailUpdateForFiling(
+                  this.maternalInformation
+                );
               }
             }
           } else if (this.activeName == "fourth") {
@@ -3937,7 +3940,7 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
-             this.activeName = "fourth";
+            this.activeName = "fourth";
           } else {
             $message.error("修改失败，请稍后重试");
           }
@@ -4111,7 +4114,7 @@ export default {
           templateId: templateIdTalbe
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             window.localStorage.setItem(
               "highRiskGradeCatalogueBeanList",
@@ -4166,6 +4169,7 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
+              self.$destroy(true);
             self.$router.push({ path: "/management" });
           }
         })
@@ -4228,7 +4232,8 @@ export default {
     }
 
     /*  // ------------------------公共js----------------------------------- */
-  }
+  },
+
 };
 </script>
 <style lang="less" scoped>

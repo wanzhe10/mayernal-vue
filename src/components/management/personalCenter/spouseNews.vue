@@ -1,8 +1,11 @@
 <template>
-	<div class="personalCenterSpouseNewsBox">
-		<el-tabs v-model="activeName" class="aaaa">
-			<el-tab-pane label="高危评估" name="fifth">
-		  <!-- 高危评估模块 -->
+  <div class="personalCenterSpouseNewsBox">
+    <el-tabs v-model="activeName">
+      <el-tab-pane
+        label="高危评估"
+        name="fifth"
+      >
+        <!-- 高危评估模块 -->
         <div class="riskAssessmentBox">
           <div class="riskAssessmentBoxTop">
             <span>项目类型</span>
@@ -227,9 +230,12 @@
           </div>
         </div>
 
-			</el-tab-pane>
-			<el-tab-pane label="检查确认" name="sixth">
-			  <div class="checkAffirmBox">
+      </el-tab-pane>
+      <el-tab-pane
+        label="检查确认"
+        name="sixth"
+      >
+        <div class="checkAffirmBox">
           <div class="checkAffirmBox_top clearfix">
             <div class="fl assessmentInformation">
               <p>评估信息</p>
@@ -248,7 +254,8 @@
           <div class="affirmBox2">
             <h3>评估详情</h3>
             <span class="greenStrip">绿色(低风险)</span>
-            <div class="greenDiv"></div>
+            <div class="greenDiv">
+            </div>
             <span class="yellowStrip">黄色(一般风险)</span>
             <div class="yellowDiv"></div>
             <span class="orangeStrip">橙色(较高风险)</span>
@@ -268,9 +275,9 @@
             </div>
           </div>
         </div>
-			</el-tab-pane>
-		</el-tabs>
-	</div>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 <script>
 import Vue from "vue";
@@ -279,8 +286,8 @@ export default {
   data() {
     return {
       activeName: "fifth",
-        highRiskGradeCatalogueBeanList: [], //高危所有数组
-           isActive: 0, //孕产期合并症 选项切换
+      highRiskGradeCatalogueBeanList: [], //高危所有数组
+      isActive: 0, //孕产期合并症 选项切换
       baseHeartRateModel: "",
       baseLungModel: "",
       baseAbdomenLiverModel: "",
@@ -300,7 +307,7 @@ export default {
       projectTypeModel1: "",
       projectTypeModel2: "",
       historyAssessModel: "",
-         // 检查确认
+      // 检查确认
       signatureConfirmationForFiling: {
         token: "", //
         patientCenterId: "", //
@@ -312,15 +319,15 @@ export default {
         gradeType: "", //	高危等级
         newAgeOfMenarche: "", //	现孕周
         newAgeOfMenarcheDay: "", // 复制
-        checkNumber:'' //次数
+        checkNumber: "" //次数
       },
-        isShow1: true,
+      isShow1: true,
       isShow2: true,
       isShow3: true,
       downIcon: true,
       downIcon2: true,
       downIcon3: true,
-            // 项目类型
+      // 项目类型
       projectType1: [
         {
           value: "1",
@@ -339,25 +346,30 @@ export default {
           label: "紫色"
         }
       ],
-         doctorName: "", //操作人
-         tableDataParticulars:{},
-          checkNumber:''
+      doctorName: "", //操作人
+      tableDataParticulars: {},
+      checkNumber: ""
     };
   },
-    activated() {
-       let checkNumber = this.$route.query.checkNumber;
- this.checkNumber = checkNumber;
- console.log(this.checkNumber)
+  
+  activated() {
+    this.projectTypeModel1 = "";
+    let checkNumber = this.$route.query.checkNumber;
+    this.checkNumber = checkNumber;
+    console.log(this.checkNumber);
     var tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
     );
     this.tableDataParticulars = tableDataParticulars;
-    console.log(this.tableDataParticulars )
+    console.log(this.tableDataParticulars);
     let doctorName = localStorage.getItem("mayernal-web-userName");
     this.doctorName = doctorName;
-  this.highRiskGradeTemplateDetailFindTreeList();
-  
+    this.highRiskGradeTemplateDetailFindTreeList();
   },
+  //  数据清除
+//  deactivated () { //清除keep-alive的缓存
+//     this.$destroy(true)
+//   },
   methods: {
     //   ------------------------高危评估star------------------------------------
     // 基本情况点击显示隐藏
@@ -530,15 +542,16 @@ export default {
         this.highRiskGradeCatalogueBeanList = jsonObj;
       }
     },
-      /* ****************************检查确认star******************************** */
+    /* ****************************检查确认star******************************** */
 
-    signatureConfirmationForFilingPort(obj) {
+    patientHighRiskGradeInsert(obj) {
       let self = this;
       this.$api
-        .signatureConfirmationForFiling(obj)
+        .patientHighRiskGradeInsert(obj)
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
+              this.$destroy(true)
             self.$router.push({ path: "/personalCenter" });
           }
         })
@@ -547,23 +560,22 @@ export default {
         });
     },
     examineAffirm() {
-        // 检查确认按钮
-        let token1 = window.localStorage.getItem("mayernal-web-token");
-        this.signatureConfirmationForFiling.token = token1;
-        this.signatureConfirmationForFiling.patientCenterId = this.tableDataParticulars.id;
-        this.signatureConfirmationForFiling.patientName = this.tableDataParticulars.checkName;
-        let highRiskGradeTemplateId = window.localStorage.getItem(
-          "mayernal-web-highRiskGradesTable"
-        );
-        this.signatureConfirmationForFiling.highRiskGradeTemplateId = highRiskGradeTemplateId;
-        this.signatureConfirmationForFiling.newAgeOfMenarche = this.tableDataParticulars.newAgeOfMenarche;
-        this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.tableDataParticulars.newAgeOfMenarcheDay;
-        this.signatureConfirmationForFiling.checkNumber =Number(this.checkNumber)+1;
-        console.log(this.signatureConfirmationForFiling);
-        this.signatureConfirmationForFilingPort(
-          this.signatureConfirmationForFiling
-        );
-      }
+      // 检查确认按钮
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.signatureConfirmationForFiling.token = token1;
+      this.signatureConfirmationForFiling.patientCenterId = this.tableDataParticulars.id;
+      this.signatureConfirmationForFiling.patientName = this.tableDataParticulars.checkName;
+      let highRiskGradeTemplateId = window.localStorage.getItem(
+        "mayernal-web-highRiskGradesTable"
+      );
+      this.signatureConfirmationForFiling.highRiskGradeTemplateId = highRiskGradeTemplateId;
+      this.signatureConfirmationForFiling.newAgeOfMenarche = this.tableDataParticulars.newAgeOfMenarche;
+      this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.tableDataParticulars.newAgeOfMenarcheDay;
+      this.signatureConfirmationForFiling.checkNumber =
+        Number(this.checkNumber) + 1;
+      console.log(this.signatureConfirmationForFiling);
+      this.patientHighRiskGradeInsert(this.signatureConfirmationForFiling);
+    }
     /* ****************************检查确认end******************************** */
   }
 };
@@ -752,10 +764,12 @@ export default {
           color: #666666;
           line-height: 30px;
           padding-left: 26px;
-          background: url("../../../assets/radio_false.png") no-repeat left center;
+          background: url("../../../assets/radio_false.png") no-repeat left
+            center;
           background-size: 16px 16px;
           &.active {
-            background: url("../../../assets/radio_true.png") no-repeat left center;
+            background: url("../../../assets/radio_true.png") no-repeat left
+              center;
             background-size: 16px 16px;
             color: #68b6e7;
           }
@@ -807,10 +821,12 @@ export default {
           color: #666666;
           line-height: 30px;
           padding-left: 26px;
-          background: url("../../../assets/radio_false.png") no-repeat left center;
+          background: url("../../../assets/radio_false.png") no-repeat left
+            center;
           background-size: 16px 16px;
           &.active {
-            background: url("../../../assets/radio_true.png") no-repeat left center;
+            background: url("../../../assets/radio_true.png") no-repeat left
+              center;
             background-size: 16px 16px;
             color: #68b6e7;
           }
@@ -854,7 +870,8 @@ export default {
         background: url("../../../assets/radio_false.png") no-repeat left center;
         background-size: 16px 16px;
         &.active {
-          background: url("../../../assets/radio_true.png") no-repeat left center;
+          background: url("../../../assets/radio_true.png") no-repeat left
+            center;
           background-size: 16px 16px;
         }
       }
@@ -1242,7 +1259,8 @@ export default {
   background-color: #68b6e7;
   border-color: #68b6e7;
 }
-.el-checkbox, .el-checkbox__input {
+.el-checkbox,
+.el-checkbox__input {
   white-space: normal;
   word-break: break-all;
 }

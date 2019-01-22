@@ -7,7 +7,7 @@
           <span class="fake">检查日期：<i v-model="reviewOfNew.checkDate">{{reviewOfNew.checkDate}}</i></span>
           <span>复健次数：<i>{{examineNum}}次</i></span>
         </p>
-        <p class="fr"><span>操作医生：<i class="doctorName">周晓晓</i></span></p>
+        <p class="fr"><span>操作医生：<i class="doctorName">{{doctorName}}</i></span></p>
       </div>
       <el-form
         :model="reviewOfNew"
@@ -678,16 +678,24 @@ export default {
       pcCheckForWeekBeanList: [], //孕检信息
       pcCheckCellsBean: {},
       clickActive: 0,
-      examineNum:''//复检次数
+      examineNum:'',//复检次数
+      doctorName:'' //操作医生
     };
   },
   components: {
     Calendar
   },
-  mounted() {
+  activated() {
     this.getUser();
     this.format();
-       this.examineNum = parseInt (window.localStorage.getItem('mayernal-web-recordNum'))+1;
+       this.examineNum = Number(window.localStorage.getItem('mayernal-web-recordNum'))+1;
+         var tableDataParticulars = eval(
+      "(" + localStorage.getItem("tableDataParticulars") + ")"
+    );
+    this.tableDataParticulars = tableDataParticulars;
+    console.log(this.tableDataParticulars);
+    let doctorName = localStorage.getItem("mayernal-web-userName");
+    this.doctorName = doctorName;
   },
 
   methods: {

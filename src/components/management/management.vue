@@ -375,11 +375,11 @@ export default {
       }
     };
   },
-    beforeRouteLeave(to, from, next) {
-         // 设置下一个路由的 meta
-        to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
-        next();
-    },
+    // beforeRouteLeave(to, from, next) {
+    //      // 设置下一个路由的 meta
+    //     to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
+    //     next();
+    // },
   methods: {
     // 建档管理
     recordSelect(){

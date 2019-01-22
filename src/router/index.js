@@ -209,37 +209,6 @@ export default new Router({
             title: '个人中心'
               , keepAlive: true //此组件需要被缓存
           },
-          // children:[
-          //     {
-          //       path: 'recordNews',
-          //       name: 'recordNews',
-          //       component: recordNews,
-          //       meta: {
-          //         title: '新增复检记录',
-          //         keepAlive: true //此组件需要被缓存
-
-          //       }
-          //     }, {
-          //       path: 'spouseNews',
-          //       name: 'spouseNews',
-          //       component: spouseNews,
-          //       meta: {
-          //         title: '新增高危评估',
-          //         keepAlive: true //此组件需要被缓存
-
-          //       }
-          //     }, {
-          //       path: 'fortyTwoDay',
-          //       name: 'fortyTwoDay',
-          //       component: fortyTwoDay,
-          //       meta: {
-          //         title: '新增产后42天',
-          //         keepAlive: true //此组件需要被缓存
-
-          //       }
-          //     },
-          // ]
-
         },
         {
           path: '/preview',

@@ -190,7 +190,6 @@
       <!-- 右部分（组件部分） -->
       <el-container>
         <el-main>
-          <!-- <router-view /> -->
           <keep-alive>
 <router-view v-if="$route.meta.keepAlive"></router-view>
 </keep-alive>

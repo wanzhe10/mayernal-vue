@@ -741,8 +741,8 @@
             <div class="mgr76 fl">
               <h3>孕周</h3>
               <div class="gestationalWeeksBox clearfix">
-                <div class="newAgeOfMenarche"> <span v-show="maternalInformation.newAgeOfMenarche !==''">{{maternalInformation.newAgeOfMenarche}}</span><span v-show="maternalInformation.newAgeOfMenarche ==''">孕周</span></div>
-                <div class="newAgeOfMenarcheDay"><span v-show="maternalInformation.newAgeOfMenarcheDay !==''">{{maternalInformation.newAgeOfMenarcheDay}}</span><span v-show="maternalInformation.newAgeOfMenarcheDay ==''">孕天</span></div>
+                <div class="newAgeOfMenarche"> <span v-show="maternalInformation.newAgeOfMenarche !==''">{{maternalInformation.newAgeOfMenarche}}</span><span v-show="maternalInformation.newAgeOfMenarche ===''">孕周</span></div>
+                <div class="newAgeOfMenarcheDay"><span v-show="maternalInformation.newAgeOfMenarcheDay !==''">{{maternalInformation.newAgeOfMenarcheDay}}</span><span v-show="maternalInformation.newAgeOfMenarcheDay ===''">孕天</span></div>
               </div>
             </div>
             <div class="mgr76 fl">
@@ -2125,11 +2125,11 @@ export default {
         callback();
       }
     };
-        // 结婚年龄
+        //孕妇结婚年龄
       let marryAgeVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("年龄不能为空"));
-      } else if (!Number.isInteger(value)) {
+      } else if (!Number.isInteger(Number(value))) {
         callback(new Error("请输入数字值"));
       }else if (value >= this.essentialInformation.age) {
         console.log(this.essentialInformation.age)
@@ -2138,15 +2138,20 @@ export default {
         callback();
       }
     };
-        // 结婚年龄
-      let marryAgeVerify2 = (rule, value, callback) => {
+    //配偶结婚年龄
+    let marryAgeVerify2 = (rule, value, callback) => {
+      console.log(value)
       if (!value) {
         return callback(new Error("年龄不能为空"));
-      } else if (!Number.isInteger(value)) {
+      } else if (!Number.isInteger(Number(value))) {
         callback(new Error("请输入数字值"));
-      }else if (value >= this.spouseInformation.age) {
-        console.log(this.spouseInformation.age)
-       return callback(new Error("结婚年龄不能大于实际年龄"));
+      } else if (this.spouseInformation.age !== "") {
+        let age = Number(this.spouseInformation.age);
+        if (value >= age) {
+          return callback(new Error("结婚年龄不能大于实际年龄"));
+        } else {
+          callback();
+        }
       } else {
         callback();
       }
@@ -2155,7 +2160,7 @@ export default {
      let menstrualHistoryAge = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("初潮年龄不能为空"));
-      }else if (!Number.isInteger(value)) {
+      }else if (!Number.isInteger(Number(value))) {
         callback(new Error("请输入数字值"));
       }   else {
         callback();
@@ -2164,7 +2169,7 @@ export default {
     let menstrualHistoryDay = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("周期不能为空"));
-      }else if (!Number.isInteger(value)) {
+      }else if (!Number.isInteger(Number(value))) {
         callback(new Error("请输入数字值"));
       }   else {
         callback();
@@ -2222,7 +2227,7 @@ export default {
     var baseBloodVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("血压不能为空"));
-      } else if (!RegExpObj.Reg_figure.test(value)) {
+      } else if (!RegExpObj.Reg_figure.test(Number(value))) {
         callback(new Error("请输入数字值"));
       } else if (value < 0 || value > 300) {
         callback(new Error("血压取值范围 0 ~ 300"));
@@ -2234,7 +2239,7 @@ export default {
     var baseWeightVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("体重不能为空"));
-      } else if (!RegExpObj.Reg_figure.test(value)) {
+      } else if (!RegExpObj.Reg_figure.test(Number(value))) {
         callback(new Error("格式错误"));
       } else if (value < 30 || value > 200) {
         callback(new Error("体重取值范围 30 ~ 200"));
@@ -2246,7 +2251,7 @@ export default {
     var baseHeightVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("身高不能为空"));
-      } else if (!RegExpObj.Reg_figure.test(value)) {
+      } else if (!RegExpObj.Reg_figure.test(Number(value))) {
         callback(new Error("请输入数字值"));
       } else if (value < 100 || value > 200) {
         callback(new Error("身高取值范围 100 ~ 200"));
@@ -2284,7 +2289,7 @@ export default {
     var obstetricsHeightVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("宫高不能为空"));
-      } else if (!RegExpObj.Reg_figure.test(value)) {
+      } else if (!RegExpObj.Reg_figure.test(Number(value))) {
         callback(new Error("请输入数字值"));
       } else if (value < 16 || value > 40) {
         callback(new Error("宫高取值范围 16 ~ 40"));
@@ -2296,7 +2301,7 @@ export default {
     var obstetricsAbdominalGirthVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("腹围不能为空"));
-      } else if (!RegExpObj.Reg_figure.test(value)) {
+      } else if (!RegExpObj.Reg_figure.test(Number(value))) {
         callback(new Error("请输入数字值"));
       } else if (value < 50 || value > 100) {
         callback(new Error("腹围取值范围 50 ~ 100"));
@@ -2308,7 +2313,7 @@ export default {
     var obstetricsFetalHeartVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("胎心率不能为空"));
-      } else if (!Number.isInteger(value)) {
+      } else if (!Number.isInteger(Number(value))) {
         callback(new Error("请输入数字值"));
       } else if (value < 90 || value > 200) {
         callback(new Error("胎心率取值范围 90 ~ 200"));
@@ -2331,7 +2336,7 @@ export default {
       isActive: 0, //孕产期合并症 选项切换
       highRiskGradeCatalogueBeanList: [], //高危所有数组
       assessArr: [], //  孕产期合并症数组
-      activeName: "third", // first、second、third、fourth、fifth、sixth
+      activeName: "first", // first、second、third、fourth、fifth、sixth
       drinks: 0, //配偶一般信息饮酒显示隐藏
       tab: 1,
       spouseSmoke: 0, //配偶-吸烟数量
@@ -2490,6 +2495,10 @@ export default {
       ],
       // 孕产信息怀孕次数
       pregnancies: [
+         {
+          value: "0",
+          label: "0"
+        },
         {
           value: "1",
           label: "1"
@@ -3090,7 +3099,7 @@ export default {
         newAgeOfMenarcheDay: "", //	现孕周-天
         menstrualHistoryAge: "", //	初潮-岁
         menstrualHistoryDay: "", //	月经史-周次
-        pregnancyNumber: "", //	怀孕次数
+        pregnancyNumber: "0", //	怀孕次数
         morningSickness: "", //	早孕反应程度
         ketosis: "", //	酮症
         parturitionFrontPharmacy: "", //	孕前是否用药
@@ -3178,7 +3187,7 @@ export default {
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         telephone: [{ trigger: "blur", validator: telephoneVerify }],
-           marryAge: [{ trigger: "blur", validator: marryAgeVerify2 }],
+            marryAge: [{ trigger: "blur", validator: marryAgeVerify2 }],
              menstrualHistoryAge: [{ trigger: "blur", validator: menstrualHistoryAge }],
              menstrualHistoryDay: [{ trigger: "blur", validator: menstrualHistoryDay }],
         // 证件类型
@@ -3424,17 +3433,22 @@ export default {
       this.patientCenterId = tableDataParticulars.id;
        this.checkId = tableDataParticulars.checkId; //基本信息ID
     this.superId = tableDataParticulars.husbandsId; //配偶id
+    console.log(this.superId)
     this.parturitionDetailId = tableDataParticulars.parturitionDetailId; //孕产
     this.healthCheckId = tableDataParticulars.healthCheckId; //体格检查
       this.essentialInquire();
-          this.patientHusbandsFindForFiling();
-          this.patientParturitionDetailFindForFiling();
-             this.patientHealthCheckFindById();
+          // this.patientHusbandsFindForFiling();
+          // this.patientParturitionDetailFindForFiling();
+          //    this.patientHealthCheckFindById();
     }
   },
   mounted() {
     let doctorName = localStorage.getItem("mayernal-web-userName");
     this.doctorName = doctorName;
+  },
+   //  数据清除
+ deactivated () { //清除keep-alive的缓存
+    this.$destroy(true)
   },
 
   methods: {
@@ -3767,7 +3781,7 @@ export default {
           id: this.superId
         })
         .then(res => {
-          // console.log(res);
+          console.log(res);
           if (res.status === "20200") {
             this.spouseInformation = res;
                 let selectedOptions3 =[];
@@ -4255,7 +4269,7 @@ export default {
           templateId: templateIdTalbe
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             window.localStorage.setItem(
               "highRiskGradeCatalogueBeanList",
@@ -4370,11 +4384,16 @@ export default {
       document.documentElement.style.overflow = "scroll";
     },
       handleClick(tab, event){
-      console.log(tab.name)
       if (tab.name=='second') {
         if (this.superId !=='') {
+           this.patientHusbandsFindForFiling();
             this.buttonHide1 = true;
             this.buttonShow1 = false;
+           
+        }else{
+          this.buttonHide1 = false;
+            this.buttonShow1 = true;
+         
         }
         
       }else if (tab.name=='third') {

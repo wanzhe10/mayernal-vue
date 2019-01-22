@@ -257,10 +257,19 @@
               </el-collapse-transition>
             </div>
           </div>
-
+   <div class="flaxBox">
+              <div class="flaxBoxPart">
+                  <router-link :to="{path:'recordNews'}">
+                  <el-button
+                    type="primary"
+                    @click="recordNewsBtn()"
+                  >新增复检记录</el-button>
+                   </router-link>
+              </div>
+            </div>
         </div>
         <!-- 新增复检记录按钮 -->
-        <div class="recordNewsNav">
+        <!-- <div class="recordNewsNav">
           <router-link :to="{path:'recordNews'}">
             <input
               type="button"
@@ -269,7 +278,8 @@
               @click="recordNewsBtn()"
             >
           </router-link>
-        </div>
+        </div> -->
+         
       </el-tab-pane>
       <el-tab-pane
         label="高危评估记录"
@@ -412,9 +422,19 @@
               </p>
             </el-collapse-transition>
           </div>
+            <div class="flaxBox">
+              <div class="flaxBoxPart">
+                  <router-link  :to="{path: '/spouseNews', query:{checkNumber: spouseNewsNum}}">
+                  <el-button
+                    type="primary"
+                     @click="spouseNewsBtn()"
+                  >新增高危评估</el-button>
+                   </router-link>
+              </div>
+            </div>
         </div>
         <!-- 新增高危评估按钮 -->
-        <div
+        <!-- <div
           class="spouseNewsnav"
           style="display:flax;"
         >
@@ -426,7 +446,8 @@
               @click="spouseNewsBtn()"
             >
           </router-link>
-        </div>
+        </div> -->
+       
       </el-tab-pane>
       <el-tab-pane
         label="产后42天检查记录"
@@ -626,7 +647,7 @@ export default {
       spouseNewshowActive: 0, //高危评估记录添加类名的下标
       patientCenterId: "",
       recheckRecord: [], //复检记录数据
-      examineNum: "", //检查记录条数
+      examineNum: 0, //检查记录条数
       recheckRightData: {}, //复检记录右边数据
       highRiskFactor: [], //高危因素数组
       imageList: [], //复检记录-图片数组
@@ -641,11 +662,11 @@ export default {
       BMLValue: false
     };
   },
-    beforeRouteLeave(to, from, next) {
-         // 设置下一个路由的 meta
-        to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
-        next();
-    },
+    // beforeRouteLeave(to, from, next) {
+    //      // 设置下一个路由的 meta
+    //     to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
+    //     next();
+    // },
   activated() {
     var tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
@@ -760,12 +781,14 @@ export default {
               );
             }
             this.examineNum = res.pcPatientSecondCheckBeanList.length;
+            coonsole.log(this.examineNum )
             this.recordNumsDataShow = true;
             this.imgShowHide = false;
           } else if (res.status === "20209") {
                 this.recheckRecord = [];
              this.imgShowHide = true;
              this.recordNumsDataShow = false;
+             this.examineNum =0;
           }
         })
         .catch(error => {
@@ -1678,7 +1701,7 @@ export default {
           &:after {
             content: " ";
             position: absolute;
-            top: 2px;
+            top: 4px;
             right: -15px;
             width: 2px;
             height: 14px;
@@ -1692,7 +1715,7 @@ export default {
         &:after {
           content: " ";
           position: absolute;
-          top: 2px;
+          top: 4px;
           right: -15px;
           width: 2px;
           height: 14px;
@@ -1990,29 +2013,48 @@ export default {
     }
   }
   // 新增记录按钮
-  .recordNewsNav,
-  .spouseNewsnav {
-    position: fixed;
-    width: 100%;
+  // .recordNewsNav,
+  // .spouseNewsnav {
+  //   position: fixed;
+  //   width: 100%;
+  //   height: 88px;
+  //   line-height: 88px;
+  //   vertical-align: middle;
+  //   bottom: 0;
+  //   left: 0;
+  //   background-color: #92c9eb;
+  //   opacity: 0.8;
+  //   input {
+  //     width: 160px;
+  //     height: 40px;
+  //     background-color: #f4fafd;
+  //     color: #000000;
+  //     text-align: center;
+  //     line-height: 40px;
+  //     border-radius: 4px;
+  //     font-size: 14px;
+  //     float: right;
+  //     margin-right: 56px;
+  //     margin-top: 25px;
+  //   }
+  // }
+    .flaxBox {
     height: 88px;
-    line-height: 88px;
-    vertical-align: middle;
-    bottom: 0;
-    left: 0;
-    background-color: #92c9eb;
+    width: 100%;
+    position: fixed; // background-color: #fff;
     opacity: 0.8;
-    input {
-      width: 160px;
-      height: 40px;
-      background-color: #f4fafd;
-      color: #000000;
-      text-align: center;
-      line-height: 40px;
-      border-radius: 4px;
-      font-size: 14px;
-      float: right;
-      margin-right: 56px;
-      margin-top: 25px;
+    bottom: 0px;
+    left: 0;
+    z-index: 10000;
+    background-color: #f6f6f6;
+    .flaxBoxPart {
+      height: 88px;
+      line-height: 88px;
+      width: 1200px;
+      background-color: #86c5ec;
+      text-align: right;
+    margin: auto;
+
     }
   }
   .newlyLayerTop {
@@ -2060,6 +2102,16 @@ export default {
   .el-date-editor.el-input__inner {
     width: 260px;
   }
+ .el-button--primary {
+    background-color: #f3f9fd;
+    width: 160px;
+    height: 40px;
+    padding: 0px;
+    border: none;
+    margin-right: 126px;
+    color: black;
+}
+
   .el-tabs__nav-scroll {
     height: 64px;
     line-height: 64px;
