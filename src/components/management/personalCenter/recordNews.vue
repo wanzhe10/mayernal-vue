@@ -1,5 +1,13 @@
 <template>
   <div class="recordNewsBox clearfix">
+      <el-form
+        :model="reviewOfNew"
+        :rules="rules"
+        ref="reviewOfNew"
+        label-position='top'
+        label-width="100px"
+        :hide-required-asterisk='true'
+      >
     <div id="recordNewsBox_top">
       <div class="recordNewsBox_tittle clearfix">
         <h2>新增复检记录</h2>
@@ -9,14 +17,7 @@
         </p>
         <p class="fr"><span>操作医生：<i class="doctorName">{{doctorName}}</i></span></p>
       </div>
-      <el-form
-        :model="reviewOfNew"
-        :rules="rules"
-        ref="reviewOfNew"
-        label-position='top'
-        label-width="100px"
-        :hide-required-asterisk='true'
-      >
+    
         <div class="pregnantNewsBox clearfix">
 
           <div class="mgr70">
@@ -220,10 +221,10 @@
             </el-form-item>
           </div>
           <el-form-item>
-            <el-button
+            <!-- <el-button
               type="primary"
               @click="submitForm('reviewOfNew')"
-            >立即创建</el-button>
+            >立即创建</el-button> -->
           </el-form-item>
           <div class="wire"></div>
           <div
@@ -308,23 +309,26 @@
             >
           </el-dialog>
         </div>
+              </div>
+      <div class="BtnBox clearfix">
+              <el-form-item>
+                   <!-- @click="resetForm('fortyTwoDay')" -->
+                   <el-button
+            class="fl"
+             @click="abandonBtn"
+            >放弃本次编辑</el-button>
+            <el-button
+              type="primary"
+              @click="submitForm('reviewOfNew')"
+              class="fr"
+            >完 成</el-button>
+          </el-form-item>
+        </div>
       </el-form>
 
-    </div>
+  
 
-    <div class="BtnBox clearfix">
-      <input
-        type="button"
-        value="放弃本次编辑"
-        class="abandonBtn"
-      >
-      <input
-        type="button"
-        value="完 成"
-        class="finishBtn"
-        @click="patientSecondCheckInsert"
-      >
-    </div>
+  
 
     <!-- // 预约下次时间弹框 -->
     <el-dialog
@@ -461,13 +465,18 @@ export default {
       }
     };
     // 预约下次日期
-    let contactRadioactiveRaysDateVerify = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("请填写预约下次日期"));
-      } else {
-        callback();
-      }
-    };
+  //   let contactRadioactiveRaysDateVerify = (rule, value, callback) => {
+  //     if (this.reviewOfNew.makeAppointmentTime == '') {
+  //        return callback(new Error("请填写预约下次日期"));
+  //     }else{
+  // callback();
+  //     }
+  //     // if (!value) {
+       
+  //     // } else {
+      
+  //     // }
+  //   };
     // 血压
     var baseBloodVerify = (rule, value, callback) => {
       if (!value) {
@@ -659,9 +668,9 @@ export default {
           { required: true, message: "请选择尿蛋白", trigger: "change" }
         ],
         edema: [{ required: true, message: "请选择浮肿", trigger: "change" }],
-        makeAppointmentTime: [
-          { trigger: "change", validator: contactRadioactiveRaysDateVerify }
-        ],
+        // makeAppointmentTime: [
+        //   {trigger: "click",validator: contactRadioactiveRaysDateVerify }
+        // ],
         malaise: [
           { required: true, message: "请输入自觉不适", trigger: "blur" }
         ],
@@ -697,7 +706,10 @@ export default {
     let doctorName = localStorage.getItem("mayernal-web-userName");
     this.doctorName = doctorName;
   },
-
+    //  数据清除
+ deactivated () { //清除keep-alive的缓存
+    this.$destroy(true)
+  },
   methods: {
     // 禁止滑动
     banSliding() {
@@ -718,18 +730,31 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    // 完成按钮
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          if (this.reviewOfNew.makeAppointmentTime == '') {
+                  this.$message.error("请预约下次日期");
+          }else{
+             this.patientSecondCheckInsert();
+          }
+       
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+       //放弃编辑按钮
+    abandonBtn(){
+   this.$confirm('此操作将放弃本次编辑, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({path:'/personalCenter'})
+        })
     },
     // 图片上传
     handleRemove(file, fileList) {
@@ -847,9 +872,9 @@ export default {
         .then(res => {
           console.log(res)
           if (res.status === "20200") {
-            // self.$router.push({path:'/personalCenter'})
+            self.$router.push({path:'/personalCenter'})
           } else {
-            $message.error("新增失败，请稍后重试");
+            this.$message.error("新增失败，请稍后重试");
           }
         })
         .catch(error => {
@@ -1205,8 +1230,9 @@ export default {
     }
   }
   .BtnBox {
-    height: 78px;
-    margin-top: 20px;
+    margin-top:20px;
+    // height: 78px;
+    // margin-top: 20px;
     box-shadow: 0px -4px 8px 0px rgba(51, 51, 51, 0.08);
     .finishBtn,
     .abandonBtn {
@@ -1404,6 +1430,30 @@ export default {
     height: 34px;
     line-height: 34px;
   }
+     .BtnBox {
+       .el-form-item__content{
+        height: 78px;
+        line-height:78px;
+      }
+        .el-button{
+          width: 222px;
+          height: 40px;
+          border:none;
+    border-radius: 4px;
+    margin-top:24px;
+
+        }
+        .el-button--default{
+          background-color: #e0e0e0;
+          color:#878787;
+          margin-left:84px;
+        }
+        .el-button--primary{
+             background-color: #68b6e7;
+          margin-right:84px;
+          color:#fff;
+        }
+     } 
 }
 </style>
 

@@ -257,29 +257,17 @@
               </el-collapse-transition>
             </div>
           </div>
-   <div class="flaxBox">
-              <div class="flaxBoxPart">
-                  <router-link :to="{path:'recordNews'}">
-                  <el-button
-                    type="primary"
-                    @click="recordNewsBtn()"
-                  >新增复检记录</el-button>
-                   </router-link>
-              </div>
+          <div class="flaxBox">
+            <div class="flaxBoxPart">
+              <router-link :to="{path:'recordNews'}">
+                <el-button
+                  type="primary"
+                  @click="recordNewsBtn()"
+                >新增复检记录</el-button>
+              </router-link>
             </div>
+          </div>
         </div>
-        <!-- 新增复检记录按钮 -->
-        <!-- <div class="recordNewsNav">
-          <router-link :to="{path:'recordNews'}">
-            <input
-              type="button"
-              value="新增复检记录"
-              class="recordNewsBtn"
-              @click="recordNewsBtn()"
-            >
-          </router-link>
-        </div> -->
-         
       </el-tab-pane>
       <el-tab-pane
         label="高危评估记录"
@@ -422,32 +410,16 @@
               </p>
             </el-collapse-transition>
           </div>
-            <div class="flaxBox">
-              <div class="flaxBoxPart">
-                  <router-link  :to="{path: '/spouseNews', query:{checkNumber: spouseNewsNum}}">
-                  <el-button
-                    type="primary"
-                     @click="spouseNewsBtn()"
-                  >新增高危评估</el-button>
-                   </router-link>
-              </div>
+          <div class="flaxBox">
+            <div class="flaxBoxPart">
+              <router-link :to="{path: '/spouseNews', query:{checkNumber: spouseNewsNum}}">
+                <el-button
+                  type="primary"
+                >新增高危评估</el-button>
+              </router-link>
             </div>
+          </div>
         </div>
-        <!-- 新增高危评估按钮 -->
-        <!-- <div
-          class="spouseNewsnav"
-          style="display:flax;"
-        >
-          <router-link :to="{path: '/spouseNews', query:{checkNumber: spouseNewsNum}}">
-            <input
-              type="button"
-              value="新增高危评估"
-              class="spouseNewsBtn"
-              @click="spouseNewsBtn()"
-            >
-          </router-link>
-        </div> -->
-       
       </el-tab-pane>
       <el-tab-pane
         label="产后42天检查记录"
@@ -574,18 +546,16 @@
             </p>
           </el-collapse-transition>
         </div>
-
-        <!-- 新增42天按钮 -->
-        <!-- <div class="recordNewsNav">
-          <router-link :to="{path:'fortyTwoDay'}">
-            <input
-              type="button"
-              value="新增产后42天记录"
-              class="fortyTwoDayBtn"
+        <div class="flaxBox">
+          <div class="flaxBoxPart">
+            <el-button
+              type="primary"
               @click="fortyTwoDayBtn()"
-            >
-          </router-link>
-        </div> -->
+               :disabled='newlyFourTwo'
+            >新增产后42天记录</el-button>
+             
+          </div>
+        </div>
       </el-tab-pane>
     </el-tabs>
 
@@ -659,14 +629,15 @@ export default {
       patientFourtyTwoData: {}, //产后42天数据
       fortyTwoImgHide: false, //产后42天暂无数据图片
       fortyTwoDataHide: false, //产后42天数据显示
-      BMLValue: false
+      BMLValue: false,
+      newlyFourTwo: true
     };
   },
-    // beforeRouteLeave(to, from, next) {
-    //      // 设置下一个路由的 meta
-    //     to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
-    //     next();
-    // },
+  // beforeRouteLeave(to, from, next) {
+  //      // 设置下一个路由的 meta
+  //     to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
+  //     next();
+  // },
   activated() {
     var tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
@@ -678,8 +649,6 @@ export default {
     this.indexInquire();
     this.assessInquire();
     this.patientFourtyTwo();
-    // this.drawLine();
-  
   },
   methods: {
     // 弹框关闭按钮
@@ -693,14 +662,11 @@ export default {
     handleClick(tab, event) {
       // console.log(tab, event);
     },
-    spouseNewsBtn() {
-      console.log("新增高危记录");
-    },
     recordNewsBtn() {
-      window.localStorage.setItem('mayernal-web-recordNum',this.examineNum);
+      window.localStorage.setItem("mayernal-web-recordNum", this.examineNum);
     },
     fortyTwoDayBtn() {
-      console.log("新增产后42天");
+      this.$router.push({ path: "/fortyTwoDay" });
     },
     //复检记录- 自觉不适点击显示隐藏
     toggle1: function() {
@@ -771,9 +737,11 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
-             let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
+            this.recordNumsDataShow = true;
+            this.imgShowHide = false;
+            let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
             this.recheckRecord = recheckRecordData;
-            console.log(this.recheckRecord);
+            // console.log(this.recheckRecord);
             this.recheckRightData = res.pcPatientSecondCheckBeanList[0];
             if (this.recheckRecord[0].imageList !== "") {
               this.imageList = eval(
@@ -781,14 +749,12 @@ export default {
               );
             }
             this.examineNum = res.pcPatientSecondCheckBeanList.length;
-            coonsole.log(this.examineNum )
-            this.recordNumsDataShow = true;
-            this.imgShowHide = false;
+            coonsole.log(this.examineNum);
           } else if (res.status === "20209") {
-                this.recheckRecord = [];
-             this.imgShowHide = true;
-             this.recordNumsDataShow = false;
-             this.examineNum =0;
+            this.recheckRecord = [];
+            this.imgShowHide = true;
+            this.recordNumsDataShow = false;
+            this.examineNum = 0;
           }
         })
         .catch(error => {
@@ -845,9 +811,18 @@ export default {
             this.patientFourtyTwoData = res;
             this.fortyTwoImgHide = false;
             this.fortyTwoDataHide = true;
+            this.newlyFourTwo = true; // 只要谁查询42天数据成功 禁用新增按钮
           } else if (res.status === "20209") {
             this.fortyTwoImgHide = true;
-            this.fortyTwoDataHide = false;
+            this.fortyTwoDataHide = false; 
+            let parturitionDetailDueDate = this.tableDataParticulars
+              .parturitionDetailDueDate;
+            let oldTime = new Date(parturitionDetailDueDate).getTime(); //孕产期转换毫秒数
+            var timestamp3 = new Date().getTime(); //当前时间毫秒数
+            var faouDay = 3628800000;
+            if (timestamp3 - oldTime > 3628800000) {
+              this.newlyFourTwo = true; // 如果当前时间比孕产期大42天 新增按钮可以点击
+            }
           }
         })
         .catch(error => {
@@ -864,7 +839,7 @@ export default {
           patientCenterId: this.patientCenterId
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             // 基于准备好的dom，初始化echarts实例
             let myChart = echarts.init(document.getElementById("myChart"));
@@ -880,7 +855,7 @@ export default {
               tempData.push(tempArr);
               // tempData.splice(a, 1, patientBMIBeanList[i].details);
             }
-            console.log(tempData);
+            // console.log(tempData);
 
             var xTempData = [];
             for (let index = 13; index <= 43; index++) {
@@ -927,14 +902,12 @@ export default {
           } else if (res.status === "20209") {
             xTempData = [];
             tempData = [];
-
           }
         })
         .catch(error => {
           // this.$Message.info(error);
         });
-    },
-  
+    }
   }
 };
 </script>
@@ -1919,7 +1892,6 @@ export default {
               i {
                 color: #666666;
                 font-style: normal;
-                margin-right: 10px;
               }
             }
             .mgr70 {
@@ -2012,33 +1984,7 @@ export default {
       }
     }
   }
-  // 新增记录按钮
-  // .recordNewsNav,
-  // .spouseNewsnav {
-  //   position: fixed;
-  //   width: 100%;
-  //   height: 88px;
-  //   line-height: 88px;
-  //   vertical-align: middle;
-  //   bottom: 0;
-  //   left: 0;
-  //   background-color: #92c9eb;
-  //   opacity: 0.8;
-  //   input {
-  //     width: 160px;
-  //     height: 40px;
-  //     background-color: #f4fafd;
-  //     color: #000000;
-  //     text-align: center;
-  //     line-height: 40px;
-  //     border-radius: 4px;
-  //     font-size: 14px;
-  //     float: right;
-  //     margin-right: 56px;
-  //     margin-top: 25px;
-  //   }
-  // }
-    .flaxBox {
+  .flaxBox {
     height: 88px;
     width: 100%;
     position: fixed; // background-color: #fff;
@@ -2053,8 +1999,7 @@ export default {
       width: 1200px;
       background-color: #86c5ec;
       text-align: right;
-    margin: auto;
-
+      margin: auto;
     }
   }
   .newlyLayerTop {
@@ -2086,9 +2031,9 @@ export default {
     }
     .lengtweeks {
       position: absolute;
-      bottom:34px;
+      bottom: 34px;
       left: 50%;
-      transform: translate(-50%,0);
+      transform: translate(-50%, 0);
       letter-spacing: 10px;
       font-size: 16px;
     }
@@ -2102,7 +2047,7 @@ export default {
   .el-date-editor.el-input__inner {
     width: 260px;
   }
- .el-button--primary {
+  .el-button--primary {
     background-color: #f3f9fd;
     width: 160px;
     height: 40px;
@@ -2110,7 +2055,7 @@ export default {
     border: none;
     margin-right: 126px;
     color: black;
-}
+  }
 
   .el-tabs__nav-scroll {
     height: 64px;

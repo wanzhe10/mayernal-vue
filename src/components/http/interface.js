@@ -344,6 +344,14 @@ export const patientFourtyTwoFindByCenterId = data => {
     data
   })
 }
+// 产后42天新增
+export const patientFourtyTwoInsert = data => {
+  return axios({
+    url: 'v1/web/pc/patientFourtyTwo/insert',
+    method: 'post',
+    data
+  })
+}
 // 预览
 //基本信息-查询
 export const patientCheckControllerFindForFiling = data => {
@@ -525,6 +533,7 @@ export default {
   highRiskGradeTemplateDetailFindTreeList,
   patientSecondCheckInsert,
   patientHighRiskGradeInsert,
-  signatureConfirmationForFiling
+  signatureConfirmationForFiling,
+  patientFourtyTwoInsert
 
 }

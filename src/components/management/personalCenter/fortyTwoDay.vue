@@ -1,5 +1,13 @@
 <template>
     <div class="recordNewsBox clearfix">
+         <el-form
+        :model="fortyTwoDay"
+        :rules="rules"
+        ref="fortyTwoDay"
+        label-position='top'
+        label-width="100px"
+        :hide-required-asterisk='true'
+      >
         <div id="recordNewsBox_top">
             <div class="recordNewsBox_tittle clearfix">
                 <h2>新增产后42天检查记录</h2>
@@ -8,168 +16,387 @@
                 </p>
                 <p class="fr"><span>操作医生：<i class="doctorName">周晓晓</i></span></p>
             </div>
-            <div class="pregnantNewsBox">
+          
+         <div class="pregnantNewsBox clearfix">
                 <div class="subheadingBox">
                     <h5>一般检查</h5>
                     <div class="positionWire2"></div>
                 </div>
-                <div class="mgr70">
-                    <h3>血压（mmHg）</h3>
-                    <div class="separateBox">
-                        <input type="text" class="" placeholder="低压">
-                        <input type="text" class="" placeholder="高压">
-                    </div>
-                    <p class="redFont">此项为必填项！</p>
+                        <div class="mgr70">
+            <p
+              slot="label"
+              style="height:34px;line-height:34px; color: #666666; display:block;"
+            >血 压（mmHg）</p>
+            <div class="bloodBox">
+              <div class="lowTension">
+                <el-form-item prop="baseBloodPressureLow">
+                  <el-input
+                    type="baseBloodPressureLow"
+                    placeholder="低压"
+                    v-model.number="fortyTwoDay.baseBloodPressureLow"
+                  ></el-input>
+                </el-form-item>
+              </div>
+              <div class="hyperpiesia">
+                <el-form-item prop="baseBloodPressureHigh">
+                  <el-input
+                    type="baseBloodPressureHigh"
+                    placeholder="高压"
+                      v-model.number="fortyTwoDay.baseBloodPressureHigh"
+                  ></el-input>
+                </el-form-item>
+              </div>
+            </div>
+          </div>
+               <div class="mgr70">
+          <el-form-item
+              label="当前体重（kg）"
+              prop="baseWeight"
+            >
+              <el-input
+                type="baseWeight"
+                class="pregnantPhone"
+                placeholder="请输入当前体重"
+              v-model.number="fortyTwoDay.baseWeight"
+              >
+              </el-input>
+            </el-form-item>
+                </div>
+                 <div class="mgr0">
+          <el-form-item
+              label="产后天数（天）"
+              prop="checkDay"
+            >
+              <el-input
+                type="checkDay"
+                class="pregnantPhone"
+                placeholder="请输入产后天数"
+                 v-model.number="fortyTwoDay.checkDay"
+              >
+              </el-input>
+            </el-form-item>
                 </div>
                 <div class="mgr70">
-                    <h3>当前体重（kg）</h3>
-                    <input type="text" class="pregnantPhone" placeholder="请输入当前体重">
-                    <p class="redFont">此项为必填项！</p>
+                    <el-form-item
+              label="乳汁"
+              prop="baseLatex"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.baseLatex"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+                </div>
+                <div class="mgr70">
+                    <el-form-item
+              label="乳房"
+              prop="baseBreast"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.baseBreast"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="mgr0">
-                    <h3>产后天数（天）</h3>
-                    <input type="text" class="postpartumDays" placeholder="请输入产后天数">
-                    <p class="redFont">此项为必填项！</p>
-                </div>
-                <div class="mgr70">
-                    <h3>乳汁</h3>
-                    <el-select v-model="milkModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </div>
-                <div class="mgr70">
-                    <h3>乳房</h3>
-                    <el-select v-model="breastModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </div>
-                <div class="mgr0">
-                    <h3>乳头</h3>
-                    <el-select v-model="papillaModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                    <el-form-item
+              label="乳头"
+              prop="baseNipple"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.baseNipple"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="subheadingBox">
                     <h5>妇科检查</h5>
                     <div class="positionWire2"></div>
                 </div>
-                <!-- </div> -->
-                <!-- <div class="recordNewSelectBox"> -->
                 <div class="mgr70">
-                    <h3>外阴</h3>
-                    <el-select v-model="vulvaModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                   <el-form-item
+              label="外阴"
+              prop="gynecologyVulva"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.gynecologyVulva"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="mgr70">
-                    <h3>阴道</h3>
-                    <el-select v-model="vaginaModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                        <el-form-item
+              label="阴道"
+              prop="gynecologyVagina"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.gynecologyVagina"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="mgr0">
-                    <h3>宫颈</h3>
-                    <el-select v-model="cervixModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                          <el-form-item
+              label="宫颈"
+              prop="gynecologyCervical"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.gynecologyCervical"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="mgr70">
-                    <h3>子宫</h3>
-                    <el-select v-model="uterusModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                          <el-form-item
+              label="子宫"
+              prop="gynecologyUterus"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.gynecologyUterus"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="mgr70">
-                    <h3>恶露</h3>
-                    <el-select v-model="lochiaModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                         <el-form-item
+              label="恶露"
+              prop="gynecologyLochia"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.gynecologyLochia"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="mgr0">
-                    <h3>双侧附件</h3>
-                    <el-select v-model="bilateralModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                      <el-form-item
+              label="双侧附件"
+              prop="gynecologyAttachmentOnBothSides"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.gynecologyAttachmentOnBothSides"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="subheadingBox">
                     <h5>婴儿情况</h5>
                     <div class="positionWire2"></div>
                 </div>
                 <div class="mgr70">
-                    <h3>血压（mmHg）</h3>
-                    <div class="separateBox">
-                        <input type="text" class="" placeholder="低压">
-                        <input type="text" class="" placeholder="高压">
-                    </div>
-                    <p class="redFont">此项为必填项！</p>
+                     <el-form-item
+              label="婴儿当前体重（kg）"
+              prop="babyWeight"
+            >
+              <el-input
+                type="babyWeight"
+                class="pregnantPhone"
+                placeholder="请输入婴儿当前体重"
+              v-model.number="fortyTwoDay.babyWeight"
+              >
+              </el-input>
+            </el-form-item>
+                </div>
+                     <div class="mgr70">
+                     <el-form-item
+              label="婴儿身长（cm）"
+              prop="babyHigh"
+            >
+              <el-input
+                type="babyHigh"
+                class="pregnantPhone"
+                placeholder="请输入婴儿身长"
+              v-model.number="fortyTwoDay.babyHigh"
+              >
+              </el-input>
+            </el-form-item>
                 </div>
                 <div class="mgr70">
-                    <h3>当前体重（kg）</h3>
-                    <input type="text" class="pregnantPhone" placeholder="请输入当前体重">
-                    <p class="redFont">此项为必填项！</p>
+                   <el-form-item
+              label="胸部"
+              prop="babyChest"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.babyChest"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="mgr70">
-                    <h3>胸&nbsp;部</h3>
-                    <el-select v-model="chestModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
-                </div>
-                <div class="mgr70">
-                    <h3>心</h3>
-                    <el-select v-model="heartModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                     <el-form-item
+              label="心"
+              prop="babyHeart"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.babyHeart"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
                 <div class="mgr0">
-                    <h3>肺</h3>
-                    <el-select v-model="lungModel" placeholder="请选择">
-                        <el-option v-for="item in milk" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                    </el-select>
+                   <el-form-item
+              label="肺"
+              prop="babyLungs"
+            >
+              <el-select
+                placeholder="请选择"
+                  v-model="fortyTwoDay.babyLungs"
+              >
+                <el-option
+                  v-for="item in milk"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
                 </div>
-                <div class="subheadingBox">
+                <div class="subheadingBox mgb14">
                     <h5>婴儿情况</h5>
                     <div class="positionWire2"></div>
                 </div>
-                <el-radio-group v-model="radio3" @change = 'theBaby'>
-                    <el-radio-button label="母乳" ></el-radio-button>
-                    <el-radio-button label="混合"></el-radio-button>
-                    <el-radio-button label="人工喂养"></el-radio-button>
+                <el-radio-group v-model="fortyTwoDay.feedingType" @change = 'theBaby'>
+                    <el-radio-button label="1">母乳</el-radio-button>
+                    <el-radio-button label="2">混合</el-radio-button>
+                    <el-radio-button label="3">人工喂养</el-radio-button>
                 </el-radio-group>
             </div>
             <div class="wire"></div>
-            <div>
-                <div class="importDatabase1">
-                    <span>新生儿评估</span>
-                    <i class="joinIco"></i>
-                    <span>导入模板</span>
-                </div>
-                <input type="text" class="malaise">
-            </div>
-            <div>
-                <div class="importDatabase1">
-                    <span>指导与处理</span>
-                    <i class="joinIco2"></i>
-                    <span>导入模板</span>
-                </div>
-                <input type="text" class="guideTheProcessing">
-            </div>
+
+              <div class="malaiseBox">
+          <div class="importDatabase1">
+            <span>新生儿评估</span>
+            <i class="joinIco"></i>
+            <span>导入模板</span>
+          </div>
+          <el-form-item prop="malaise">
+            <el-input
+              type="textarea"
+              autosize
+              v-model="fortyTwoDay.malaise"
+              style='width:930px; border-bottom:1px solid #a7a7a7; height: 34px;line-height:34px;'
+            ></el-input>
+          </el-form-item>
         </div>
-        <div class="BtnBox clearfix">
-            <input type="button" value="放弃本次编辑" class="abandonBtn">
-            <input type="button" value="完 成" class="finishBtn">
+         <div>
+          <div class="importDatabase1">
+            <span>指导与处理</span>
+            <i class="joinIco2"></i>
+            <span>导入模板</span>
+          </div>
+          <el-form-item prop="guideTheProcessing">
+            <el-input
+              type="textarea"
+              autosize
+              v-model="fortyTwoDay.guideTheProcessing"
+              style='width:930px; border-bottom:1px solid #a7a7a7; height: 34px;line-height:34px;'
+            ></el-input>
+          </el-form-item>
         </div>
+        </div>
+         <div class="BtnBox clearfix">
+              <el-form-item>
+                   <el-button
+            class="fl"
+             @click="abandonBtn"
+            >放弃本次编辑</el-button>
+            <el-button
+              type="primary"
+              @click="submitForm('fortyTwoDay')"
+              class="fr"
+            >完 成</el-button>
+          </el-form-item>
+        </div>
+        </el-form>
 
     </div>
 </template>
@@ -177,23 +404,56 @@
 import $ from "jquery";
 export default {
   data() {
+      //  体重
+    var baseWeightVerify = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请输入体重"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else if (value < 30 || value > 200) {
+        callback(new Error("体重取值范围 30 ~ 200"));
+      } else {
+        callback();
+      }
+    };
+    // 婴儿体重
+      var babyWeightVerify = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请输入婴儿体重"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else if (value < 0 || value >100) {
+        callback(new Error("体重取值范围 0 ~ 100"));
+      } else {
+        callback();
+      }
+    };
+      // 婴儿身长
+      var babyHighVerify = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("请输入婴儿身长"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else if (value < 0 || value >100) {
+        callback(new Error("身长取值范围 0 ~ 100"));
+      } else {
+        callback();
+      }
+    };
+        // 血压
+    var baseBloodVerify = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("血压不能为空"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else if (value < 0 || value > 300) {
+        callback(new Error("血压取值范围 0 ~ 300"));
+      } else {
+        callback();
+      }
+    };
+    
     return {
-      // 孕妇婚姻状况
-      marryType: [
-        {
-          value: "0",
-          label: "初婚"
-        },
-        {
-          value: "1",
-          label: "再婚"
-        },
-        {
-          value: "2",
-          label: "其他"
-        }
-      ],
-      marryTypeeModel: "",
       //   异常和未见异常
       milk: [
         {
@@ -205,25 +465,72 @@ export default {
           label: "异常"
         }
       ],
-      milkModel: "", //乳汁
-      breastModel: "", //乳房
-      papillaModel: "", //乳头
-      vulvaModel: "", //外阴
-      vaginaModel: "", //阴道
-      cervixModel: "", //宫颈
-      uterusModel: "", //子宫
-      lochiaModel: "", //恶露
-      bilateralModel: "", //双侧附件
-      chestModel: "", //胸部
-      heartModel: "", //心
-      lungModel: "", //肺
-      textarea2: "",
-      guigeSpan: "-1", //控制点亮状态 -1为默认不点亮
-      kouweiSpan: "-1", //控制点亮状态
-      radio3: "母乳"
+      fortyTwoDay:{
+patientCenterId:"",//		
+checkDay:"",//	天数	
+baseBloodPressureHigh:"",//	血压高	
+baseBloodPressureLow:"",//	血压低	
+baseWeight:"",//	体重	
+baseLatex:"0",//	乳汁	展开
+baseBreast:"0",//	乳房	展开
+baseNipple:"0",//	乳头	展开
+gynecologyVulva:"0",//	妇科检查-外阴	展开
+gynecologyVagina:"0",//	妇科检查-阴道	展开
+gynecologyCervical:"0",//	妇科检查-宫颈	展开
+gynecologyUterus:"0",//	妇科检查-子宫	展开
+gynecologyLochia:"0",//	妇科检查-恶露	展开
+gynecologyAttachmentOnBothSides:"0",//	妇科检查-双侧附件	展开
+babyWeight:"",//	婴儿情况-体重 kg	
+babyHigh:"",//	婴儿情况-身长 cm	
+babyChest:"0",//	婴儿情况-胸部	展开
+babyHeart:"0",//	婴儿情况-心	展开
+babyLungs:"0",//	婴儿情况-肺	展开
+feedingType:1,//	喂养方式-喂养方式	展开
+malaise:"",//	新生儿评估	
+guideTheProcessing:"",//	指导处理意见	
+doctorImage:"",//	[file]	医生签名	
+patientName:"",//	患者姓名	
+token:'' // 复制
+      },
+            rules: {
+        checkDay: [
+          { required: true, message: "产后天数", trigger: "blur" }
+        ],
+        baseWeight: [{ trigger: "blur", validator: baseWeightVerify }],
+        babyWeight: [{ trigger: "blur", validator: babyWeightVerify }],
+        babyHigh: [{ trigger: "blur", validator: babyHighVerify }],
+        malaise: [
+          { required: true, message: "请输入新生儿评估", trigger: "blur" }
+        ],
+        guideTheProcessing: [
+          { required: true, message: "请输入指导处理意见", trigger: "blur" }
+        ],
+           baseBloodPressureLow: [{ trigger: "blur", validator: baseBloodVerify }],
+        baseBloodPressureHigh: [{ trigger: "blur", validator: baseBloodVerify }]
+      },
+     
     };
   },
+      //  数据清除
+ deactivated () { //清除keep-alive的缓存
+    this.$destroy(true)
+  },
   methods: {
+    // 完成按钮
+      submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+          this.patientFourtyTwoInsert();
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      // 放弃编辑按钮
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then(_ => {
@@ -239,7 +546,42 @@ export default {
     // 婴儿情况
     theBaby(){
         console.log(this.radio3)
-    }
+    },
+      //放弃编辑按钮
+    abandonBtn(){
+   this.$confirm('此操作将放弃本次编辑, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({path:'/personalCenter'})
+        })
+    },
+      // // 产后42天新增
+      patientFourtyTwoInsert() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.fortyTwoDay.token =token1;
+         var tableDataParticulars = eval(
+      "(" + localStorage.getItem("tableDataParticulars") + ")"
+    );
+     this.fortyTwoDay.patientName = tableDataParticulars.checkName;
+     this.fortyTwoDay.patientCenterId = tableDataParticulars.id;
+      console.log(this.fortyTwoDay)
+      this.$api
+        .patientFourtyTwoInsert(this.fortyTwoDay)
+        .then(res => {
+          console.log(res)
+          if (res.status === "20200") {
+            self.$router.push({path:'/personalCenter'})
+          } else {
+            $message.error("新增失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("新增错误，请稍后重试");
+        });
+    },
   }
 };
 </script>
@@ -291,6 +633,9 @@ export default {
 .mgb12 {
   margin-bottom: 12px;
 }
+.mgb14{
+  margin-bottom: 14px;
+}
 .w260 {
   width: 260px;
 }
@@ -302,12 +647,12 @@ export default {
 }
 .recordNewsBox {
   width: 100%;
-  min-height: 600px;
+  // min-height: 600px;
   background-color: #fff;
   box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
   position: relative;
   #recordNewsBox_top {
-    padding: 20px 26px;
+    padding: 20px 26px 50px 26px;
     i {
       font-style: normal;
     }
@@ -357,7 +702,8 @@ export default {
       }
       // 孕妇基本信息块
       div {
-        display: inline-block;
+        // display: inline-block;
+        float: left;
         h3 {
           font-size: 14px;
           color: #666666;
@@ -375,24 +721,38 @@ export default {
           display: none;
         }
       }
-      .separateBox {
-        width: 260px;
-        height: 40px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        line-height: 40px;
-        padding: 0 5px;
-        input {
-          width: 46%;
-          height: 30px;
-          display: inline-block;
-          border: none;
-          border-radius: 0px;
-        }
-        input:nth-child(1) {
-          border-right: 1px solid #ccc;
-        }
-      }
+      // .separateBox {
+      //   width: 260px;
+      //   height: 40px;
+      //   border: 1px solid #ccc;
+      //   border-radius: 4px;
+      //   line-height: 40px;
+      //   padding: 0 5px;
+      //   input {
+      //     width: 46%;
+      //     height: 30px;
+      //     display: inline-block;
+      //     border: none;
+      //     border-radius: 0px;
+      //   }
+      //   input:nth-child(1) {
+      //     border-right: 1px solid #ccc;
+      //   }
+      // }
+      .bloodBox {
+  width: 260px;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  .lowTension,
+  .hyperpiesia {
+    float: left;
+  }
+  .lowTension {
+    border-right: 1px solid #ccc;
+  }
+}
       // 绑定卡号
       .bindingBox {
         width: 252px;
@@ -435,6 +795,7 @@ export default {
       }
     }
     .recordNewsFont {
+        line-height: 40px;
       margin-left: 6px;
       i {
         margin: 0 10px;
@@ -451,7 +812,7 @@ export default {
         &:after {
           content: " ";
           position: absolute;
-          top: 2px;
+          top: 4px;
           right: -16px;
           width: 2px;
           height: 14px;
@@ -465,15 +826,15 @@ export default {
       i {
         position: absolute;
         top: 4px;
-        left: 108px;
+        left: 104px;
         font-style: normal;
         background: url("../../../assets/file.png") no-repeat 0 0;
         width: 12px;
         height: 14px;
       }
-      .joinIco2 {
-        left: 108px;
-      }
+      // .joinIco2 {
+      //   left: 120px;
+      // }
     }
     .malaise,
     .guideTheProcessing {
@@ -483,7 +844,7 @@ export default {
     }
   }
   .BtnBox {
-    height: 78px;
+    // height: 78px;
     margin-top: 20px;
     box-shadow: 0px -4px 8px 0px rgba(51, 51, 51, 0.08);
     .finishBtn,
@@ -519,6 +880,9 @@ export default {
   width: 260px;
   border-radius: 8px;
   border-color: #ccc;
+  background-color: #fff;
+}
+.recordNewsBox .el-select .el-input__inner{
   background-color: #f6f6f6;
 }
 .recordNewsBox {
@@ -616,13 +980,55 @@ export default {
     color: #fff;
     border: 1px solid #68b6e7;
   }
+   .malaiseBox .el-textarea__inner {
+      height: 32px;
+      line-height: 32px;
+    }
+      .el-form--label-top .el-form-item__label {
+    height: 40px;
+    line-height: 40px;
+    padding:0px;
+  }
+    .el-form-item {
+        margin-bottom: 10px;
+      }
+     .BtnBox {
+       .el-form-item__content{
+        height: 78px;
+        line-height:78px;
+      }
+        .el-button{
+          width: 222px;
+          height: 40px;
+          border:none;
+    border-radius: 4px;
+    margin-top:24px;
+
+        }
+        .el-button--default{
+          background-color: #e0e0e0;
+          color:#878787;
+          margin-left:84px;
+        }
+        .el-button--primary{
+             background-color: #68b6e7;
+          margin-right:84px;
+          color:#fff;
+        }
+     } 
+      .bloodBox {
+      .el-input__inner {
+        width: 128px;
+        border-radius: 4px;
+        border: none;
+        height: 34px;
+      }
+      .el-form-item {
+        margin-bottom: 0px;
+      }
+    }
 }
-//  .el-radio-button__inner{
-//         border:1px solid #999999;
-//       color:#999999;
-//       background-color: #fff;
-//
-//   }
+ 
 </style>
 
 

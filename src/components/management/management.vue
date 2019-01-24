@@ -2,7 +2,7 @@
   <div class="managementBox">
     <div class="topBox clearfix">
       <div class="btnsBOx">
-        <router-link :to="{path: 'newfile'}">
+        <router-link :to="{path: 'supplement'}">
           <div class="newBtn" @click="newFecord">新建孕妇档案</div>
         </router-link>
       </div>

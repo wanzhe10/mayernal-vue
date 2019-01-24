@@ -1,6 +1,9 @@
 <template>
   <div class="newfileBox">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs
+      v-model="activeName"
+      @tab-click="handleClick"
+    >
       <el-tab-pane
         label="孕妇基本信息"
         name="first"
@@ -123,7 +126,7 @@
               <el-form-item
                 label="结婚年龄（岁）"
                 prop="marryAge"
-               >
+              >
                 <el-input
                   type="marryAge"
                   class="pregnantMarriageAge"
@@ -381,7 +384,7 @@
               <el-form-item
                 label="结婚年龄（岁）"
                 prop="marryAge"
-             >
+              >
                 <el-input
                   type="marryAge"
                   class="pregnantMarriageAge"
@@ -749,7 +752,7 @@
               <el-form-item
                 label="月经史-初潮（岁）"
                 prop="menstrualHistoryAge"
-             >
+              >
                 <el-input
                   type="menstrualHistoryAge"
                   class="menstrualHistoryAge"
@@ -804,14 +807,14 @@
               >
               </el-table-column>
               <el-table-column
-                prop="ageOfMenarche"
+                prop="pregnantType"
                 label="孕周"
                 width="124"
               >
                 <template slot-scope="scope">
-                  <div v-show="scope.row.ageOfMenarche == '0'">早产</div>
-                  <div v-show="scope.row.ageOfMenarche == '1'">足月妊娠</div>
-                  <div v-show="scope.row.ageOfMenarche == '2'">过期妊娠</div>
+                  <div v-show="scope.row.pregnantType == '0'">早产</div>
+                  <div v-show="scope.row.pregnantType == '1'">足月妊娠</div>
+                  <div v-show="scope.row.pregnantType == '2'">过期妊娠</div>
                 </template>
               </el-table-column>
               <el-table-column
@@ -1173,7 +1176,7 @@
               <div class="fl mgr36">
                 <p>孕周</p>
                 <el-select
-                  v-model="historyLayer.ageOfMenarche"
+                  v-model="historyLayer.pregnantType"
                   placeholder="请选择"
                 >
                   <el-option
@@ -2125,22 +2128,22 @@ export default {
         callback();
       }
     };
-        //孕妇结婚年龄
-      let marryAgeVerify = (rule, value, callback) => {
+    //孕妇结婚年龄
+    let marryAgeVerify = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("年龄不能为空"));
       } else if (!Number.isInteger(Number(value))) {
         callback(new Error("请输入数字值"));
-      }else if (value >= this.essentialInformation.age) {
-        console.log(this.essentialInformation.age)
-       return callback(new Error("结婚年龄不能大于实际年龄"));
+      } else if (value >= this.essentialInformation.age) {
+        console.log(this.essentialInformation.age);
+        return callback(new Error("结婚年龄不能大于实际年龄"));
       } else {
         callback();
       }
     };
     //配偶结婚年龄
     let marryAgeVerify2 = (rule, value, callback) => {
-      console.log(value)
+      console.log(value);
       if (!value) {
         return callback(new Error("年龄不能为空"));
       } else if (!Number.isInteger(Number(value))) {
@@ -2157,26 +2160,25 @@ export default {
       }
     };
     // 初潮年龄 月经史
-     let menstrualHistoryAge = (rule, value, callback) => {
+    let menstrualHistoryAge = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("初潮年龄不能为空"));
-      }else if (!Number.isInteger(Number(value))) {
+      } else if (!Number.isInteger(Number(value))) {
         callback(new Error("请输入数字值"));
-      }   else {
+      } else {
         callback();
       }
     };
     let menstrualHistoryDay = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("周期不能为空"));
-      }else if (!Number.isInteger(Number(value))) {
+      } else if (!Number.isInteger(Number(value))) {
         callback(new Error("请输入数字值"));
-      }   else {
+      } else {
         callback();
       }
     };
-    
-    
+
     // 身份证号
     let idCardVerify = (rule, value, callback) => {
       if (!value) {
@@ -2495,7 +2497,7 @@ export default {
       ],
       // 孕产信息怀孕次数
       pregnancies: [
-         {
+        {
           value: "0",
           label: "0"
         },
@@ -3120,7 +3122,7 @@ export default {
 
       disabledInput: true, //技术放射性时间
       PregnancyInformation: [], //怀孕史数据
-      // 孕产史数组列表
+      // 孕产史数组列表 ->原始数据
       historyListArr: [],
       // 孕产史对象
       historyLayer: {},
@@ -3187,9 +3189,13 @@ export default {
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         telephone: [{ trigger: "blur", validator: telephoneVerify }],
-            marryAge: [{ trigger: "blur", validator: marryAgeVerify2 }],
-             menstrualHistoryAge: [{ trigger: "blur", validator: menstrualHistoryAge }],
-             menstrualHistoryDay: [{ trigger: "blur", validator: menstrualHistoryDay }],
+        marryAge: [{ trigger: "blur", validator: marryAgeVerify2 }],
+        menstrualHistoryAge: [
+          { trigger: "blur", validator: menstrualHistoryAge }
+        ],
+        menstrualHistoryDay: [
+          { trigger: "blur", validator: menstrualHistoryDay }
+        ],
         // 证件类型
         idCardType: [
           { required: true, message: "请选择证件类型", trigger: "change" }
@@ -3352,7 +3358,7 @@ export default {
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         telephone: [{ trigger: "blur", validator: telephoneVerify }],
-           marryAge: [{ trigger: "blur", validator: marryAgeVerify }],
+        marryAge: [{ trigger: "blur", validator: marryAgeVerify }],
         // 证件类型
         idCardType: [
           { required: true, message: "请选择证件类型", trigger: "change" }
@@ -3431,29 +3437,33 @@ export default {
       this.buttonHide = true;
       this.buttonShow = false;
       this.patientCenterId = tableDataParticulars.id;
-       this.checkId = tableDataParticulars.checkId; //基本信息ID
-    this.superId = tableDataParticulars.husbandsId; //配偶id
-    console.log(this.superId)
-    this.parturitionDetailId = tableDataParticulars.parturitionDetailId; //孕产
-    this.healthCheckId = tableDataParticulars.healthCheckId; //体格检查
+      this.checkId = tableDataParticulars.checkId; //基本信息ID
+      this.superId = tableDataParticulars.husbandsId; //配偶id
+      console.log(this.superId);
+      this.parturitionDetailId = tableDataParticulars.parturitionDetailId; //孕产
+      this.healthCheckId = tableDataParticulars.healthCheckId; //体格检查
+      this.signatureConfirmationForFiling.newAgeOfMenarche = tableDataParticulars.newAgeOfMenarche;
+      this.signatureConfirmationForFiling.newAgeOfMenarcheDay = tableDataParticulars.newAgeOfMenarcheDay;
+
       this.essentialInquire();
-          // this.patientHusbandsFindForFiling();
-          // this.patientParturitionDetailFindForFiling();
-          //    this.patientHealthCheckFindById();
+      this.patientHusbandsFindForFiling();
+      this.patientParturitionDetailFindForFiling();
+         this.patientHealthCheckFindById();
     }
   },
   mounted() {
     let doctorName = localStorage.getItem("mayernal-web-userName");
     this.doctorName = doctorName;
   },
-   //  数据清除
- deactivated () { //清除keep-alive的缓存
-    this.$destroy(true)
+  //  数据清除
+  deactivated() {
+    //清除keep-alive的缓存
+    this.$destroy(true);
   },
 
   methods: {
     // 保存按钮
-  // 保存按钮
+    // 保存按钮
     basicBtn(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -3511,49 +3521,54 @@ export default {
             } else if (this.superId == "" || this.superId == undefined) {
               this.$message.error("请先保存配偶一般信息");
             } else {
-            if (this.maternalInformation.contactToxic == 0) {
-              this.maternalInformation.contactToxicName = "";
-              this.maternalInformation.contactToxicDate = "";
-            }
-            if (this.maternalInformation.virusInfection == 0) {
-              this.maternalInformation.virusInfectionOther = "";
-            } else if (this.maternalInformation.virusInfection == 1) {
-              for (var i = 0; i < $(".chunks.active").length; i++) {
-                this.maternalInformation.virusInfectionOther +=
-                  $(".chunks.active")
-                    .eq(i)
-                    .text() + "、";
+              if (this.maternalInformation.contactToxic == 0) {
+                this.maternalInformation.contactToxicName = "";
+                this.maternalInformation.contactToxicDate = "";
               }
-              console.log(this.maternalInformation.virusInfectionOther);
-            }
-            if (this.familyHistory2 == 0) {
-              this.maternalInformation.familyHistory = "";
-            }
-            if (this.familyHistory3 == 0) {
-              this.maternalInformation.nowHistory = "";
-            }
-            if (this.maternalInformation.contactRadioactiveRays == "0") {
-              this.maternalInformation.historyList = "";
-            } else {
-              this.maternalInformation.historyList = JSON.stringify(
-                this.PregnancyInformation
-              );
-            }
-            console.log(this.maternalInformation.historyList);
-            this.maternalInformation.patientCenterId = this.patientCenterId;
-            this.maternalInformation.token = token1;
-            console.log(this.maternalInformation);
-            if (this.buttonHide2 == false) {
-              this.patientParturitionDetailInsertForFiling(
-                this.maternalInformation
-              );
-            } else {
+              if (this.maternalInformation.virusInfection == 0) {
+                this.maternalInformation.virusInfectionOther = "";
+              } else if (this.maternalInformation.virusInfection == 1) {
+                for (var i = 0; i < $(".chunks.active").length; i++) {
+                  this.maternalInformation.virusInfectionOther +=
+                    $(".chunks.active")
+                      .eq(i)
+                      .text() + "、";
+                }
+                console.log(this.maternalInformation.virusInfectionOther);
+              }
+              if (this.familyHistory2 == 0) {
+                this.maternalInformation.familyHistory = "";
+              }
+              if (this.familyHistory3 == 0) {
+                this.maternalInformation.nowHistory = "";
+              }
+              if (this.maternalInformation.pregnancyNumber == "0") {
+                this.maternalInformation.historyList = "";
+              } else {
+                this.maternalInformation.historyList = JSON.stringify(
+                  this.PregnancyInformation
+                );
+              }
+          
               this.maternalInformation.patientCenterId = this.patientCenterId;
-              this.maternalInformation.id = this.parturitionDetailId;
-              console.log(this.essentialInformation);
-              this.patientParturitionDetailUpdateForFiling(
-                this.maternalInformation
-              );
+              this.maternalInformation.token = token1;
+              // console.log(this.maternalInformation);
+              if (this.buttonHide2 == false) {
+                this.patientParturitionDetailInsertForFiling(this.maternalInformation);
+              } else {
+                this.maternalInformation.patientCenterId = this.patientCenterId;
+                this.maternalInformation.id = this.parturitionDetailId;
+                this.maternalInformation.deleteList = JSON.stringify(this.deleteHistory);
+                  delete this.maternalInformation.patientParturitionDetailHistoryBeanList;
+                  delete this.maternalInformation.status;
+                  delete this.maternalInformation.message;
+                  delete this.maternalInformation.pregnancyParturitionCount;
+                  delete this.maternalInformation.pregnancyParturitionCountOther;
+                    console.log(this.maternalInformation.historyList);
+                    console.log(this.maternalInformation.deleteList);
+                    console.log(this.maternalInformation)
+                  // return;
+                this.patientParturitionDetailUpdateForFiling(this.maternalInformation);
               }
             }
           } else if (this.activeName == "fourth") {
@@ -3648,14 +3663,22 @@ export default {
           // console.log(res);
           if (res.status === "20200") {
             this.essentialInformation = res;
-          let selectedOptions1 =[];
-         selectedOptions1.push(res.idCardAddressProvince,res.idCardAddressCity,res.idCardAddressCounty);  
-         this.selectedOptions1 = selectedOptions1;
-           let selectedOptions2 =[];
-         selectedOptions2.push(res.newAddressProvince,res.newAddressCity,res.newAddressCounty);  
-         this.selectedOptions2 = selectedOptions2;
-            console.log(this.selectedOptions1)
-          } 
+            let selectedOptions1 = [];
+            selectedOptions1.push(
+              res.idCardAddressProvince,
+              res.idCardAddressCity,
+              res.idCardAddressCounty
+            );
+            this.selectedOptions1 = selectedOptions1;
+            let selectedOptions2 = [];
+            selectedOptions2.push(
+              res.newAddressProvince,
+              res.newAddressCity,
+              res.newAddressCounty
+            );
+            this.selectedOptions2 = selectedOptions2;
+            console.log(this.selectedOptions1);
+          }
         })
         .catch(error => {
           this.$message.error("基本信息查询错误，请稍后重试");
@@ -3682,7 +3705,7 @@ export default {
           this.$message.error("新增失败，请稍后重试");
         });
     },
-        // 基本信息-修改
+    // 基本信息-修改
     patientCheckUpdateForFiling(obj) {
       this.$api
         .patientCheckUpdateForFiling(obj)
@@ -3767,7 +3790,7 @@ export default {
     },
     matePatientHistorySelect() {
       let patientHistory1 = this.matePatientHistory;
-      console.log(this.matePatientHistory)
+      console.log(this.matePatientHistory);
       let characterPatientHistory1 = patientHistory1.join("、");
       this.spouseInformation.patientHistory = characterPatientHistory1;
     },
@@ -3784,28 +3807,32 @@ export default {
           console.log(res);
           if (res.status === "20200") {
             this.spouseInformation = res;
-                let selectedOptions3 =[];
-         selectedOptions3.push(res.newAddressProvince,res.newAddressCity,res.newAddressCounty);  
-         this.selectedOptions3 = selectedOptions3;
-         if (res.smoke>0) {
-            this.spouseSmoke = 1;
-         }
-          if (res.drink == 0) {
-             this.drinks =0;
-          }else{
-            this.drinks =1;
-            let tab =res.drink;
-            this.tab = tab;
-            console.log(this.tab)
-          }
-          if (res.patientHistory =='') {
-              this.familyHistory = 0 ;
-          }else{
-             this.familyHistory = 1;
-             let patientHistory =res.patientHistory
-            let matePatientHistory =patientHistory.split('、')
-             this.matePatientHistory = matePatientHistory;
-          }
+            let selectedOptions3 = [];
+            selectedOptions3.push(
+              res.newAddressProvince,
+              res.newAddressCity,
+              res.newAddressCounty
+            );
+            this.selectedOptions3 = selectedOptions3;
+            if (res.smoke > 0) {
+              this.spouseSmoke = 1;
+            }
+            if (res.drink == 0) {
+              this.drinks = 0;
+            } else {
+              this.drinks = 1;
+              let tab = res.drink;
+              this.tab = tab;
+              console.log(this.tab);
+            }
+            if (res.patientHistory == "") {
+              this.familyHistory = 0;
+            } else {
+              this.familyHistory = 1;
+              let patientHistory = res.patientHistory;
+              let matePatientHistory = patientHistory.split("、");
+              this.matePatientHistory = matePatientHistory;
+            }
           } else if (res.status === "20209") {
           }
         })
@@ -3832,7 +3859,7 @@ export default {
           this.$message.error("新增失败，请稍后重试");
         });
     },
-       // 配偶信息修改
+    // 配偶信息修改
     patientHusbandsUpdateForFiling(obj) {
       this.$api
         .patientHusbandsUpdateForFiling(obj)
@@ -3892,29 +3919,8 @@ export default {
       return num < 10 ? "0" + num : num;
     },
     // 怀孕次数选择
-    // numberPregnancy() {
-    //   let tempPregnancyNum = this.maternalInformation.pregnancyNumber;
-    //   var _html = {};
-    //   _html.number = "";
-    //   _html.ageOfMenarche = "";
-    //   _html.productionDate = "";
-    //   _html.productionOfAge = "";
-    //   _html.productionAbortion = "";
-    //   _html.babySex = "";
-    //   _html.babyHealthType = "";
-    //   _html.remarks = "";
-    //   var mycars = new Array();
-    //   for (let i = 0; i < tempPregnancyNum; i++) {
-    //     mycars.push(_html);
-    //     this.PregnancyInformation = mycars;
-    //   }
-    //   // console.log(this.PregnancyInformation);
-    // },
-      // 怀孕次数选择
     numberPregnancy() {
       let vaule = this.maternalInformation.pregnancyNumber;
-      // let tempPregnancyNum = this.tempPregnancyNum;
-      // let i = tempPregnancyNum * 1;
       this.historyLayer = {};
       let tempNum = vaule - this.PregnancyInformation.length;
       if (tempNum > 0) {
@@ -3928,14 +3934,17 @@ export default {
         let tempEntity;
         for (let i = tempNum1; i > 0; i--) {
           // 1.取出对象
-          tempEntity = this.PregnancyInformation[tempNum1];
+          tempEntity = this.PregnancyInformation[
+            this.PregnancyInformation.length - 1
+          ];
           console.log(tempEntity);
           // 2.判断对象有没有id
-          // if (tempEntity.id) {
-          //   // 3.添加到删除json中
-          //   this.deleteHistory.push(tempEntity);
-          // }
-          this.PregnancyInformation.pop(tempNum1);
+          if (tempEntity.hasOwnProperty("id")) {
+            console.log(tempEntity.id);
+            //   // 3.添加到删除json中
+            this.deleteHistory.push(tempEntity.id);
+          }
+          this.PregnancyInformation.pop();
         }
       }
     },
@@ -4005,39 +4014,37 @@ export default {
           patientCenterId: this.patientCenterId
         })
         .then(res => {
+          console.log("孕产信息查询:"+res);
           console.log(res);
           if (res.status === "20200") {
             this.maternalInformation = res;
-            
-   this.maternalInformation.contactToxic =Number(res.contactToxic);
-   this.maternalInformation.virusInfection =Number(res.virusInfection);
-            this.PregnancyInformation =
-              res.patientParturitionDetailHistoryBeanList;
-            this.PregnancyNum =
-              res.patientParturitionDetailHistoryBeanList.length;
-                 if (res.familyHistory =='') {
-              this.familyHistory2 = 0 ;
-          }else{
-             this.familyHistory2 = 1;
-             let patientHistory =res.familyHistory
-            let pregnancyPatientHistory =patientHistory.split('、')
-             this.pregnancyPatientHistory = pregnancyPatientHistory;
-          }
-
-              if (res.nowHistory =='') {
-              this.familyHistory3 = 0 ;
-          }else{
-             this.familyHistory3 = 1;
-             let patientHistory =res.nowHistory
-            let pregnancyNewHistory =patientHistory.split('、')
-             this.pregnancyNewHistory = pregnancyNewHistory;
-          }
-          if (res.contactRadioactiveRaysDate !=='') {
-               this.disabledInput = false;
-          }else{
+            this.maternalInformation.contactToxic = Number(res.contactToxic);
+            this.maternalInformation.virusInfection = Number(
+              res.virusInfection
+            );
+            this.PregnancyInformation =res.patientParturitionDetailHistoryBeanList;
+            this.PregnancyNum = res.patientParturitionDetailHistoryBeanList.length;
+            if (res.familyHistory == "") {
+              this.familyHistory2 = 0;
+            } else {
+              this.familyHistory2 = 1;
+              let patientHistory = res.familyHistory;
+              let pregnancyPatientHistory = patientHistory.split("、");
+              this.pregnancyPatientHistory = pregnancyPatientHistory;
+            }
+            if (res.nowHistory == "") {
+              this.familyHistory3 = 0;
+            } else {
+              this.familyHistory3 = 1;
+              let patientHistory = res.nowHistory;
+              let pregnancyNewHistory = patientHistory.split("、");
+              this.pregnancyNewHistory = pregnancyNewHistory;
+            }
+            if (res.contactRadioactiveRaysDate !== "") {
+              this.disabledInput = false;
+            } else {
               this.disabledInput = true;
-          }
-          
+            }
           } else if (res.status === "20209") {
           }
         })
@@ -4064,14 +4071,14 @@ export default {
           this.$message.error("新增失败，请稍后重试");
         });
     },
-     //孕产信息修改
+    //孕产信息修改
     patientParturitionDetailUpdateForFiling(obj) {
       this.$api
         .patientParturitionDetailUpdateForFiling(obj)
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
-           this.activeName = "fourth";
+            this.activeName = "fourth";
           } else {
             $message.error("修改失败，请稍后重试");
           }
@@ -4080,7 +4087,7 @@ export default {
           this.$message.error("修改失败，请稍后重试");
         });
     },
-    
+
     // ------------------------孕产信息end------------------------------------
     //   ------------------------体格检查star------------------------------------
     // 体格检查查询
@@ -4123,7 +4130,7 @@ export default {
           this.$message.error("新增失败，请稍后重试");
         });
     },
-     //体格检查修改
+    //体格检查修改
     patientHealthCheckUpdateForFiling(obj) {
       this.$api
         .patientHealthCheckUpdateForFiling(obj)
@@ -4187,9 +4194,6 @@ export default {
       for (let i = 0; i < purpleObjArr.length; i++) {
         purpleArr.push(purpleObjArr.eq(i).html());
       }
-      // console.log(uniq(fiveArr));
-      // console.log(uniq(tenArr));
-      // console.log(uniq(twentyArr));
       console.log(uniq(purpleArr));
       $(".fiveLength").html(uniq(fiveArr).length);
       $(".tenLength").html(uniq(tenArr).length);
@@ -4226,6 +4230,10 @@ export default {
         gradeType = 0;
       }
       this.signatureConfirmationForFiling.gradeType = gradeType;
+      $(".yellowDiv").html("");
+      $(".orangeDiv").html("");
+      $(".redDiv").html("");
+      $(".purpleDiv").html("");
       for (let i = 0; i < uniq(fiveArr).length; i++) {
         $(".yellowDiv").append("<p>" + fiveArr[i] + "</p>");
       }
@@ -4253,7 +4261,7 @@ export default {
       this.isActive = index;
       console.log(index);
       this.topicArr = item;
-      console.log(this.topicArr);
+      // console.log(this.topicArr);
     },
 
     //高危评估查询
@@ -4331,8 +4339,8 @@ export default {
           this.$message.error("新增错误，请稍后重试");
         });
     },
-    examineAffirm(){
-        if (this.checkId == "" || this.checkId == undefined) {
+    examineAffirm() {
+      if (this.checkId == "" || this.checkId == undefined) {
         this.$message.error("请先保存孕妇基本信息");
       } else if (this.superId == "" || this.superId == undefined) {
         this.$message.error("请先保存配偶一般信息");
@@ -4345,23 +4353,23 @@ export default {
         this.$message.error("请先保存体格检查");
       } else {
         // 检查确认按钮
-          let token1 = window.localStorage.getItem("mayernal-web-token");
-            this.signatureConfirmationForFiling.token = token1;
-            this.signatureConfirmationForFiling.patientCenterId = this.patientCenterId;
-            this.signatureConfirmationForFiling.patientName = this.essentialInformation.name;
-            let highRiskGradeTemplateId = window.localStorage.getItem(
-              "mayernal-web-highRiskGradesTable"
-            );
-            this.signatureConfirmationForFiling.highRiskGradeTemplateId = highRiskGradeTemplateId;
-            this.signatureConfirmationForFiling.high = this.healthCheckup.baseHeight;
-            this.signatureConfirmationForFiling.weight = this.healthCheckup.baseWeight;
-            this.signatureConfirmationForFiling.newAgeOfMenarche = this.maternalInformation.newAgeOfMenarche;
-            this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.maternalInformation.newAgeOfMenarcheDay;
-            console.log(this.signatureConfirmationForFiling);
-            this.signatureConfirmationForFilingPort(this.signatureConfirmationForFiling);
-    }
+        let token1 = window.localStorage.getItem("mayernal-web-token");
+        this.signatureConfirmationForFiling.token = token1;
+        this.signatureConfirmationForFiling.patientCenterId = this.patientCenterId;
+        this.signatureConfirmationForFiling.patientName = this.essentialInformation.name;
+        let highRiskGradeTemplateId = window.localStorage.getItem(
+          "mayernal-web-highRiskGradesTable"
+        );
+        this.signatureConfirmationForFiling.highRiskGradeTemplateId = highRiskGradeTemplateId;
+        this.signatureConfirmationForFiling.high = this.healthCheckup.baseHeight;
+        this.signatureConfirmationForFiling.weight = this.healthCheckup.baseWeight;
+        this.signatureConfirmationForFiling.newAgeOfMenarche = this.maternalInformation.newAgeOfMenarche;
+        this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.maternalInformation.newAgeOfMenarcheDay; 
+        this.signatureConfirmationForFilingPort(
+          this.signatureConfirmationForFiling
+        );
+      }
     },
-          
 
     /* ****************************检查确认end******************************** */
     // ------------------------公共js-----------------------------------
@@ -4383,31 +4391,34 @@ export default {
     allowSliding() {
       document.documentElement.style.overflow = "scroll";
     },
-      handleClick(tab, event){
-      if (tab.name=='second') {
-        if (this.superId !=='') {
-           this.patientHusbandsFindForFiling();
-            this.buttonHide1 = true;
-            this.buttonShow1 = false;
-           
-        }else{
+    handleClick(tab, event) {
+      if (tab.name == "second") {
+        if (this.superId !== "") {
+          this.patientHusbandsFindForFiling();
+          this.buttonHide1 = true;
+          this.buttonShow1 = false;
+        } else {
           this.buttonHide1 = false;
-            this.buttonShow1 = true;
-         
+          this.buttonShow1 = true;
         }
-        
-      }else if (tab.name=='third') {
-         if (this.parturitionDetailId !=='') {
-         this.buttonHide2 = true;
-            this.buttonShow2 = false;
+      } else if (tab.name == "third") {
+        if (this.parturitionDetailId !== "") {
+          this.patientParturitionDetailFindForFiling();
+          this.buttonHide2 = true;
+          this.buttonShow2 = false;
+        } else {
+          this.buttonHide2 = false;
+          this.buttonShow2 = true;
         }
-      
-      }else if (tab.name=='fourth') {
-        if (this.healthCheckId !=='') {
-         this.buttonHide3 = true;
+      } else if (tab.name == "fourth") {
+        if (this.healthCheckId !== "") {
+          this.patientHealthCheckFindById();
+          this.buttonHide3 = true;
           this.buttonShow3 = false;
+        } else {
+          this.buttonHide3 = false;
+          this.buttonShow3 = true;
         }
-       
       }
     }
   }
@@ -5126,7 +5137,7 @@ export default {
     height: 88px;
     width: 100%;
     position: fixed; // background-color: #fff;
-    opacity:0.8;
+    opacity: 0.8;
     bottom: 0px;
     left: 0;
     z-index: 10000;

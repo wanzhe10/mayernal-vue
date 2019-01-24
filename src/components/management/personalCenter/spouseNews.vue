@@ -367,9 +367,9 @@ export default {
     this.highRiskGradeTemplateDetailFindTreeList();
   },
   //  数据清除
-//  deactivated () { //清除keep-alive的缓存
-//     this.$destroy(true)
-//   },
+ deactivated () { //清除keep-alive的缓存
+    this.$destroy(true)
+  },
   methods: {
     //   ------------------------高危评估star------------------------------------
     // 基本情况点击显示隐藏
@@ -551,7 +551,7 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === "20200") {
-              this.$destroy(true)
+              // this.$destroy(true)
             self.$router.push({ path: "/personalCenter" });
           }
         })

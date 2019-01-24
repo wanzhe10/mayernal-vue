@@ -803,14 +803,14 @@
               >
               </el-table-column>
               <el-table-column
-                prop="ageOfMenarche"
+                prop="pregnantType"
                 label="孕周"
                 width="124"
               >
                 <template slot-scope="scope">
-                  <div v-show="scope.row.ageOfMenarche == '0'">早产</div>
-                  <div v-show="scope.row.ageOfMenarche == '1'">足月妊娠</div>
-                  <div v-show="scope.row.ageOfMenarche == '2'">过期妊娠</div>
+                  <div v-show="scope.row.pregnantType == '0'">早产</div>
+                  <div v-show="scope.row.pregnantType == '1'">足月妊娠</div>
+                  <div v-show="scope.row.pregnantType == '2'">过期妊娠</div>
                 </template>
               </el-table-column>
               <el-table-column
@@ -1184,7 +1184,7 @@
               <div class="fl mgr36">
                 <p>孕周</p>
                 <el-select
-                  v-model="historyLayer.ageOfMenarche"
+                  v-model="historyLayer.pregnantType"
                   placeholder="请选择"
                 >
                   <el-option
@@ -3530,14 +3530,13 @@ export default {
               if (this.familyHistory3 == 0) {
                 this.maternalInformation.nowHistory = "";
               }
-              if (this.maternalInformation.contactRadioactiveRays == "0") {
+              if (this.maternalInformation.pregnancyNumber == "0") {
                 this.maternalInformation.historyList = "";
               } else {
                 this.maternalInformation.historyList = JSON.stringify(
                   this.PregnancyInformation
                 );
               }
-              console.log(this.maternalInformation.historyList);
               this.maternalInformation.patientCenterId = this.patientCenterId;
               this.maternalInformation.token = token1;
               console.log(this.maternalInformation);
@@ -3585,7 +3584,6 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    aaaBtn() {},
     // ------------------------孕妇基本信息star------------------------------------
     // 孕妇基本信息-身份证号计算年龄、性别、出生年月
     pregnantIdCarda() {
@@ -3871,7 +3869,7 @@ export default {
     // 孕产史弹框保存按钮
     patientCenterUpdateBtn(historyLayer) {
       Vue.set(this.PregnancyInformation, this.historyLayerNum, historyLayer);
-      console.log(this.PregnancyInformation);
+      console.log(JSON.stringify(this.PregnancyInformation));
       this.editdialogVisible = false;
     },
     // 接触放射性
@@ -4030,11 +4028,10 @@ export default {
         }
       }
       let purpleObjArr = $(".purpleItem.active");
-      console.log(purpleObjArr);
       for (let i = 0; i < purpleObjArr.length; i++) {
         purpleArr.push(purpleObjArr.eq(i).html());
       }
-      console.log(uniq(purpleArr));
+      // console.log(fiveArr, tenArr, twentyArr, purpleArr);
       $(".fiveLength").html(uniq(fiveArr).length);
       $(".tenLength").html(uniq(tenArr).length);
       $(".twentyLength").html(uniq(twentyArr).length);
@@ -4070,7 +4067,10 @@ export default {
         gradeType = 0;
       }
       this.signatureConfirmationForFiling.gradeType = gradeType;
-
+ $(".yellowDiv").html('')
+ $(".orangeDiv").html('')
+ $(".redDiv").html('')
+ $(".purpleDiv").html('')
       for (let i = 0; i < uniq(fiveArr).length; i++) {
         $(".yellowDiv").append("<p>" + fiveArr[i] + "</p>");
       }
@@ -4090,6 +4090,8 @@ export default {
     },
     finishBtn() {
       this.dataStatistics();
+      console.log(this.signatureConfirmationForFiling.details)
+      console.log(this.signatureConfirmationForFiling.totalNum)
       this.activeName = "sixth";
     },
 
@@ -4098,7 +4100,7 @@ export default {
       this.isActive = index;
       console.log(index);
       this.topicArr = item;
-      console.log(this.topicArr);
+      // console.log(this.topicArr);
     },
 
     //高危评估查询
