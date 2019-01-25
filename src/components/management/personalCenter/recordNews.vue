@@ -1,23 +1,23 @@
 <template>
   <div class="recordNewsBox clearfix">
-      <el-form
-        :model="reviewOfNew"
-        :rules="rules"
-        ref="reviewOfNew"
-        label-position='top'
-        label-width="100px"
-        :hide-required-asterisk='true'
-      >
-    <div id="recordNewsBox_top">
-      <div class="recordNewsBox_tittle clearfix">
-        <h2>新增复检记录</h2>
-        <p class="fl fortyTwoTittle_left">
-          <span class="fake">检查日期：<i v-model="reviewOfNew.checkDate">{{reviewOfNew.checkDate}}</i></span>
-          <span>复健次数：<i>{{examineNum}}次</i></span>
-        </p>
-        <p class="fr"><span>操作医生：<i class="doctorName">{{doctorName}}</i></span></p>
-      </div>
-    
+    <el-form
+      :model="reviewOfNew"
+      :rules="rules"
+      ref="reviewOfNew"
+      label-position='top'
+      label-width="100px"
+      :hide-required-asterisk='true'
+    >
+      <div id="recordNewsBox_top">
+        <div class="recordNewsBox_tittle clearfix">
+          <h2>新增复检记录</h2>
+          <p class="fl fortyTwoTittle_left">
+            <span class="fake">检查日期：<i v-model="reviewOfNew.checkDate">{{reviewOfNew.checkDate}}</i></span>
+            <span>复健次数：<i>{{examineNum}}次</i></span>
+          </p>
+          <p class="fr"><span>操作医生：<i class="doctorName">{{doctorName}}</i></span></p>
+        </div>
+
         <div class="pregnantNewsBox clearfix">
 
           <div class="mgr70">
@@ -309,26 +309,22 @@
             >
           </el-dialog>
         </div>
-              </div>
+      </div>
       <div class="BtnBox clearfix">
-              <el-form-item>
-                   <!-- @click="resetForm('fortyTwoDay')" -->
-                   <el-button
+        <el-form-item>
+          <!-- @click="resetForm('fortyTwoDay')" -->
+          <el-button
             class="fl"
-             @click="abandonBtn"
-            >放弃本次编辑</el-button>
-            <el-button
-              type="primary"
-              @click="submitForm('reviewOfNew')"
-              class="fr"
-            >完 成</el-button>
-          </el-form-item>
-        </div>
-      </el-form>
-
-  
-
-  
+            @click="abandonBtn"
+          >放弃本次编辑</el-button>
+          <el-button
+            type="primary"
+            @click="submitForm('reviewOfNew')"
+            class="fr"
+          >完 成</el-button>
+        </el-form-item>
+      </div>
+    </el-form>
 
     <!-- // 预约下次时间弹框 -->
     <el-dialog
@@ -465,18 +461,18 @@ export default {
       }
     };
     // 预约下次日期
-  //   let contactRadioactiveRaysDateVerify = (rule, value, callback) => {
-  //     if (this.reviewOfNew.makeAppointmentTime == '') {
-  //        return callback(new Error("请填写预约下次日期"));
-  //     }else{
-  // callback();
-  //     }
-  //     // if (!value) {
-       
-  //     // } else {
-      
-  //     // }
-  //   };
+    //   let contactRadioactiveRaysDateVerify = (rule, value, callback) => {
+    //     if (this.reviewOfNew.makeAppointmentTime == '') {
+    //        return callback(new Error("请填写预约下次日期"));
+    //     }else{
+    // callback();
+    //     }
+    //     // if (!value) {
+
+    //     // } else {
+
+    //     // }
+    //   };
     // 血压
     var baseBloodVerify = (rule, value, callback) => {
       if (!value) {
@@ -687,8 +683,8 @@ export default {
       pcCheckForWeekBeanList: [], //孕检信息
       pcCheckCellsBean: {},
       clickActive: 0,
-      examineNum:'',//复检次数
-      doctorName:'' //操作医生
+      examineNum: "", //复检次数
+      doctorName: "" //操作医生
     };
   },
   components: {
@@ -697,8 +693,9 @@ export default {
   activated() {
     this.getUser();
     this.format();
-       this.examineNum = Number(window.localStorage.getItem('mayernal-web-recordNum'))+1;
-         var tableDataParticulars = eval(
+    this.examineNum =
+      Number(window.localStorage.getItem("mayernal-web-recordNum")) + 1;
+    var tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
     );
     this.tableDataParticulars = tableDataParticulars;
@@ -706,9 +703,10 @@ export default {
     let doctorName = localStorage.getItem("mayernal-web-userName");
     this.doctorName = doctorName;
   },
-    //  数据清除
- deactivated () { //清除keep-alive的缓存
-    this.$destroy(true)
+  //  数据清除
+  deactivated() {
+    //清除keep-alive的缓存
+    this.$destroy(true);
   },
   methods: {
     // 禁止滑动
@@ -734,27 +732,26 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.reviewOfNew.makeAppointmentTime == '') {
-                  this.$message.error("请预约下次日期");
-          }else{
-             this.patientSecondCheckInsert();
+          if (this.reviewOfNew.makeAppointmentTime == "") {
+            this.$message.error("请预约下次日期");
+          } else {
+            this.patientSecondCheckInsert();
           }
-       
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
-       //放弃编辑按钮
-    abandonBtn(){
-   this.$confirm('此操作将放弃本次编辑, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$router.push({path:'/personalCenter'})
-        })
+    //放弃编辑按钮
+    abandonBtn() {
+      this.$confirm("此操作将放弃本次编辑, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.$router.push({ path: "/personalCenter" });
+      });
     },
     // 图片上传
     handleRemove(file, fileList) {
@@ -789,7 +786,7 @@ export default {
       console.log(year + "-" + mouth + "-" + day);
       this.reviewOfNew.makeAppointmentTime = year + "-" + mouth + "-" + day;
     },
-       format() {
+    format() {
       let day2 = new Date();
       day2.setTime(day2.getTime());
       let s2 =
@@ -814,7 +811,7 @@ export default {
     toggleClass(index) {
       this.clickActive = index;
       this.pcCheckCellsBean = this.pcCheckForWeekBeanList[index];
-      console.log(this.pcCheckCellsBean)
+      console.log(this.pcCheckCellsBean);
     },
     // 孕产信息查询
     getUser(token) {
@@ -834,45 +831,48 @@ export default {
           this.$message.error("查询错误，请稍后重试");
         });
     },
-    finishiBtn(){
-     if (this.reviewOfNew.makeAppointmentTime == '') {
+    finishiBtn() {
+      if (this.reviewOfNew.makeAppointmentTime == "") {
         this.$message({
           showClose: true,
-          message: '请选择下次预约时间',
-          type: 'error'
+          message: "请选择下次预约时间",
+          type: "error"
         });
-     }else{
-       this.reviewOfNew.name = this.pcCheckCellsBean.name;
-       this.reviewOfNew.number = this.pcCheckCellsBean.number;
-       this.reviewOfNew.checkDetail = this.pcCheckCellsBean.checkDetail;
-       this.reviewOfNew.gestationalWeekStart = this.pcCheckCellsBean.gestationalWeekStart;
-       this.reviewOfNew.gestationalWeekEnd = this.pcCheckCellsBean.gestationalWeekEnd;
-       this.reviewOfNew.remarks = this.pcCheckCellsBean.remarks;
-       this.reviewOfNew.weekId = this.pcCheckCellsBean.id;
-       this.dialogVisible = false;
-      var tableDataParticulars = eval(
-      "(" + localStorage.getItem("tableDataParticulars") + ")"
-    );
-     this.reviewOfNew.patientName = tableDataParticulars.checkName;
-     this.reviewOfNew.patientCenterId = tableDataParticulars.id;
-     this.reviewOfNew.healthCheckId = tableDataParticulars.healthCheckId;
-     this.reviewOfNew.newAgeOfMenarche = tableDataParticulars.newAgeOfMenarche;
-     this.reviewOfNew.newAgeOfMenarcheDay = tableDataParticulars.newAgeOfMenarcheDay;
-     }
+      } else {
+        this.reviewOfNew.name = this.pcCheckCellsBean.name;
+        this.reviewOfNew.number = this.pcCheckCellsBean.number;
+        this.reviewOfNew.checkDetail = this.pcCheckCellsBean.checkDetail;
+        this.reviewOfNew.gestationalWeekStart = this.pcCheckCellsBean.gestationalWeekStart;
+        this.reviewOfNew.gestationalWeekEnd = this.pcCheckCellsBean.gestationalWeekEnd;
+        this.reviewOfNew.remarks = this.pcCheckCellsBean.remarks;
+        this.reviewOfNew.weekId = this.pcCheckCellsBean.id;
+        this.dialogVisible = false;
+        var tableDataParticulars = eval(
+          "(" + localStorage.getItem("tableDataParticulars") + ")"
+        );
+        this.reviewOfNew.patientName = tableDataParticulars.checkName;
+        this.reviewOfNew.patientCenterId = tableDataParticulars.id;
+        this.reviewOfNew.healthCheckId = tableDataParticulars.healthCheckId;
+        this.reviewOfNew.newAgeOfMenarche =
+          tableDataParticulars.newAgeOfMenarche;
+        this.reviewOfNew.newAgeOfMenarcheDay =
+          tableDataParticulars.newAgeOfMenarcheDay;
+      }
     },
     // // 复检记录新增
-      patientSecondCheckInsert() {
+    patientSecondCheckInsert() {
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
-       this.reviewOfNew.makeAppointmentTime = this.reviewOfNew.makeAppointmentTime + " 10:00";
-      this.reviewOfNew.token =token1;
-      console.log(this.reviewOfNew)
+      this.reviewOfNew.makeAppointmentTime =
+        this.reviewOfNew.makeAppointmentTime + " 10:00";
+      this.reviewOfNew.token = token1;
+      console.log(this.reviewOfNew);
       this.$api
         .patientSecondCheckInsert(this.reviewOfNew)
         .then(res => {
-          console.log(res)
+          console.log(res);
           if (res.status === "20200") {
-            self.$router.push({path:'/personalCenter'})
+            self.$router.push({ path: "/personalCenter" });
           } else {
             this.$message.error("新增失败，请稍后重试");
           }
@@ -880,7 +880,7 @@ export default {
         .catch(error => {
           this.$message.error("新增错误，请稍后重试");
         });
-    },
+    }
   }
 };
 </script>
@@ -1230,7 +1230,7 @@ export default {
     }
   }
   .BtnBox {
-    margin-top:20px;
+    margin-top: 20px;
     // height: 78px;
     // margin-top: 20px;
     box-shadow: 0px -4px 8px 0px rgba(51, 51, 51, 0.08);
@@ -1430,30 +1430,36 @@ export default {
     height: 34px;
     line-height: 34px;
   }
-     .BtnBox {
-       .el-form-item__content{
-        height: 78px;
-        line-height:78px;
-      }
-        .el-button{
-          width: 222px;
-          height: 40px;
-          border:none;
-    border-radius: 4px;
-    margin-top:24px;
+  .BtnBox {
+    .el-form-item__content {
+      height: 78px;
+      line-height: 78px;
+    }
+    .el-button {
+      width: 222px;
+      height: 40px;
+      border: none;
+      border-radius: 4px;
+      margin-top: 24px;
+    }
+    .el-button--default {
+      background-color: #e0e0e0;
+      color: #878787;
+      margin-left: 84px;
+    }
+    .el-button--primary {
+      background-color: #68b6e7;
+      margin-right: 84px;
+      color: #fff;
+    }
+  }
 
-        }
-        .el-button--default{
-          background-color: #e0e0e0;
-          color:#878787;
-          margin-left:84px;
-        }
-        .el-button--primary{
-             background-color: #68b6e7;
-          margin-right:84px;
-          color:#fff;
-        }
-     } 
+  .el-form-item.is-success .el-input__inner,
+  .el-form-item.is-success .el-input__inner:focus,
+  .el-form-item.is-success .el-textarea__inner,
+  .el-form-item.is-success .el-textarea__inner:focus {
+    border-color: #ccc;
+  }
 }
 </style>
 

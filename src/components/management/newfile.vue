@@ -3868,9 +3868,28 @@ export default {
     // },
     // 孕产史弹框保存按钮
     patientCenterUpdateBtn(historyLayer) {
-      Vue.set(this.PregnancyInformation, this.historyLayerNum, historyLayer);
+      if (this.historyLayer.pregnantType == undefined) {
+          this.$message.error("请选择孕周");
+        //    this.$notify.error({
+        //   title: '错误',
+        //   message: '请选择孕周'
+        // });
+      }else if (this.historyLayer.productionDate ==undefined) {
+            this.$message.error("请选择年月日");
+      }else if (this.historyLayer.productionOfAge ==undefined) {
+            this.$message.error("请填写年龄");
+      }else if (this.historyLayer.productionAbortion ==undefined) {
+            this.$message.error("请选择分娩方式");
+      }else if (this.historyLayer.babySex ==undefined) {
+            this.$message.error("请选择性别");
+      }else if (this.historyLayer.babyHealthType ==undefined) {
+            this.$message.error("请选择健否");
+      }else{
+          Vue.set(this.PregnancyInformation, this.historyLayerNum, historyLayer);
       console.log(JSON.stringify(this.PregnancyInformation));
       this.editdialogVisible = false;
+      }
+    
     },
     // 接触放射性
     radioactivity() {
@@ -3924,7 +3943,7 @@ export default {
             this.buttonHide2 = true;
             this.buttonShow2 = false;
           } else {
-            $message.error("新增失败，请稍后重试");
+            this.$message.error("新增失败，请稍后重试");
           }
         })
         .catch(error => {
@@ -4705,7 +4724,7 @@ export default {
     opacity: 0.8;
     bottom: 0px;
     left: 0;
-    z-index: 10000;
+    z-index: 2005;
     text-align: center;
     background-color: #f6f6f6;
     .flaxBoxPart {
@@ -5693,19 +5712,18 @@ export default {
   background-color: #f6f6f6;
 }
 /* // 配偶一般信息组件样式修改 */
-.spouseNewsBox .el-input__inner {
+/* .spouseNewsBox .el-input__inner {
   width: 260px;
   border-radius: 4px;
   border-color: #ccc;
-  /* background-color: #f6f6f6; */
-}
+} */
 /* // 孕产信息组件样式修改 */
-.pregnancyNewsBox .el-input__inner {
+/* .pregnancyNewsBox .el-input__inner {
   width: 260px;
   border-radius: 4px;
   border-color: #ccc;
   background-color: #f6f6f6;
-}
+} */
 /* // 孕产信息组件样式修改 */
 /*孕产信息修改孕产史弹框演示修改 */
 
