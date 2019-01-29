@@ -379,7 +379,14 @@ export default {
     },
     // 一级标签-添加
     pregnantPrenatalEducationAndClassInsert() {
-      let self = this;
+      if (this.newlyLayerInput =='') {
+          this.$message({
+          showClose: true,
+          message: "标签名称不能为空",
+          type: "warning"
+        });
+      }else{
+           let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
       let classNumber = this.categoryItems.length;
       if (classNumber > 0) {
@@ -408,6 +415,9 @@ export default {
         .catch(error => {
           this.$message.error("新建错误，请稍后重试");
         });
+      }
+
+   
     },
     // 一级标签-修改
     pregnantPrenatalEducationClassUpdate() {
@@ -1063,6 +1073,9 @@ export default {
   .el-radio__input.is-checked .el-radio__inner {
     border-color: #68b6e7;
     background: #68b6e7;
+  }
+  .el-dialog__body{
+        padding: 0px 20px 30px 20px;
   }
 }
 .headlineBox {

@@ -278,7 +278,13 @@ export default {
     },
     // 新增
     checkForWeekAndCellInsert() {
-      console.log($(".leftList"));
+    if ( this.newlyLayerInput == '') {
+       this.$message({
+          showClose: true,
+          message: "标签名称不能为空",
+          type: "warning"
+        });
+    }else{
       let _this = $(".leftList")
         .children("li.active")
         .attr("id");
@@ -316,6 +322,8 @@ export default {
         .catch(error => {
           this.$message.error("新建错误，请稍后重试");
         });
+    }
+      
     },
 
     dblclickBtn(event) {
