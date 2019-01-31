@@ -42,6 +42,8 @@
         <el-table
           :data="officeTableData"
           style="width: 100%"
+            :header-cell-style="{color:'#333333',fontWeight: 'bold'}"
+            :cell-style="{color:'#666'}"
         >
           <el-table-column
             prop="id"
@@ -492,6 +494,7 @@ export default {
     handleEdit(index, row) {
       let token1 = localStorage.getItem("mayernal-web-token");
       this.dialogVisible2 = true;
+      this.editdescInput3();
       this.form2 = JSON.parse(JSON.stringify(row));
       this.form2.token = token1;
       // console.log(this.form2);
@@ -593,11 +596,13 @@ export default {
   .NewdepartmentBtn {
     float: right;
     width: 99px;
-    height: 36px;
+    height: 40px;
+    line-height: 40PX;
     background-color: #68b6e7;
     border-radius: 4px;
     color: #fff;
     cursor: pointer;
+    font-size:12px;
   }
   .setBoxContant {
     .hideBox {
@@ -709,7 +714,7 @@ export default {
 }
 .setBox .el-input--suffix .el-input__inner {
   padding-right: 30px;
-  border-radius: 10px;
+  border-radius: 4px;
   border: 1px solid #ccc;
   background-color: #f6f6f6;
 
@@ -733,8 +738,14 @@ export default {
     border-radius: 4px;
     border: 1px solid #ccc;
   }
-  .el-dialog__header {
+    .el-dialog__header {
     background-color: #ededed;
+        height: 54px;
+    padding: 0 20px;
+      .el-dialog__title{
+      line-height:0px;
+        line-height: 54px;
+    }
   }
   .el-dialog__body {
     padding: 0px;
@@ -753,6 +764,7 @@ export default {
       height: 40px;
       background-color: #68b6e7;
       color: #fff;
+      border:none;
     }
   }
   .el-dialog__footer {

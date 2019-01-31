@@ -5874,7 +5874,7 @@ export default {
 }
 .newfileBox .el-input__inner {
   width: 260px;
-  border-radius: 4px;
+  border-radius:2px;
   border-color: #ccc;
   background-color: #fff;
 }

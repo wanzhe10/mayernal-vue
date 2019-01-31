@@ -451,6 +451,7 @@ export default {
         font-size: 16px;
         display: inline-block;
         padding-right: 14px;
+        font-weight: bold;
       }
       .positionWire {
         position: absolute;
@@ -459,7 +460,7 @@ export default {
         right: 0px;
         width: 860px;
         height: 1px;
-        background-color: black;
+        background-color: #999999;
       }
       .positionWire2 {
         position: absolute;
@@ -468,7 +469,7 @@ export default {
         right: 0px;
         width: 830px;
         height: 1px;
-        background-color: black;
+        background-color: #999999;
       }
       .InformationBtn,
       .mechanismBtn {

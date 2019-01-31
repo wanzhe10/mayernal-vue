@@ -94,6 +94,19 @@
             class="el-input__icon el-icon-search"
           ></i>
         </el-input>
+           <!-- <el-input placeholder="请输入内容" v-model="countType" class="input-with-select">
+    <el-select v-model="seekSelectModel" slot="prepend" placeholder="请选择">
+     <el-option
+            v-for="item in seekSelect"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            popper-class="borderNo"
+          >
+          </el-option>
+    </el-select>
+    <el-button slot="append" icon="el-icon-search"></el-button>
+  </el-input> -->
       </div>
       <input
         type="button"
@@ -975,7 +988,7 @@ console.log(this.yearSelctModel+1)
       border-radius: 50px;
       height: 33px;
       line-height: 28px;
-      padding: 1px;
+      // padding: 1px;
       width: 286px;
       margin-left: 40px;
     }
@@ -1214,7 +1227,7 @@ console.log(this.yearSelctModel+1)
         padding-left: 4px;
         font-size: 12px;
         border-radius: 20px;
-        height: 30px;
+        height: 31px;
         border: none;
         background-color: #f6f6f6;
         border-radius: 50px 0 0 50px;

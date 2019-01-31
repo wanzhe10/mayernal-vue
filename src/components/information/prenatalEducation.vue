@@ -15,7 +15,7 @@
           <input
             type="button"
             value="添加标签"
-            @click="dialogVisible = true"
+            @click="dialogVisibleBtn"
           >
         </div>
         <ul
@@ -376,6 +376,11 @@ export default {
         .catch(error => {
           this.$message.error("查询错误，请稍后重试");
         });
+    },
+    // 添加标签按钮
+    dialogVisibleBtn(){
+        this.newlyLayerInput = "";
+        this.dialogVisible = true;
     },
     // 一级标签-添加
     pregnantPrenatalEducationAndClassInsert() {
@@ -1042,9 +1047,6 @@ export default {
     color: #333333;
     padding-left: 0px;
   }
-  .el-button--primary {
-    background-color: #68b6e7;
-  }
   .el-dialog__header {
     background-color: #ededed;
   }
@@ -1060,11 +1062,12 @@ export default {
       background-color: #cccccc;
       color: #999999;
     }
-    .el-button--primary {
+     .el-button--primary {
       width: 122px;
       height: 40px;
       background-color: #68b6e7;
       color: #fff;
+    border:none;  
     }
   }
   .el-radio__input.is-checked + .el-radio__label {

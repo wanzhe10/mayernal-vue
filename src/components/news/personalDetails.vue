@@ -4,16 +4,16 @@
     <!-- 基本信息块 -->
     <div class="personalDetailsBoxContant">
       <div class="lookAtallBtnBox">
-        <h2>基本情况</h2>
+        <h2>基本信息</h2>
         <div class="positionWire"></div>
       </div>
       <div class="newsBox">
         <span class="mgr34">登录名</span>
-        <span>{{userNewsData.userName}}</span>
+        <i>{{userNewsData.userName}}</i>
       </div>
       <div class="newsBox">
         <span class="mgr20">用户名</span>
-        <span>{{userNewsData.name}}</span>
+        <i>{{userNewsData.name}}</i>
       </div>
       <div class="newsBox">
         <span class="mgr24">手&nbsp;机&nbsp;号</span>
@@ -51,7 +51,7 @@
         value="保 存"
         class="personalDetailsBox_btn"
         @click="doctorUpdateSelf"
-         disabled
+        disabled
         :class="{ 'active': select }"
       >
 
@@ -133,12 +133,12 @@ export default {
           console.log(res);
           if (res.status === "20200") {
             this.userNewsData = res;
-          }else if(res.status === "20209") {
-               this.$message.error("暂无个人信息");
+          } else if (res.status === "20209") {
+            this.$message.error("暂无个人信息");
           }
         })
         .catch(error => {
-            this.$message.error("查询失败，请稍后重试");
+          this.$message.error("查询失败，请稍后重试");
         });
     },
     doctorUpdateSelf() {
@@ -181,20 +181,20 @@ export default {
           .then(res => {
             console.log(res);
             if (res.status === "20200") {
-                this.$message.success("保存成功");
+              this.$message.success("保存成功");
               this.doctorFindSelf();
-            }else{
-                this.$message.error("保存失败，请稍后重试");
+            } else {
+              this.$message.error("保存失败，请稍后重试");
             }
           })
           .catch(error => {
-                this.$message.error("保存失败，请稍后重试");
+            this.$message.error("保存失败，请稍后重试");
           });
       }
     },
     getInputValue() {
       this.select = true;
-        $(".personalDetailsBox_btn").removeAttr("disabled");
+      $(".personalDetailsBox_btn").removeAttr("disabled");
     }
   }
 };
@@ -210,7 +210,7 @@ export default {
 .mgr30 {
   margin-right: 30px;
 }
-.mgr34{
+.mgr34 {
   margin-right: 34px;
 }
 .mgr36 {
@@ -245,11 +245,15 @@ export default {
       position: relative;
       margin-top: 16px;
       margin-bottom: 30px;
+
       h2 {
         font-size: 16px;
         display: inline-block;
         padding-right: 14px;
+        color: #333;
+        font-weight: bold;
       }
+
       .positionWire {
         position: absolute;
         display: inline-block;
@@ -257,7 +261,7 @@ export default {
         right: 0px;
         width: 860px;
         height: 1px;
-        background-color: black;
+        background-color: #cccccc;
       }
       .positionWire2 {
         position: absolute;
@@ -266,7 +270,7 @@ export default {
         right: 0px;
         width: 830px;
         height: 1px;
-        background-color: black;
+        background-color: #cccccc;
       }
     }
     .newsBox {
@@ -283,21 +287,26 @@ export default {
         line-height: 22px;
         letter-spacing: 1px;
         color: #666666;
-        input {
-          font-size: 14px;
-          color: #333333;
-          border: none;
-        }
+
         .borderNo {
           border: none;
         }
+      }
+      input {
+        font-size: 14px;
+        color: #333333;
+        border: none;
+      }
+      i {
+        font-style: normal;
+        color: #333;
+        font-size: 14px;
       }
     }
     .remark {
       width: 100%;
       height: 40px;
       line-height: 40px;
-      padding-left: 30px;
       border-bottom: 1px solid #ccc;
     }
 
@@ -325,9 +334,10 @@ export default {
 .agencyInformation {
   padding-left: 10px;
   font-size: 14px;
-  color: #333333;
+  color: #666;
   i {
     font-style: normal;
+    color: #666;
   }
 }
 </style>

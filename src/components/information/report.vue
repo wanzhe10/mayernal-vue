@@ -66,6 +66,7 @@
                 v-model="labelIntroduce"
               >
               </el-input>
+             
             </div>
             <div class="wire"></div>
             <div class="labelExplain">
@@ -270,6 +271,8 @@ export default {
           } else if (res.status === "20209") {
             this.typeReport = false;
             this.noreportIconShow = true;
+            this.labelIntroduce = '';
+            this.labelExplain = '';
           }
         })
         .catch(error => {
@@ -425,6 +428,10 @@ export default {
       bottom: 0;
       overflow-x: hidden;
       overflow-y: scroll;
+      .wireP{
+        font-weight: bold;
+        color:#333;
+      }
       p {
         color: #333333;
         font-size: 16px;
@@ -438,7 +445,7 @@ export default {
         li {
           height: 46px;
           line-height: 46px;
-          color: #333333;
+          color: #666666;
           padding-left: 30px;
           cursor: pointer;
           -moz-user-select: none; /*火狐*/
@@ -460,7 +467,7 @@ export default {
     margin-left: 24px;
     .Contant_tittle {
       padding: 20px 0;
-      padding-bottom: 40px;
+      // padding-bottom: 40px;
       border-bottom: 1px solid #ccc;
       input {
         width: 86px;
@@ -530,6 +537,9 @@ export default {
     }
     .labelContant {
       margin-top: 20px;
+      h2{
+        font-size: 16px;
+      }
       .labelContant_font {
         margin-top: 20px;
         background-color: #f6f6f6;
@@ -577,9 +587,16 @@ export default {
   }
   .el-button--primary {
     background-color: #68b6e7;
+    border:none;
   }
-  .el-dialog__header {
+    .el-dialog__header {
     background-color: #ededed;
+        height: 54px;
+    padding: 0 20px;
+    .el-dialog__title{
+      line-height:0px;
+        line-height: 54px;
+    }
   }
   .el-select {
     width: 100%;

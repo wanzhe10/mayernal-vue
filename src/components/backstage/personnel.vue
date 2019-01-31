@@ -68,7 +68,7 @@
         <div class="fl w224">
           <p>搜索</p>
           <el-input
-            placeholder="请输入内容"
+            placeholder="请输入姓名或手机号"
             prefix-icon="el-icon-search"
             v-model="fileSearch"
             class="fileSearch"
@@ -99,6 +99,7 @@
         <el-table
           :data="personnelableData"
           style="width: 100%"
+             :header-cell-style="{color:'#333333',fontWeight: 'bold'}"
         >
           <el-table-column
             prop=""
@@ -806,6 +807,7 @@ export default {
         background-color: #68b6e7 !important;
         border: none;
         margin-top: 28px;
+        font-size: 12px;
   }
   .personnelBox_bottom {
     position: relative;
@@ -964,18 +966,8 @@ export default {
         background-color: #f6f6f6;
       }
     }
-    // .addTemplateLayer_bottom_select {
-    //   .el-select {
-    //     width: 100%;
-    //     .el-input__inner {
-    //       border: 1px solid #ccc;
-    //       border-radius: 4px;
-    //       background-color: #f6f6f6;
-    //     }
-    //   }
-    // }
     .el-dialog__footer {
-      padding: 15px 36px;
+      padding: 36px 36px 25px 36px;
       overflow: hidden;
       .el-button--default {
         float: left;
@@ -995,7 +987,31 @@ export default {
   .el-select  .el-input__inner{
     background-color: #f6f6f6 !important;
 }
+ .el-dialog__header {
+    background-color: #ededed;
+        height: 54px;
+    padding: 0 20px;
+      .el-dialog__title{
+      line-height:0px;
+        line-height: 54px;
+    }
+  }
+  .el-dialog__title{
+      line-height: 0px;
+  }
+  .addTemplateLayer_bottom_select{
+    div{
+      width: 100%;
+    }
+  }
+  .el-button--primary{
+    border:none;
+  }
 }
+ .el-select-dropdown__item.selected{
+    color:#68b6e7;
+  }
+
 </style>
 
 

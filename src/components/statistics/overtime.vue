@@ -1,6 +1,6 @@
 <template>
   <div class="documentedBox">
-  <h2 class="documentedBoxTittle">复检超时列表</h2>
+    <h2 class="documentedBoxTittle">复检超时列表</h2>
     <div class="documentedBox_top clearfix">
       <el-date-picker
         v-model="starTime"
@@ -24,7 +24,7 @@
       <div class="higherRiskSelectBox">
         <span class="mgl40 mgr10">高危风险</span>
         <el-select
-        clearable
+          clearable
           v-model="highRiskClass"
           placeholder="请选择"
           clear="highRiskClass"
@@ -65,6 +65,7 @@
             class="el-input__icon el-icon-search"
           ></i>
         </el-input>
+       
       </div>
       <input
         type="button"
@@ -74,7 +75,10 @@
       >
 
     </div>
-    <div class="documentedBox_bottom" id="printTest">
+    <div
+      class="documentedBox_bottom"
+      id="printTest"
+    >
       <div class="documentedBoxTeb clearfix">
         <ul class="clearfix fl">
           <li
@@ -86,22 +90,34 @@
           </li>
         </ul>
         <div class="fr mgr38">
-          <el-button round v-print="'#printTest'">打印</el-button>
-          <el-button round   @click="exportExcel">导出</el-button>
+          <el-button
+            round
+            v-print="'#printTest'"
+          >打印</el-button>
+          <el-button
+            round
+            @click="exportExcel"
+          >导出</el-button>
         </div>
       </div>
-      <div class="administrativeBoxContant" :class="{'active':backActtive}">
+      <div
+        class="administrativeBoxContant"
+        :class="{'active':backActtive}"
+      >
         <img
           src="../../assets/noDataIcon.png"
           alt="暂无数据"
           class="noDataIcon"
           v-show='imgShow'
         >
-        <div class="TableDataBox"  v-show='tableShow'>
+        <div
+          class="TableDataBox"
+          v-show='tableShow'
+        >
           <el-table
             :data="officeTableData"
             style="width: 100%"
-            
+            :header-cell-style="{color:'#333333',fontWeight: 'bold'}"
           >
             <el-table-column
               prop="makeAppointmentTime"
@@ -199,7 +215,7 @@
                   type="text"
                   size="small"
                   style="text-align: center;"
-                     @click="lookBtn(scope.row)"
+                  @click="lookBtn(scope.row)"
                 >查看</el-button>
               </template>
             </el-table-column>
@@ -220,7 +236,7 @@
               :page-count='pagerCount'
             >
             </el-pagination>
-             <span class="total">总共{{total}}人</span>
+            <span class="total">总共{{total}}人</span>
           </div>
         </div>
 
@@ -231,7 +247,7 @@
 </template>
 
  <script>
- import FileSaver from "file-saver";
+import FileSaver from "file-saver";
 import XLSX from "xlsx";
 export default {
   data() {
@@ -292,10 +308,10 @@ export default {
       endWeek: "", //孕周结束
       countType: "", //检索类型countType
       searching: "", //检索类型countType
-      tableShow:true,
-      imgShow:false,
-      backActtive:false,
-      total:''//总共人数
+      tableShow: true,
+      imgShow: false,
+      backActtive: false,
+      total: "" //总共人数
     };
   },
   mounted() {
@@ -305,10 +321,10 @@ export default {
     this.documentedInquire();
   },
   methods: {
-     // 查看按钮
-      lookBtn(row){
-       localStorage.setItem("tableDataParticulars", JSON.stringify(row));
-      this.$router.push({name: 'personalCenter'})
+    // 查看按钮
+    lookBtn(row) {
+      localStorage.setItem("tableDataParticulars", JSON.stringify(row));
+      this.$router.push({ name: "personalCenter" });
     },
     // 导出表格
     exportExcel() {
@@ -318,7 +334,12 @@ export default {
         var tempJson = {};
         tempJson.复检时间 = element.makeAppointmentTime;
         tempJson.姓名 = element.checkName;
-        tempJson.孕周 = "孕" + element.newAgeOfMenarche + "-" + element.newAgeOfMenarcheDay + "天" ;
+        tempJson.孕周 =
+          "孕" +
+          element.newAgeOfMenarche +
+          "-" +
+          element.newAgeOfMenarcheDay +
+          "天";
         tempJson.预产期 = element.parturitionDetailDueDate;
         tempJson.年龄 = element.checkAge;
         tempJson.高危评估 = getHighRiskClass(element.highRiskClass);
@@ -329,52 +350,57 @@ export default {
         if (param == null) {
           return highClassStr;
         }
-        console.log(param)
-          switch (param) {
-            case "0":
-              highClassStr = "绿色";
+        console.log(param);
+        switch (param) {
+          case "0":
+            highClassStr = "绿色";
             break;
-            case "1":
-              highClassStr = "黄色";
+          case "1":
+            highClassStr = "黄色";
             break;
-            case "2":
-              highClassStr = "橘色";
+          case "2":
+            highClassStr = "橘色";
             break;
-            case "3":
-              highClassStr = "红色";
+          case "3":
+            highClassStr = "红色";
             break;
-            case "4":
-              highClassStr = "紫色";
+          case "4":
+            highClassStr = "紫色";
             break;
           default:
             break;
         }
-        console.log(highClassStr)
+        console.log(highClassStr);
         return highClassStr;
       }
-      
-        const wopts = { bookType: 'xlsx', bookSST: false, type: 'binary' };// 这里的数据是用来定义导出的格式类型
-        downloadExl(jsonp,wopts);
-        function downloadExl(data, type) {
-            const wb = { SheetNames: ['Sheet1'], Sheets: {}, Props: {} };
-            wb.Sheets['Sheet1'] = XLSX.utils.json_to_sheet(data);   //  通过json_to_sheet转成单页(Sheet)数据
-            saveAs(new Blob([s2ab(XLSX.write(wb, wopts))], { type: "application/octet-stream" }), "复检超时列表" + '.' + (wopts.bookType=="biff2"?"xls":wopts.bookType));
+
+      const wopts = { bookType: "xlsx", bookSST: false, type: "binary" }; // 这里的数据是用来定义导出的格式类型
+      downloadExl(jsonp, wopts);
+      function downloadExl(data, type) {
+        const wb = { SheetNames: ["Sheet1"], Sheets: {}, Props: {} };
+        wb.Sheets["Sheet1"] = XLSX.utils.json_to_sheet(data); //  通过json_to_sheet转成单页(Sheet)数据
+        saveAs(
+          new Blob([s2ab(XLSX.write(wb, wopts))], {
+            type: "application/octet-stream"
+          }),
+          "复检超时列表" +
+            "." +
+            (wopts.bookType == "biff2" ? "xls" : wopts.bookType)
+        );
+      }
+      function s2ab(s) {
+        if (typeof ArrayBuffer !== "undefined") {
+          var buf = new ArrayBuffer(s.length);
+          var view = new Uint8Array(buf);
+          for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
+          return buf;
+        } else {
+          var buf = new Array(s.length);
+          for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xff;
+          return buf;
         }
-        function s2ab(s) {
-            if (typeof ArrayBuffer !== 'undefined') {
-                var buf = new ArrayBuffer(s.length);
-                var view = new Uint8Array(buf);
-                for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
-                return buf;
-            } else {
-                var buf = new Array(s.length);
-                for (var i = 0; i != s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
-                return buf;
-            }
-        }
+      }
     },
-
-
 
     // 日期默认当前月
     getTime() {
@@ -419,27 +445,27 @@ export default {
     },
     // 开始时间切换
     starTimeSelect() {
-      if (this.starTime >this.endTime) {
-          this.$message({
-          message: '起始时间不能大于截止时间',
-          type: 'warning'
+      if (this.starTime > this.endTime) {
+        this.$message({
+          message: "起始时间不能大于截止时间",
+          type: "warning"
         });
-          return false;
-      }else{
-      this.documentedInquire();
+        return false;
+      } else {
+        this.documentedInquire();
       }
     },
     // 结束时间切换
     endTimeSelect() {
-       if (this.starTime >this.endTime) {
-          this.$message({
-          message: '截止时间不能小于起始时间',
-          type: 'warning'
+      if (this.starTime > this.endTime) {
+        this.$message({
+          message: "截止时间不能小于起始时间",
+          type: "warning"
         });
-          return false;
-       }else{
-      this.documentedInquire();
-       }
+        return false;
+      } else {
+        this.documentedInquire();
+      }
     },
     // 高危风险下拉选择切换
     selectChange() {
@@ -448,7 +474,7 @@ export default {
     // 孕周切换
     toggle1(index) {
       this.current = index;
-     let token = localStorage.getItem("mayernal-web-token");
+      let token = localStorage.getItem("mayernal-web-token");
       if (this.current == 0) {
         this.startWeek = "";
         this.endWeek = "";
@@ -469,8 +495,8 @@ export default {
     },
     // 查询
     documentedInquire() {
-      let  self = this;
-     let token = localStorage.getItem("mayernal-web-token");
+      let self = this;
+      let token = localStorage.getItem("mayernal-web-token");
       this.$api
         .patientCenterCountEntityForOthers({
           token: token,
@@ -489,21 +515,21 @@ export default {
           if (res.status === "20200") {
             this.officeTableData = res.pcPatientCenterBeans;
             this.pagerCount = res.pages;
-             self.imgShow = false;
+            self.imgShow = false;
             self.tableShow = true;
             self.backActtive = false;
-             self.total =res.total;
+            self.total = res.total;
           } else if (res.status === "20209") {
             this.officeTableData = [];
             self.tableShow = false;
-            self.imgShow = true; 
+            self.imgShow = true;
             self.backActtive = true;
-          }else{
-              this.$message.error("查询失败，请稍后重试");
+          } else {
+            this.$message.error("查询失败，请稍后重试");
           }
         })
         .catch(error => {
-            this.$message.error("查询失败，请稍后重试");
+          this.$message.error("查询失败，请稍后重试");
         });
     }
   }
@@ -562,7 +588,7 @@ export default {
       border-radius: 50px;
       height: 33px;
       line-height: 28px;
-      padding: 1px;
+      // padding: 1px;
       width: 286px;
     }
     .seekBtn {
@@ -591,7 +617,7 @@ export default {
           float: left;
           height: 60px;
           line-height: 60px;
-          padding: 0 10px 0 24px;
+          margin: 0 10px 0 24px;
           cursor: pointer;
           -moz-user-select: none; /*火狐*/
           -webkit-user-select: none; /*webkit浏览器*/
@@ -643,12 +669,12 @@ export default {
     position: relative;
     padding: 0 24px;
     background-color: #fff;
-    .administrativeBoxBlock{
-          height: 30px;
-        line-height: 30px;
-        div {
-          display: inline-block;
-        }
+    .administrativeBoxBlock {
+      height: 30px;
+      line-height: 30px;
+      div {
+        display: inline-block;
+      }
     }
     .noDataIcon {
       // display: none;
@@ -665,7 +691,7 @@ export default {
       padding-bottom: 26px;
     }
   }
-    .active{
+  .active {
     background-color: #fcfcfc;
   }
 }
@@ -709,7 +735,8 @@ export default {
   .el-table th,
   .el-table tr {
     background-color: #fff;
-    color: #333;
+    color: #666;
+    border-color: #999;
   }
   .el-table td,
   .el-table th {
@@ -765,7 +792,7 @@ export default {
         padding-left: 4px;
         font-size: 12px;
         border-radius: 20px;
-        height: 30px;
+        height: 31px;
         border: none;
         background-color: #f6f6f6;
         border-radius: 50px 0 0 50px;

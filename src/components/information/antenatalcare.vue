@@ -1,128 +1,132 @@
 <template>
-  <div class="antenatalcareBox" >
+  <div class="antenatalcareBox">
     <h2 class="antenatalcareBoxTittle">产检信息维护</h2>
     <!-- 基本信息块 -->
     <div class="antenatalcareTable">
-      <ul class="tableHeader clearfix">
-        <li style="width:140px; padding-left:12px;">产检次数</li>
-        <li style="width:134px;">孕周</li>
-        <li style="width:108px;">状态</li>
-        <li style="width:214px;">产检须知</li>
-        <li style="width:240px;">温馨提示</li>
-        <li style="width:100px;">操作</li>
-      </ul>
-      <div
-        class="hideBox"
-        v-show='tableShow'>
-        <ul class="tableContant">
-          <li
-            v-for="(item,index) in tableContantData"
-            :key="index"
-            :id='item.id'
-            :number='item.number'
-          >
-            <div
-              class="positonBox  clearfix"
-              :class="{active:index==isActive}"
+      <div style="padding:0px 20px;">
+        <ul class="tableHeader clearfix">
+          <li style="width:140px; padding-left:12px;">产检次数</li>
+          <li style="width:134px;">孕周</li>
+          <li style="width:108px;">状态</li>
+          <li style="width:214px;">产检须知</li>
+          <li style="width:240px;">温馨提示</li>
+          <li style="width:100px;">操作</li>
+        </ul>
+        <div
+          class="hideBox"
+          v-show='tableShow'
+        >
+          <ul class="tableContant">
+            <li
+              v-for="(item,index) in tableContantData"
+              :key="index"
+              :id='item.id'
+              :number='item.number'
             >
-              <span
-                style="width:140px; padding-left:12px;"
-                v-html='item.name'
-              ></span>
-              <span
-                style="width:134px;"
-                v-html='"孕"+item.gestationalWeekStart+"-"+item.gestationalWeekEnd +"周"'
-              ></span>
-              <span
-                style="width:108px;"
-                v-html="ishtml(item.types)"
-              ></span>
-              <span style="width:214px;"><i
-                  style="width:150px; display: inline-block; overflow: hidden; white-space: nowrap;text-overflow: ellipsis;font-style: normal;"
-                  v-html='item.remarks'
-                >{{item.remarks}}</i></span>
-              <span style="width:240px;  overflow: hidden; white-space: nowrap;text-overflow: ellipsis;"><i style="width:150px; display: inline-block; overflow: hidden; white-space: nowrap;text-overflow: ellipsis;font-style: normal;">{{item.checkDetail}}</i></span>
-              <span>
-                <a
-                  href="javascript:;"
-                  @click="toggle1(index)"
-                  v-text='btnText'
-                >查看</a>
-                <!-- <a
+              <div
+                class="positonBox  clearfix"
+                :class="{active:index==isActive}"
+              >
+                <span
+                  style="width:140px; padding-left:12px;"
+                  v-html='item.name'
+                ></span>
+                <span
+                  style="width:134px;"
+                  v-html='"孕"+item.gestationalWeekStart+"-"+item.gestationalWeekEnd +"周"'
+                ></span>
+                <span
+                  style="width:108px;"
+                  v-html="ishtml(item.types)"
+                ></span>
+                <span style="width:214px;"><i
+                    style="width:150px; display: inline-block; overflow: hidden; white-space: nowrap;text-overflow: ellipsis;font-style: normal;"
+                    v-html='item.remarks'
+                  >{{item.remarks}}</i></span>
+                <span style="width:240px;  overflow: hidden; white-space: nowrap;text-overflow: ellipsis;"><i style="width:150px; display: inline-block; overflow: hidden; white-space: nowrap;text-overflow: ellipsis;font-style: normal;">{{item.checkDetail}}</i></span>
+                <span>
+                  <a
+                    href="javascript:;"
+                    @click="toggle1(index)"
+                    v-text='btnText'
+                  >查看</a>
+                  <!-- <a
                   href="javascript:;"
                   @click="toggle1(index)"
                  v-text='btnText'
                 >收起</a> -->
-                <a
-                  href="javascript:;"
-                  @click="handleEdit(index)"
-                >操作</a>
-              </span>
-            </div>
-            <el-collapse-transition>
-              <div
-                class="concealBox"
-                v-show="isShow1 ===index"
-              >
-                <p>
-                  <span v-html='item.name'></span>|
-                  <span v-html='"孕"+item.gestationalWeekStart+"-"+item.gestationalWeekEnd +"周"'></span>|
-                  <span v-html="ishtml(item.types)"></span>
-                </p>
-                <div class="concealBox_font">
-                  <span class="top20">产检须知：</span>
-                  <el-input
-                    type="textarea"
-                    :autosize="{ minRows: 4, maxRows: 10}"
-                    placeholder="请输入内容"
-                    v-model="item.remarks "
-                    class="theRequirements"
-                    readonly="readonly"
-                    :value='item.remarks'
-                  >
-                  </el-input>
-                  <span class="top70">温馨提示：</span>
-                  <el-input
-                    type="textarea"
-                    :autosize="{ minRows: 4, maxRows: 10}"
-                    placeholder="请输入内容"
-                    v-model="item.checkDetail"
-                    clear="warmPrompt"
-                    readonly="readonly"
-                    :value='item.checkDetail'
-                  >
-                  </el-input>
-                </div>
+                  <a
+                    href="javascript:;"
+                    @click="handleEdit(index)"
+                  >操作</a>
+                </span>
               </div>
-            </el-collapse-transition>
-          </li>
-        </ul>
-        <div class="newConstruction">
-          <div
-            class="addBox"
-            @click="dialogVisible = true"
-          >
-            <i class="addIcon"></i>
-            <p class="newConstructionBtn">新增产检</p>
-          </div>
+              <el-collapse-transition>
+                <div
+                  class="concealBox"
+                  v-show="isShow1 ===index"
+                >
+                  <p>
+                    <span v-html='item.name'></span>|
+                    <span v-html='"孕"+item.gestationalWeekStart+"-"+item.gestationalWeekEnd +"周"'></span>|
+                    <span v-html="ishtml(item.types)"></span>
+                  </p>
+                  <div class="concealBox_font">
+                    <span class="top20">产检须知：</span>
+                    <el-input
+                      type="textarea"
+                      :autosize="{ minRows: 4, maxRows: 10}"
+                      placeholder="请输入内容"
+                      v-model="item.remarks "
+                      class="theRequirements"
+                      readonly="readonly"
+                      :value='item.remarks'
+                    >
+                    </el-input>
+                    <span class="top70">温馨提示：</span>
+                    <el-input
+                      type="textarea"
+                      :autosize="{ minRows: 4, maxRows: 10}"
+                      placeholder="请输入内容"
+                      v-model="item.checkDetail"
+                      clear="warmPrompt"
+                      readonly="readonly"
+                      :value='item.checkDetail'
+                    >
+                    </el-input>
+                  </div>
+                </div>
+              </el-collapse-transition>
+            </li>
+          </ul>
+        
         </div>
+        <img
+          src="../../assets/noDataIcon.png"
+          alt="暂无数据"
+          class="noDataIcon"
+          v-show='imgShow'
+        >
       </div>
-      <img
-        src="../../assets/noDataIcon.png"
-        alt="暂无数据"
-        class="noDataIcon"
-        v-show='imgShow'
-      >
+  <div class="newConstruction">
+            <div
+              class="addBox"
+              @click="dialogVisible = true"
+            >
+              <i class="addIcon"></i>
+              <p class="newConstructionBtn">新增产检</p>
+            </div>
+          </div>
     </div>
     <!-- 新增模板弹窗 -->
     <el-dialog
-      title="新增模板"
+      title="新增产检"
       :visible.sync="dialogVisible"
       width="710px"
       :before-close="handleClose"
       class="newlyLayer"
-           @opened = 'banSliding'
-        @closed = 'allowSliding'
+      @opened='banSliding'
+      @closed='allowSliding'
     >
       <div class="addTemplateLayer">
         <div class="addTemplateLayer_top">
@@ -131,7 +135,7 @@
               <p>产检名称</p>
               <el-input
                 v-model="templateName"
-                placeholder="请输入模板名称"
+                placeholder="请输入产检名称"
               ></el-input>
             </div>
             <div class="fr activatedBox">
@@ -188,7 +192,7 @@
           <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 10}"
-            placeholder="输入模板自觉不适描述......."
+            placeholder="输入产检须知......."
             v-model="remnantFontContant"
             maxlength='2000'
             @input="descInput2"
@@ -198,7 +202,7 @@
           <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 10}"
-            placeholder="输入模板指导处理意见描述......."
+            placeholder="输入温馨提示......."
             v-model="opinionModel"
             maxlength='2000'
             @input="descInput3"
@@ -224,8 +228,8 @@
       width="710px"
       :before-close="handleClose"
       class="newlyLayer"
-           @opened = 'banSliding'
-        @closed = 'allowSliding'
+      @opened='banSliding'
+      @closed='allowSliding'
     >
       <div class="addTemplateLayer">
         <div class="addTemplateLayer_top">
@@ -243,7 +247,7 @@
                 v-model="altergestationalWeekStarModel"
                 placeholder="请选择"
                 size='100%'
-                   @change="gestationalScopes"
+                @change="gestationalScopes"
               >
                 <el-option
                   v-for="item in gestationalWeekStar"
@@ -257,7 +261,7 @@
                 v-model="altergestationalWeekEndModel"
                 placeholder="请选择"
                 size='100%'
-                   @change="gestationalScopes"
+                @change="gestationalScopes"
               >
                 <el-option
                   v-for="item in gestationalWeekEnd"
@@ -648,7 +652,10 @@ export default {
       }
     },
     gestationalScope() {
-      if (this.gestationalWeekStarModel >= this.gestationalWeekEndModel&& this.gestationalWeekEndModel != "") {
+      if (
+        this.gestationalWeekStarModel >= this.gestationalWeekEndModel &&
+        this.gestationalWeekEndModel != ""
+      ) {
         this.$message({
           showClose: true,
           message: "孕周开始不能大于孕周结束",
@@ -656,8 +663,12 @@ export default {
         });
       }
     },
-       gestationalScopes() {
-      if (this.altergestationalWeekStarModel >= this.altergestationalWeekEndModel&& this.altergestationalWeekEndModel != "") {
+    gestationalScopes() {
+      if (
+        this.altergestationalWeekStarModel >=
+          this.altergestationalWeekEndModel &&
+        this.altergestationalWeekEndModel != ""
+      ) {
         this.$message({
           showClose: true,
           message: "孕周开始不能大于孕周结束",
@@ -686,7 +697,6 @@ export default {
         .then(_ => {
           done();
           this.allowSliding();
-
         })
         .catch(_ => {});
     },
@@ -695,7 +705,6 @@ export default {
         .then(_ => {
           done();
           this.allowSliding();
-
         })
         .catch(_ => {});
     },
@@ -767,7 +776,7 @@ export default {
           .then(res => {
             console.log(res);
             if (res.status === "20200") {
-                this.$message.success("新增成功");
+              this.$message.success("新增成功");
               let token1 = window.localStorage.getItem("mayernal-web-token");
               this.getUser(token1);
               this.templateName = "";
@@ -857,7 +866,7 @@ export default {
               })
               .then(res => {
                 if (res.status === "20200") {
-                    this.$message.success("编辑成功");
+                  this.$message.success("编辑成功");
                   this.tableContantData = res.pcCheckForWeekBeanList;
                   this.alterdialogVisible = false;
                 } else {
@@ -870,13 +879,13 @@ export default {
           });
       }
     },
-            // 禁止滑动
-    banSliding(){
-    document.documentElement.style.overflow='hidden';
+    // 禁止滑动
+    banSliding() {
+      document.documentElement.style.overflow = "hidden";
     },
     // 允许滑动
-    allowSliding(){
-       document.documentElement.style.overflow='scroll';
+    allowSliding() {
+      document.documentElement.style.overflow = "scroll";
     },
 
     // 判断是激活还是未激活
@@ -933,13 +942,14 @@ export default {
     color: #333333;
   }
   .antenatalcareTable {
-    padding: 0px 20px;
+    // padding: 0px 20px;
     .tableHeader {
       border-bottom: 1px solid #999999;
       li {
         float: left;
         color: #333333;
         padding: 20px 0px;
+        font-weight: bold;
       }
     }
     .hideBox {
@@ -952,6 +962,7 @@ export default {
               display: inline-block;
               padding: 20px 0px;
               float: left;
+              color: #666;
               a {
                 color: #68b7e7;
               }
@@ -962,8 +973,8 @@ export default {
           }
           .active {
             box-shadow: 0px 2px 12px 5px #e1e1e1;
-            color:#68b7e7;
-            border:none;
+            color: #68b7e7;
+            border: none;
           }
         }
       }
@@ -1004,6 +1015,7 @@ export default {
     }
   }
   .newConstruction {
+    box-shadow: 0px 2px 12px 5px #e1e1e1;
     height: 60px;
     line-height: 60px;
     .addBox {
@@ -1033,7 +1045,7 @@ export default {
       padding: 0px 24px 0 24px;
       p {
         margin-top: 16px;
-        margin-bottom: 16px;
+        margin-bottom: 10px;
         font-size: 14px;
         color: #666666;
         span {
@@ -1071,7 +1083,7 @@ export default {
   .el-textarea {
     width: 90%;
     border: none;
-    padding-top: 16px;
+    padding-top: 10px;
   }
   .el-textarea__inner {
     border: none;
@@ -1124,6 +1136,12 @@ export default {
   }
   .el-dialog__header {
     background-color: #ededed;
+        height: 54px;
+    padding: 0 20px;
+      .el-dialog__title{
+      line-height:0px;
+        line-height: 54px;
+    }
   }
   .el-dialog__body {
     padding: 0px;
@@ -1142,15 +1160,16 @@ export default {
       height: 40px;
       background-color: #68b6e7;
       color: #fff;
+    border:none;  
     }
   }
   .el-dialog__footer {
     margin-top: 15px;
   }
 }
-.concealBox_font{
-  textarea{
-    border:none !important;
+.concealBox_font {
+  textarea {
+    border: none !important;
   }
 }
 </style>

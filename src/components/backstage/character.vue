@@ -41,6 +41,7 @@
         <el-table
           :data="characterTableData"
           style="width: 100%"
+              :header-cell-style="{color:'#333333',fontWeight: 'bold'}"
         >
           <el-table-column
             prop="id"
@@ -67,7 +68,11 @@
                   slot="content"
                   style="width:300px;display:block;word-break: break-all;word-wrap:break-word;"
                 >{{ scope.row.remarks }}</div>
-                <span style=" width:248px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.remarks }}</span>
+                <!-- <span style=" width:248px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.remarks }}</span> -->
+                <div style=" width:270px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+                  <span v-show="scope.row.remarks == ''">---</span>
+                  <span v-show="scope.row.remarks !== ''">{{ scope.row.remarks }}</span>
+                </div>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -160,7 +165,7 @@
           <el-form-item label="">
             <el-input
               type="textarea"
-              :autosize="{ minRows: 2, maxRows: 10}"
+              :autosize="{ minRows: 5, maxRows: 10}"
               v-model="form.remarks"
               maxlength='100'
                 placeholder="请输入角色描述......."
@@ -219,7 +224,7 @@
           <el-form-item label="">
             <el-input
               type="textarea"
-              :autosize="{ minRows: 2, maxRows: 10}"
+             :autosize="{ minRows: 5, maxRows: 10}"
               placeholder="请输入角色描述......."
               v-model="form2.remarks"
               maxlength='100'
@@ -508,7 +513,8 @@ export default {
   .NewdepartmentBtn {
     float: right;
     width: 99px;
-    height: 36px;
+    height: 40px;
+    line-height: 40px;
     background-color: #68b6e7;
     border-radius: 4px;
     color: #fff;
@@ -575,7 +581,7 @@ export default {
 }
 .characterBox .el-input--suffix .el-input__inner {
   padding-right: 30px;
-  border-radius: 10px;
+  border-radius: 4px;
 }
 .characterBox .area-select.large {
   width: 160px;
@@ -650,11 +656,17 @@ export default {
     border-radius: 4px;
     border: 1px solid #ccc;
   }
-  .el-dialog__header {
+   .el-dialog__header {
     background-color: #ededed;
+        height: 54px;
+    padding: 0 20px;
+    .el-dialog__title{
+      line-height:0px;
+    line-height: 54px;
+    }
   }
   .el-dialog__footer {
-    padding: 15px 36px;
+    padding: 30px 36px 26px 36px;
     overflow: hidden;
     .el-button--default {
       float: left;
@@ -668,6 +680,7 @@ export default {
       height: 40px;
       background-color: #68b6e7;
       color: #fff;
+     border:none;
     }
   }
   .el-pagination.is-background .el-pager li:not(.disabled).active {
@@ -681,9 +694,12 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  tbody td:nth-child(3) {
-    padding-right: 118px;
+   tbody td:nth-child(3) {
+    padding-right: 90px;
   }
+.el-form-item{
+  margin-bottom:2px;
+}
 }
 </style>
 

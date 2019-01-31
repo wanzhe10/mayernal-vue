@@ -107,6 +107,7 @@
           <el-table
             :data="officeTableData"
             style="width: 100%"
+              :header-cell-style="{color:'#333333',fontWeight: 'bold'}"
           >
             <el-table-column
               prop="makeAppointmentTime"
@@ -563,7 +564,7 @@ export default {
       border-radius: 50px;
       height: 33px;
       line-height: 28px;
-      padding: 1px;
+      // padding: 1px;
       width: 286px;
     }
     .seekBtn {
@@ -592,7 +593,7 @@ export default {
           float: left;
           height: 60px;
           line-height: 60px;
-          padding: 0 10px 0 24px;
+          margin: 0 10px 0 24px;
           cursor: pointer;
           -moz-user-select: none; /*火狐*/
           -webkit-user-select: none; /*webkit浏览器*/
@@ -710,7 +711,8 @@ export default {
   .el-table th,
   .el-table tr {
     background-color: #fff;
-    color: #333;
+    color: #666666;
+    border-color:#999;
   }
   .el-table td,
   .el-table th {
@@ -766,7 +768,7 @@ export default {
         padding-left: 4px;
         font-size: 12px;
         border-radius: 20px;
-        height: 30px;
+        height: 31px;
         border: none;
         background-color: #f6f6f6;
         border-radius: 50px 0 0 50px;
