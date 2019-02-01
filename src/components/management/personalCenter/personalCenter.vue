@@ -350,35 +350,35 @@
                   v-if="spouseNewsRrightData.green !=undefined"
                 ><i class="level0"></i> <span class="colour">绿色（低风险）</span><span class="greenNum">{{spouseNewsRrightData.green.length+'项'}}</span></p>
                 <div class="colorTxt greenText">
-                  <p v-for="(item,index) in spouseNewsRrightData.green">{{item}}</p>
+                  <span v-for="(item,index) in spouseNewsRrightData.green">{{item}}</span>
                 </div>
                 <p
                   class="mgb16"
                   v-if="spouseNewsRrightData.red !=undefined"
                 ><i class="level3"></i> <span class="colour">红色（高风险）</span><span class="redNum">{{spouseNewsRrightData.red.length+'项'}}</span></p>
                 <div class="colorTxt redText">
-                  <p v-for="item in spouseNewsRrightData.red">{{item}}</p>
+                  <span v-for="item in spouseNewsRrightData.red">{{item + ' /'}}</span>
                 </div>
                 <p
                   class="mgb16"
                   v-if="spouseNewsRrightData.yellow !=undefined"
                 ><i class="level1"></i> <span class="colour">黄色（一般风险）</span><span class="yellowNum">{{spouseNewsRrightData.yellow.length+'项'}}</span></p>
                 <div class="colorTxt yellowText">
-                  <p v-for="item in spouseNewsRrightData.yellow">{{item}}</p>
+                  <span v-for="item in spouseNewsRrightData.yellow">{{item + '  /'}}</span>
                 </div>
                 <p
                   class="mgb16"
                   v-if="spouseNewsRrightData.orange !=undefined"
                 ><i class="level2"></i> <span class="colour">橙色（较高风险）</span><span class="orangeNum">{{spouseNewsRrightData.orange.length+'项'}}</span></p>
                 <div class="colorTxt orangeText">
-                  <p v-for="item in spouseNewsRrightData.orange">{{item}}</p>
+                  <span v-for="item in spouseNewsRrightData.orange">{{item + '  /'}}</span>
                 </div>
                 <p
                   class="mgb16"
                   v-if="spouseNewsRrightData.purple !=undefined"
                 ><i class="level4"></i> <span class="colour">紫色（传染性疾病）</span><span class="purpleNum">{{spouseNewsRrightData.purple.length+'项'}}</span></p>
                 <div class="colorTxt purpleText">
-                  <p v-for="item in spouseNewsRrightData.purple">{{item}}</p>
+                  <span v-for="item in spouseNewsRrightData.purple">{{item}}</span>
                 </div>
               </div>
             </el-collapse-transition>
@@ -473,7 +473,7 @@
                 <p><i>阴道：</i><span v-show="patientFourtyTwoData.gynecologyVagina ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyVagina ==1">异常</span></p>
                 <p><i>宫颈：</i><span v-show="patientFourtyTwoData.gynecologyCervical ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyCervical ==1">异常</span></p>
                 <p><i>子宫：</i><span v-show="patientFourtyTwoData.gynecologyUterus ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyUterus ==1">异常</span></p>
-                <p class="mgr70"><i>双侧附件：</i><span v-show="patientFourtyTwoData.gynecologyAttachmentOnBothSides ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyAttachmentOnBothSides ==1">异常</span></p>
+                <p class="mgr70"><i>双侧附件：</i><span v-show="patientFourtyTwoData.gynecologyAttachmentOnBothSides ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyAttachmentOnBothSides ==1">异常</span></p></br>
                 <p><i>恶露：</i><span v-show="patientFourtyTwoData.gynecologyLochia ==0">未出现异常</span><span v-show="patientFourtyTwoData.gynecologyLochia ==1">异常</span></p>
               </h2>
             </div>
@@ -1013,7 +1013,7 @@ export default {
   margin-bottom: 12px;
 }
 .mgb16 {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .mgb20 {
@@ -1101,17 +1101,17 @@ export default {
         background-color: #95ccee;
         text-align: center;
         line-height: 18px;
-        border-radius: 25%;
+        border-radius: 10px 10px 10px 10px;
         color: #666666;
-        font-size: 12px;
+        font-size: 10px;
       }
       .BMLValue {
         width: 100px;
-        height: 38px;
+        height: 28px;
         background-color: #77bee9;
         color: #fff;
         text-align: center;
-        line-height: 38px;
+        line-height: 28px;
         font-size: 12px;
         border-radius: 50px 50px 50px 50px;
         margin: 14px auto;
@@ -1161,79 +1161,79 @@ export default {
           span {
             position: relative;
             margin-right: 20px;
-            padding-left: 16px;
+            padding-left: 22px;
           }
           .greenStrip {
             &:after {
               content: " ";
               position: absolute;
-              top: 4px;
-              left: 0;
-              width: 10px;
-              height: 10px;
+             top: 3px;
+          left: 0px;
+          width: 14px;
+          height: 14px;
               background-color: green;
               border-radius: 50%;
             }
             &:before {
               content: " ";
               position: absolute;
-              top: 2px;
+            top: 6px;
               right: -14px;
               width: 1px;
               height: 10px;
-              background-color: #ccc;
+              background-color: #999;
             }
           }
           .yellowStrip {
             &:after {
               content: " ";
               position: absolute;
-              top: 4px;
-              left: 0;
-              width: 10px;
-              height: 10px;
+               top: 3px;
+          left: 0px;
+          width: 14px;
+          height: 14px;
               background-color: yellow;
               border-radius: 50%;
             }
             &:before {
               content: " ";
               position: absolute;
-              top: 2px;
+              top: 6px;
               right: -14px;
               width: 1px;
               height: 10px;
-              background-color: #ccc;
+              background-color: #999;
             }
           }
           .orangeStrip {
             &:after {
               content: " ";
               position: absolute;
-              top: 4px;
-              left: 0;
-              width: 10px;
-              height: 10px;
+               top: 3px;
+          left: -2px;
+          width: 14px;
+          height: 14px;
               background-color: orange;
               border-radius: 50%;
             }
             &:before {
               content: " ";
               position: absolute;
-              top: 2px;
+            top: 6px;
               right: -14px;
               width: 1px;
               height: 10px;
-              background-color: #ccc;
+              background-color: #999;
             }
           }
           .proponStrip {
             &:after {
               content: " ";
               position: absolute;
-              top: 4px;
-              left: 0;
-              width: 10px;
-              height: 10px;
+               top: 3px;
+          left: 0px;
+          width: 14px;
+          height: 14px;
               background-color: purple;
               border-radius: 50%;
             }
@@ -1242,21 +1242,21 @@ export default {
             &:after {
               content: " ";
               position: absolute;
-              top: 4px;
-              left: 0;
-              width: 10px;
-              height: 10px;
+               top: 3px;
+          left: 0px;
+          width: 14px;
+          height: 14px;
               background-color: red;
               border-radius: 50%;
             }
             &:before {
               content: " ";
               position: absolute;
-              top: 2px;
+             top: 6px;
               right: -14px;
               width: 1px;
               height: 10px;
-              background-color: #ccc;
+              background-color: #999;
             }
           }
         }
@@ -1391,15 +1391,19 @@ export default {
           .recheckDegree {
             position: relative;
             margin-right: 30px;
+            font-weight: 600;
             &:after {
               content: " ";
               position: absolute;
-              top: 2px;
+              top: 4px;
               right: -15px;
               width: 2px;
               height: 14px;
               background-color: #68b7e7;
             }
+          }
+          .recheckWeek{
+            font-weight: 600;
           }
         }
         .examination {
@@ -1424,6 +1428,7 @@ export default {
         .recheckTable {
           width: 752px;
           border: 1px solid #ccc;
+          background: #fcfcfc;
           div {
             float: left;
             width: 28%;
@@ -1484,6 +1489,7 @@ export default {
             font-size: 16px;
             display: inline-block;
             padding-right: 14px;
+            color:#333;
           }
           .positionWire {
             position: absolute;
@@ -1527,6 +1533,7 @@ export default {
         .handlingSuggestion {
           margin-top: 16px;
           padding-bottom: 14px;
+          color:#666666;
         }
 
         .consequenceBox {
@@ -1671,6 +1678,7 @@ export default {
         .assessDegree {
           position: relative;
           margin-right: 30px;
+          font-weight: 600;
           &:after {
             content: " ";
             position: absolute;
@@ -1685,6 +1693,7 @@ export default {
       .assessexamination {
         position: relative;
         margin-right: 30px;
+         font-weight: 600;
         &:after {
           content: " ";
           position: absolute;
@@ -1695,10 +1704,13 @@ export default {
           background-color: #68b7e7;
         }
       }
+      .assessWeek{
+          font-weight: 600;
+      }
       .wire {
         width: 100%;
         height: 1px;
-        background-color: #ccc;
+        background-color: #999999;
         margin: 20px 0px;
       }
 
@@ -1784,17 +1796,21 @@ export default {
         }
       }
       .colorTxt {
-        font-size: 14px;
-        color: #666666 !important;
         padding-bottom: 8px;
-        border-bottom: 1px solid #999999;
+        border-bottom: 1px solid #ccc;
         margin-bottom: 16px;
+        span{
+   font-size: 14px;
+     color: #666666 !important;
+    display: inline-block;
+    margin-right:6px;
+        }
       }
     }
   }
   // 产后42天模块
   .fortyTwoBox {
-    padding: 18px 28px 30px 28px;
+    padding: 0px 28px 30px 28px;
     min-height: 600px;
     .fortyTwoImgShow {
       position: absolute;
@@ -1824,15 +1840,8 @@ export default {
             color: #68b6e7;
             position: relative;
             margin-right: 36px;
-            // &:before {
-            //   content: " ";
-            //   position: absolute;
-            //   top: 4px;
-            //   right: -18px;
-            //   width: 1px;
-            //   height: 10px;
-            //   background: #68b6e7;
-            // }
+            font-weight: 600;
+        font-size: 16px;
           }
           span:nth-child(1) {
             &:before {
@@ -1840,7 +1849,7 @@ export default {
               position: absolute;
               top: 4px;
               right: -18px;
-              width: 1px;
+              width: 2px;
               height: 10px;
               background: #68b6e7;
             }
@@ -1851,7 +1860,7 @@ export default {
               position: absolute;
               top: 4px;
               right: -18px;
-              width: 1px;
+              width: 2px;
               height: 10px;
               background: #68b6e7;
             }
@@ -1866,12 +1875,14 @@ export default {
         margin-top: 18px;
         border: 1px solid #ccc;
         border-radius: 4px;
+        background: #fcfcfc;
         div {
           padding: 24px 0px 30px 20px;
           h4 {
             font-size: 16px;
             color: #333333;
             margin-bottom: 20px;
+            font-weight: 600;
           }
           h2 {
             font-size: 14px;
@@ -1898,6 +1909,9 @@ export default {
               margin-right: 120px;
             }
             p:nth-last-child(1):before {
+              display: none;
+            }
+              p:nth-child(5):before {
               display: none;
             }
           }
@@ -1991,7 +2005,7 @@ export default {
     opacity: 0.8;
     bottom: 0px;
     left: 0;
-    z-index: 10000;
+    z-index: 1000;
     background-color: #f6f6f6;
     .flaxBoxPart {
       height: 88px;
@@ -2010,10 +2024,13 @@ export default {
     h2 {
       font-size: 16px;
       color: #333333;
+      font-weight: 600;
+      margin-bottom:4px;
     }
     p {
       font-size: 14px;
       color: #666666;
+      margin-bottom:4px;
     }
   }
   .newlyLayerBottom {
@@ -2053,7 +2070,7 @@ export default {
     height: 40px;
     padding: 0px;
     border: none;
-    margin-right: 126px;
+    margin-right: 56px;
     color: black;
   }
 
@@ -2067,6 +2084,8 @@ export default {
   }
   .el-tabs__item.is-active {
     color: #68b6e7;
+    font-size: 16px;
+  font-weight: 600;
   }
   .el-tabs__item:hover {
     color: #68b6e7;
@@ -2084,6 +2103,15 @@ export default {
   }
   .el-dialog__header {
     background-color: #ededed;
+        height: 54px;
+    padding: 0 20px;
+      .el-dialog__title{
+      line-height:0px;
+        line-height: 54px;
+    }
+  }
+  .el-dialog__body{
+    padding: 30px 20px 0px 20px;
   }
 }
 </style>

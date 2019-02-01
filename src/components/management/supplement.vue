@@ -795,9 +795,11 @@
             </div>
             <el-table
               :data="PregnancyInformation"
-              border
               style="width: 100%"
               class="dynamicTable"
+              border
+              :header-cell-style="{fontSize: '14px',color:'#333',textAlign:'center', backgroundColor:'#f6f6f6'}"
+              :row-class-name="tableRowClassName"
             >
               <el-table-column
                 prop="number"
@@ -872,7 +874,7 @@
               <el-table-column
                 prop="modifyButton"
                 label="操作"
-                width="80px"
+                width="82px"
               >
                 <template slot-scope="scope">
                   <el-button
@@ -2050,7 +2052,7 @@
               <span>黄色（<i class="fiveLength">0</i>）项</span>
               <span>橙色（<i class="tenLength">0</i>）项</span>
               <span>红色（<i class="twentyLength">0</i>）项</span>
-              <span>紫色（<i class="purpleLength">0</i>）项</span>
+              <span style="margin-right:227px;">紫色（<i class="purpleLength">0</i>）项</span>
               <input
                 type="button"
                 value="完  成"
@@ -3442,13 +3444,15 @@ export default {
       console.log(this.superId);
       this.parturitionDetailId = tableDataParticulars.parturitionDetailId; //孕产
       this.healthCheckId = tableDataParticulars.healthCheckId; //体格检查
-      this.signatureConfirmationForFiling.newAgeOfMenarche = tableDataParticulars.newAgeOfMenarche;
-      this.signatureConfirmationForFiling.newAgeOfMenarcheDay = tableDataParticulars.newAgeOfMenarcheDay;
+      this.signatureConfirmationForFiling.newAgeOfMenarche =
+        tableDataParticulars.newAgeOfMenarche;
+      this.signatureConfirmationForFiling.newAgeOfMenarcheDay =
+        tableDataParticulars.newAgeOfMenarcheDay;
 
       this.essentialInquire();
       this.patientHusbandsFindForFiling();
       this.patientParturitionDetailFindForFiling();
-         this.patientHealthCheckFindById();
+      this.patientHealthCheckFindById();
     }
   },
   mounted() {
@@ -3549,26 +3553,33 @@ export default {
                   this.PregnancyInformation
                 );
               }
-          
+
               this.maternalInformation.patientCenterId = this.patientCenterId;
               this.maternalInformation.token = token1;
               // console.log(this.maternalInformation);
               if (this.buttonHide2 == false) {
-                this.patientParturitionDetailInsertForFiling(this.maternalInformation);
+                this.patientParturitionDetailInsertForFiling(
+                  this.maternalInformation
+                );
               } else {
                 this.maternalInformation.patientCenterId = this.patientCenterId;
                 this.maternalInformation.id = this.parturitionDetailId;
-                this.maternalInformation.deleteList = JSON.stringify(this.deleteHistory);
-                  delete this.maternalInformation.patientParturitionDetailHistoryBeanList;
-                  delete this.maternalInformation.status;
-                  delete this.maternalInformation.message;
-                  delete this.maternalInformation.pregnancyParturitionCount;
-                  delete this.maternalInformation.pregnancyParturitionCountOther;
-                    console.log(this.maternalInformation.historyList);
-                    console.log(this.maternalInformation.deleteList);
-                    console.log(this.maternalInformation)
-                  // return;
-                this.patientParturitionDetailUpdateForFiling(this.maternalInformation);
+                this.maternalInformation.deleteList = JSON.stringify(
+                  this.deleteHistory
+                );
+                delete this.maternalInformation
+                  .patientParturitionDetailHistoryBeanList;
+                delete this.maternalInformation.status;
+                delete this.maternalInformation.message;
+                delete this.maternalInformation.pregnancyParturitionCount;
+                delete this.maternalInformation.pregnancyParturitionCountOther;
+                console.log(this.maternalInformation.historyList);
+                console.log(this.maternalInformation.deleteList);
+                console.log(this.maternalInformation);
+                // return;
+                this.patientParturitionDetailUpdateForFiling(
+                  this.maternalInformation
+                );
               }
             }
           } else if (this.activeName == "fourth") {
@@ -3604,6 +3615,7 @@ export default {
     },
     // ------------------------孕妇基本信息star------------------------------------
     // 孕妇基本信息-身份证号计算年龄、性别、出生年月
+
     pregnantIdCarda() {
       if (!RegExpObj.Reg_IDCardNo.test(this.essentialInformation.idCard)) {
         this.essentialInformation.age = "";
@@ -3877,6 +3889,17 @@ export default {
     },
     //  -----------------------配偶基本信息end------------------------------------
     // ------------------------孕产信息star------------------------------------
+    // 孕产史表格
+    tableRowClassName({ row, rowIndex }) {
+      var isEven = rowIndex => rowIndex % 2 === 0;
+      if (rowIndex === 1) {
+        return "warning-row";
+      } else if (rowIndex === 3) {
+        return "warning-row";
+      }
+      return "";
+    },
+
     // 末次月经
     lastMenstrualPeriod(val) {
       this.lastMenstrual = val;
@@ -3958,25 +3981,25 @@ export default {
     },
     // 孕产史弹框保存按钮
     patientCenterUpdateBtn(historyLayer) {
-       if (this.historyLayer.pregnantType == undefined) {
-          this.$message.error("请选择孕周");
+      if (this.historyLayer.pregnantType == undefined) {
+        this.$message.error("请选择孕周");
         //    this.$notify.error({
         //   title: '错误',
         //   message: '请选择孕周'
         // });
-      }else if (this.historyLayer.productionDate ==undefined) {
-            this.$message.error("请选择年月日");
-      }else if (this.historyLayer.productionOfAge ==undefined) {
-            this.$message.error("请填写年龄");
-      }else if (this.historyLayer.productionAbortion ==undefined) {
-            this.$message.error("请选择分娩方式");
-      }else if (this.historyLayer.babySex ==undefined) {
-            this.$message.error("请选择性别");
-      }else if (this.historyLayer.babyHealthType ==undefined) {
-            this.$message.error("请选择健否");
-      }else{
-   Vue.set(this.PregnancyInformation, this.historyLayerNum, historyLayer);
-      this.editdialogVisible = false;
+      } else if (this.historyLayer.productionDate == undefined) {
+        this.$message.error("请选择年月日");
+      } else if (this.historyLayer.productionOfAge == undefined) {
+        this.$message.error("请填写年龄");
+      } else if (this.historyLayer.productionAbortion == undefined) {
+        this.$message.error("请选择分娩方式");
+      } else if (this.historyLayer.babySex == undefined) {
+        this.$message.error("请选择性别");
+      } else if (this.historyLayer.babyHealthType == undefined) {
+        this.$message.error("请选择健否");
+      } else {
+        Vue.set(this.PregnancyInformation, this.historyLayerNum, historyLayer);
+        this.editdialogVisible = false;
       }
     },
     // 接触放射性
@@ -4031,7 +4054,7 @@ export default {
           patientCenterId: this.patientCenterId
         })
         .then(res => {
-          console.log("孕产信息查询:"+res);
+          console.log("孕产信息查询:" + res);
           console.log(res);
           if (res.status === "20200") {
             this.maternalInformation = res;
@@ -4039,8 +4062,10 @@ export default {
             this.maternalInformation.virusInfection = Number(
               res.virusInfection
             );
-            this.PregnancyInformation =res.patientParturitionDetailHistoryBeanList;
-            this.PregnancyNum = res.patientParturitionDetailHistoryBeanList.length;
+            this.PregnancyInformation =
+              res.patientParturitionDetailHistoryBeanList;
+            this.PregnancyNum =
+              res.patientParturitionDetailHistoryBeanList.length;
             if (res.familyHistory == "") {
               this.familyHistory2 = 0;
             } else {
@@ -4252,16 +4277,16 @@ export default {
       $(".redDiv").html("");
       $(".purpleDiv").html("");
       for (let i = 0; i < uniq(fiveArr).length; i++) {
-        $(".yellowDiv").append("<p>" + fiveArr[i] + "</p>");
+        $(".yellowDiv").append("<span style='margin: 6px;color: #666;'>" + fiveArr[i] + "</span>");
       }
       for (let i = 0; i < uniq(tenArr).length; i++) {
-        $(".orangeDiv").append("<p>" + uniq(tenArr)[i] + "</p>");
+        $(".orangeDiv").append("<span style='margin: 6px;color: #666;'>" + uniq(tenArr)[i] + "</span>" +'/');
       }
       for (let i = 0; i < uniq(twentyArr).length; i++) {
-        $(".redDiv").append("<p>" + uniq(twentyArr)[i] + "</p>");
+        $(".redDiv").append("<span style='margin: 6px;color: #666;'>" + uniq(twentyArr)[i] + "</span>");
       }
       for (let i = 0; i < uniq(purpleArr).length; i++) {
-        $(".purpleDiv").html("<p>" + uniq(purpleArr)[i] + "</p>");
+        $(".purpleDiv").html("<span style='margin: 6px;color: #666;'>" + uniq(purpleArr)[i] + "</span>");
       }
       this.signatureConfirmationForFiling.totalPoints =
         uniq(fiveArr).length * 5 +
@@ -4381,7 +4406,7 @@ export default {
         this.signatureConfirmationForFiling.high = this.healthCheckup.baseHeight;
         this.signatureConfirmationForFiling.weight = this.healthCheckup.baseWeight;
         this.signatureConfirmationForFiling.newAgeOfMenarche = this.maternalInformation.newAgeOfMenarche;
-        this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.maternalInformation.newAgeOfMenarcheDay; 
+        this.signatureConfirmationForFiling.newAgeOfMenarcheDay = this.maternalInformation.newAgeOfMenarcheDay;
         this.signatureConfirmationForFilingPort(
           this.signatureConfirmationForFiling
         );
@@ -4497,6 +4522,7 @@ export default {
 // 孕妇基本信息
 .pregnantNewsBox {
   padding: 14px 24px 40px 26px;
+
   .flaxBox {
     height: 88px;
     width: 100%;
@@ -4558,7 +4584,7 @@ export default {
     position: relative;
     .bindingBtn {
       position: absolute;
-      top: 40px;
+      top: 41px;
       right: 0;
       width: 72px;
       height: 40px;
@@ -4567,14 +4593,14 @@ export default {
       font-size: 14px;
       line-height: 40px;
       text-align: center;
-      border-radius: 4px;
+      border-radius: 2px;
     }
   } // 出生年月
   .birthBox {
     position: relative;
     .birth {
       position: absolute;
-      top: 50px;
+      top: 52px;
       right: 10px;
       display: inline;
       color: #666666;
@@ -4583,7 +4609,7 @@ export default {
         &:before {
           content: " ";
           position: absolute;
-          top: -10px;
+          top: -8px;
           right: 34px;
           width: 1px;
           height: 38px;
@@ -4595,7 +4621,7 @@ export default {
         &:before {
           content: " ";
           position: absolute;
-          top: -10px;
+          top: -8px;
           right: 66px;
           width: 1px;
           height: 38px;
@@ -4666,23 +4692,7 @@ export default {
     height: 1px;
     border-bottom: 1px dashed #ccc;
     margin-top: 24px;
-  } // 绑定卡号
-  // .bindingBox {
-  //   position: relative;
-  //   .bindingBtn {
-  //     position: absolute;
-  //     top: 38px;
-  //     right: -76px;
-  //     width: 72px;
-  //     height: 40px;
-  //     background-color: #68b6e7;
-  //     color: #fff;
-  //     font-size: 14px;
-  //     line-height: 40px;
-  //     text-align: center;
-  //     border-radius: 4px;
-  //   }
-  // }
+  }
   // 出生年月
   .birthBox {
     position: relative;
@@ -4701,10 +4711,10 @@ export default {
         &:before {
           content: " ";
           position: absolute;
-          top: -10px;
+          top: -8px;
           right: 36px;
           width: 1px;
-          height: 40px;
+          height: 38px;
           background: #cccccc;
         }
       }
@@ -4720,6 +4730,7 @@ export default {
       width: 260px;
       height: 52px;
       line-height: 52px;
+      box-shadow: 0px 0px 6px 4px rgba(51, 51, 51, 0.08);
       .somkingFont {
         width: 75px;
         height: 52px;
@@ -4761,10 +4772,11 @@ export default {
   .somkingCirculationBox,
   .drinkCirculationBox,
   .history1CirculationBox {
-    margin-top: 24px;
+    margin-top: 12px;
     width: 260px;
     position: relative;
-    box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
+    box-shadow: 0px 0px 6px 4px rgba(51, 51, 51, 0.08);
+    background-color: #fff;
     p {
       font-size: 12px;
       color: #666666;
@@ -5021,6 +5033,7 @@ export default {
       width: 260px;
       height: 52px;
       line-height: 52px;
+      box-shadow: 0px 0px 6px 4px rgba(51, 51, 51, 0.08);
       .somkingFont {
         width: 75px;
         height: 52px;
@@ -5066,7 +5079,7 @@ export default {
       width: 260px;
       position: relative;
       padding: 14px 16px;
-      box-shadow: 0px 0px 12px 4px rgba(51, 51, 51, 0.08);
+      box-shadow: 0px 0px 6px 4px rgba(51, 51, 51, 0.08);
 
       p {
         font-size: 12px;
@@ -5178,6 +5191,7 @@ export default {
   .healthCheckTittle {
     font-size: 16px;
     color: #333333;
+    font-weight: 600;
   }
   div {
     display: inline-block;
@@ -5353,6 +5367,7 @@ export default {
       background: #fff;
       z-index: 2;
       color: #333333;
+      font-weight: 600;
     }
     .positionWire {
       position: absolute;
@@ -5361,7 +5376,7 @@ export default {
       right: 0px;
       width: 100%;
       height: 1px;
-      background-color: black;
+      background-color: #999;
     }
     .basicLookAtallBtn,
     .pregnancyAllBtn {
@@ -5463,37 +5478,6 @@ export default {
     }
   } // 添加内容块
   .contentBox {
-    // .lookAtallBtnBox {
-    //   width: 100%;
-    //   position: relative;
-    //   margin-top: 26px;
-    //    height: 60px;
-    // line-height: 60px;
-    // display: block;
-    //   h2 {
-    //     font-size: 14px;
-    //     display: inline-block;
-    //     padding-right: 14px;
-    //   }
-    //   .positionWire {
-    //     position: absolute;
-    //     display: inline-block;
-    //     top: 34%;
-    //     right: 0px;
-    //     width: 860px;
-    //     height: 1px;
-    //     background-color: black;
-    //   }
-    //   // .positionWire2 {
-    //   //   position: absolute;
-    //   //   display: inline-block;
-    //   //   top: 50%;
-    //   //   right: 0px;
-    //   //   width: 830px;
-    //   //   height: 1px;
-    //   //   background-color: #cccccc;
-    //   // }
-    // }
     .partBox,
     .partBox2 {
       width: 284px;
@@ -5563,6 +5547,7 @@ export default {
   .flaxBox {
     z-index: 10000;
     height: 88px;
+    line-height: 88px;
     width: 100%;
     position: fixed; // background-color: #fff;
     opacity: 0.8;
@@ -5574,6 +5559,9 @@ export default {
       width: 1200px;
       background-color: #86c5ec;
       display: inline-block;
+      height: 88px;
+      line-height: 88px;
+      position: relative;
       .totalPoints {
         position: relative;
         font-size: 24px;
@@ -5601,13 +5589,27 @@ export default {
       .finishBtn {
         background-color: #f3f9fd;
         width: 160px;
-        text-align: center;
+        height: 40px;
         padding: 0px;
         border: none;
-        margin-left: 60px;
-        height: 40px;
+        margin-right: 66px;
         color: black;
+        display: inline-block;
+        line-height: 1;
+        white-space: nowrap;
         cursor: pointer;
+        -webkit-transition: 0.1s;
+        text-align: center;
+        box-sizing: border-box;
+        outline: 0;
+        margin: 0;
+        transition: 0.1s;
+        font-weight: 500;
+        font-size: 14px;
+        border-radius: 4px;
+        position: absolute;
+        right: 66px;
+        top: 24px;
       }
     }
   }
@@ -5640,6 +5642,7 @@ export default {
         font-size: 16px;
         color: #333333;
         margin-bottom: 20px;
+        font-weight: 600;
       }
       span {
         position: relative;
@@ -5653,10 +5656,10 @@ export default {
         &:after {
           content: " ";
           position: absolute;
-          top: 4px;
-          left: 0;
-          width: 10px;
-          height: 10px;
+          top: 3px;
+          left: -2px;
+          width: 14px;
+          height: 14px;
           background-color: green;
           border-radius: 50%;
         }
@@ -5674,10 +5677,10 @@ export default {
         &:after {
           content: " ";
           position: absolute;
-          top: 4px;
-          left: 0;
-          width: 10px;
-          height: 10px;
+          top: 3px;
+          left: -2px;
+          width: 14px;
+          height: 14px;
           background-color: yellow;
           border-radius: 50%;
         }
@@ -5695,10 +5698,10 @@ export default {
         &:after {
           content: " ";
           position: absolute;
-          top: 4px;
-          left: 0;
-          width: 10px;
-          height: 10px;
+          top: 3px;
+          left: -2px;
+          width: 14px;
+          height: 14px;
           background-color: orange;
           border-radius: 50%;
         }
@@ -5716,10 +5719,10 @@ export default {
         &:after {
           content: " ";
           position: absolute;
-          top: 4px;
-          left: 0;
-          width: 10px;
-          height: 10px;
+          top: 3px;
+          left: -2px;
+          width: 14px;
+          height: 14px;
           background-color: purple;
           border-radius: 50%;
         }
@@ -5728,10 +5731,10 @@ export default {
         &:after {
           content: " ";
           position: absolute;
-          top: 4px;
-          left: 0;
-          width: 10px;
-          height: 10px;
+          top: 3px;
+          left: -2px;
+          width: 14px;
+          height: 14px;
           background-color: red;
           border-radius: 50%;
         }
@@ -5783,9 +5786,10 @@ export default {
     h3 {
       display: block;
       color: #333333;
+      font-weight: 600;
     }
     span {
-      color: #666666;
+      color: #333333;
       margin-top: 16px;
       margin-bottom: 16px;
       position: relative;
@@ -5794,9 +5798,10 @@ export default {
     }
     div {
       flex: 1;
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid #ccc;
       p {
         margin: 6px;
+       color: #666;
       }
     }
     .greenStrip {
@@ -5874,21 +5879,33 @@ export default {
 }
 .newfileBox .el-input__inner {
   width: 260px;
-  border-radius:2px;
+  border-radius: 2px;
   border-color: #ccc;
   background-color: #fff;
 }
 .newfileBox .el-cascader .el-input__inner {
   width: 260px;
   border-radius: 4px;
-  /* border-color: #ccc; */
+  border-color: #ccc;
   background-color: #f6f6f6;
 }
 .newfileBox .el-select .el-input__inner {
   width: 260px;
   border-radius: 4px;
-  /* border-color: #ccc; */
+  border-color: #ccc;
   background-color: #f6f6f6;
+}
+.newfileBox .history1CirculationBox .el-select .el-input__inner {
+  width: 260px;
+  border-radius: 4px;
+  border-color: #ccc;
+  background-color: #fff;
+}
+.newfileBox .familyHistoryBox .el-select .el-input__inner {
+  width: 260px;
+  border-radius: 4px;
+  border-color: #ccc;
+  background-color: #fff;
 }
 .newfileBox .riskAssessmentBox .el-select .el-input__inner {
   width: 154px;
@@ -5943,7 +5960,7 @@ export default {
   height: 40px;
   padding: 0px;
   border: none;
-  margin-right: 126px;
+  margin-right: 66px;
   color: black;
 }
 /* // 体格检查组件样式修改 */
@@ -5981,6 +5998,8 @@ export default {
 }
 .newfileBox .el-tabs__item.is-active {
   color: #68b6e7;
+  font-size: 16px;
+  font-weight: 600;
 }
 .newfileBox .el-tabs__item:hover {
   color: #68b6e7;
@@ -6075,5 +6094,30 @@ export default {
 .el-form-item.is-success .el-textarea__inner,
 .el-form-item.is-success .el-textarea__inner:focus {
   border-color: #ccc;
+}
+.presentAddress .el-input__inner,
+.spouseResidenceAddress .el-input__inner {
+  width: 320px;
+}
+.newfileBox .el-table tr {
+  background-color: #fff;
+  color: #666666;
+}
+.newfileBox .el-table tr div {
+  text-align: center;
+}
+.newfileBox .el-table .warning-row {
+  background-color: #f6f6f6;
+}
+.newfileBox .el-table td, .newfileBox .el-table th.is-leaf {
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.newfileBox .el-table--border,.newfileBox  .el-table--group {
+  border: 1px solid #ccc;
+}
+.newfileBox .el-textarea__inner {
+  padding: 5px 15px 5px 0px;
+  border-radius: 0;
 }
 </style>

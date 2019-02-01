@@ -27,7 +27,6 @@
               autocomplete="off"
             >
               <el-input
-                type="number"
                 min='18'
                 max='50'
                 class="gestationalWeek"
@@ -1080,11 +1079,18 @@ export default {
         font-size: 18px;
         color: #333333;
         margin-bottom: 18px;
+        font-weight: 600;
+      }
+    }
+    .fortyTwoTittle_left{
+      span{
+         color:#666666;
       }
     }
     .fake {
       position: relative;
       margin-right: 28px;
+     
       &:after {
         content: " ";
         position: absolute;

@@ -949,7 +949,7 @@ export default {
         float: left;
         color: #333333;
         padding: 20px 0px;
-        font-weight: bold;
+        font-weight: 600;
       }
     }
     .hideBox {

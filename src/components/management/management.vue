@@ -109,6 +109,7 @@
         <el-table
           :data="tableData"
           style="width: 100%"
+           :header-cell-style="{color:'#333333',fontWeight: 'bold'}"
         >
           <el-table-column
             prop="tableNum"
@@ -679,6 +680,17 @@ export default {
   .el-button.is-round {
     padding: 10px 23px;
   }
+   .el-table th,
+  .el-table tr {
+    background-color: #fff;
+    color: #666666;
+  }
+  .el-table__body, .el-table__footer, .el-table__header{
+    background:#e7f3fb;
+  }
+  .el-button{
+    font-size:12px;
+  }
   .topBox {
     width: 100%;
     height: 98px;
@@ -820,5 +832,11 @@ export default {
       }
     }
   }
+ .el-select .el-input__inner {
+  border-radius: 4px;
+  border-color: #ccc;
+  background-color: #f6f6f6;
+}
+
 }
 </style>

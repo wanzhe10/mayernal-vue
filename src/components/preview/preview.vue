@@ -96,6 +96,8 @@
             style="width: 100%"
             class="dynamicTable"
             stripe
+             :header-cell-style="{fontSize: '14px',color:'#333',textAlign:'center', backgroundColor:'#f6f6f6'}"
+              :row-class-name="tableRowClassName"
           >
             <el-table-column
               prop="number"
@@ -384,6 +386,16 @@ export default {
           this.$message.error('孕产信息查询错误，请稍后重试');
         });
     },
+        // 孕产史表格
+    tableRowClassName({ row, rowIndex }) {
+      var isEven = rowIndex => rowIndex % 2 === 0;
+      if (rowIndex === 1) {
+        return "warning-row";
+      } else if (rowIndex === 3) {
+        return "warning-row";
+      }
+      return "";
+    },
     // 体格检查查询
     patientHealthCheckFindById() {
       let self = this;
@@ -430,7 +442,7 @@ export default {
   background-color: #fff;
   p {
     width: 33%;
-    padding: 10px 0px;
+    padding: 5px 0px;
     display: inline-block;
     span {
       color: #333333;
@@ -438,7 +450,7 @@ export default {
     }
   }
   h4 {
-    margin-bottom: 24px;
+    margin-bottom: 14px;
   }
   .mgl20 {
     margin-left: 20px;
@@ -469,6 +481,7 @@ export default {
       font-size: 16px;
       padding-right: 14px;
       font-weight: 500;
+      font-weight: 600;
     }
     .positionWire {
       position: absolute;
@@ -576,6 +589,8 @@ export default {
 }
 .newfileBox .el-tabs__item.is-active {
   color: #68b6e7;
+  font-weight: 600;
+  font-size: 16px;
 }
 .newfileBox .el-tabs__item:hover {
   color: #68b6e7;
@@ -609,5 +624,8 @@ export default {
   background-color: #f5f7fa;
   color: #68b6e7;
   font-weight: 700;
+}
+.pregnancyNewsBox .el-table tr  {
+  color: #666666;
 }
 </style>

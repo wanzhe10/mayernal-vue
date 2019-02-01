@@ -568,7 +568,7 @@ export default {
       }
       .active {
         color: #68b6e7;
-        font-weight: bold;
+        font-weight: 600;
       }
     }
     .tuoyuan {
@@ -617,7 +617,7 @@ export default {
         .active {
           border-bottom: 2px solid #68b6e7;
           color:#68b6e7;
-          font-weight: bold;
+          font-weight: 600;
         }
       }
     }

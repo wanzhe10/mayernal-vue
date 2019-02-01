@@ -451,7 +451,7 @@ export default {
         font-size: 16px;
         display: inline-block;
         padding-right: 14px;
-        font-weight: bold;
+        font-weight: 600;
       }
       .positionWire {
         position: absolute;

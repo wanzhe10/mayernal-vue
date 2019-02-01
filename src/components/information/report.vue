@@ -429,7 +429,7 @@ export default {
       overflow-x: hidden;
       overflow-y: scroll;
       .wireP{
-        font-weight: bold;
+        font-weight: 600;
         color:#333;
       }
       p {

@@ -251,7 +251,7 @@ export default {
         display: inline-block;
         padding-right: 14px;
         color: #333;
-        font-weight: bold;
+        font-weight: 600;
       }
 
       .positionWire {
