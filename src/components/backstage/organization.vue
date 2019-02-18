@@ -11,9 +11,18 @@
           <div
             class="InformationBtn"
             @click='edit()'
+            v-show="flag==true"
           >
             <i class="modificationIcon"></i>
             <span>修改</span>
+          </div>
+           <div
+            class="InformationBtn2"
+            v-show="flag==false"
+             @click='editCancal()'
+          >
+           <i class="el-icon-circle-close-outline"></i>
+            <span>取消</span>
           </div>
         </div>
         <div class="newsBox">
@@ -30,28 +39,32 @@
             v-html="arr.createDate"
           ></span>
         </div>
-        <div class="newsBox">
+        <div class="newsBox"  :class="{'active':tab == 1}">
           <span class="mgr22">机构联系人</span>
           <input
             type="text"
             class='userName'
             placeholder='请输入联系人名称'
             v-model="arr.userName"
-            readonly='true'
+            :readonly='readonlyFalse'
             @keyup="registeredModelResidence()"
-            maxlength="14" 
+            maxlength="14"
+             @focus="addNameClick(1)"
+             @blur="removeClassNameClick"
           >
         </div>
-        <div class="newsBox">
+        <div class="newsBox"  :class="{'active':tab == 2}">
           <span class="mgr24">手&nbsp;机&nbsp;号</span>
           <input
             type="text"
             class='pgoneNum'
             placeholder="请输入手机号"
             v-model="arr.userTelephone"
-            readonly='true'
+            :readonly='readonlyFalse'
             @keyup="registeredModelResidence()"
              maxlength="11" 
+              @focus="addNameClick(2)"
+                @blur="removeClassNameClick"
           >
         </div>
         <div class="newsBox">
@@ -73,15 +86,17 @@
             </el-option>
           </el-select>
         </div>
-        <div class="newsBox">
+        <div class="newsBox"  :class="{'active':tab == 3}">
           <span class="mgr50">邮箱</span>
           <input
             type="text"
             class='emilNum'
             placeholder="请输入邮箱号"
             v-model="arr.emails"
-            readonly='true'
+            :readonly='readonlyFalse'
             @keyup="registeredModelResidence()"
+             @focus="addNameClick(3)"
+               @blur="removeClassNameClick"
           >
         </div>
       </div>
@@ -93,19 +108,31 @@
           <div
             class="InformationBtn"
             @click='edit2()'
+              v-show="flag2==true"
           >
             <i class="modificationIcon"></i>
             <span>修改</span>
           </div>
+            <div
+            class="InformationBtn2"
+            @click='edit2Cancal()'
+             v-show="flag2==false"
+          >
+            <i class="el-icon-circle-close-outline"></i>
+            <span>取消</span>
+          </div>
         </div>
-        <div class="InformationBox mgr46">
+        <div class="InformationBox mgr46" :class="{'active':tab2 == 4}">
           <span class="mgr36">机构名称</span>
           <input
             type="text"
             class='organizationName'
             placeholder="请输入机构名称"
             v-model="arr.name"
+             :readonly='readonlyFalse2'
             @keyup="registeredModelResidence()"
+                @focus="addNameClick2(4)"
+                  @blur="removeClassNameClick2"
           >
         </div>
         <div class="InformationBox">
@@ -126,7 +153,7 @@
             </el-option>
           </el-select>
         </div>
-        <div class="InformationBoxS">
+        <div class="InformationBoxS"  :class="{'active':tab2 == 5}">
           <span class="mgr22">所在地区</span>
         <el-cascader
           :options="options"
@@ -137,18 +164,24 @@
             type="text"
             class='detailedAddress'
             placeholder="请输入详细地址"
+            :readonly='readonlyFalse2'
             v-model="arr.addressRemarks"
             @keyup="registeredModelResidence()"
+              @focus="addNameClick2(5)"
+                @blur="removeClassNameClick2"
           >
         </div>
-        <div class="InformationBoxS ">
+        <div class="InformationBoxS" :class="{'active':tab2 == 6}">
           <span class="mgr26 fl">机构简介</span>
           <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 10}"
             placeholder="输入机构简介"
             v-model="arr.remarks"
+             :readonly='readonlyFalse2'
             @keyup="registeredModelResidence()"
+             @focus="addNameClick2(6)"
+               @blur="removeClassNameClick2"
           > </el-input>
         </div>
       </div>
@@ -169,6 +202,10 @@
 
 </template>
 <script>
+  // $(input).click(function () { 
+  //    alert(1)
+      
+  //   });
 import $ from "jquery";
 import { regionData, CodeToText ,TextToCode} from "element-china-area-data";
 export default {
@@ -200,6 +237,9 @@ export default {
           label: "已激活"
         }
       ],
+      oldArr:[], //老数据
+      tab:0,
+      tab2:0,
       arr: {
         placeholders: [],
         contactsModel: "", //激活状态
@@ -213,7 +253,10 @@ export default {
         detailedAddress: "", //详细地址
         remnantFontContant: "" //机构简介
       },
-
+      readonlyFalse:true, //基本信息输入框不可编辑
+      readonlyFalse2:true, //机构信息输入框不可编辑
+      flag:true,// 基本信息修改
+      flag2:true,// 机构信息修改
       do_not_save: false,
       btnStatas: false, //按钮点击状态
       select: false,
@@ -225,6 +268,7 @@ export default {
   mounted() {
     this.findSelfHospital();
   },
+  
   methods: {
     handleChange(value) {
       console.log(value);
@@ -239,6 +283,8 @@ export default {
           console.log(res);
           if (res.status === "20200") {
             self.arr = res;
+             self.oldArr=JSON.parse(JSON.stringify(res));
+            console.log(self.oldArr)
             var myArray=new Array()
             myArray[0]=res.addressProvince;
             myArray[1]=res.addressCity;
@@ -260,19 +306,53 @@ export default {
     // 基本情情况修改
     edit() {
       this.disabledInput = false;
+      this.readonlyFalse = false;
       $(".userName").focus();
-      $(".informationBox")
-        .find("input")
-        .removeAttr("readonly");
+          this.flag =false;
+    },
+    editCancal(){
+      this.flag =true;
+       this.disabledInput = true;
+       this.readonlyFalse = true;
+      this.arr = JSON.parse(JSON.stringify(this.oldArr));
     },
     // 机构信息修改
     edit2() {
-      $(".agencyInformationBox")
-        .children("input")
-        .removeAttr("readonly");
       this.disabledInput2 = false;
+         this.readonlyFalse2 = false;
       $(".organizationName").focus();
+      this.flag2 = false;
     },
+    edit2Cancal(){
+ this.flag2 = true;
+   this.disabledInput2 = true;
+    this.readonlyFalse2 = true;
+     this.arr = JSON.parse(JSON.stringify(this.oldArr));
+    },
+      // 输入框得到焦点添加蓝色背景框
+    addNameClick(index) {
+      let readonlyFalse = this.readonlyFalse
+        console.log(readonlyFalse)
+      if (readonlyFalse == false) {
+       let tebIndex = index;
+      this.tab = tebIndex;
+      }
+    },
+     addNameClick2(index) {
+      let readonlyFalse2 = this.readonlyFalse2
+      console.log(readonlyFalse2)
+      if (readonlyFalse2 == false) {
+       let tebIndex = index;
+      this.tab2 = tebIndex;
+      console.log(this.tab2)
+      }
+    },
+removeClassNameClick(){
+   this.tab = 0;
+},
+removeClassNameClick2(){
+   this.tab2 = 0;
+},
     // 点击保存按钮
     clickBtn() {
       var reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
@@ -472,7 +552,8 @@ export default {
         background-color: #999999;
       }
       .InformationBtn,
-      .mechanismBtn {
+      .mechanismBtn,
+       {
         padding: 0px 5px;
         position: absolute;
         right: 28px;
@@ -492,13 +573,26 @@ export default {
           padding-left: 20px;
         }
       }
+      .InformationBtn2,.InformationBtn2 {
+        padding: 0px 5px;
+        position: absolute;
+        right: 28px;
+        top: 0px;
+        background-color: #fff;
+        cursor: pointer;
+        i{
+          color: #999999;
+        }
+        span {
+          color: #999999;
+        }
+      }
     }
     .newsBox {
-      // height: 46px;
       width: 440px;
       display: inline-block;
       border-bottom: 1px solid #ccc;
-      line-height: 46px;
+      line-height: 42px;
       span {
         font-family: MicrosoftYaHei;
         font-size: 14px;
@@ -521,17 +615,21 @@ export default {
       .registrationDate {
         color: black;
       }
+     
     }
+    //  .active{
+    //     border-bottom-color: red;
+    //   }
     .newsBox:nth-child(2n) {
       margin-right: 46px;
     }
     .InformationBox {
-      height: 46px;
       width: 440px;
       display: inline-block;
       border-bottom: 1px solid #ccc;
       line-height: 46px;
     }
+  
     .InformationBoxS {
       position: relative;
       margin-top: 16px;
@@ -554,6 +652,9 @@ export default {
       .el-cascader__label{
         padding:0px;
       }
+    }
+      .active{
+      border-bottom-color: #68b6e7;
     }
     .organizationBox_btn {
       width: 239px;

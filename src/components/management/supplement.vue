@@ -4985,7 +4985,7 @@ export default {
       display: inline-block;
       width: 125px; //    float: left;
       text-align: center;
-      line-height: 40px;
+      line-height: 38px;
       margin-right: 0px !important;
     }
     .newAgeOfMenarche {

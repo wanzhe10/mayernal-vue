@@ -222,13 +222,13 @@
                   v-show="scope.row.highRiskClass !=2"
                 >橙色（{{scope.row.colorNumOrange}}）项</p>
                 <p
-                  class="proponStrip"
-                  v-show="scope.row.highRiskClass !=3"
-                >紫色（{{scope.row.colorNumPurple}}）项</p>
-                <p
                   class="redStrip"
-                  v-show="scope.row.highRiskClass !=4"
+                  v-show="scope.row.highRiskClass !=3"
                 >红色（{{scope.row.colorNumRed}}）项</p>
+                <p
+                  class="proponStrip"
+                  v-show="scope.row.highRiskClass !=4"
+                >紫色（{{scope.row.colorNumPurple}}）项</p>
               </div>
               <div v-show="scope.row.isFiling == 0">
                 <p>暂无数据</p>
