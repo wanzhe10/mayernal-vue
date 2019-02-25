@@ -25,7 +25,7 @@
         type="button"
         value="新建模板"
         class="NewdepartmentBtn"
-        @click="dialogVisible = true"
+        @click="dialogVisibleNew"
       >
     </div>
     <div class="setBoxContant" :class="{'active':backActtive}">
@@ -440,6 +440,18 @@ export default {
           this.$message.error("查询失败，请稍后重试");
         });
     },
+    dialogVisibleNew(){
+      this.form1.name = '';
+      this.form1.isProhibit = '';
+      this.form1.remnant = '';
+      this.form1.remarks = '';
+      this.form1.remnantFont = '';
+      this.form1.malaise = '';
+      this.form1.opinion = '';
+      this.form1.dispose = '';
+      this.dialogVisible = true;
+
+    },
     //新建
     templateInsert() {
       if (this.form1.name == "") {
@@ -585,7 +597,7 @@ export default {
     color: #333333;
   }
   .setBoxTop {
-    padding: 24px;
+    padding: 24px 24px 14px  24px;
     span {
       color: #666666;
     }

@@ -631,9 +631,9 @@
                   >
                     <el-option
                       v-for="item in options4"
-                      :key="item.value"
+                      :key="item.label"
                       :label="item.label"
-                      :value="item.value"
+                      :value="item.label"
                     >
                     </el-option>
                   </el-select>
@@ -1095,7 +1095,7 @@
                         v-for="item in options4"
                         :key="item.value"
                         :label="item.label"
-                        :value="item.value"
+                        :value="item.label"
                       >
                       </el-option>
                     </el-select>
@@ -1139,7 +1139,7 @@
                       v-for="item in options4"
                       :key="item.value"
                       :label="item.label"
-                      :value="item.value"
+                      :value="item.label"
                     >
                     </el-option>
                   </el-select>
@@ -1832,6 +1832,47 @@
               </div>
             </div>
           </el-form>
+          <!-- 模板弹框 -->
+          <!-- <el-dialog
+  title="提示"
+  :visible.sync="templateDialogVisible"
+  width="890px"
+  :before-close="handleClose"> -->
+          <div class="templateDialog">
+            <div class="fl templateDialogLeft">
+              <!-- <h2>模板标题</h2> -->
+              <div class="tettleDiv">模板标题</div>
+              <ul>
+                <li>自觉不适哦1</li>
+                <li>自觉不适哦2</li>
+                <li>自觉不适哦3</li>
+                <li>自觉不适哦4</li>
+                <li>自觉不适哦5</li>
+              </ul>
+            </div>
+            <div class="fr templateDialogRight">
+              <div class="tettleDiv">模板内容</div>
+              <!-- <div> -->
+              <h2>自觉不适</h2>
+              <div class="malaise">
+                党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+              </div>
+              <!-- </div> -->
+              <!-- <div> -->
+              <h2>处理意见</h2>
+              <div class="handlingSuggestion ">
+                党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+              </div>
+              <!-- </div> -->
+            </div>
+          </div>
+
+          <!-- <span slot="footer" class="dialog-footer">
+    <el-button @click="templateDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="templateDialogVisible = false">确 定</el-button>
+  </span> -->
+          <!-- </el-dialog> -->
+
         </div>
       </el-tab-pane>
       <el-tab-pane
@@ -2348,6 +2389,7 @@ export default {
       familyHistory2: 0, //孕产一般信息家族史
       familyHistory3: 0, //孕产一般信息现病史
       editdialogVisible: false, //编辑信息弹框
+      templateDialogVisible: true, //导入模板
       contact: "0",
       virus: "0",
       history2: "0",
@@ -3039,58 +3081,7 @@ export default {
       options4: [], //家族史 现病史 加载的数组
       list: [],
       loading: false,
-      states: [
-        "Alabama",
-        "Alaska",
-        "Arizona",
-        "Arkansas",
-        "California",
-        "Colorado",
-        "Connecticut",
-        "Delaware",
-        "Florida",
-        "Georgia",
-        "Hawaii",
-        "Idaho",
-        "Illinois",
-        "Indiana",
-        "Iowa",
-        "Kansas",
-        "Kentucky",
-        "Louisiana",
-        "Maine",
-        "Maryland",
-        "Massachusetts",
-        "Michigan",
-        "Minnesota",
-        "Mississippi",
-        "Missouri",
-        "Montana",
-        "Nebraska",
-        "Nevada",
-        "New Hampshire",
-        "New Jersey",
-        "New Mexico",
-        "New York",
-        "North Carolina",
-        "North Dakota",
-        "Ohio",
-        "Oklahoma",
-        "Oregon",
-        "Pennsylvania",
-        "Rhode Island",
-        "South Carolina",
-        "South Dakota",
-        "Tennessee",
-        "Texas",
-        "Utah",
-        "Vermont",
-        "Virginia",
-        "Washington",
-        "West Virginia",
-        "Wisconsin",
-        "Wyoming"
-      ],
+      states: [],
       // 配偶家族史数组
       matePatientHistory: [],
       // 孕产信息
@@ -3426,9 +3417,10 @@ export default {
   activated() {
     // 高危评估查询
     this.highRiskGradeTemplateDetailFindTreeList();
-    this.list = this.states.map(item => {
-      return { value: item, label: item };
-    });
+    // //家族史疾病
+    // this.list = this.states.map(item => {
+    //   return { value: item, label: item };
+    // });
     this.format();
     var tableDataParticulars = eval(
       "(" + localStorage.getItem("tableDataParticulars") + ")"
@@ -3458,6 +3450,7 @@ export default {
   mounted() {
     let doctorName = localStorage.getItem("mayernal-web-userName");
     this.doctorName = doctorName;
+    this.anamnesisIllnessFindListForSpellName();
   },
   //  数据清除
   deactivated() {
@@ -3466,6 +3459,35 @@ export default {
   },
 
   methods: {
+    // 家族史疾病查询
+    anamnesisIllnessFindListForSpellName() {
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .anamnesisIllnessFindListForSpellName({
+          token: token1,
+          spellName: ""
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.status === "20200") {
+            let pcAnamnesisIllnessBeanList = res.pcAnamnesisIllnessBeanList;
+            // console.log(pcAnamnesisIllnessBeanList)
+            for (let i = 0; i < pcAnamnesisIllnessBeanList.length; i++) {
+              let obj = {};
+              obj.label = pcAnamnesisIllnessBeanList[i].anamnesisIllnessName;
+              obj.value = pcAnamnesisIllnessBeanList[i].spellName;
+              this.states.push(obj);
+            }
+            this.list = this.states;
+            console.log(this.list);
+          } else {
+            $message.error("查询失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("查询失败，请稍后重试");
+        });
+    },
     // 保存按钮
     // 保存按钮
     basicBtn(formName) {
@@ -3786,7 +3808,10 @@ export default {
         setTimeout(() => {
           this.loading = false;
           this.options4 = this.list.filter(item => {
-            return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
+            return (
+              item.value.toLowerCase().indexOf(query.toLowerCase()) > -1 ||
+              item.label.toLowerCase().indexOf(query.toLowerCase()) > -1
+            );
           });
         }, 200);
       } else {
@@ -4277,16 +4302,31 @@ export default {
       $(".redDiv").html("");
       $(".purpleDiv").html("");
       for (let i = 0; i < uniq(fiveArr).length; i++) {
-        $(".yellowDiv").append("<span style='margin: 6px;color: #666;'>" + fiveArr[i] + "</span>");
+        $(".yellowDiv").append(
+          "<span style='margin: 6px;color: #666;'>" + fiveArr[i] + "</span>"
+        );
       }
       for (let i = 0; i < uniq(tenArr).length; i++) {
-        $(".orangeDiv").append("<span style='margin: 6px;color: #666;'>" + uniq(tenArr)[i] + "</span>" +'/');
+        $(".orangeDiv").append(
+          "<span style='margin: 6px;color: #666;'>" +
+            uniq(tenArr)[i] +
+            "</span>" +
+            "/"
+        );
       }
       for (let i = 0; i < uniq(twentyArr).length; i++) {
-        $(".redDiv").append("<span style='margin: 6px;color: #666;'>" + uniq(twentyArr)[i] + "</span>");
+        $(".redDiv").append(
+          "<span style='margin: 6px;color: #666;'>" +
+            uniq(twentyArr)[i] +
+            "</span>"
+        );
       }
       for (let i = 0; i < uniq(purpleArr).length; i++) {
-        $(".purpleDiv").html("<span style='margin: 6px;color: #666;'>" + uniq(purpleArr)[i] + "</span>");
+        $(".purpleDiv").html(
+          "<span style='margin: 6px;color: #666;'>" +
+            uniq(purpleArr)[i] +
+            "</span>"
+        );
       }
       this.signatureConfirmationForFiling.totalPoints =
         uniq(fiveArr).length * 5 +
@@ -5301,6 +5341,66 @@ export default {
     color: #666666;
     font-size: 14px;
   }
+  // 导入模板弹框
+  .templateDialog {
+    width: 860px;
+    height: 450px;
+    background: red;
+    .templateDialogLeft {
+      width: 340px;
+      background: #fff;
+      height: 450px;
+      .tettleDiv {
+        font-size: 16px;
+        color: #010101;
+        border-bottom: 1px solid #ccc;
+        width: 100%;
+        padding: 20px 0px 22px 14px;
+      }
+      ul {
+        li {
+          font-size: 14px;
+          color: #333333;
+          height: 42px;
+          line-height: 42px;
+          width: 100%;
+          padding-left: 30px;
+          cursor: pointer;
+        }
+        .active{
+          background-color: #68b6e7;
+          color:#fff;
+        }
+      }
+    }
+    .templateDialogRight {
+      width: 505px;
+      background: #fff;
+      height: 450px;
+      .tettleDiv {
+        font-size: 16px;
+        color: #010101;
+        border-bottom: 1px solid #ccc;
+        width: 100%;
+        padding: 20px 0px 22px 14px;
+      }
+      h2 {
+        font-size: 14px;
+        color: #68b6e7;
+        margin-top: 20px;
+        margin: 20px 0px 20px 10px;
+      }
+      .malaise {
+        border-bottom: 1px solid #ccc;
+      }
+      .malaise,
+      .handlingSuggestion {
+        font-size: 14px;
+        color: #666666;
+        padding: 0px 0px 20px 10px;
+      }
+    }
+  }
 }
 
 // 高危评估模块
@@ -5801,7 +5901,7 @@ export default {
       border-bottom: 1px solid #ccc;
       p {
         margin: 6px;
-       color: #666;
+        color: #666;
       }
     }
     .greenStrip {
@@ -6109,11 +6209,13 @@ export default {
 .newfileBox .el-table .warning-row {
   background-color: #f6f6f6;
 }
-.newfileBox .el-table td, .newfileBox .el-table th.is-leaf {
+.newfileBox .el-table td,
+.newfileBox .el-table th.is-leaf {
   border-left: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 }
-.newfileBox .el-table--border,.newfileBox  .el-table--group {
+.newfileBox .el-table--border,
+.newfileBox .el-table--group {
   border: 1px solid #ccc;
 }
 .newfileBox .el-textarea__inner {

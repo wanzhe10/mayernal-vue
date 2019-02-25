@@ -4,7 +4,7 @@
       <div class="btnsBOx">
         <div
           class="newBtn"
-          @click="dialogVisible = true"
+          @click="dialogVisibleNew"
         >新建人员</div>
       </div>
       <div class="selectBox clearfix">
@@ -573,6 +573,15 @@ export default {
         this.paramType = 1;
         this.inquire();
       }
+    },
+    // 新建人员弹框
+    dialogVisibleNew(){
+      this.arr.name = '';
+      this.arr.telephone = '';
+      this.arr.deptId = '';
+      this.arr.occupationId = '';
+      this.arr.types = '';
+      this.dialogVisible = true;
     },
     // 人员信息维护新增
     patientCenterInsertBtn() {

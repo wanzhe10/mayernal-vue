@@ -25,7 +25,7 @@
         type="button"
         value="新建科室"
         class="NewdepartmentBtn"
-        @click="dialogVisible = true"
+        @click="dialogVisibleNew"
       >
     </div>
     <div
@@ -380,6 +380,15 @@ export default {
     // 激活状态查询
     isProhibitSelect() {
       this.getUser();
+    },
+    // 新建科室弹窗
+    dialogVisibleNew(){
+      this.form.name = '';
+      this.form.isProhibit = '';
+      this.form.remarks = '';
+      this.form.remnantFont = '';
+      this.dialogVisible = true;
+
     },
     // 新建
     radioEvent() {

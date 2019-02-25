@@ -13,7 +13,7 @@
           <h2>新增复检记录</h2>
           <p class="fl fortyTwoTittle_left">
             <span class="fake">检查日期：<i v-model="reviewOfNew.checkDate">{{reviewOfNew.checkDate}}</i></span>
-            <span>复健次数：<i>{{examineNum}}次</i></span>
+            <span>复检次数：<i>{{examineNum}}次</i></span>
           </p>
           <p class="fr"><span>操作医生：<i class="doctorName">{{doctorName}}</i></span></p>
         </div>
@@ -234,7 +234,7 @@
             <el-form-item prop="makeAppointmentTime">
               <div
                 class="bindingBox"
-                @click="dialogVisible = true"
+                @click="bindingBtn"
               >
                 <div
                   class="bindingBoxTime"
@@ -243,10 +243,10 @@
                 <div class="bindingBtn">预约记录</div>
               </div>
             </el-form-item>
-            <span class="recordNewsFont"><i>{{pcCheckCellsBean.name}}</i>|<i>孕{{pcCheckCellsBean.gestationalWeekStart}}-{{pcCheckCellsBean.gestationalWeekEnd}}周</i></span>
+            <span class="recordNewsFont"  v-show="pcCheckCellsBean.gestationalWeekStart"><i>{{pcCheckCellsBean.name}}</i>|<i>孕{{pcCheckCellsBean.gestationalWeekStart}}-{{pcCheckCellsBean.gestationalWeekEnd}}周</i></span>
           </div>
         </div>
-        <div class="wire"></div>
+        <div class="wire" style="margin-top:0px;"></div>
         <div class="malaiseBox">
           <div class="importDatabase1">
             <span>自觉不适</span>
@@ -258,7 +258,7 @@
               type="textarea"
               autosize
               v-model="reviewOfNew.malaise"
-              style='width:930px; border-bottom:1px solid #a7a7a7; height: 34px;line-height:34px;'
+              style='width:930px; border-bottom:1px solid #a7a7a7; padding-top:10px;'
             ></el-input>
           </el-form-item>
         </div>
@@ -273,7 +273,7 @@
               type="textarea"
               autosize
               v-model="reviewOfNew.guideTheProcessing"
-              style='width:930px; border-bottom:1px solid #a7a7a7; height: 34px;line-height:34px;'
+              style='width:930px; border-bottom:1px solid #a7a7a7; padding-top:10px;'
             ></el-input>
           </el-form-item>
         </div>
@@ -409,7 +409,7 @@
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="dialogVisibleCancel">取 消</el-button>
         <el-button
           type="primary"
           @click="finishiBtn"
@@ -690,7 +690,7 @@ export default {
     Calendar
   },
   activated() {
-    this.getUser();
+    // this.getUser();
     this.format();
     this.examineNum =
       Number(window.localStorage.getItem("mayernal-web-recordNum")) + 1;
@@ -830,6 +830,19 @@ export default {
           this.$message.error("查询错误，请稍后重试");
         });
     },
+    bindingBtn(){
+      this.dialogVisible = true;
+      this.getUser();
+    },
+    dialogVisibleCancel(){
+ this.dialogVisible = false;
+//  if (this.reviewOfNew.makeAppointmentTime = '') {
+ this.reviewOfNew.makeAppointmentTime = '';
+    this.pcCheckCellsBean.name = '';
+ this.pcCheckCellsBean.gestationalWeekStart = '';
+ this.pcCheckCellsBean.gestationalWeekEnd = '';
+//  }
+    },
     finishiBtn() {
       if (this.reviewOfNew.makeAppointmentTime == "") {
         this.$message({
@@ -927,7 +940,7 @@ export default {
         li {
           cursor: pointer;
           float: left;
-          margin: 2px 7px;
+          margin: 6px;
           width: 100px;
           height: 56px;
           line-height: 26px;
@@ -980,7 +993,7 @@ export default {
     }
     .dotted {
       border-bottom: 1px dashed #ccc;
-      margin: 22px 0;
+      margin: 12px 0;
     }
     .abnormalRecheckBox {
       padding: 0 20px;
@@ -993,6 +1006,9 @@ export default {
         textarea {
           border: none;
         }
+      }
+      .el-textarea__inner{
+
       }
     }
   }
@@ -1072,7 +1088,7 @@ export default {
       margin-top: 24px;
     }
     .recordNewsBox_tittle {
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid #999;
       padding-bottom: 22px;
       margin-bottom: 10px;
       h2 {
@@ -1085,6 +1101,9 @@ export default {
     .fortyTwoTittle_left{
       span{
          color:#666666;
+         i{
+           color:#333333;
+         }
       }
     }
     .fake {
@@ -1272,6 +1291,7 @@ export default {
   .lowTension,
   .hyperpiesia {
     float: left;
+    height: 38px;
   }
   .lowTension {
     border-right: 1px solid #ccc;
@@ -1360,9 +1380,9 @@ export default {
     .el-textarea__inner {
       display: block;
       resize: vertical;
-      padding: 0px 15px;
+      padding: 0px 0px;
       line-height: 1.5;
-      color: #333;
+      color: #666;
       border: none;
     }
     .el-dialog {
@@ -1418,8 +1438,8 @@ export default {
       }
     }
     .malaiseBox .el-textarea__inner {
-      height: 32px;
-      line-height: 32px;
+      min-height: 32px;
+      // line-height: 32px;
     }
   }
   .el-tabs__item.is-active {
@@ -1466,6 +1486,13 @@ export default {
   .el-form-item.is-success .el-textarea__inner:focus {
     border-color: #ccc;
   }
+    .abnormalRecheckBox {
+    
+      .el-textarea__inner{
+        border:none;
+        border-bottom:1px solid #ccc;
+      }
+    }
 }
 </style>
 

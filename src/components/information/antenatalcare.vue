@@ -111,7 +111,7 @@
   <div class="newConstruction">
             <div
               class="addBox"
-              @click="dialogVisible = true"
+              @click="dialogVisibleNew"
             >
               <i class="addIcon"></i>
               <p class="newConstructionBtn">新增产检</p>
@@ -729,6 +729,18 @@ export default {
         .catch(error => {
           this.$message.error("查询错误，请稍后重试");
         });
+    },
+    dialogVisibleNew(){
+      this.templateName = '';
+      this.gestationalWeekStarModel = '';
+      this.gestationalWeekEndModel = '';
+      this.activatedStateModel = '';
+      this.remnantFontContant = '';
+      this.opinion = '';
+      this.opinionModel = '';
+      this.remnantFont = '';
+      this.dialogVisible = true;
+
     },
     // 新建
     radioEvent() {

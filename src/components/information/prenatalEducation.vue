@@ -172,12 +172,12 @@
       <p>标题名称</p>
       <el-input
         v-model="headlineNameLayer"
-        placeholder="请输入报告单名称"
+        placeholder="请输入标题名称"
       ></el-input>
       <p>副标题名称</p>
       <el-input
         v-model="vicHeadlineNameLayer"
-        placeholder="请输入报告单名称"
+        placeholder="请输入副标题名称"
       ></el-input>
       <div class="changeImageIcon">
         <img
@@ -586,6 +586,9 @@ export default {
             type: "warning"
           });
         } else {
+          this.headlineNameLayer = '';
+          this.vicHeadlineNameLayer = '';
+          this.imageUrl = '';
           this.headlineLayer = true;
         }
       }

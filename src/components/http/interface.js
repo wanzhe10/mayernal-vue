@@ -474,6 +474,14 @@ export const patientHealthCheckUpdateForFiling = data => {
     data
   })
 }
+//家族史-疾病查询
+export const anamnesisIllnessFindListForSpellName = data => {
+  return axios({
+    url: 'v1/web/pc/anamnesisIllness/findListForSpellName',
+    method: 'post',
+    data
+  })
+}
 
 
 // 默认全部导出
@@ -534,6 +542,7 @@ export default {
   patientSecondCheckInsert,
   patientHighRiskGradeInsert,
   signatureConfirmationForFiling,
-  patientFourtyTwoInsert
+  patientFourtyTwoInsert,
+  anamnesisIllnessFindListForSpellName
 
 }

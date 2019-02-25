@@ -33,7 +33,7 @@
           <input
             type="button"
             value="添加标签"
-            @click="dialogVisible = true"
+            @click="dialogVisibleNew"
           >
         </div>
         <ul class="category clearfix">
@@ -278,6 +278,10 @@ export default {
         .catch(error => {
           this.$message.error("查询错误，请稍后重试");
         });
+    },
+    dialogVisibleNew(){
+      this.newlyLayerInput = '';
+      this.dialogVisible = true;
     },
     // 新增
     checkForWeekAndCellInsert() {

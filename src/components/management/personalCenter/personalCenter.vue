@@ -1042,13 +1042,13 @@ export default {
     background-color: #fff;
     .informationBox_left {
       float: left;
-      padding-top: 20px;
+      padding-top: 26px;
       position: relative;
       width: 164px;
       &:before {
         content: " ";
         position: absolute;
-        top: 16px;
+        top: 26px;
         right: 0px;
         width: 1px;
         height: 155px;
@@ -1096,7 +1096,7 @@ export default {
       }
       .age {
         display: inline-block;
-        width: 36px;
+        width: 38px;
         height: 18px;
         background-color: #95ccee;
         text-align: center;
@@ -1123,7 +1123,7 @@ export default {
         width: 8px;
         height: 8px;
         position: absolute;
-        top: 88px;
+        top: 98px;
         right: -3px;
         background-color: #fff;
       }
@@ -1148,7 +1148,7 @@ export default {
       }
       .newsBoxBottom {
         margin-left: 26px;
-        padding: 6px 0 0px 0px;
+        padding: 6px 0 20px 0px;
         .newsBoxBottomFamily {
           margin-bottom: 14px;
           span:nth-child(2n-1) {
@@ -1177,10 +1177,10 @@ export default {
             &:before {
               content: " ";
               position: absolute;
-            top: 6px;
+            top: 4px;
               right: -14px;
               width: 1px;
-              height: 10px;
+              height: 14px;
               background-color: #999;
             }
           }
@@ -1195,13 +1195,13 @@ export default {
               background-color: yellow;
               border-radius: 50%;
             }
-            &:before {
+           &:before {
               content: " ";
               position: absolute;
-              top: 6px;
+            top: 4px;
               right: -14px;
               width: 1px;
-              height: 10px;
+              height: 14px;
               background-color: #999;
             }
           }
@@ -1216,13 +1216,13 @@ export default {
               background-color: orange;
               border-radius: 50%;
             }
-            &:before {
+             &:before {
               content: " ";
               position: absolute;
-            top: 6px;
+            top: 4px;
               right: -14px;
               width: 1px;
-              height: 10px;
+              height: 14px;
               background-color: #999;
             }
           }
@@ -1230,7 +1230,7 @@ export default {
             &:after {
               content: " ";
               position: absolute;
-               top: 3px;
+               top:3px;
           left: 0px;
           width: 14px;
           height: 14px;
@@ -1252,10 +1252,10 @@ export default {
             &:before {
               content: " ";
               position: absolute;
-             top: 6px;
+            top: 4px;
               right: -14px;
               width: 1px;
-              height: 10px;
+              height: 14px;
               background-color: #999;
             }
           }
@@ -1850,7 +1850,7 @@ export default {
               top: 4px;
               right: -18px;
               width: 2px;
-              height: 10px;
+              height: 14px;
               background: #68b6e7;
             }
           }
@@ -1861,7 +1861,7 @@ export default {
               top: 4px;
               right: -18px;
               width: 2px;
-              height: 10px;
+              height: 14px;
               background: #68b6e7;
             }
           }

@@ -25,7 +25,7 @@
         type="button"
         value="新建角色"
         class="NewdepartmentBtn"
-        @click="dialogVisible = true"
+        @click="dialogVisibleNew"
       >
     </div>
     <div class="characterBoxContant" :class="{'active':backActtive}">
@@ -393,6 +393,14 @@ export default {
     // 激活状态查询
     isProhibitSelect() {
       this.getUser();
+    },
+    // 新建角色按钮
+    dialogVisibleNew(){
+      this.form.name = '';
+      this.form.isProhibit = '';
+      this.form.remarks = '';
+      this.form.remnantFont = '';
+      this.dialogVisible = true;
     },
     // 新建
     radioEvent() {
