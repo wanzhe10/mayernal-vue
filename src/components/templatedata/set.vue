@@ -562,7 +562,8 @@ export default {
     },
     // 允许滑动
     allowSliding(){
-       document.documentElement.style.overflow='scroll';
+        document.documentElement.style.overflowY = "scroll";
+      document.documentElement.style.overflowX = "hidden";
     },
   }
 };

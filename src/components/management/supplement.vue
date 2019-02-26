@@ -1779,6 +1779,7 @@
               <span class="diagnoseTittle">诊断</span>
               <div
                 class="primaryDiagnosisBtn"
+                @click="primaryDiagnosisLayer"
                 style=" float: none;"
               >
                 <i class="fileIcon"></i>
@@ -1801,6 +1802,7 @@
               <span class="diagnoseTittle">处置</span>
               <div
                 class="disposalBtn"
+                 @click="disposalBtnLayer"
                 style=" float: none;"
               >
                 <i class="fileIcon"></i>
@@ -1832,46 +1834,127 @@
               </div>
             </div>
           </el-form>
-          <!-- 模板弹框 -->
-          <!-- <el-dialog
-  title="提示"
-  :visible.sync="templateDialogVisible"
-  width="890px"
-  :before-close="handleClose"> -->
-          <div class="templateDialog">
-            <div class="fl templateDialogLeft">
-              <!-- <h2>模板标题</h2> -->
-              <div class="tettleDiv">模板标题</div>
-              <ul>
-                <li>自觉不适哦1</li>
-                <li>自觉不适哦2</li>
-                <li>自觉不适哦3</li>
-                <li>自觉不适哦4</li>
-                <li>自觉不适哦5</li>
-              </ul>
-            </div>
-            <div class="fr templateDialogRight">
-              <div class="tettleDiv">模板内容</div>
-              <!-- <div> -->
-              <h2>自觉不适</h2>
-              <div class="malaise">
-                党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+          <!-- 诊断模板弹框 -->
+          <el-dialog
+            :visible.sync="templateDialogVisible"
+            width="890px"
+            :before-close="handleClose"
+            :show-close='false'
+               @opened='banSliding'
+            @closed='allowSliding'
+          >
+            <div class="templateDialog">
+              <div class="fl templateDialogLeft">
+                <div class="tettleDiv">模板标题</div>
+                <div class="Contant_left_overflow">
+                  <ul class="leftList">
+                    <li>自觉不适哦1</li>
+                    <li>自觉不适哦2</li>
+                    <li>自觉不适哦3</li>
+                    <li>自觉不适哦4</li>
+                    <li>自觉不适哦5</li>
+                    <li>自觉不适哦1</li>
+                    <li>自觉不适哦2</li>
+                    <li>自觉不适哦3</li>
+                    <li>自觉不适哦4</li>
+                    <li>自觉不适哦5</li>
+                    <li>自觉不适哦1</li>
+                    <li>自觉不适哦2</li>
+                    <li>自觉不适哦3</li>
+                    <li>自觉不适哦4</li>
+                    <li>自觉不适哦5</li>
+                    <li>自觉不适哦1</li>
+                    <li>自觉不适哦2</li>
+                    <li>自觉不适哦3</li>
+                    <li>自觉不适哦4</li>
+                    <li>自觉不适哦5</li>
+                  </ul>
+                </div>
               </div>
-              <!-- </div> -->
-              <!-- <div> -->
-              <h2>处理意见</h2>
-              <div class="handlingSuggestion ">
-                党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+              <div class="fr templateDialogRight">
+                <div class="tettleDiv">模板内容</div>
+                <h2>自觉不适</h2>
+                <div class="malaise">
+                  党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+                </div>
+                <h2>处理意见</h2>
+                <div class="handlingSuggestion ">
+                  党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+                </div>
               </div>
-              <!-- </div> -->
             </div>
-          </div>
+            <span
+              slot="footer"
+              class="dialog-footer"
+            >
+              <el-button @click="templateDialogVisible = false">取 消</el-button>
+              <el-button
+                type="primary"
+                @click="templateDialogVisible = false"
+              >导入模板</el-button>
+            </span>
+          </el-dialog>
 
-          <!-- <span slot="footer" class="dialog-footer">
-    <el-button @click="templateDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="templateDialogVisible = false">确 定</el-button>
-  </span> -->
-          <!-- </el-dialog> -->
+             <!-- 处置模板弹框 -->
+          <el-dialog
+            :visible.sync="templateDialogVisible2"
+            width="890px"
+            :before-close="handleClose"
+            :show-close='false'
+               @opened='banSliding'
+            @closed='allowSliding'
+          >
+            <div class="templateDialog">
+              <div class="fl templateDialogLeft">
+                <div class="tettleDiv">模板标题</div>
+                <div class="Contant_left_overflow">
+                  <ul class="leftList">
+                    <li>自觉不适哦1</li>
+                    <li>自觉不适哦2</li>
+                    <li>自觉不适哦3</li>
+                    <li>自觉不适哦4</li>
+                    <li>自觉不适哦5</li>
+                    <li>自觉不适哦1</li>
+                    <li>自觉不适哦2</li>
+                    <li>自觉不适哦3</li>
+                    <li>自觉不适哦4</li>
+                    <li>自觉不适哦5</li>
+                    <li>自觉不适哦1</li>
+                    <li>自觉不适哦2</li>
+                    <li>自觉不适哦3</li>
+                    <li>自觉不适哦4</li>
+                    <li>自觉不适哦5</li>
+                    <li>自觉不适哦1</li>
+                    <li>自觉不适哦2</li>
+                    <li>自觉不适哦3</li>
+                    <li>自觉不适哦4</li>
+                    <li>自觉不适哦5</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="fr templateDialogRight">
+                <div class="tettleDiv">模板内容</div>
+                <h2>自觉不适</h2>
+                <div class="malaise">
+                  党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+                </div>
+                <h2>处理意见</h2>
+                <div class="handlingSuggestion ">
+                  党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+                </div>
+              </div>
+            </div>
+            <span
+              slot="footer"
+              class="dialog-footer"
+            >
+              <el-button @click="templateDialogVisible2 = false">取 消</el-button>
+              <el-button
+                type="primary"
+                @click="templateDialogVisible2 = false"
+              >导入模板</el-button>
+            </span>
+          </el-dialog>
 
         </div>
       </el-tab-pane>
@@ -1962,12 +2045,12 @@
 
             <el-collapse-transition>
               <div
-                class="basicInformationBox"
+                class="basicInformationBox clearfix"
                 :id="'template'+index"
               >
                 <div>
                   <ul
-                    class="pregnancySelectBox"
+                    class="pregnancySelectBox fl"
                     v-show="item.number ==2"
                   >
                     <li
@@ -1979,7 +2062,7 @@
                   </ul>
                 </div>
                 <div
-                  class="partBox mgr34"
+                  class="partBox mgr34 fl"
                   v-show='item.number != 4'
                 >
                   <div class="partBox_top">
@@ -2008,7 +2091,7 @@
                     >{{item4.cellDetails}}</a>
                   </div>
                 </div>
-                <div class="partBox mgr34">
+                <div class="partBox mgr34 fl">
                   <div
                     class="partBox_top"
                     v-show='item.number != 4'
@@ -2389,7 +2472,8 @@ export default {
       familyHistory2: 0, //孕产一般信息家族史
       familyHistory3: 0, //孕产一般信息现病史
       editdialogVisible: false, //编辑信息弹框
-      templateDialogVisible: true, //导入模板
+      templateDialogVisible: false, //诊断导入模板
+      templateDialogVisible2: false, //处置导入模板
       contact: "0",
       virus: "0",
       history2: "0",
@@ -4213,7 +4297,16 @@ export default {
           this.$message.error("修改失败，请稍后重试");
         });
     },
+    // 诊断导入模板
+    primaryDiagnosisLayer(){
 
+      this.templateDialogVisible = true;
+
+    },
+    // 处置导入模板
+disposalBtnLayer(){
+this.templateDialogVisible2 = true;
+},
     //   ------------------------体格检查end------------------------------------
     //   ------------------------高危评估star------------------------------------
     // 基本情况点击显示隐藏
@@ -4471,7 +4564,8 @@ export default {
     },
     // 允许滑动
     allowSliding() {
-      document.documentElement.style.overflow = "scroll";
+      document.documentElement.style.overflowY = "scroll";
+      document.documentElement.style.overflowX = "hidden";
     },
     handleClick(tab, event) {
       if (tab.name == "second") {
@@ -4570,7 +4664,7 @@ export default {
     opacity: 0.8;
     bottom: 0px;
     left: 0;
-    z-index: 2005;
+    z-index: 2000;
     text-align: center;
     background-color: #f6f6f6;
     .flaxBoxPart {
@@ -4688,7 +4782,7 @@ export default {
     opacity: 0.8;
     bottom: 0px;
     left: 0;
-    z-index: 10000;
+    z-index: 2000;
     text-align: center;
     background-color: #f6f6f6;
     .flaxBoxPart {
@@ -4961,7 +5055,7 @@ export default {
     opacity: 0.8;
     bottom: 0px;
     left: 0;
-    z-index: 10000;
+    z-index: 2000;
     text-align: center;
     background-color: #f6f6f6;
     .flaxBoxPart {
@@ -5210,7 +5304,7 @@ export default {
     opacity: 0.8;
     bottom: 0px;
     left: 0;
-    z-index: 10000;
+    z-index: 2000;
     text-align: center;
     background-color: #f6f6f6;
     .flaxBoxPart {
@@ -5345,11 +5439,9 @@ export default {
   .templateDialog {
     width: 860px;
     height: 450px;
-    background: red;
     .templateDialogLeft {
       width: 340px;
       background: #fff;
-      height: 450px;
       .tettleDiv {
         font-size: 16px;
         color: #010101;
@@ -5357,19 +5449,37 @@ export default {
         width: 100%;
         padding: 20px 0px 22px 14px;
       }
-      ul {
-        li {
-          font-size: 14px;
-          color: #333333;
-          height: 42px;
-          line-height: 42px;
-          width: 100%;
-          padding-left: 30px;
-          cursor: pointer;
-        }
-        .active{
-          background-color: #68b6e7;
-          color:#fff;
+      .Contant_left_overflow {
+        height: 386px;
+        position: relative;
+        display: block;
+        overflow: hidden;
+        ul {
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: -17px;
+          bottom: 0;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          li {
+            font-size: 14px;
+            color: #333333;
+            height: 42px;
+            line-height: 42px;
+            width: 100%;
+            padding-left: 30px;
+            cursor: pointer;
+            -moz-user-select: none; /*火狐*/
+            -webkit-user-select: none; /*webkit浏览器*/
+            -ms-user-select: none; /*IE10*/
+            -khtml-user-select: none; /*早期浏览器*/
+            user-select: none;
+          }
+          .active {
+            background-color: #68b6e7;
+            color: #fff;
+          }
         }
       }
     }
@@ -5725,7 +5835,7 @@ export default {
     opacity: 0.8;
     bottom: 0px;
     left: 0;
-    z-index: 10000;
+    z-index: 2000;
     background-color: #f6f6f6;
     .flaxBoxPart {
       height: 88px;
@@ -6221,5 +6331,27 @@ export default {
 .newfileBox .el-textarea__inner {
   padding: 5px 15px 5px 0px;
   border-radius: 0;
+}
+.newfileBox .healthCheckupBox .el-dialog__header {
+  display: none;
+}
+.newfileBox .healthCheckupBox .el-dialog__body {
+  background: #f6f6f6;
+}
+.newfileBox .healthCheckupBox .el-dialog__footer {
+  background: #f6f6f6;
+}
+.newfileBox .healthCheckupBox .el-dialog .el-button--primary {
+  margin-right: 290px;
+}
+.newfileBox .healthCheckupBox .el-dialog .el-button--default {
+  margin-right: 64px;
+  width: 122px;
+  height: 40px;
+  background-color: #d3d3d3;
+  color: #666666;
+}
+ .v-modal{
+  z-index: 10001;
 }
 </style>
