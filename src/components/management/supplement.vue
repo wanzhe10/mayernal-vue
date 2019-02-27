@@ -1848,38 +1848,21 @@
                 <div class="tettleDiv">模板标题</div>
                 <div class="Contant_left_overflow">
                   <ul class="leftList">
-                    <li>自觉不适哦1</li>
-                    <li>自觉不适哦2</li>
-                    <li>自觉不适哦3</li>
-                    <li>自觉不适哦4</li>
-                    <li>自觉不适哦5</li>
-                    <li>自觉不适哦1</li>
-                    <li>自觉不适哦2</li>
-                    <li>自觉不适哦3</li>
-                    <li>自觉不适哦4</li>
-                    <li>自觉不适哦5</li>
-                    <li>自觉不适哦1</li>
-                    <li>自觉不适哦2</li>
-                    <li>自觉不适哦3</li>
-                    <li>自觉不适哦4</li>
-                    <li>自觉不适哦5</li>
-                    <li>自觉不适哦1</li>
-                    <li>自觉不适哦2</li>
-                    <li>自觉不适哦3</li>
-                    <li>自觉不适哦4</li>
-                    <li>自觉不适哦5</li>
+                    <li   
+                    v-for="(item,index) in officeTableData"
+                     v-html="item.name"
+                      :key="index"
+              :id="item.id"
+                        @click="antenatalCareNum(index)"
+                        :class="{active:index==showActive}"
+                    ></li>
                   </ul>
                 </div>
               </div>
               <div class="fr templateDialogRight">
                 <div class="tettleDiv">模板内容</div>
                 <h2>自觉不适</h2>
-                <div class="malaise">
-                  党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
-                </div>
-                <h2>处理意见</h2>
-                <div class="handlingSuggestion ">
-                  党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+                <div class="malaise" v-html="malaiseLayer">
                 </div>
               </div>
             </div>
@@ -1887,10 +1870,10 @@
               slot="footer"
               class="dialog-footer"
             >
-              <el-button @click="templateDialogVisible = false">取 消</el-button>
+              <el-button @click="primaryDiagnosisLayerNo">取 消</el-button>
               <el-button
                 type="primary"
-                @click="templateDialogVisible = false"
+                @click="primaryDiagnosisLayerYes"
               >导入模板</el-button>
             </span>
           </el-dialog>
@@ -1909,38 +1892,22 @@
                 <div class="tettleDiv">模板标题</div>
                 <div class="Contant_left_overflow">
                   <ul class="leftList">
-                    <li>自觉不适哦1</li>
-                    <li>自觉不适哦2</li>
-                    <li>自觉不适哦3</li>
-                    <li>自觉不适哦4</li>
-                    <li>自觉不适哦5</li>
-                    <li>自觉不适哦1</li>
-                    <li>自觉不适哦2</li>
-                    <li>自觉不适哦3</li>
-                    <li>自觉不适哦4</li>
-                    <li>自觉不适哦5</li>
-                    <li>自觉不适哦1</li>
-                    <li>自觉不适哦2</li>
-                    <li>自觉不适哦3</li>
-                    <li>自觉不适哦4</li>
-                    <li>自觉不适哦5</li>
-                    <li>自觉不适哦1</li>
-                    <li>自觉不适哦2</li>
-                    <li>自觉不适哦3</li>
-                    <li>自觉不适哦4</li>
-                    <li>自觉不适哦5</li>
+                    <li   
+                    v-for="(item,index) in officeTableData"
+                     v-html="item.name"
+                      :key="index"
+                      :id="item.id"
+                        @click="antenatalCareNumOpinion(index)"
+                        :class="{active:index==showActiveOpinion}"
+                    >
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="fr templateDialogRight">
                 <div class="tettleDiv">模板内容</div>
-                <h2>自觉不适</h2>
-                <div class="malaise">
-                  党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
-                </div>
                 <h2>处理意见</h2>
-                <div class="handlingSuggestion ">
-                  党的十八大以来，习近平主席在G20峰会上不断为世界经济贡献中国智慧、中国方案。回顾五年来习近平在G20峰会上的发言，从中能读出中国维护多边贸易体制，支持经济全球化，谋求合作共赢的决心和信心，读懂习近平胸怀世界、心系天下的中国情怀，今年适逢G20领导人峰会机制启动10周年，是习近平主席连续第六次出席或主持峰会，充分体现出中方对G20机制的高度重视，以及为完善全球经济治理贡献力量的积极意愿。
+                <div class="handlingSuggestion " v-html="disposeLayer">
                 </div>
               </div>
             </div>
@@ -1948,10 +1915,10 @@
               slot="footer"
               class="dialog-footer"
             >
-              <el-button @click="templateDialogVisible2 = false">取 消</el-button>
+              <el-button @click="antenatalCareNumOpinionNo">取 消</el-button>
               <el-button
                 type="primary"
-                @click="templateDialogVisible2 = false"
+                @click="antenatalCareNumOpinionYes"
               >导入模板</el-button>
             </span>
           </el-dialog>
@@ -2472,8 +2439,15 @@ export default {
       familyHistory2: 0, //孕产一般信息家族史
       familyHistory3: 0, //孕产一般信息现病史
       editdialogVisible: false, //编辑信息弹框
+      /* ------导入模板弹框star------- */
       templateDialogVisible: false, //诊断导入模板
       templateDialogVisible2: false, //处置导入模板
+      officeTableData:[], // 模板数据
+        showActive: -1,
+        showActiveOpinion: -1,
+malaiseLayer:'', //模板弹框自觉不适
+disposeLayer:'',//模板弹框处理意见
+ /* ------导入模板弹框end------- */
       contact: "0",
       virus: "0",
       history2: "0",
@@ -3499,6 +3473,8 @@ export default {
     };
   },
   activated() {
+    //模板查询
+     this.templateFindList();
     // 高危评估查询
     this.highRiskGradeTemplateDetailFindTreeList();
     // //家族史疾病
@@ -3563,7 +3539,7 @@ export default {
               this.states.push(obj);
             }
             this.list = this.states;
-            console.log(this.list);
+            // console.log(this.list);
           } else {
             $message.error("查询失败，请稍后重试");
           }
@@ -4299,14 +4275,77 @@ export default {
     },
     // 诊断导入模板
     primaryDiagnosisLayer(){
-
       this.templateDialogVisible = true;
-
+    },
+    // 导入模板取消按钮
+    primaryDiagnosisLayerNo(){
+       this.templateDialogVisible = false;
+       this.malaiseLayer = '';
+       this.showActive =-1;
+    },
+    // 导入模板按钮
+    primaryDiagnosisLayerYes(){
+ this.healthCheckup.primaryDiagnosis = this.healthCheckup.primaryDiagnosis+ this.malaiseLayer;
+ this.templateDialogVisible = false;
     },
     // 处置导入模板
 disposalBtnLayer(){
 this.templateDialogVisible2 = true;
 },
+ // 处置取消按钮
+    // 导入模板取消按钮
+    antenatalCareNumOpinionNo(){
+       this.templateDialogVisible2 = false;
+       this.disposeLayer = '';
+       this.showActiveOpinion =-1;
+    },
+      // 导入模板按钮
+    antenatalCareNumOpinionYes(){
+ this.healthCheckup.disposal = this.healthCheckup.disposal+ this.disposeLayer;
+ this.templateDialogVisible2 = false;
+    },
+
+
+
+
+
+  // 切换产检次数列表
+    antenatalCareNum(index) {
+      this.showActive = index;
+    this.malaiseLayer =this.officeTableData[index].malaise;
+      // this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
+    },
+
+     antenatalCareNumOpinion(index) {
+      this.showActiveOpinion = index;
+    this.disposeLayer =this.officeTableData[index].dispose;
+      // this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
+    },
+   // 查询
+    templateFindList() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .templateFindList({
+          token: token1,
+          pageNum: 0,
+          pageSize:100,
+          isProhibit: 1
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            self.officeTableData = res.pcTemplateBeanList;
+          } else if (res.status === "20209") {
+             self.officeTableData =[];
+              this.$message.error("模板为空");
+          } else {
+            this.$message.error("查询失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("查询失败，请稍后重试");
+        });
+    },
     //   ------------------------体格检查end------------------------------------
     //   ------------------------高危评估star------------------------------------
     // 基本情况点击显示隐藏
@@ -4452,7 +4491,7 @@ this.templateDialogVisible2 = true;
           templateId: templateIdTalbe
         })
         .then(res => {
-          // console.log(res);
+          console.log(res);
           if (res.status === "20200") {
             window.localStorage.setItem(
               "highRiskGradeCatalogueBeanList",
@@ -5501,13 +5540,15 @@ this.templateDialogVisible2 = true;
         margin: 20px 0px 20px 10px;
       }
       .malaise {
-        border-bottom: 1px solid #ccc;
+        // border-bottom: 1px solid #ccc;
       }
       .malaise,
       .handlingSuggestion {
         font-size: 14px;
         color: #666666;
         padding: 0px 0px 20px 10px;
+         width: 100%;
+        // height: 160px;
       }
     }
   }

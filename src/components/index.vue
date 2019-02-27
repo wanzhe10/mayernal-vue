@@ -245,7 +245,7 @@ export default {
       // console.log(key, keyPath);
     },
     tittleFont(event) {
-      // var event = event || window.event;
+      var event = event || window.event;
       this.tittleName = event.target.innerHTML;
       // $(".characterFont").html(event.target.innerHTML);
     },

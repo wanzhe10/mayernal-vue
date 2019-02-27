@@ -371,7 +371,8 @@ export default {
   created() {
     var lett = this;
     document.onkeydown = function(e) {
-      var key = window.event.keyCode;
+         let event = e || window.event
+      let key =event.keyCode;
       if (key == 13) {
         lett.submit();
       }

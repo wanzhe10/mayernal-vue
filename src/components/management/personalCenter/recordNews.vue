@@ -248,7 +248,9 @@
         </div>
         <div class="wire" style="margin-top:0px;"></div>
         <div class="malaiseBox">
-          <div class="importDatabase1">
+          <div class="importDatabase1"
+               @click="primaryDiagnosisLayer"
+          >
             <span>自觉不适</span>
             <i class="joinIco"></i>
             <span>导入模板</span>
@@ -277,6 +279,49 @@
             ></el-input>
           </el-form-item>
         </div>
+          <el-dialog
+            :visible.sync="templateDialogVisible"
+            width="890px"
+            :before-close="handleClose"
+            :show-close='false'
+               @opened='banSliding'
+            @closed='allowSliding'
+          >
+            <div class="templateDialog">
+              <div class="fl templateDialogLeft">
+                <div class="tettleDiv">模板标题</div>
+                <div class="Contant_left_overflow">
+                  <ul class="leftList">
+                    <li   
+                    v-for="(item,index) in officeTableData"
+                     v-html="item.name"
+                      :key="index"
+              :id="item.id"
+                        @click="antenatalCareNum(index)"
+                        :class="{active:index==showActive}"
+                    ></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="fr templateDialogRight">
+                <div class="tettleDiv">模板内容</div>
+                <h2>自觉不适</h2>
+                <div class="malaise" v-html="malaiseLayer">
+                </div>
+              </div>
+            </div>
+            <span
+              slot="footer"
+              class="dialog-footer"
+            >
+              <el-button @click="primaryDiagnosisLayerNo">取 消</el-button>
+              <el-button
+                type="primary"
+                @click="primaryDiagnosisLayerYes"
+              >导入模板</el-button>
+            </span>
+          </el-dialog>
+
         <!-- 图片上传 -->
         <div class="imageUploadBox">
           <span>检查结果</span>
@@ -485,6 +530,15 @@ export default {
       }
     };
     return {
+       /* ------导入模板弹框star------- */
+      templateDialogVisible: false, //诊断导入模板
+      templateDialogVisible2: false, //处置导入模板
+      officeTableData:[], // 模板数据
+        showActive: -1,
+        showActiveOpinion: -1,
+malaiseLayer:'', //模板弹框自觉不适
+disposeLayer:'',//模板弹框处理意见
+ /* ------导入模板弹框end------- */
       // 孕妇婚姻状况
       marryType: [
         {
@@ -893,7 +947,81 @@ export default {
         .catch(error => {
           this.$message.error("新增错误，请稍后重试");
         });
-    }
+    },
+  // 诊断导入模板
+    primaryDiagnosisLayer(){
+      this.templateDialogVisible = true;
+    },
+    // 导入模板取消按钮
+    primaryDiagnosisLayerNo(){
+       this.templateDialogVisible = false;
+       this.malaiseLayer = '';
+       this.showActive =-1;
+    },
+    // 导入模板按钮
+    primaryDiagnosisLayerYes(){
+ this.healthCheckup.primaryDiagnosis = this.healthCheckup.primaryDiagnosis+ this.malaiseLayer;
+ this.templateDialogVisible = false;
+    },
+    // 处置导入模板
+disposalBtnLayer(){
+this.templateDialogVisible2 = true;
+},
+ // 处置取消按钮
+    // 导入模板取消按钮
+    antenatalCareNumOpinionNo(){
+       this.templateDialogVisible2 = false;
+       this.disposeLayer = '';
+       this.showActiveOpinion =-1;
+    },
+      // 导入模板按钮
+    antenatalCareNumOpinionYes(){
+ this.healthCheckup.disposal = this.healthCheckup.disposal+ this.disposeLayer;
+ this.templateDialogVisible2 = false;
+    },
+
+
+
+
+
+  // 切换产检次数列表
+    antenatalCareNum(index) {
+      this.showActive = index;
+    this.malaiseLayer =this.officeTableData[index].malaise;
+      // this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
+    },
+
+     antenatalCareNumOpinion(index) {
+      this.showActiveOpinion = index;
+    this.disposeLayer =this.officeTableData[index].dispose;
+      // this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
+    },
+   // 查询
+    templateFindList() {
+      let self = this;
+      let token1 = window.localStorage.getItem("mayernal-web-token");
+      this.$api
+        .templateFindList({
+          token: token1,
+          pageNum: 0,
+          pageSize:100,
+          isProhibit: 1
+        })
+        .then(res => {
+          if (res.status === "20200") {
+            self.officeTableData = res.pcTemplateBeanList;
+          } else if (res.status === "20209") {
+             self.officeTableData =[];
+              this.$message.error("模板为空");
+          } else {
+            this.$message.error("查询失败，请稍后重试");
+          }
+        })
+        .catch(error => {
+          this.$message.error("查询失败，请稍后重试");
+        });
+    },
+
   }
 };
 </script>
@@ -1007,9 +1135,6 @@ export default {
         textarea {
           border: none;
         }
-      }
-      .el-textarea__inner{
-
       }
     }
   }
@@ -1298,6 +1423,84 @@ export default {
     border-right: 1px solid #ccc;
   }
 }
+ // 导入模板弹框
+  .templateDialog {
+    width: 860px;
+    height: 450px;
+    .templateDialogLeft {
+      width: 340px;
+      background: #fff;
+      .tettleDiv {
+        font-size: 16px;
+        color: #010101;
+        border-bottom: 1px solid #ccc;
+        width: 100%;
+        padding: 20px 0px 22px 14px;
+      }
+      .Contant_left_overflow {
+        height: 386px;
+        position: relative;
+        display: block;
+        overflow: hidden;
+        ul {
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: -17px;
+          bottom: 0;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          li {
+            font-size: 14px;
+            color: #333333;
+            height: 42px;
+            line-height: 42px;
+            width: 100%;
+            padding-left: 30px;
+            cursor: pointer;
+            -moz-user-select: none; /*火狐*/
+            -webkit-user-select: none; /*webkit浏览器*/
+            -ms-user-select: none; /*IE10*/
+            -khtml-user-select: none; /*早期浏览器*/
+            user-select: none;
+          }
+          .active {
+            background-color: #68b6e7;
+            color: #fff;
+          }
+        }
+      }
+    }
+    .templateDialogRight {
+      width: 505px;
+      background: #fff;
+      height: 450px;
+      .tettleDiv {
+        font-size: 16px;
+        color: #010101;
+        border-bottom: 1px solid #ccc;
+        width: 100%;
+        padding: 20px 0px 22px 14px;
+      }
+      h2 {
+        font-size: 14px;
+        color: #68b6e7;
+        margin-top: 20px;
+        margin: 20px 0px 20px 10px;
+      }
+      .malaise {
+        // border-bottom: 1px solid #ccc;
+      }
+      .malaise,
+      .handlingSuggestion {
+        font-size: 14px;
+        color: #666666;
+        padding: 0px 0px 20px 10px;
+         width: 100%;
+        // height: 160px;
+      }
+    }
+  }
 </style>
 <style lang="less">
 .dialogVisibleClass {
@@ -1494,6 +1697,28 @@ export default {
         border-bottom:1px solid #ccc;
       }
     }
+     .healthCheckupBox .el-dialog__header {
+  display: none;
+}
+ .healthCheckupBox .el-dialog__body {
+  background: #f6f6f6;
+}
+ .healthCheckupBox .el-dialog__footer {
+  background: #f6f6f6;
+}
+ .healthCheckupBox .el-dialog .el-button--primary {
+  margin-right: 290px;
+}
+ .healthCheckupBox .el-dialog .el-button--default {
+  margin-right: 64px;
+  width: 122px;
+  height: 40px;
+  background-color: #d3d3d3;
+  color: #666666;
+}
+ .v-modal{
+  z-index: 10001;
+}
 }
 </style>
 
