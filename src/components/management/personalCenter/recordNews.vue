@@ -265,7 +265,9 @@
           </el-form-item>
         </div>
         <div>
-          <div class="importDatabase1">
+          <div class="importDatabase1"
+             @click="disposalBtnLayer"
+          >
             <span>指导处理意见</span>
             <i class="joinIco2"></i>
             <span>导入模板</span>
@@ -279,6 +281,7 @@
             ></el-input>
           </el-form-item>
         </div>
+        <!-- 自觉不适模板弹框 -->
           <el-dialog
             :visible.sync="templateDialogVisible"
             width="890px"
@@ -321,6 +324,51 @@
               >导入模板</el-button>
             </span>
           </el-dialog>
+ <!-- 处置模板弹框 -->
+          <el-dialog
+            :visible.sync="templateDialogVisible2"
+            width="890px"
+            :before-close="handleClose"
+            :show-close='false'
+               @opened='banSliding'
+            @closed='allowSliding'
+          >
+            <div class="templateDialog">
+              <div class="fl templateDialogLeft">
+                <div class="tettleDiv">模板标题</div>
+                <div class="Contant_left_overflow">
+                  <ul class="leftList">
+                    <li   
+                    v-for="(item,index) in officeTableData"
+                     v-html="item.name"
+                      :key="index"
+                      :id="item.id"
+                        @click="antenatalCareNumOpinion(index)"
+                        :class="{active:index==showActiveOpinion}"
+                    >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="fr templateDialogRight">
+                <div class="tettleDiv">模板内容</div>
+                <h2>处理意见</h2>
+                <div class="handlingSuggestion " v-html="disposeLayer">
+                </div>
+              </div>
+            </div>
+            <span
+              slot="footer"
+              class="dialog-footer"
+            >
+              <el-button @click="antenatalCareNumOpinionNo">取 消</el-button>
+              <el-button
+                type="primary"
+                @click="antenatalCareNumOpinionYes"
+              >导入模板</el-button>
+            </span>
+          </el-dialog>
+
 
         <!-- 图片上传 -->
         <div class="imageUploadBox">
@@ -745,6 +793,8 @@ disposeLayer:'',//模板弹框处理意见
   },
   activated() {
     // this.getUser();
+    // 模板查询
+    this.templateFindList();
     this.format();
     this.examineNum =
       Number(window.localStorage.getItem("mayernal-web-recordNum")) + 1;
@@ -960,7 +1010,7 @@ disposeLayer:'',//模板弹框处理意见
     },
     // 导入模板按钮
     primaryDiagnosisLayerYes(){
- this.healthCheckup.primaryDiagnosis = this.healthCheckup.primaryDiagnosis+ this.malaiseLayer;
+ this.reviewOfNew.malaise = this.reviewOfNew.malaise + this.malaiseLayer;
  this.templateDialogVisible = false;
     },
     // 处置导入模板
@@ -976,7 +1026,7 @@ this.templateDialogVisible2 = true;
     },
       // 导入模板按钮
     antenatalCareNumOpinionYes(){
- this.healthCheckup.disposal = this.healthCheckup.disposal+ this.disposeLayer;
+ this.reviewOfNew.guideTheProcessing = this.reviewOfNew.guideTheProcessing+ this.disposeLayer;
  this.templateDialogVisible2 = false;
     },
 
@@ -1322,6 +1372,7 @@ this.templateDialogVisible2 = true;
     .importDatabase1 {
       margin-top: 24px;
       position: relative;
+      cursor: pointer;
       span:nth-child(1) {
         font-size: 16px;
         color: #333333;
