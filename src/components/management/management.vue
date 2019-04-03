@@ -341,7 +341,7 @@ export default {
         },
         {
           value: "1",
-          label: "异常复检"
+          label: "异常复查"
         },
          {
           value: "2",

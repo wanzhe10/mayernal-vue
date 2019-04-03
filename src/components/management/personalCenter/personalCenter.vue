@@ -739,9 +739,9 @@ export default {
           if (res.status === "20200") {
             this.recordNumsDataShow = true;
             this.imgShowHide = false;
-            let recheckRecordData = res.pcPatientSecondCheckBeanList.reverse();
+            let recheckRecordData = res.pcPatientSecondCheckBeanList;
             this.recheckRecord = recheckRecordData;
-            // console.log(this.recheckRecord);
+            // console.log(this.recheckRecord.reverse());
             this.recheckRightData = res.pcPatientSecondCheckBeanList[0];
             if (this.recheckRecord[0].imageList !== "") {
               this.imageList = eval(
@@ -773,7 +773,7 @@ export default {
         .then(res => {
           // console.log(res);
           if (res.status === "20200") {
-            let spouseNews = res.pcPatientHighRiskGradeBeanList.reverse();
+            let spouseNews = res.pcPatientHighRiskGradeBeanList;
             this.spouseNewsRrightData = res.pcPatientHighRiskGradeBeanList[0];
             this.spouseNewsNum = res.pcPatientHighRiskGradeBeanList.length;
             var aaa = res.pcPatientHighRiskGradeBeanList;

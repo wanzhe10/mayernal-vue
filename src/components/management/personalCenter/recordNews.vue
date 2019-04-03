@@ -475,7 +475,7 @@
               </div>
             </el-tab-pane>
             <el-tab-pane
-              label="异常复检"
+              label="异常复查"
               name="abnormal"
               class="abnormalRecheckBox clearfix"
             >

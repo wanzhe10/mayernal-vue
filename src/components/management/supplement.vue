@@ -2468,7 +2468,7 @@ disposeLayer:'',//模板弹框处理意见
       idCardSelect: [
         {
           value: "0",
-          label: "居民身份证"
+          label: "身份证"
         },
         {
           value: "1",
@@ -2735,7 +2735,7 @@ disposeLayer:'',//模板弹框处理意见
       parturitionFrontPharmacy: [
         {
           value: "0",
-          label: "否"
+          label: "无"
         },
         {
           value: "1",
@@ -2746,7 +2746,7 @@ disposeLayer:'',//模板弹框处理意见
       ketosis: [
         {
           value: "0",
-          label: "否"
+          label: "无"
         },
         {
           value: "1",
@@ -2757,26 +2757,26 @@ disposeLayer:'',//模板弹框处理意见
       morningSickness: [
         {
           value: "0",
-          label: "无"
-        },
-        {
-          value: "1",
           label: "轻"
         },
         {
-          value: "2",
+          value: "1",
           label: "中"
         },
         {
-          value: "3",
+          value: "2",
           label: "重"
-        }
+        },
+         {
+          value: "3",
+          label: "无"
+        },
       ],
       //宠物接触
       animalContact: [
         {
           value: "0",
-          label: "否"
+          label: "无"
         },
         {
           value: "1",
@@ -2872,11 +2872,11 @@ disposeLayer:'',//模板弹框处理意见
       baseBreasts: [
         {
           value: "0",
-          label: "正常"
+          label: "丰满"
         },
         {
           value: "1",
-          label: "畸形"
+          label: "扁平"
         }
       ],
       //乳 头
@@ -2906,7 +2906,11 @@ disposeLayer:'',//模板弹框处理意见
         {
           value: "0",
           label: "通畅"
+        },{
+          value: "1",
+          label: "异常"
         }
+
       ],
       //
       infectionType: [
@@ -2939,51 +2943,64 @@ disposeLayer:'',//模板弹框处理意见
       obstetricsCervix: [
         {
           value: "0",
-          label: "正常"
+          label: "光滑"
+        },
+         {
+          value: "1",
+          label: "异常"
         }
+
       ],
       //宫体
       obstetricsCorpus: [
         {
           value: "0",
           label: "正常"
+        },
+        {
+          value: "1",
+          label: "异常"
         }
       ],
       //附件
       obstetricsPairsAttachment: [
-        {
+         {
           value: "0",
           label: "正常"
+        },
+        {
+          value: "1",
+          label: "异常"
         }
       ],
       // 血型
       assayBloodType: [
         {
           value: "0",
-          label: "O"
+          label: "O型"
         },
         {
           value: "1",
-          label: "A"
+          label: "A型"
         },
         {
           value: "2",
-          label: "B"
+          label: "B型"
         },
         {
           value: "3",
-          label: "AB"
+          label: "AB型"
         },
         {
           value: "4",
-          label: "RH"
+          label: "RH型"
         }
       ],
       // 先露
       obstetricsFirstDew: [
         {
           value: "0",
-          label: "未填写"
+          label: "无"
         },
         {
           value: "1",
@@ -2998,7 +3015,7 @@ disposeLayer:'',//模板弹框处理意见
       obstetricsPlacental: [
         {
           value: "0",
-          label: "未填写"
+          label: "无"
         },
         {
           value: "1",
@@ -3090,20 +3107,20 @@ disposeLayer:'',//模板弹框处理意见
       essentialInformation: {
         name: "", //		姓名
         number: "", //		就诊号
-        idCardType: "", //		身份类型
+        idCardType: "0", //		身份类型
         idCard: "", //		证件号码
         telephone: "", //		电话
         birthdayDate: "", //		出生日期
         age: "", //		年龄
         sex: "", //		性别
-        education: "", //		教育程度
+        education: "0", //		教育程度
         marryAge: "", //		结婚年龄
-        nation: "", //		民族
+        nation: "汉族", //		民族
         lastWeight: "", //		孕前体重
-        contraception: "", //		孕检
-        job: "", //		工作
-        marryType: "", //		婚姻状况
-        marryCheck: "", //		婚检
+        contraception: "0", //		孕检
+        job: "0", //		工作
+        marryType: "0", //		婚姻状况
+        marryCheck: "0", //		婚检
         jobCompanyName: "", //		工作单位
         idCardAddressProvince: "", //		身份证所在地-省
         idCardAddressCity: "", //		身份证所在地-市
@@ -3118,16 +3135,16 @@ disposeLayer:'',//模板弹框处理意见
       spouseInformation: {
         patientCenterId: "", //	patientCenterId
         name: "", //	名称
-        idCardType: "", //	证件类型 0身份证-默认 1护照
+        idCardType: "0", //	证件类型 0身份证-默认 1护照
         idCard: "", //	证件号
         age: "", //	年龄
         telephone: "", //	电话
-        healthType: "", //	健康状况 0 健康-默认 1 一般 2 软弱
-        education: "", //	教育程度 0 硕士以上 1本科-默认 2大专 3中专及高中 4初中 5文盲
-        job: "", //	工作 0 无-默认 1.农、牧、渔 2.干部、职员 3.医院、科技 4.工人 5.个体 6.家务
+        healthType: "0", //	健康状况 0 健康-默认 1 一般 2 软弱
+        education: "0", //	教育程度 0 硕士以上 1本科-默认 2大专 3中专及高中 4初中 5文盲
+        job: "0", //	工作 0 无-默认 1.农、牧、渔 2.干部、职员 3.医院、科技 4.工人 5.个体 6.家务
         marryAge: "", //	结婚年龄
-        marryType: "", //	婚姻状况 0 初婚-默认 1再婚 2其他
-        marryCheck: "", //	婚检 0 没有-默认 1.有
+        marryType: "0", //	婚姻状况 0 初婚-默认 1再婚 2其他
+        marryCheck: "0", //	婚检 0 没有-默认 1.有
         smoke: "", //	吸烟
         drink: "", //	饮酒 0 否-默认 1.偶尔 2.经常
         patientHistory: "", //	家族史
@@ -3153,10 +3170,10 @@ disposeLayer:'',//模板弹框处理意见
         menstrualHistoryAge: "", //	初潮-岁
         menstrualHistoryDay: "", //	月经史-周次
         pregnancyNumber: "0", //	怀孕次数
-        morningSickness: "", //	早孕反应程度
-        ketosis: "", //	酮症
-        parturitionFrontPharmacy: "", //	孕前是否用药
-        animalContact: "", //	宠物接触
+        morningSickness: "0", //	早孕反应程度
+        ketosis: "0", //	酮症
+        parturitionFrontPharmacy: "0", //	孕前是否用药
+        animalContact: "0", //	宠物接触
         contactRadioactiveRays: "0", //	接触放射线
         contactRadioactiveRaysDate: "", //	接触放射线-时间	展开
         contactToxic: 0, //	接触毒物
@@ -3187,27 +3204,27 @@ disposeLayer:'',//模板弹框处理意见
         baseBloodPressureLow: "", //	舒张压
         baseHeight: "", //	身高
         baseWeight: "", //	体重
-        baseSpinalLimbsDeformity: "", //	脊柱四肢-畸形 0正常-默认 1畸形
-        baseSpinalLimbsEdema: "", //	脊柱四肢-水肿 0无-默认 1轻 2中 3重
-        baseHeartRate: "", //	心率 0.未填写
-        baseLung: "", //	肺部 0.未见异常-默认
-        baseAbdomenLiver: "", //	腹部-肝 0.未见异常-默认
-        baseAbdomenSpleen: "", //	腹部-脾 0.未见异常-默认
-        baseBreasts: "", //	乳房 0.丰满-默认 1.扁平
-        baseNipple: "", //	乳头 0.凸-默认 1.凹
-        obstetricsVulva: "", //	妇科检查-外阴 0.正常-默认 1.异常
-        obstetricsVagina: "", //	妇科检查-阴道 0.通畅-默认
-        obstetricsCervix: "", //	妇科检查-宫颈 0.光滑-默认
-        obstetricsCorpus: "", //	妇科检查-宫体 0.未见异常-默认
-        obstetricsPairsAttachment: "", //	妇科检查-双附件 0.未见异常-默认
+        baseSpinalLimbsDeformity: "0", //	脊柱四肢-畸形 0正常-默认 1畸形
+        baseSpinalLimbsEdema: "0", //	脊柱四肢-水肿 0无-默认 1轻 2中 3重
+        baseHeartRate: "0", //	心率 0.未填写
+        baseLung: "0", //	肺部 0.未见异常-默认
+        baseAbdomenLiver: "0", //	腹部-肝 0.未见异常-默认
+        baseAbdomenSpleen: "0", //	腹部-脾 0.未见异常-默认
+        baseBreasts: "0", //	乳房 0.丰满-默认 1.扁平
+        baseNipple: "0", //	乳头 0.凸-默认 1.凹
+        obstetricsVulva: "0", //	妇科检查-外阴 0.正常-默认 1.异常
+        obstetricsVagina: "0", //	妇科检查-阴道 0.通畅-默认
+        obstetricsCervix: "0", //	妇科检查-宫颈 0.光滑-默认
+        obstetricsCorpus: "0", //	妇科检查-宫体 0.未见异常-默认
+        obstetricsPairsAttachment: "0", //	妇科检查-双附件 0.未见异常-默认
         assayUrineProtein: "", //	化验检查-尿蛋白 未填写-默认
         assayHemoglobin: "", //	化验检查-血红蛋白 未填写-默认
         assayBloodPlatelet: "", //	化验检查-血小板 未填写-默认
-        assayBloodType: "", //	化验检查-血型 0.O型-默认 1.A型 2.B型 3.AB型 4.RH型
+        assayBloodType: "0", //	化验检查-血型 0.O型-默认 1.A型 2.B型 3.AB型 4.RH型
         obstetricsHeight: "", //	产科检查-宫底高度
         obstetricsAbdominalGirth: "", //	产科检查-腹围
-        obstetricsFirstDew: "", //	产科检查-先露 0.未填-默认 1.先头露 2.臀先露
-        obstetricsPlacental: "", //	产科检查-胎位 0.未填-默认 1.枕左前位 2.枕右横位 3.枕右前位
+        obstetricsFirstDew: "0", //	产科检查-先露 0.未填-默认 1.先头露 2.臀先露
+        obstetricsPlacental: "0", //	产科检查-胎位 0.未填-默认 1.枕左前位 2.枕右横位 3.枕右前位
         obstetricsFetalHeart: "", //	产科检查-胎心（次/分）
         obstetricsTransversePelvicDiameter: "", //	产科检查-骨盆口横径
         primaryDiagnosis: "", //	初步诊断
@@ -4782,7 +4799,7 @@ this.templateDialogVisible2 = true;
         &:before {
           content: " ";
           position: absolute;
-          top: -8px;
+          top: -10px;
           right: 34px;
           width: 1px;
           height: 38px;
@@ -4794,7 +4811,7 @@ this.templateDialogVisible2 = true;
         &:before {
           content: " ";
           position: absolute;
-          top: -8px;
+          top: -10px;
           right: 66px;
           width: 1px;
           height: 38px;
