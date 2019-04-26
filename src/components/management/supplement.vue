@@ -5556,9 +5556,6 @@ this.templateDialogVisible2 = true;
         margin-top: 20px;
         margin: 20px 0px 20px 10px;
       }
-      .malaise {
-        // border-bottom: 1px solid #ccc;
-      }
       .malaise,
       .handlingSuggestion {
         font-size: 14px;

@@ -3,8 +3,11 @@
     <div class="topBox clearfix">
       <div class="btnsBOx">
         <router-link :to="{path: 'supplement'}">
-        <!-- <router-link :to="{path: 'newfile'}"> -->
-          <div class="newBtn" @click="newFecord">新建孕妇档案</div>
+          <!-- <router-link :to="{path: 'newfile'}"> -->
+          <div
+            class="newBtn"
+            @click="newFecord"
+          >新建孕妇档案</div>
         </router-link>
       </div>
       <div class="selectBox clearfix">
@@ -109,7 +112,7 @@
         <el-table
           :data="tableData"
           style="width: 100%"
-           :header-cell-style="{color:'#333333',fontWeight: 'bold'}"
+          :header-cell-style="{color:'#333333',fontWeight: 'bold'}"
         >
           <el-table-column
             prop="tableNum"
@@ -149,10 +152,19 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="checkName"
             label="姓名"
             width="76px"
-          ></el-table-column>
+          >
+            <template slot-scope="scope">
+              <img
+                src="../../assets/today.png"
+                alt=""
+                class="todayIcon"
+                v-show="currentdate == scope.row.filingDate"
+              >
+              <span>{{ scope.row.checkName }}</span>
+            </template>
+          </el-table-column>
           <el-table-column
             prop="goal"
             label="就诊目的"
@@ -343,7 +355,7 @@ export default {
           value: "1",
           label: "异常复查"
         },
-         {
+        {
           value: "2",
           label: "无复检"
         }
@@ -361,7 +373,8 @@ export default {
       tableShow: false,
       imgShow: false,
       backActtive: false,
-      total: ""
+      total: "",
+      currentdate:'' // 获取当前日期
     };
   },
   activated() {
@@ -371,22 +384,40 @@ export default {
   created() {
     var lett = this;
     document.onkeydown = function(e) {
-         let event = e || window.event
-      let key =event.keyCode;
+      let event = e || window.event;
+      let key = event.keyCode;
       if (key == 13) {
         lett.submit();
       }
     };
+  lett.getNowFormatDate();
   },
-    // beforeRouteLeave(to, from, next) {
-    //      // 设置下一个路由的 meta
-    //     to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
-    //     next();
-    // },
+  // beforeRouteLeave(to, from, next) {
+  //      // 设置下一个路由的 meta
+  //     to.meta.keepAlive = true;  // 让 A 缓存，即不刷新
+  //     next();
+  // },
   methods: {
+    // 获取当前时间
+ getNowFormatDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate;
+            this.currentdate = currentdate;
+            return currentdate;
+        },
     // 建档管理
-    recordSelect(){
-       this.indexInquire();
+    recordSelect() {
+      this.indexInquire();
     },
     // 风险评估选择
     riskAssessment() {
@@ -482,12 +513,9 @@ export default {
     indexMethod(index) {
       return index + 1;
     },
-    newFecord(){
-       localStorage.removeItem('tableDataParticulars');
-
+    newFecord() {
+      localStorage.removeItem("tableDataParticulars");
     }
-   
-
   }
 };
 </script>
@@ -681,16 +709,18 @@ export default {
   .el-button.is-round {
     padding: 10px 23px;
   }
-   .el-table th,
+  .el-table th,
   .el-table tr {
     background-color: #fff;
     color: #666666;
   }
-  .el-table__body, .el-table__footer, .el-table__header{
-    background:#e7f3fb;
+  .el-table__body,
+  .el-table__footer,
+  .el-table__header {
+    background: #e7f3fb;
   }
-  .el-button{
-    font-size:12px;
+  .el-button {
+    font-size: 12px;
   }
   .topBox {
     width: 100%;
@@ -800,7 +830,7 @@ export default {
       tbody {
         td {
           padding: 0px;
-          height:54px;
+          height: 54px;
         }
         td:nth-child(1),
         td:nth-child(5),
@@ -833,11 +863,15 @@ export default {
       }
     }
   }
- .el-select .el-input__inner {
-  border-radius: 4px;
-  border-color: #ccc;
-  background-color: #f6f6f6;
-}
-
+  .el-select .el-input__inner {
+    border-radius: 4px;
+    border-color: #ccc;
+    background-color: #f6f6f6;
+  }
+  .todayIcon {
+   position: absolute;
+   top:20px;
+   left: -18px;
+  }
 }
 </style>
