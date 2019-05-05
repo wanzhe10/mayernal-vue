@@ -220,6 +220,7 @@ export default {
       imgShow: false, //图片显示隐藏
      backActtive:false, //图片显示隐藏
       numToggle: 0, //今日总预约人数
+       weekDate : [],//本周时间数组
       strTime: "", //开始时间
       endTime: "" //结束时间
     };
@@ -227,50 +228,22 @@ export default {
   mounted() {
     this.inquireFun();
     this.weekApllay();
+    this.showWeekDay();
   },
   methods: {
     // 日期切换
     weekDataClick(index) {
       this.showActive = index;
-      switch (index) {
-        case 0:
-          this.strTime = this.showWeekDay(0);
-          this.endTime = this.showWeekDay(1);
-          break;
-        case 1:
-          this.strTime = this.showWeekDay(1);
-          this.endTime = this.showWeekDay(2);
-          break;
-        case 2:
-          this.strTime = this.showWeekDay(2);
-          this.endTime = this.showWeekDay(3);
-
-          break;
-        case 3:
-          this.strTime = this.showWeekDay(3);
-          this.endTime = this.showWeekDay(4);
-
-          break;
-        case 4:
-          this.strTime = this.showWeekDay(4);
-          this.endTime = this.showWeekDay(5);
-
-          break;
-        case 5:
-          this.strTime = this.showWeekDay(5);
-          this.endTime = this.showWeekDay(6);
-
-          break;
-        case 6:
-          this.strTime = this.showWeekDay(6);
-          this.endTime = this.showWeekDay(7);
-          break;
-      }
-        this.currentPageOfice = 1, //分页 -页数
-        this.cur_page = 10,
+      // console.log(index)
+      this.strTime = this.weekDate[index];
+      this.endTime = this.weekDate[index + 1];
+        this.currentPageOfice = 1; //分页 -页数
+        this.cur_page = 10;
+        // console.log(this.strTime)
+        // console.log(this.endTime)
         this.numInquire();
     },
-    // 获取当前是星期几
+    // 获取当前是星期几添加类名
     weekApllay() {
       let str = "日一二三四五六".charAt(new Date().getDay());
       if (str == "一") {
@@ -289,21 +262,32 @@ export default {
         this.showActive = 6;
       }
     },
-    // 本周第几天
-    showWeekDay: function(datNum) {
-      let Nowdate = new Date();
-      let WeekFirstDay = new Date(Nowdate - (Nowdate.getDay() - 1) * 86400000);
-      let WeekLastDay = new Date((WeekFirstDay / 1000 + datNum * 86400) * 1000);
-      let M = Number(WeekLastDay.getMonth()) + 1;
-      if (M < 10) {
-        M = "0" + M;
+     // 本周第几天
+    showWeekDay() {
+      var week = new Date().getDay();
+      var currentDate = new Date();
+      var mondyDate;
+      if(week == 0){
+        mondyDate = new Date(currentDate.getTime() - 6*24*60*60*1000); //前一天
+      }else{
+        mondyDate = new Date(currentDate.getTime() - (week-1)*24*60*60*1000); //前一天
       }
-      let D = WeekLastDay.getDate();
-      if (D < 10) {
-        D = "0" + D;
+      var tempDate;
+      for (let index = 0; index < 8; index++) {
+        tempDate = new Date(mondyDate.getTime() + index*24*60*60*1000);
+        let M = Number(tempDate.getMonth()) + 1;
+        if (M < 10) {
+          M = "0" + M;
+        }
+        let D = tempDate.getDate();
+        if (D < 10) {
+          D = "0" + D;
+        }
+        this.weekDate.push(mondyDate.getFullYear() + "-" + M + "-" + D);
+      //  console.log(this.weekDate)
       }
-      return WeekLastDay.getFullYear() + "-" + M + "-" + D;
     },
+
     // 复检teb切换
     addNameClick(index) {
       this.tab = index;
