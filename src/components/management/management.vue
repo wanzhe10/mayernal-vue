@@ -34,7 +34,7 @@
           <el-select
             v-model="highClass"
             clearable
-            placeholder="请选择"
+            placeholder="全部"
             class="assessSelect"
             @change="riskAssessment"
           >
@@ -60,7 +60,7 @@
           <el-select
             v-model="secondCheckType"
             clearable
-            placeholder="请选择"
+            placeholder="全部"
             class="seeSelect"
           >
             <el-option
@@ -186,12 +186,12 @@
             width="72px"
           >
             <template slot-scope="scope">
-              <div v-html="'孕'+scope.row.newAgeOfMenarche+'-'+scope.row.newAgeOfMenarcheDay+'天'"></div>
+              <div v-html="'孕'+scope.row.newAgeOfMenarche+'+'+scope.row.newAgeOfMenarcheDay+'天'"></div>
             </template>
           </el-table-column>
           <el-table-column
             prop="parturitionDetailDueDate"
-            label="孕产期"
+            label="预产期"
             width="110px"
           ></el-table-column>
           <el-table-column
@@ -472,30 +472,33 @@ export default {
           console.log(res);
           if (res.status === "20200") {
             self.pagerCount = res.pages;
-            var aaa = res.pcPatientCenterBeans;
-            for (let i = 0; i < aaa.length; i++) {
-              const element = aaa[i];
-              if (element.highRiskTotalNum == "") {
-                // var colorNum = JSON.parse(element.highRiskTotalNum);
-                element.colorNumGreen = 0;
-                element.colorNumYellow = 0;
-                element.colorNumOrange = 0;
-                element.colorNumRed = 0;
-                element.colorNumPurple = 0;
-              } else {
-                var colorNum = JSON.parse(element.highRiskTotalNum);
-                element.colorNumGreen = colorNum.green;
-                element.colorNumYellow = colorNum.yellow;
-                element.colorNumOrange = colorNum.orange;
-                element.colorNumRed = colorNum.red;
-                element.colorNumPurple = colorNum.purple;
-              }
+            var pcPatient = res.pcPatientCenterBeans;
+            // console.log(pcPatient)
+            for (let i = 0; i < pcPatient.length; i++) {
+              var  element = pcPatient[i];
+            console.log(element.highRiskTotalNum)
+            console.log(element.checkName)
+              // if (element.highRiskTotalNum == "") {
+              //   element.colorNumGreen = 0;
+              //   element.colorNumYellow = 0;
+              //   element.colorNumOrange = 0;
+              //   element.colorNumRed = 0;
+              //   element.colorNumPurple = 0;
+              // } else {
+              //   var colorNum = JSON.parse(element.highRiskTotalNum);
+              //   element.colorNumGreen = colorNum.green;
+              //   element.colorNumYellow = colorNum.yellow;
+              //   element.colorNumOrange = colorNum.orange;
+              //   element.colorNumRed = colorNum.red;
+              //   element.colorNumPurple = colorNum.purple;
+              // }
             }
+            // console.log(aaa)
             self.tableData = res.pcPatientCenterBeans;
             self.tableShow = true;
             self.imgShow = false;
             self.backActtive = false;
-            this.colorNum = colorNum;
+            // this.colorNum = colorNum;
             this.total = res.total;
           } else if (res.status === "20209") {
             this.officeTableData = [];
@@ -507,7 +510,9 @@ export default {
           }
         })
         .catch(error => {
-          this.$message.error("档案管理查询错误，请稍后重试");
+          this.$message.error("档案管理查询错误，请稍后重试sss");
+           console.log(error)
+          console.log(this.$message)
         });
     },
     indexMethod(index) {
