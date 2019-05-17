@@ -46,7 +46,7 @@
           <p><span class="mgl12">孕产史：</span><span v-html="tableDataParticulars.parturitionDetailHistory"></span></p>
         </div>
         <div class="newsBoxBottom">
-          <p class="newsBoxBottomFamily"><span>家族史：</span><span>高血压、冠心病、阑尾炎、精神病</span></p>
+          <p class="newsBoxBottomFamily"><span>家族史：</span><span  v-html="tableDataParticulars.parturitionDetailFamilyHistory"></span></p>
           <div class="assessmentInformation">
             <span class="pdl0 mgr0">高危因素：</span>
             <span class="greenStrip">绿色（{{highRiskFactor.green}}）项</span>

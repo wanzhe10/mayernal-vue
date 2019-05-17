@@ -469,29 +469,29 @@ export default {
           secondCheckType: this.secondCheckType
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.status === "20200") {
             self.pagerCount = res.pages;
             var pcPatient = res.pcPatientCenterBeans;
             // console.log(pcPatient)
             for (let i = 0; i < pcPatient.length; i++) {
               var  element = pcPatient[i];
-            console.log(element.highRiskTotalNum)
-            console.log(element.checkName)
-              // if (element.highRiskTotalNum == "") {
-              //   element.colorNumGreen = 0;
-              //   element.colorNumYellow = 0;
-              //   element.colorNumOrange = 0;
-              //   element.colorNumRed = 0;
-              //   element.colorNumPurple = 0;
-              // } else {
-              //   var colorNum = JSON.parse(element.highRiskTotalNum);
-              //   element.colorNumGreen = colorNum.green;
-              //   element.colorNumYellow = colorNum.yellow;
-              //   element.colorNumOrange = colorNum.orange;
-              //   element.colorNumRed = colorNum.red;
-              //   element.colorNumPurple = colorNum.purple;
-              // }
+            // console.log(element.highRiskTotalNum)
+            // console.log(element.checkName)
+              if (element.highRiskTotalNum == "") {
+                element.colorNumGreen = 0;
+                element.colorNumYellow = 0;
+                element.colorNumOrange = 0;
+                element.colorNumRed = 0;
+                element.colorNumPurple = 0;
+              } else {
+                var colorNum = JSON.parse(element.highRiskTotalNum);
+                element.colorNumGreen = colorNum.green;
+                element.colorNumYellow = colorNum.yellow;
+                element.colorNumOrange = colorNum.orange;
+                element.colorNumRed = colorNum.red;
+                element.colorNumPurple = colorNum.purple;
+              }
             }
             // console.log(aaa)
             self.tableData = res.pcPatientCenterBeans;

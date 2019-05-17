@@ -19,12 +19,13 @@
         </div>
 
         <div class="pregnantNewsBox clearfix">
-
-          <div class="mgr70">
+<!-- 
+          <div class="mgr70 gestationalWeekDay">
             <el-form-item
               label="孕周（必填）"
               prop="gestationalWeek"
               autocomplete="off"
+              style="width:100px;  float:left;"
             >
               <el-input
                 min='18'
@@ -33,8 +34,46 @@
                 placeholder="请输入孕周"
                 v-model="reviewOfNew.gestationalWeek"
               > </el-input>
+              <el-input
+                min='18'
+                max='50'
+                class="gestationalDay"
+                placeholder="请输入孕天"
+                v-model="reviewOfNew.gestationalDay"
+              > </el-input>
             </el-form-item>
+          </div> -->
+             <div class="mgr70">
+            <p
+              slot="label"
+              style="height:34px;line-height:34px; color: #666666; display:block;"
+            >孕周（必填）</p>
+            <div class="bloodBox">
+              <div class="lowTension">
+                <el-form-item prop="gestationalWeek">
+                  <el-input
+                min='18'
+                max='50'
+                class="gestationalWeek"
+                placeholder="请输入孕周"
+                v-model="reviewOfNew.gestationalWeek"
+              > </el-input>
+                </el-form-item>
+              </div>
+              <div class="hyperpiesia">
+                <el-form-item prop="gestationalDay">
+                   <el-input
+                min='18'
+                max='50'
+                class="gestationalDay"
+                placeholder="请输入孕天"
+                v-model="reviewOfNew.gestationalDay"
+              > </el-input>
+                </el-form-item>
+              </div>
+            </div>
           </div>
+
           <div class="mgr70">
             <el-form-item
               label="当前体重（kg）"
@@ -382,12 +421,27 @@
               :multiple='true'
               :auto-upload='false'
               :limit='20'
-              :on-change='changeUpload'
               :http-request='imgFinshBtn'
               :on-remove="handleRemove"
+              :before-upload="beforeAvatarUpload"
+              accept="image/jpg,image/jpeg,image/png"
             >
               <i class="el-icon-plus"></i>
             </el-upload>
+              <!-- <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture-card"
+              :on-preview="handlePictureCardPreview"
+              :multiple='true'
+              :auto-upload='false'
+              :limit='20'
+              :on-change='changeUpload'
+              :http-request='imgFinshBtn'
+              :on-remove="handleRemove"
+              :before-upload="beforeAvatarUpload"
+            >
+              <i class="el-icon-plus"></i>
+            </el-upload> -->
           </div>
 
           <el-dialog
@@ -577,6 +631,26 @@ export default {
         callback();
       }
     };
+     // 孕周
+    var baseBloodVerifyWeek = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("孕周不能为空"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else {
+        callback();
+      }
+    };
+      // 孕天
+    var baseBloodVerifyDay = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("孕天不能为空"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else {
+        callback();
+      }
+    };
     return {
        /* ------导入模板弹框star------- */
       templateDialogVisible: false, //诊断导入模板
@@ -714,6 +788,7 @@ disposeLayer:'',//模板弹框处理意见
         healthCheckId: "", //	体格检查-id 档案列表可获取
         checkDate: "", //	检查日期	展开
         gestationalWeek: "", //	孕周-周
+        gestationalDay: "", //	孕周-天
         bloodPressureHigh: "", //	血压-高
         bloodPressureLow: "", //	血压-低
         bodyWeight: "", //	体重
@@ -739,9 +814,18 @@ disposeLayer:'',//模板弹框处理意见
         newAgeOfMenarche: "", //	现孕周
         newAgeOfMenarcheDay: "" //	现孕周-天
       },
+      curApiList:{},
+      curApiLis2:{},
+      
       rules: {
         gestationalWeek: [
-          { required: true, message: "请输入孕周", trigger: "blur" }
+          // { required: true, message: "请输入孕周", trigger: "blur" }
+          { trigger: "blur", validator: baseBloodVerifyWeek }
+          // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+        ],
+          gestationalDay: [
+            { trigger: "blur", validator: baseBloodVerifyDay }
+          // { required: true, message: "请输入孕天", trigger: "blur" }
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
         bodyWeight: [{ trigger: "blur", validator: baseWeightVerify }],
@@ -783,7 +867,7 @@ disposeLayer:'',//模板弹框处理意见
       myDate: "",
       pcCheckForWeekBeanList: [], //孕检信息
       pcCheckCellsBean: {},
-      clickActive: 0,
+      clickActive: -1,
       examineNum: "", //复检次数
       doctorName: "" //操作医生
     };
@@ -803,6 +887,8 @@ disposeLayer:'',//模板弹框处理意见
     );
     this.tableDataParticulars = tableDataParticulars;
     console.log(this.tableDataParticulars);
+    this.reviewOfNew.gestationalWeek = this.tableDataParticulars.newAgeOfMenarche;
+    this.reviewOfNew.gestationalDay = this.tableDataParticulars.newAgeOfMenarcheDay;
     let doctorName = localStorage.getItem("mayernal-web-userName");
     this.doctorName = doctorName;
   },
@@ -861,7 +947,20 @@ disposeLayer:'',//模板弹框处理意见
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
+    beforeAvatarUpload(file){
+       console.log('上传')
+          const isJPG = file.type === 'image/jpg';
+        const isJPEG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+       if (!isJPG ||!isJPEG ||!isPNG ) {
+          this.$message.error('上传头像图片只能是 JPG/JPEG/PNG 格式!');
+        }
+       
+
+    },
+    // 查看大图
     handlePictureCardPreview(file, fileList) {
+      // console.log('查看大图')
       this.dialogImageUrl = file.url;
       this.dialogVisibleImg = true;
     },
@@ -869,9 +968,9 @@ disposeLayer:'',//模板弹框处理意见
       console.log(file, fileList);
     },
     // 选择图片
-    changeUpload(file, fileList) {
-      console.log(fileList);
-    },
+    // changeUpload(file, fileList) {
+    //   console.log(fileList);
+    // },
     // 保存按钮
     finishBtn() {
       this.imgFinshBtn();
@@ -914,8 +1013,7 @@ disposeLayer:'',//模板弹框处理意见
     // 正常复检产检切换
     toggleClass(index) {
       this.clickActive = index;
-      this.pcCheckCellsBean = this.pcCheckForWeekBeanList[index];
-      console.log(this.pcCheckCellsBean);
+   
     },
     // 孕产信息查询
     getUser(token) {
@@ -928,7 +1026,7 @@ disposeLayer:'',//模板弹框处理意见
         .then(res => {
           if (res.status === "20200") {
             this.pcCheckForWeekBeanList = res.pcCheckForWeekBeanList;
-            this.pcCheckCellsBean = this.pcCheckForWeekBeanList[0];
+            // this.pcCheckCellsBean = this.pcCheckForWeekBeanList[0];
           }
         })
         .catch(error => {
@@ -936,26 +1034,33 @@ disposeLayer:'',//模板弹框处理意见
         });
     },
     bindingBtn(){
+      this.curApiList = JSON.parse(JSON.stringify(this.reviewOfNew));
+      this.curApiLis2 = JSON.parse(JSON.stringify( this.pcCheckCellsBean));
       this.dialogVisible = true;
       this.getUser();
     },
     dialogVisibleCancel(){
- this.dialogVisible = false;
-//  if (this.reviewOfNew.makeAppointmentTime = '') {
- this.reviewOfNew.makeAppointmentTime = '';
-    this.pcCheckCellsBean.name = '';
- this.pcCheckCellsBean.gestationalWeekStart = '';
- this.pcCheckCellsBean.gestationalWeekEnd = '';
-//  }
+      this.reviewOfNew = this.curApiList;
+      this.pcCheckCellsBean = this.curApiLis2;
+        this.dialogVisible = false;
     },
     finishiBtn() {
+        
       if (this.reviewOfNew.makeAppointmentTime == "") {
         this.$message({
           showClose: true,
           message: "请选择下次预约时间",
           type: "error"
         });
+        console.log(this.pcCheckCellsBean.name)
+      } else if (this.clickActive == -1) {
+        this.$message({
+          showClose: true,
+          message: "请选择复检",
+          type: "error"
+        });
       } else {
+         this.pcCheckCellsBean = this.pcCheckForWeekBeanList[this.clickActive];
         this.reviewOfNew.name = this.pcCheckCellsBean.name;
         this.reviewOfNew.number = this.pcCheckCellsBean.number;
         this.reviewOfNew.checkDetail = this.pcCheckCellsBean.checkDetail;
@@ -974,6 +1079,8 @@ disposeLayer:'',//模板弹框处理意见
           tableDataParticulars.newAgeOfMenarche;
         this.reviewOfNew.newAgeOfMenarcheDay =
           tableDataParticulars.newAgeOfMenarcheDay;
+           this.reviewOfNew=JSON.parse(JSON.stringify(this.reviewOfNew)); //this.templateData是父组件传递的对象  
+          console.log(this.reviewOfNew)
       }
     },
     // // 复检记录新增
@@ -1565,6 +1672,14 @@ this.templateDialogVisible2 = true;
   width: 260px;
   border-radius: 4px;
   border-color: #ccc;
+}
+ .recordNewsBox .gestationalWeekDay{
+    width: 260px;
+  float: left;
+
+ }
+ .recordNewsBox .gestationalWeekDay .el-input__inner{
+  width: 100px;
 }
 .recordNewsBox {
   .el-dialog__header {
