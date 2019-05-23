@@ -13,7 +13,7 @@
           <el-select
           clearable
             v-model="contactsModel"
-            placeholder="请选择"
+            placeholder="全部"
             class="recordSelect"
             @change='isProhibitSelect'
           >
@@ -32,7 +32,7 @@
           <el-select
           clearable
             v-model="value2"
-            placeholder="请选择"
+            placeholder="全部"
             class="assessSelect"
             @change="officeInquire"
           >
@@ -51,7 +51,7 @@
           <el-select
           clearable
             v-model="value3"
-            placeholder="请选择"
+            placeholder="全部"
             class="seeSelect"
             @change="userInquire"
           >

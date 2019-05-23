@@ -7,7 +7,7 @@
         <el-select
          clearable
           v-model="characterModel"
-          placeholder="请选择"
+          placeholder="全部"
           clear="characterModel"
           @change='isProhibitSelect'
         >

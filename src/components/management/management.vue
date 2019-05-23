@@ -219,28 +219,32 @@
           >
             <template slot-scope="scope">
               <div v-show="scope.row.isFiling == 1">
-                <p
-                  class="greenStrip"
+                <div
+                  class="greenStrip colorStrip"
                   v-show="scope.row.highRiskClass !=0"
                 >
-                  绿色（{{scope.row.colorNumGreen}}）项
-                </p>
-                <p
-                  class="yellowStrip"
+                  {{scope.row.colorNumGreen}}
+                </div>
+
+                <div
+                  class="yellowStrip colorStrip"
                   v-show="scope.row.highRiskClass !=1"
-                >黄色（{{scope.row.colorNumYellow}}）项</p>
-                <p
-                  class="orangeStrip"
+                >{{scope.row.colorNumYellow}}</div>
+
+                <div
+                  class="orangeStrip colorStrip"
                   v-show="scope.row.highRiskClass !=2"
-                >橙色（{{scope.row.colorNumOrange}}）项</p>
-                <p
-                  class="redStrip"
+                >{{scope.row.colorNumOrange}}</div>
+
+                <div
+                  class="redStrip colorStrip"
                   v-show="scope.row.highRiskClass !=3"
-                >红色（{{scope.row.colorNumRed}}）项</p>
-                <p
-                  class="proponStrip"
+                >{{scope.row.colorNumRed}}</div>
+
+                <div
+                  class="proponStrip colorStrip"
                   v-show="scope.row.highRiskClass !=4"
-                >紫色（{{scope.row.colorNumPurple}}）项</p>
+                >{{scope.row.colorNumPurple}}</div>
               </div>
               <div v-show="scope.row.isFiling == 0">
                 <p>暂无数据</p>
@@ -374,7 +378,7 @@ export default {
       imgShow: false,
       backActtive: false,
       total: "",
-      currentdate:'' // 获取当前日期
+      currentdate: "" // 获取当前日期
     };
   },
   activated() {
@@ -390,7 +394,7 @@ export default {
         lett.submit();
       }
     };
-  lett.getNowFormatDate();
+    lett.getNowFormatDate();
   },
   // beforeRouteLeave(to, from, next) {
   //      // 设置下一个路由的 meta
@@ -399,22 +403,22 @@ export default {
   // },
   methods: {
     // 获取当前时间
- getNowFormatDate() {
-            var date = new Date();
-            var seperator1 = "-";
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var strDate = date.getDate();
-            if (month >= 1 && month <= 9) {
-                month = "0" + month;
-            }
-            if (strDate >= 0 && strDate <= 9) {
-                strDate = "0" + strDate;
-            }
-            var currentdate = year + seperator1 + month + seperator1 + strDate;
-            this.currentdate = currentdate;
-            return currentdate;
-        },
+    getNowFormatDate() {
+      var date = new Date();
+      var seperator1 = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator1 + month + seperator1 + strDate;
+      this.currentdate = currentdate;
+      return currentdate;
+    },
     // 建档管理
     recordSelect() {
       this.indexInquire();
@@ -475,9 +479,9 @@ export default {
             var pcPatient = res.pcPatientCenterBeans;
             // console.log(pcPatient)
             for (let i = 0; i < pcPatient.length; i++) {
-              var  element = pcPatient[i];
-            // console.log(element.highRiskTotalNum)
-            // console.log(element.checkName)
+              var element = pcPatient[i];
+              // console.log(element.highRiskTotalNum)
+              // console.log(element.checkName)
               if (element.highRiskTotalNum == "") {
                 element.colorNumGreen = 0;
                 element.colorNumYellow = 0;
@@ -511,8 +515,8 @@ export default {
         })
         .catch(error => {
           this.$message.error("档案管理查询错误，请稍后重试sss");
-           console.log(error)
-          console.log(this.$message)
+          console.log(error);
+          console.log(this.$message);
         });
     },
     indexMethod(index) {
@@ -619,66 +623,34 @@ export default {
 .mal20 {
   margin-left: 20px;
 }
+.colorStrip{
+ width:18px;
+  height:18px;
+  line-height: 18px;
+  text-align: center;
+  color:#333333;
+  font-size: 12px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+   display: inline-block;
+ margin-right:4px;
+}
 
 .greenStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: green;
-    border-radius: 50%;
-  }
+  background-color: #85caa3;
 }
 .yellowStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: yellow;
-    border-radius: 50%;
-  }
+  background-color: #fffa6c;
 }
 .orangeStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: orange;
-    border-radius: 50%;
-  }
+  background-color: #ffb259;
 }
 .proponStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: purple;
-    border-radius: 50%;
-  }
+  background-color: #c778ff;
 }
 .redStrip {
-  &:after {
-    content: " ";
-    position: absolute;
-    top: 1px;
-    left: 0;
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    border-radius: 50%;
-  }
+  background-color: #ff6364;
 }
 // 右侧下面块
 .bottomBoxAll {
@@ -874,9 +846,9 @@ export default {
     background-color: #f6f6f6;
   }
   .todayIcon {
-   position: absolute;
-   top:20px;
-   left: -18px;
+    position: absolute;
+    top: 20px;
+    left: -18px;
   }
 }
 </style>

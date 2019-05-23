@@ -19,7 +19,7 @@
         </div>
 
         <div class="pregnantNewsBox clearfix">
-<!-- 
+          <!-- 
           <div class="mgr70 gestationalWeekDay">
             <el-form-item
               label="孕周（必填）"
@@ -43,7 +43,7 @@
               > </el-input>
             </el-form-item>
           </div> -->
-             <div class="mgr70">
+          <div class="mgr70">
             <p
               slot="label"
               style="height:34px;line-height:34px; color: #666666; display:block;"
@@ -52,23 +52,23 @@
               <div class="lowTension">
                 <el-form-item prop="gestationalWeek">
                   <el-input
-                min='18'
-                max='50'
-                class="gestationalWeek"
-                placeholder="请输入孕周"
-                v-model="reviewOfNew.gestationalWeek"
-              > </el-input>
+                    min='18'
+                    max='50'
+                    class="gestationalWeek"
+                    placeholder="请输入孕周"
+                    v-model="reviewOfNew.gestationalWeek"
+                  > </el-input>
                 </el-form-item>
               </div>
               <div class="hyperpiesia">
                 <el-form-item prop="gestationalDay">
-                   <el-input
-                min='18'
-                max='50'
-                class="gestationalDay"
-                placeholder="请输入孕天"
-                v-model="reviewOfNew.gestationalDay"
-              > </el-input>
+                  <el-input
+                    min='18'
+                    max='50'
+                    class="gestationalDay"
+                    placeholder="请输入孕天"
+                    v-model="reviewOfNew.gestationalDay"
+                  > </el-input>
                 </el-form-item>
               </div>
             </div>
@@ -282,13 +282,20 @@
                 <div class="bindingBtn">预约记录</div>
               </div>
             </el-form-item>
-            <span class="recordNewsFont"  v-show="pcCheckCellsBean.gestationalWeekStart"><i>{{pcCheckCellsBean.name}}</i>|<i>孕{{pcCheckCellsBean.gestationalWeekStart}}-{{pcCheckCellsBean.gestationalWeekEnd}}周</i></span>
+            <span
+              class="recordNewsFont"
+              v-show="pcCheckCellsBean.gestationalWeekStart"
+            ><i>{{pcCheckCellsBean.name}}</i>|<i>孕{{pcCheckCellsBean.gestationalWeekStart}}-{{pcCheckCellsBean.gestationalWeekEnd}}周</i></span>
           </div>
         </div>
-        <div class="wire" style="margin-top:0px;"></div>
+        <div
+          class="wire"
+          style="margin-top:0px;"
+        ></div>
         <div class="malaiseBox">
-          <div class="importDatabase1"
-               @click="primaryDiagnosisLayer"
+          <div
+            class="importDatabase1"
+            @click="primaryDiagnosisLayer"
           >
             <span>自觉不适</span>
             <i class="joinIco"></i>
@@ -304,8 +311,9 @@
           </el-form-item>
         </div>
         <div>
-          <div class="importDatabase1"
-             @click="disposalBtnLayer"
+          <div
+            class="importDatabase1"
+            @click="disposalBtnLayer"
           >
             <span>指导处理意见</span>
             <i class="joinIco2"></i>
@@ -321,93 +329,98 @@
           </el-form-item>
         </div>
         <!-- 自觉不适模板弹框 -->
-          <el-dialog
-            :visible.sync="templateDialogVisible"
-            width="890px"
-            :before-close="handleClose"
-            :show-close='false'
-               @opened='banSliding'
-            @closed='allowSliding'
-          >
-            <div class="templateDialog">
-              <div class="fl templateDialogLeft">
-                <div class="tettleDiv">模板标题</div>
-                <div class="Contant_left_overflow">
-                  <ul class="leftList">
-                    <li   
+        <el-dialog
+          :visible.sync="templateDialogVisible"
+          width="890px"
+          :before-close="handleClose"
+          :show-close='false'
+          @opened='banSliding'
+          @closed='allowSliding'
+        >
+          <div class="templateDialog">
+            <div class="fl templateDialogLeft">
+              <div class="tettleDiv">模板标题</div>
+              <div class="Contant_left_overflow">
+                <ul class="leftList">
+                  <li
                     v-for="(item,index) in officeTableData"
-                     v-html="item.name"
-                      :key="index"
-              :id="item.id"
-                        @click="antenatalCareNum(index)"
-                        :class="{active:index==showActive}"
-                    ></li>
-                  </ul>
-                </div>
-              </div>
-              <div class="fr templateDialogRight">
-                <div class="tettleDiv">模板内容</div>
-                <h2>自觉不适</h2>
-                <div class="malaise" v-html="malaiseLayer">
-                </div>
+                    v-html="item.name"
+                    :key="index"
+                    :id="item.id"
+                    @click="antenatalCareNum(index)"
+                    :class="{active:index==showActive}"
+                  ></li>
+                </ul>
               </div>
             </div>
-            <span
-              slot="footer"
-              class="dialog-footer"
-            >
-              <el-button @click="primaryDiagnosisLayerNo">取 消</el-button>
-              <el-button
-                type="primary"
-                @click="primaryDiagnosisLayerYes"
-              >导入模板</el-button>
-            </span>
-          </el-dialog>
- <!-- 处置模板弹框 -->
-          <el-dialog
-            :visible.sync="templateDialogVisible2"
-            width="890px"
-            :before-close="handleClose"
-            :show-close='false'
-               @opened='banSliding'
-            @closed='allowSliding'
-          >
-            <div class="templateDialog">
-              <div class="fl templateDialogLeft">
-                <div class="tettleDiv">模板标题</div>
-                <div class="Contant_left_overflow">
-                  <ul class="leftList">
-                    <li   
-                    v-for="(item,index) in officeTableData"
-                     v-html="item.name"
-                      :key="index"
-                      :id="item.id"
-                        @click="antenatalCareNumOpinion(index)"
-                        :class="{active:index==showActiveOpinion}"
-                    >
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="fr templateDialogRight">
-                <div class="tettleDiv">模板内容</div>
-                <h2>处理意见</h2>
-                <div class="handlingSuggestion " v-html="disposeLayer">
-                </div>
+            <div class="fr templateDialogRight">
+              <div class="tettleDiv">模板内容</div>
+              <h2>自觉不适</h2>
+              <div
+                class="malaise"
+                v-html="malaiseLayer"
+              >
               </div>
             </div>
-            <span
-              slot="footer"
-              class="dialog-footer"
-            >
-              <el-button @click="antenatalCareNumOpinionNo">取 消</el-button>
-              <el-button
-                type="primary"
-                @click="antenatalCareNumOpinionYes"
-              >导入模板</el-button>
-            </span>
-          </el-dialog>
-
+          </div>
+          <span
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button @click="primaryDiagnosisLayerNo">取 消</el-button>
+            <el-button
+              type="primary"
+              @click="primaryDiagnosisLayerYes"
+            >导入模板</el-button>
+          </span>
+        </el-dialog>
+        <!-- 处置模板弹框 -->
+        <el-dialog
+          :visible.sync="templateDialogVisible2"
+          width="890px"
+          :before-close="handleClose"
+          :show-close='false'
+          @opened='banSliding'
+          @closed='allowSliding'
+        >
+          <div class="templateDialog">
+            <div class="fl templateDialogLeft">
+              <div class="tettleDiv">模板标题</div>
+              <div class="Contant_left_overflow">
+                <ul class="leftList">
+                  <li
+                    v-for="(item,index) in officeTableData"
+                    v-html="item.name"
+                    :key="index"
+                    :id="item.id"
+                    @click="antenatalCareNumOpinion(index)"
+                    :class="{active:index==showActiveOpinion}"
+                  >
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="fr templateDialogRight">
+              <div class="tettleDiv">模板内容</div>
+              <h2>处理意见</h2>
+              <div
+                class="handlingSuggestion "
+                v-html="disposeLayer"
+              >
+              </div>
+            </div>
+          </div>
+          <span
+            slot="footer"
+            class="dialog-footer"
+          >
+            <el-button @click="antenatalCareNumOpinionNo">取 消</el-button>
+            <el-button
+              type="primary"
+              @click="antenatalCareNumOpinionYes"
+            >导入模板</el-button>
+          </span>
+        </el-dialog>
 
         <!-- 图片上传 -->
         <div class="imageUploadBox">
@@ -428,7 +441,7 @@
             >
               <i class="el-icon-plus"></i>
             </el-upload>
-              <!-- <el-upload
+            <!-- <el-upload
               action="https://jsonplaceholder.typicode.com/posts/"
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
@@ -631,7 +644,7 @@ export default {
         callback();
       }
     };
-     // 孕周
+    // 孕周
     var baseBloodVerifyWeek = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("孕周不能为空"));
@@ -641,7 +654,7 @@ export default {
         callback();
       }
     };
-      // 孕天
+    // 孕天
     var baseBloodVerifyDay = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("孕天不能为空"));
@@ -652,15 +665,15 @@ export default {
       }
     };
     return {
-       /* ------导入模板弹框star------- */
+      /* ------导入模板弹框star------- */
       templateDialogVisible: false, //诊断导入模板
       templateDialogVisible2: false, //处置导入模板
-      officeTableData:[], // 模板数据
-        showActive: -1,
-        showActiveOpinion: -1,
-malaiseLayer:'', //模板弹框自觉不适
-disposeLayer:'',//模板弹框处理意见
- /* ------导入模板弹框end------- */
+      officeTableData: [], // 模板数据
+      showActive: -1,
+      showActiveOpinion: -1,
+      malaiseLayer: "", //模板弹框自觉不适
+      disposeLayer: "", //模板弹框处理意见
+      /* ------导入模板弹框end------- */
       // 孕妇婚姻状况
       marryType: [
         {
@@ -814,17 +827,17 @@ disposeLayer:'',//模板弹框处理意见
         newAgeOfMenarche: "", //	现孕周
         newAgeOfMenarcheDay: "" //	现孕周-天
       },
-      curApiList:{},
-      curApiLis2:{},
-      
+      curApiList: {},
+      curApiLis2: {},
+
       rules: {
         gestationalWeek: [
           // { required: true, message: "请输入孕周", trigger: "blur" }
           { trigger: "blur", validator: baseBloodVerifyWeek }
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
-          gestationalDay: [
-            { trigger: "blur", validator: baseBloodVerifyDay }
+        gestationalDay: [
+          { trigger: "blur", validator: baseBloodVerifyDay }
           // { required: true, message: "请输入孕天", trigger: "blur" }
           // { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
         ],
@@ -904,7 +917,7 @@ disposeLayer:'',//模板弹框处理意见
     },
     // 允许滑动
     allowSliding() {
-       document.documentElement.style.overflowY = "scroll";
+      document.documentElement.style.overflowY = "scroll";
       document.documentElement.style.overflowX = "hidden";
     },
     handleClose(done) {
@@ -947,16 +960,14 @@ disposeLayer:'',//模板弹框处理意见
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
-    beforeAvatarUpload(file){
-       console.log('上传')
-          const isJPG = file.type === 'image/jpg';
-        const isJPEG = file.type === 'image/jpeg';
-        const isPNG = file.type === 'image/png';
-       if (!isJPG ||!isJPEG ||!isPNG ) {
-          this.$message.error('上传头像图片只能是 JPG/JPEG/PNG 格式!');
-        }
-       
-
+    beforeAvatarUpload(file) {
+      console.log("上传");
+      const isJPG = file.type === "image/jpg";
+      const isJPEG = file.type === "image/jpeg";
+      const isPNG = file.type === "image/png";
+      if (!isJPG || !isJPEG || !isPNG) {
+        this.$message.error("上传头像图片只能是 JPG/JPEG/PNG 格式!");
+      }
     },
     // 查看大图
     handlePictureCardPreview(file, fileList) {
@@ -1013,7 +1024,6 @@ disposeLayer:'',//模板弹框处理意见
     // 正常复检产检切换
     toggleClass(index) {
       this.clickActive = index;
-   
     },
     // 孕产信息查询
     getUser(token) {
@@ -1033,26 +1043,25 @@ disposeLayer:'',//模板弹框处理意见
           this.$message.error("查询错误，请稍后重试");
         });
     },
-    bindingBtn(){
+    bindingBtn() {
       this.curApiList = JSON.parse(JSON.stringify(this.reviewOfNew));
-      this.curApiLis2 = JSON.parse(JSON.stringify( this.pcCheckCellsBean));
+      this.curApiLis2 = JSON.parse(JSON.stringify(this.pcCheckCellsBean));
       this.dialogVisible = true;
       this.getUser();
     },
-    dialogVisibleCancel(){
+    dialogVisibleCancel() {
       this.reviewOfNew = this.curApiList;
       this.pcCheckCellsBean = this.curApiLis2;
-        this.dialogVisible = false;
+      this.dialogVisible = false;
     },
     finishiBtn() {
-        
       if (this.reviewOfNew.makeAppointmentTime == "") {
         this.$message({
           showClose: true,
           message: "请选择下次预约时间",
           type: "error"
         });
-        console.log(this.pcCheckCellsBean.name)
+        console.log(this.pcCheckCellsBean.name);
       } else if (this.clickActive == -1) {
         this.$message({
           showClose: true,
@@ -1060,7 +1069,7 @@ disposeLayer:'',//模板弹框处理意见
           type: "error"
         });
       } else {
-         this.pcCheckCellsBean = this.pcCheckForWeekBeanList[this.clickActive];
+        this.pcCheckCellsBean = this.pcCheckForWeekBeanList[this.clickActive];
         this.reviewOfNew.name = this.pcCheckCellsBean.name;
         this.reviewOfNew.number = this.pcCheckCellsBean.number;
         this.reviewOfNew.checkDetail = this.pcCheckCellsBean.checkDetail;
@@ -1079,8 +1088,8 @@ disposeLayer:'',//模板弹框处理意见
           tableDataParticulars.newAgeOfMenarche;
         this.reviewOfNew.newAgeOfMenarcheDay =
           tableDataParticulars.newAgeOfMenarcheDay;
-           this.reviewOfNew=JSON.parse(JSON.stringify(this.reviewOfNew)); //this.templateData是父组件传递的对象  
-          console.log(this.reviewOfNew)
+        this.reviewOfNew = JSON.parse(JSON.stringify(this.reviewOfNew)); //this.templateData是父组件传递的对象
+        console.log(this.reviewOfNew);
       }
     },
     // // 复检记录新增
@@ -1105,55 +1114,52 @@ disposeLayer:'',//模板弹框处理意见
           this.$message.error("新增错误，请稍后重试");
         });
     },
-  // 诊断导入模板
-    primaryDiagnosisLayer(){
+    // 诊断导入模板
+    primaryDiagnosisLayer() {
       this.templateDialogVisible = true;
     },
     // 导入模板取消按钮
-    primaryDiagnosisLayerNo(){
-       this.templateDialogVisible = false;
-       this.malaiseLayer = '';
-       this.showActive =-1;
+    primaryDiagnosisLayerNo() {
+      this.templateDialogVisible = false;
+      this.malaiseLayer = "";
+      this.showActive = -1;
     },
     // 导入模板按钮
-    primaryDiagnosisLayerYes(){
- this.reviewOfNew.malaise = this.reviewOfNew.malaise + this.malaiseLayer;
- this.templateDialogVisible = false;
+    primaryDiagnosisLayerYes() {
+      this.reviewOfNew.malaise = this.reviewOfNew.malaise + this.malaiseLayer;
+      this.templateDialogVisible = false;
     },
     // 处置导入模板
-disposalBtnLayer(){
-this.templateDialogVisible2 = true;
-},
- // 处置取消按钮
+    disposalBtnLayer() {
+      this.templateDialogVisible2 = true;
+    },
+    // 处置取消按钮
     // 导入模板取消按钮
-    antenatalCareNumOpinionNo(){
-       this.templateDialogVisible2 = false;
-       this.disposeLayer = '';
-       this.showActiveOpinion =-1;
+    antenatalCareNumOpinionNo() {
+      this.templateDialogVisible2 = false;
+      this.disposeLayer = "";
+      this.showActiveOpinion = -1;
     },
-      // 导入模板按钮
-    antenatalCareNumOpinionYes(){
- this.reviewOfNew.guideTheProcessing = this.reviewOfNew.guideTheProcessing+ this.disposeLayer;
- this.templateDialogVisible2 = false;
+    // 导入模板按钮
+    antenatalCareNumOpinionYes() {
+      this.reviewOfNew.guideTheProcessing =
+        this.reviewOfNew.guideTheProcessing + this.disposeLayer;
+      this.templateDialogVisible2 = false;
     },
 
-
-
-
-
-  // 切换产检次数列表
+    // 切换产检次数列表
     antenatalCareNum(index) {
       this.showActive = index;
-    this.malaiseLayer =this.officeTableData[index].malaise;
+      this.malaiseLayer = this.officeTableData[index].malaise;
       // this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
     },
 
-     antenatalCareNumOpinion(index) {
+    antenatalCareNumOpinion(index) {
       this.showActiveOpinion = index;
-    this.disposeLayer =this.officeTableData[index].dispose;
+      this.disposeLayer = this.officeTableData[index].dispose;
       // this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
     },
-   // 查询
+    // 查询
     templateFindList() {
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
@@ -1161,15 +1167,15 @@ this.templateDialogVisible2 = true;
         .templateFindList({
           token: token1,
           pageNum: 0,
-          pageSize:100,
+          pageSize: 100,
           isProhibit: 1
         })
         .then(res => {
           if (res.status === "20200") {
             self.officeTableData = res.pcTemplateBeanList;
           } else if (res.status === "20209") {
-             self.officeTableData =[];
-              this.$message.error("模板为空");
+            self.officeTableData = [];
+            this.$message.error("模板为空");
           } else {
             this.$message.error("查询失败，请稍后重试");
           }
@@ -1177,8 +1183,7 @@ this.templateDialogVisible2 = true;
         .catch(error => {
           this.$message.error("查询失败，请稍后重试");
         });
-    },
-
+    }
   }
 };
 </script>
@@ -1381,18 +1386,18 @@ this.templateDialogVisible2 = true;
         font-weight: 600;
       }
     }
-    .fortyTwoTittle_left{
-      span{
-         color:#666666;
-         i{
-           color:#333333;
-         }
+    .fortyTwoTittle_left {
+      span {
+        color: #666666;
+        i {
+          color: #333333;
+        }
       }
     }
     .fake {
       position: relative;
       margin-right: 28px;
-     
+
       &:after {
         content: " ";
         position: absolute;
@@ -1581,84 +1586,81 @@ this.templateDialogVisible2 = true;
     border-right: 1px solid #ccc;
   }
 }
- // 导入模板弹框
-  .templateDialog {
-    width: 860px;
-    height: 450px;
-    .templateDialogLeft {
-      width: 340px;
-      background: #fff;
-      .tettleDiv {
-        font-size: 16px;
-        color: #010101;
-        border-bottom: 1px solid #ccc;
-        width: 100%;
-        padding: 20px 0px 22px 14px;
-      }
-      .Contant_left_overflow {
-        height: 386px;
-        position: relative;
-        display: block;
-        overflow: hidden;
-        ul {
-          position: absolute;
-          left: 0;
-          top: 0;
-          right: -17px;
-          bottom: 0;
-          overflow-x: hidden;
-          overflow-y: scroll;
-          li {
-            font-size: 14px;
-            color: #333333;
-            height: 42px;
-            line-height: 42px;
-            width: 100%;
-            padding-left: 30px;
-            cursor: pointer;
-            -moz-user-select: none; /*火狐*/
-            -webkit-user-select: none; /*webkit浏览器*/
-            -ms-user-select: none; /*IE10*/
-            -khtml-user-select: none; /*早期浏览器*/
-            user-select: none;
-          }
-          .active {
-            background-color: #68b6e7;
-            color: #fff;
-          }
+// 导入模板弹框
+.templateDialog {
+  width: 860px;
+  height: 450px;
+  .templateDialogLeft {
+    width: 340px;
+    background: #fff;
+    .tettleDiv {
+      font-size: 16px;
+      color: #010101;
+      border-bottom: 1px solid #ccc;
+      width: 100%;
+      padding: 20px 0px 22px 14px;
+    }
+    .Contant_left_overflow {
+      height: 386px;
+      position: relative;
+      display: block;
+      overflow: hidden;
+      ul {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: -17px;
+        bottom: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        li {
+          font-size: 14px;
+          color: #333333;
+          height: 42px;
+          line-height: 42px;
+          width: 100%;
+          padding-left: 30px;
+          cursor: pointer;
+          -moz-user-select: none; /*火狐*/
+          -webkit-user-select: none; /*webkit浏览器*/
+          -ms-user-select: none; /*IE10*/
+          -khtml-user-select: none; /*早期浏览器*/
+          user-select: none;
+        }
+        .active {
+          background-color: #68b6e7;
+          color: #fff;
         }
       }
     }
-    .templateDialogRight {
-      width: 505px;
-      background: #fff;
-      height: 450px;
-      .tettleDiv {
-        font-size: 16px;
-        color: #010101;
-        border-bottom: 1px solid #ccc;
-        width: 100%;
-        padding: 20px 0px 22px 14px;
-      }
-      h2 {
-        font-size: 14px;
-        color: #68b6e7;
-        margin-top: 20px;
-        margin: 20px 0px 20px 10px;
-      }
-      .malaise {
-        // border-bottom: 1px solid #ccc;
-      }
-      .malaise,
-      .handlingSuggestion {
-        font-size: 14px;
-        color: #666666;
-        padding: 0px 0px 20px 10px;
-         width: 100%;
-        // height: 160px;
-      }
+  }
+  .templateDialogRight {
+    width: 505px;
+    background: #fff;
+    height: 450px;
+    .tettleDiv {
+      font-size: 16px;
+      color: #010101;
+      border-bottom: 1px solid #ccc;
+      width: 100%;
+      padding: 20px 0px 22px 14px;
+    }
+    h2 {
+      font-size: 14px;
+      color: #68b6e7;
+      margin-top: 20px;
+      margin: 20px 0px 20px 10px;
+    }
+    .malaise,
+    .handlingSuggestion {
+      font-size: 14px;
+      color: #666666;
+      padding: 0px 0px 20px 10px;
+      width: 100%;
+      // height: 160px;
     }
   }
+}
 </style>
 <style lang="less">
 .dialogVisibleClass {
@@ -1673,12 +1675,11 @@ this.templateDialogVisible2 = true;
   border-radius: 4px;
   border-color: #ccc;
 }
- .recordNewsBox .gestationalWeekDay{
-    width: 260px;
+.recordNewsBox .gestationalWeekDay {
+  width: 260px;
   float: left;
-
- }
- .recordNewsBox .gestationalWeekDay .el-input__inner{
+}
+.recordNewsBox .gestationalWeekDay .el-input__inner {
   width: 100px;
 }
 .recordNewsBox {
@@ -1856,35 +1857,34 @@ this.templateDialogVisible2 = true;
   .el-form-item.is-success .el-textarea__inner:focus {
     border-color: #ccc;
   }
-    .abnormalRecheckBox {
-    
-      .el-textarea__inner{
-        border:none;
-        border-bottom:1px solid #ccc;
-      }
+  .abnormalRecheckBox {
+    .el-textarea__inner {
+      border: none;
+      border-bottom: 1px solid #ccc;
     }
-     .healthCheckupBox .el-dialog__header {
-  display: none;
-}
- .healthCheckupBox .el-dialog__body {
-  background: #f6f6f6;
-}
- .healthCheckupBox .el-dialog__footer {
-  background: #f6f6f6;
-}
- .healthCheckupBox .el-dialog .el-button--primary {
-  margin-right: 290px;
-}
- .healthCheckupBox .el-dialog .el-button--default {
-  margin-right: 64px;
-  width: 122px;
-  height: 40px;
-  background-color: #d3d3d3;
-  color: #666666;
-}
- .v-modal{
-  z-index: 10001;
-}
+  }
+  .healthCheckupBox .el-dialog__header {
+    display: none;
+  }
+  .healthCheckupBox .el-dialog__body {
+    background: #f6f6f6;
+  }
+  .healthCheckupBox .el-dialog__footer {
+    background: #f6f6f6;
+  }
+  .healthCheckupBox .el-dialog .el-button--primary {
+    margin-right: 290px;
+  }
+  .healthCheckupBox .el-dialog .el-button--default {
+    margin-right: 64px;
+    width: 122px;
+    height: 40px;
+    background-color: #d3d3d3;
+    color: #666666;
+  }
+  .v-modal {
+    z-index: 10001;
+  }
 }
 </style>
 

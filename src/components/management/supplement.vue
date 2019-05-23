@@ -108,6 +108,7 @@
                   id="test1"
                   readonly="readonly"
                   v-model="essentialInformation.birthdayDate"
+                  placeholder="出生年月自动获取"
                 >
                 </el-input>
               </el-form-item>
@@ -138,13 +139,13 @@
             </div>
             <div class="mgr70">
               <el-form-item
-                label="孕前体重（kg）"
+                label="孕前体重(kg)"
                 prop="lastWeight"
               >
                 <el-input
                   type="lastWeight"
                   class="lastWeight"
-                  placeholder="请输入体重"
+                  placeholder="请输入体重(kg)"
                   v-model.number="essentialInformation.lastWeight"
                 >
                 </el-input>
@@ -750,7 +751,7 @@
             </div>
             <div class="mgr76 fl">
               <el-form-item
-                label="月经史-初潮（岁）"
+                label="月经史-初潮(岁)"
                 prop="menstrualHistoryAge"
               >
                 <el-input
@@ -764,13 +765,13 @@
             </div>
             <div class="mgr0 fl">
               <el-form-item
-                label="月经史—周期（天）"
+                label="月经史—周期(天)"
                 prop="menstrualHistoryDay"
               >
                 <el-input
                   type="menstrualHistoryDay"
                   class="menstrualHistoryDay"
-                  placeholder="请输入月经史周期"
+                  placeholder="请输入周期天数"
                   v-model.number="maternalInformation.menstrualHistoryDay"
                 >
                 </el-input>
@@ -1802,7 +1803,7 @@
               <span class="diagnoseTittle">处置</span>
               <div
                 class="disposalBtn"
-                 @click="disposalBtnLayer"
+                @click="disposalBtnLayer"
                 style=" float: none;"
               >
                 <i class="fileIcon"></i>
@@ -1840,7 +1841,7 @@
             width="890px"
             :before-close="handleClose"
             :show-close='false'
-               @opened='banSliding'
+            @opened='banSliding'
             @closed='allowSliding'
           >
             <div class="templateDialog">
@@ -1848,13 +1849,13 @@
                 <div class="tettleDiv">模板标题</div>
                 <div class="Contant_left_overflow">
                   <ul class="leftList">
-                    <li   
-                    v-for="(item,index) in officeTableData"
-                     v-html="item.name"
+                    <li
+                      v-for="(item,index) in officeTableData"
+                      v-html="item.name"
                       :key="index"
-              :id="item.id"
-                        @click="antenatalCareNum(index)"
-                        :class="{active:index==showActive}"
+                      :id="item.id"
+                      @click="antenatalCareNum(index)"
+                      :class="{active:index==showActive}"
                     ></li>
                   </ul>
                 </div>
@@ -1862,7 +1863,10 @@
               <div class="fr templateDialogRight">
                 <div class="tettleDiv">模板内容</div>
                 <h2>自觉不适</h2>
-                <div class="malaise" v-html="malaiseLayer">
+                <div
+                  class="malaise"
+                  v-html="malaiseLayer"
+                >
                 </div>
               </div>
             </div>
@@ -1878,13 +1882,13 @@
             </span>
           </el-dialog>
 
-             <!-- 处置模板弹框 -->
+          <!-- 处置模板弹框 -->
           <el-dialog
             :visible.sync="templateDialogVisible2"
             width="890px"
             :before-close="handleClose"
             :show-close='false'
-               @opened='banSliding'
+            @opened='banSliding'
             @closed='allowSliding'
           >
             <div class="templateDialog">
@@ -1892,13 +1896,13 @@
                 <div class="tettleDiv">模板标题</div>
                 <div class="Contant_left_overflow">
                   <ul class="leftList">
-                    <li   
-                    v-for="(item,index) in officeTableData"
-                     v-html="item.name"
+                    <li
+                      v-for="(item,index) in officeTableData"
+                      v-html="item.name"
                       :key="index"
                       :id="item.id"
-                        @click="antenatalCareNumOpinion(index)"
-                        :class="{active:index==showActiveOpinion}"
+                      @click="antenatalCareNumOpinion(index)"
+                      :class="{active:index==showActiveOpinion}"
                     >
                     </li>
                   </ul>
@@ -1907,7 +1911,10 @@
               <div class="fr templateDialogRight">
                 <div class="tettleDiv">模板内容</div>
                 <h2>处理意见</h2>
-                <div class="handlingSuggestion " v-html="disposeLayer">
+                <div
+                  class="handlingSuggestion "
+                  v-html="disposeLayer"
+                >
                 </div>
               </div>
             </div>
@@ -2442,12 +2449,12 @@ export default {
       /* ------导入模板弹框star------- */
       templateDialogVisible: false, //诊断导入模板
       templateDialogVisible2: false, //处置导入模板
-      officeTableData:[], // 模板数据
-        showActive: -1,
-        showActiveOpinion: -1,
-malaiseLayer:'', //模板弹框自觉不适
-disposeLayer:'',//模板弹框处理意见
- /* ------导入模板弹框end------- */
+      officeTableData: [], // 模板数据
+      showActive: -1,
+      showActiveOpinion: -1,
+      malaiseLayer: "", //模板弹框自觉不适
+      disposeLayer: "", //模板弹框处理意见
+      /* ------导入模板弹框end------- */
       contact: "0",
       virus: "0",
       history2: "0",
@@ -2767,10 +2774,10 @@ disposeLayer:'',//模板弹框处理意见
           value: "2",
           label: "重"
         },
-         {
+        {
           value: "3",
           label: "无"
-        },
+        }
       ],
       //宠物接触
       animalContact: [
@@ -2906,11 +2913,11 @@ disposeLayer:'',//模板弹框处理意见
         {
           value: "0",
           label: "通畅"
-        },{
+        },
+        {
           value: "1",
           label: "异常"
         }
-
       ],
       //
       infectionType: [
@@ -2945,11 +2952,10 @@ disposeLayer:'',//模板弹框处理意见
           value: "0",
           label: "光滑"
         },
-         {
+        {
           value: "1",
           label: "异常"
         }
-
       ],
       //宫体
       obstetricsCorpus: [
@@ -2964,7 +2970,7 @@ disposeLayer:'',//模板弹框处理意见
       ],
       //附件
       obstetricsPairsAttachment: [
-         {
+        {
           value: "0",
           label: "正常"
         },
@@ -3113,7 +3119,7 @@ disposeLayer:'',//模板弹框处理意见
         birthdayDate: "", //		出生日期
         age: "", //		年龄
         sex: "", //		性别
-        education: "0", //		教育程度
+        education: "1", //		教育程度
         marryAge: "", //		结婚年龄
         nation: "汉族", //		民族
         lastWeight: "", //		孕前体重
@@ -3140,7 +3146,7 @@ disposeLayer:'',//模板弹框处理意见
         age: "", //	年龄
         telephone: "", //	电话
         healthType: "0", //	健康状况 0 健康-默认 1 一般 2 软弱
-        education: "0", //	教育程度 0 硕士以上 1本科-默认 2大专 3中专及高中 4初中 5文盲
+        education: "1", //	教育程度 0 硕士以上 1本科-默认 2大专 3中专及高中 4初中 5文盲
         job: "0", //	工作 0 无-默认 1.农、牧、渔 2.干部、职员 3.医院、科技 4.工人 5.个体 6.家务
         marryAge: "", //	结婚年龄
         marryType: "0", //	婚姻状况 0 初婚-默认 1再婚 2其他
@@ -3491,7 +3497,7 @@ disposeLayer:'',//模板弹框处理意见
   },
   activated() {
     //模板查询
-     this.templateFindList();
+    this.templateFindList();
     // 高危评估查询
     this.highRiskGradeTemplateDetailFindTreeList();
     // //家族史疾病
@@ -3518,10 +3524,22 @@ disposeLayer:'',//模板弹框处理意见
       this.signatureConfirmationForFiling.newAgeOfMenarcheDay =
         tableDataParticulars.newAgeOfMenarcheDay;
 
-      this.essentialInquire();
-      this.patientHusbandsFindForFiling();
-      this.patientParturitionDetailFindForFiling();
-      this.patientHealthCheckFindById();
+      // 基本信息查
+      if (this.checkId !== "") {
+        this.essentialInquire();
+      }
+      // 配偶信息查询
+      if (this.superId !== "") {
+        this.patientHusbandsFindForFiling();
+      }
+      // 孕产信息查询
+      if (this.parturitionDetailId !== "") {
+        this.patientParturitionDetailFindForFiling();
+      }
+      // 体格检查查询
+      if (this.healthCheckId !== "") {
+        this.patientHealthCheckFindById();
+      }
     }
   },
   mounted() {
@@ -4291,54 +4309,52 @@ disposeLayer:'',//模板弹框处理意见
         });
     },
     // 诊断导入模板
-    primaryDiagnosisLayer(){
+    primaryDiagnosisLayer() {
       this.templateDialogVisible = true;
     },
     // 导入模板取消按钮
-    primaryDiagnosisLayerNo(){
-       this.templateDialogVisible = false;
-       this.malaiseLayer = '';
-       this.showActive =-1;
+    primaryDiagnosisLayerNo() {
+      this.templateDialogVisible = false;
+      this.malaiseLayer = "";
+      this.showActive = -1;
     },
     // 导入模板按钮
-    primaryDiagnosisLayerYes(){
- this.healthCheckup.primaryDiagnosis = this.healthCheckup.primaryDiagnosis+ this.malaiseLayer;
- this.templateDialogVisible = false;
+    primaryDiagnosisLayerYes() {
+      this.healthCheckup.primaryDiagnosis =
+        this.healthCheckup.primaryDiagnosis + this.malaiseLayer;
+      this.templateDialogVisible = false;
     },
     // 处置导入模板
-disposalBtnLayer(){
-this.templateDialogVisible2 = true;
-},
- // 处置取消按钮
+    disposalBtnLayer() {
+      this.templateDialogVisible2 = true;
+    },
+    // 处置取消按钮
     // 导入模板取消按钮
-    antenatalCareNumOpinionNo(){
-       this.templateDialogVisible2 = false;
-       this.disposeLayer = '';
-       this.showActiveOpinion =-1;
+    antenatalCareNumOpinionNo() {
+      this.templateDialogVisible2 = false;
+      this.disposeLayer = "";
+      this.showActiveOpinion = -1;
     },
-      // 导入模板按钮
-    antenatalCareNumOpinionYes(){
- this.healthCheckup.disposal = this.healthCheckup.disposal+ this.disposeLayer;
- this.templateDialogVisible2 = false;
+    // 导入模板按钮
+    antenatalCareNumOpinionYes() {
+      this.healthCheckup.disposal =
+        this.healthCheckup.disposal + this.disposeLayer;
+      this.templateDialogVisible2 = false;
     },
 
-
-
-
-
-  // 切换产检次数列表
+    // 切换产检次数列表
     antenatalCareNum(index) {
       this.showActive = index;
-    this.malaiseLayer =this.officeTableData[index].malaise;
+      this.malaiseLayer = this.officeTableData[index].malaise;
       // this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
     },
 
-     antenatalCareNumOpinion(index) {
+    antenatalCareNumOpinion(index) {
       this.showActiveOpinion = index;
-    this.disposeLayer =this.officeTableData[index].dispose;
+      this.disposeLayer = this.officeTableData[index].dispose;
       // this.checkForWeekAndCellFindList(token, this.antenatalCareNums[index].id);
     },
-   // 查询
+    // 查询
     templateFindList() {
       let self = this;
       let token1 = window.localStorage.getItem("mayernal-web-token");
@@ -4346,15 +4362,15 @@ this.templateDialogVisible2 = true;
         .templateFindList({
           token: token1,
           pageNum: 0,
-          pageSize:100,
+          pageSize: 100,
           isProhibit: 1
         })
         .then(res => {
           if (res.status === "20200") {
             self.officeTableData = res.pcTemplateBeanList;
           } else if (res.status === "20209") {
-             self.officeTableData =[];
-              this.$message.error("模板为空");
+            self.officeTableData = [];
+            this.$message.error("模板为空");
           } else {
             this.$message.error("查询失败，请稍后重试");
           }
@@ -5561,7 +5577,7 @@ this.templateDialogVisible2 = true;
         font-size: 14px;
         color: #666666;
         padding: 0px 0px 20px 10px;
-         width: 100%;
+        width: 100%;
         // height: 160px;
       }
     }
@@ -6406,7 +6422,7 @@ this.templateDialogVisible2 = true;
   background-color: #d3d3d3;
   color: #666666;
 }
- .v-modal{
+.v-modal {
   z-index: 10001;
 }
 </style>

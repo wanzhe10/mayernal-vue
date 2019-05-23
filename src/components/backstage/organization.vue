@@ -552,7 +552,7 @@ removeClassNameClick2(){
         background-color: #999999;
       }
       .InformationBtn,
-      .mechanismBtn,
+      .mechanismBtn
        {
         padding: 0px 5px;
         position: absolute;
