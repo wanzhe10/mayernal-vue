@@ -934,7 +934,7 @@ export default {
     // 完成按钮
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
-        if (valid) {
+        if (!valid) {
           if (this.reviewOfNew.makeAppointmentTime == "") {
             this.$message.error("请预约下次日期");
           } else {
