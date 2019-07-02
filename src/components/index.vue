@@ -37,7 +37,10 @@
             :unique-opened='true'
           >
             <el-menu-item index="1">
-              <router-link :to="{path: 'management'}" v-if="$route.meta.keepAlive">
+              <router-link
+                :to="{path: 'management'}"
+                v-if="$route.meta.keepAlive"
+              >
                 <div
                   class=" headline headline1"
                   @click="seticon()"
@@ -191,8 +194,8 @@
       <el-container>
         <el-main>
           <keep-alive>
-<router-view v-if="$route.meta.keepAlive"></router-view>
-</keep-alive>
+            <router-view v-if="$route.meta.keepAlive"></router-view>
+          </keep-alive>
 
         </el-main>
         <!-- 底部 -->
@@ -468,5 +471,4 @@ body > .el-container {
   color: red;
   background-color: #ccc;
 }
-
 </style>
