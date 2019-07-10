@@ -64,26 +64,26 @@
                 <span @click="tittleFont($event)">后台配置</span>
               </template>
               <el-menu-item-group>
-                <router-link :to="{path: 'organization'}">
-                  <li @click="backgroundConfiguration">
+                <!-- <router-link :to="{path: 'organization'}"> -->
+                  <li @click="backgroundConfiguration(0)">
                     <el-menu-item index="2-1">机构信息维护</el-menu-item>
                   </li>
-                </router-link>
-                <router-link :to="{path: 'administrative'}">
-                  <li @click="backgroundConfiguration">
+                <!-- </router-link> -->
+                <!-- <router-link :to="{path: 'administrative'}"> -->
+                  <li @click="backgroundConfiguration(1)">
                     <el-menu-item index="2-2">科室信息维护</el-menu-item>
                   </li>
-                </router-link>
-                <router-link :to="{path: 'personnel'}">
-                  <li @click="backgroundConfiguration">
+                <!-- </router-link> -->
+                <!-- <router-link :to="{path: 'personnel'}"> -->
+                  <li @click="backgroundConfiguration(2)">
                     <el-menu-item index="2-3">人员信息维护</el-menu-item>
                   </li>
-                </router-link>
-                <router-link :to="{path: 'character'}">
-                  <li @click="backgroundConfiguration">
+                <!-- </router-link> -->
+                <!-- <router-link :to="{path: 'character'}"> -->
+                  <li @click="backgroundConfiguration(3)">
                     <el-menu-item index="2-4">角色信息维护</el-menu-item>
                   </li>
-                </router-link>
+                <!-- </router-link> -->
               </el-menu-item-group>
             </el-submenu>
             <el-submenu index="3">
@@ -222,8 +222,18 @@ export default {
     this.userName = username;
   },
   methods: {
-    backgroundConfiguration() {
+    backgroundConfiguration(index) {
       this.tittleName = "后台配置";
+      if (index === 0) {
+        this.$router.push('organization')
+      } else if (index === 1) {
+        this.$router.push('administrative')
+      } else if (index === 2) {
+        this.$router.push('personnel')
+      } else {
+        this.$router.push('character')
+      }
+      
     },
     basicData() {
       this.tittleName = "基础数据维护";
