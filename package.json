@@ -15,7 +15,7 @@
   "dependencies": {
     "admin-lte": "^3.0.0-alpha.2",
     "area-data": "^5.0.6",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.3.7",
     "echarts": "^4.1.0",
